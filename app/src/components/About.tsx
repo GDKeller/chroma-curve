@@ -81,19 +81,19 @@ function Strip({ colors, label, mark }: StripProps) {
       {label && (
         <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(220_10%_50%)] mb-1 block">{label}</span>
       )}
-      <div className="flex rounded-lg overflow-hidden">
+      <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c, i) => (
-          <div key={i} className="flex-1 h-12" style={{ backgroundColor: c }} />
+          <div key={i} className="h-12" style={{ backgroundColor: c }} />
         ))}
       </div>
       {mark && (
-        <div className="flex mt-1">
+        <div className="grid mt-1" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
           {colors.map((_, i) => {
             const m = mark(i);
             const text =
               m === "ok" ? "ok" : m === "high" ? "hi" : m === "low" ? "lo" : null;
             return (
-              <div key={i} className="flex-1 text-center leading-1.5">
+              <div key={i} className="text-center leading-1.5">
                 {text && (
                   <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(220_10%_65%)]" : "text-[hsl(220_10%_40%)]"}`}>
                     {text}
@@ -110,9 +110,9 @@ function Strip({ colors, label, mark }: StripProps) {
 
 function LightnessHeader() {
   return (
-    <div className="flex">
+    <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="flex-1 text-center text-[9px] font-mono text-[hsl(220_10%_50%)]">
+        <div key={l} className="text-center text-[9px] font-mono text-[hsl(220_10%_50%)]">
           {l}
         </div>
       ))}
@@ -569,117 +569,149 @@ export function AboutButton() {
                 transition={{ duration: 0.2 }}
                 className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-6 rounded-2xl bg-[hsl(220_10%_6%)] border border-white/[0.08] shadow-2xl max-h-[85vh] overflow-y-auto"
               >
-                <Dialog.Title className="text-lg font-semibold text-white/90 mb-2">
-                  How it works
-                </Dialog.Title>
-
-                <p className="text-[13px] leading-relaxed text-white/50 mb-8">
-                  Neutral palettes need saturation that varies with lightness.
-                  A fixed saturation value always compromises one end of the
-                  scale.
-                </p>
-
-                <div className="space-y-8">
-                  {/* Table of strips */}
-                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-5 items-center">
-                    {/* Header row */}
-                    <div />
-                    <div>
-                      <div className="flex items-center gap-1 mb-1">
-                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Lightness</span>
-                      </div>
-                      <LightnessHeader />
-                    </div>
-
-                    {/* 0% sat */}
-                    <div>
-                      <div className="flex items-baseline justify-between mb-1">
-                        <p className="text-[13px] font-semibold text-white/70">Achromatic Baseline</p>
-                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: 0%</span>
-                      </div>
-                      <p className="text-[13px] leading-relaxed text-white/45">
-                        Unsaturated grayscale. Functional, but lacks character or brand identity.
-                      </p>
-                    </div>
-                    <Strip colors={strips.zero} />
-
-                    {/* 20% sat */}
-                    <div>
-                      <div className="flex items-baseline justify-between mb-1">
-                        <p className="text-[13px] font-semibold text-white/70">Fixed low saturation</p>
-                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
-                      </div>
-                      <p className="text-[13px] leading-relaxed text-white/45">
-                        Desired neutral midtones, but dark and light ends become effectively desaturated.
-                      </p>
-                    </div>
-                    <Strip colors={strips.forMid} mark={markForMid} />
-
-                    {/* 40% sat */}
-                    <div>
-                      <div className="flex items-baseline justify-between mb-1">
-                        <p className="text-[13px] font-semibold text-white/70">Fixed high saturation</p>
-                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
-                      </div>
-                      <p className="text-[13px] leading-relaxed text-white/45">
-                        Raising it to recover the extremes pushes the midrange
-                        to be oversaturated.
-                      </p>
-                    </div>
-                    <Strip colors={strips.forExtremes} mark={markForExtremes} />
-
+                <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-8">
+                  {/* Title + intro — span both columns */}
+                  <div className="col-span-2">
+                    <Dialog.Title className="text-lg font-semibold text-white/90 mb-2">
+                      How it works
+                    </Dialog.Title>
+                    <p className="text-[13px] leading-relaxed text-white/50">
+                      Neutral palettes need saturation that varies with lightness.
+                      A fixed saturation value always compromises one end of the
+                      scale.
+                    </p>
                   </div>
 
-                  {/* The solution — single grid ensures all visuals share the same column width */}
-                  <SolutionSection />
-
-                  {/* Boundary strip — matches the picker curve */}
-                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-5 items-center">
-                    <div>
-                      <div className="flex items-baseline justify-between mb-1">
-                        <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
-                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
-                          {"Saturation: "}
-                          {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
-                          {"/"}
-                          {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD) * 100)}
-                          {"/"}
-                          {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD) * 100)}%
-                        </span>
-                      </div>
-                      <p className="text-[13px] leading-relaxed text-white/45">
-                        Sampling saturation along the curve produces even
-                        perceived chroma, but is too saturated for neutrals.
-                      </p>
+                  {/* Hue indicator — swatch aligned with L=50, labels flanking it */}
+                  <div />
+                  <div className="relative">
+                    <div className="grid" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
+                      {Array.from({ length: STRIP_STEPS }, (_, i) => (
+                        <div key={i} className="h-12">
+                          {i === 4 && (
+                            <div
+                              className="h-full rounded-sm"
+                              style={{ backgroundColor: `hsl(${REF_HUE} 100% 50%)` }}
+                            />
+                          )}
+                        </div>
+                      ))}
                     </div>
-                    <Strip colors={strips.boundary} mark={markCurved} />
+                    {/* Helper text, right-aligned to swatch left edge */}
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight text-right"
+                      style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
+                    >
+                      Reference hue for<br />examples below
+                    </div>
+                    {/* Values stacked vertically, left-aligned to swatch right edge */}
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight"
+                      style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
+                    >
+                      <div className="grid grid-cols-[auto_1fr] gap-x-1">
+                        <span className="text-[13px]">H:</span>
+                        <span className="text-[13px]">{REF_HUE}°</span>
+                        <span className="text-[hsl(220_10%_35%)]">S:</span>
+                        <span className="text-[hsl(220_10%_35%)]">100%</span>
+                        <span className="text-[hsl(220_10%_35%)]">L:</span>
+                        <span className="text-[hsl(220_10%_35%)]">50%</span>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* Lightness header — right column only */}
+                  <div />
+                  <div>
+                    <span className="text-[10px] font-mono text-[hsl(220_10%_50%)] mb-1 block">Lightness</span>
+                    <LightnessHeader />
+                  </div>
+
+                  {/* 0% sat */}
+                  <div>
+                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                      <p className="text-[13px] font-semibold text-white/70">Achromatic Baseline</p>
+                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: 0%</span>
+                    </div>
+                    <p className="text-[13px] leading-relaxed text-white/45">
+                      Unsaturated grayscale. Functional, but lacks character or brand identity.
+                    </p>
+                  </div>
+                  <Strip colors={strips.zero} />
+
+                  {/* 20% sat */}
+                  <div>
+                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                      <p className="text-[13px] font-semibold text-white/70">Fixed low saturation</p>
+                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+                    </div>
+                    <p className="text-[13px] leading-relaxed text-white/45">
+                      Desired neutral midtones, but dark and light ends become effectively desaturated.
+                    </p>
+                  </div>
+                  <Strip colors={strips.forMid} mark={markForMid} />
+
+                  {/* 40% sat */}
+                  <div>
+                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                      <p className="text-[13px] font-semibold text-white/70">Fixed high saturation</p>
+                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                    </div>
+                    <p className="text-[13px] leading-relaxed text-white/45">
+                      Raising it to recover the extremes pushes the midrange
+                      to be oversaturated.
+                    </p>
+                  </div>
+                  <Strip colors={strips.forExtremes} mark={markForExtremes} />
+
+                  {/* The solution — spans both columns, uses its own 1fr 1fr subgrid */}
+                  <div className="col-span-2">
+                    <SolutionSection />
+                  </div>
+
+                  {/* Boundary strip */}
+                  <div>
+                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                      <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
+                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
+                        {"Saturation: "}
+                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
+                        {"/"}
+                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD) * 100)}
+                        {"/"}
+                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD) * 100)}%
+                      </span>
+                    </div>
+                    <p className="text-[13px] leading-relaxed text-white/45">
+                      Sampling saturation along the curve produces even
+                      perceived chroma, but is too saturated for neutrals.
+                    </p>
+                  </div>
+                  <Strip colors={strips.boundary} mark={markCurved} />
 
                   {/* Final result strip */}
-                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-5 items-center">
-                    <div>
-                      <div className="flex items-baseline justify-between mb-1">
-                        <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
-                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
-                          {"Saturation: "}
-                          {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
-                          {"/"}
-                          {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD) * 100)}
-                          {"/"}
-                          {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD) * 100)}%
-                        </span>
-                      </div>
-                      <p className="text-[13px] leading-relaxed text-white/45">
-                        Reducing the base saturation scales the whole curve
-                        down. The formula preserves the ratio between
-                        midtones and extremes at any base value.
-                      </p>
+                  <div>
+                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                      <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
+                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
+                        {"Saturation: "}
+                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
+                        {"/"}
+                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD) * 100)}
+                        {"/"}
+                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD) * 100)}%
+                      </span>
                     </div>
-                    <Strip colors={strips.curved} mark={markCurved} />
+                    <p className="text-[13px] leading-relaxed text-white/45">
+                      Reducing the base saturation scales the whole curve
+                      down. The formula preserves the ratio between
+                      midtones and extremes at any base value.
+                    </p>
                   </div>
+                  <Strip colors={strips.curved} mark={markCurved} />
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-white/[0.06] text-[11px] text-white/30 space-y-1.5">
+                <div className="mt-8 pt-4 border-t border-white/[0.06] text-[11px] text-white/30 grid gap-1.5">
                   <p>
                     <sup className="text-[9px] text-white/25 mr-1">1</sup>
                     Concept from{" "}
