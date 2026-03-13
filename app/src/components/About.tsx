@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as Popover from "@radix-ui/react-popover";
 import { AnimatePresence, motion } from "framer-motion";
 import chroma from "chroma-js";
 import { getSaturation } from "../lib/palette";
 
-const REF_HUE = 220;
+const DEFAULT_HUE = 220;
 const REF_SMOD = 40;
 const STRIP_STEPS = 9;
 
@@ -35,7 +36,7 @@ const markForExtremes = (i: number): SwatchMark => {
 // Curved: all correct
 const markCurved = (): SwatchMark => "ok";
 
-function buildStrips() {
+function buildStrips(hue: number) {
   const zero: string[] = [];
   const forMid: string[] = [];
   const forExtremes: string[] = [];
@@ -44,17 +45,17 @@ function buildStrips() {
   for (let i = 0; i < STRIP_STEPS; i++) {
     const lInt = 5 + i * (90 / (STRIP_STEPS - 1)); // L5 through L95
     const l = lInt / 100;
-    zero.push(chroma.hsl(REF_HUE, 0, l).hex());
-    forMid.push(chroma.hsl(REF_HUE, SAT_FOR_MID, l).hex());
-    forExtremes.push(chroma.hsl(REF_HUE, SAT_FOR_EXTREMES, l).hex());
+    zero.push(chroma.hsl(hue, 0, l).hex());
+    forMid.push(chroma.hsl(hue, SAT_FOR_MID, l).hex());
+    forExtremes.push(chroma.hsl(hue, SAT_FOR_EXTREMES, l).hex());
     boundary.push(
       chroma
-        .hsl(REF_HUE, BOUNDARY_SCALE * getSaturation(lInt, REF_SMOD), l)
+        .hsl(hue, BOUNDARY_SCALE * getSaturation(lInt, REF_SMOD), l)
         .hex(),
     );
     curved.push(
       chroma
-        .hsl(REF_HUE, SAT_CURVED * getSaturation(lInt, REF_SMOD), l)
+        .hsl(hue, SAT_CURVED * getSaturation(lInt, REF_SMOD), l)
         .hex(),
     );
   }
@@ -120,13 +121,11 @@ function LightnessHeader() {
   );
 }
 
-const strips = buildStrips();
-
 // ---------------------------------------------------------------------------
 // Color picker plane — saturation (x) vs lightness (y) with parabolic curve
 // ---------------------------------------------------------------------------
 
-function ColorPickerPlane() {
+function ColorPickerPlane({ hue }: { hue: number }) {
   const size = 200;
   const res = 40; // grid resolution
   const cellSize = size / res;
@@ -140,7 +139,7 @@ function ColorPickerPlane() {
       cells.push({
         x: col * cellSize,
         y: row * cellSize,
-        color: chroma.hsl(REF_HUE, sat, light).hex(),
+        color: chroma.hsl(hue, sat, light).hex(),
       });
     }
   }
@@ -299,7 +298,7 @@ function ColorPickerPlane() {
 // Curve graph + rotated picker alignment (square, side-by-side)
 // ---------------------------------------------------------------------------
 
-function useCurvePickerVisuals() {
+function useCurvePickerVisuals(hue: number) {
   const size = 200;
   const res = 40;
   const cellSize = size / res;
@@ -337,7 +336,7 @@ function useCurvePickerVisuals() {
       pickerCells.push({
         x: col * cellSize,
         y: row * cellSize,
-        color: chroma.hsl(REF_HUE, sat, light).hex(),
+        color: chroma.hsl(hue, sat, light).hex(),
       });
     }
   }
@@ -473,8 +472,8 @@ function Formula() {
 // Solution section — single CSS grid so all 3 visuals share one column width
 // ---------------------------------------------------------------------------
 
-function SolutionSection() {
-  const { curveGraph, rotatedPicker } = useCurvePickerVisuals();
+function SolutionSection({ hue }: { hue: number }) {
+  const { curveGraph, rotatedPicker } = useCurvePickerVisuals(hue);
 
   return (
     <div className="mt-2 pt-8 border-t border-white/[0.06]">
@@ -497,7 +496,7 @@ function SolutionSection() {
             <sup className="text-[9px] text-white/25 ml-0.5">2</sup>
           </p>
         </div>
-        <ColorPickerPlane />
+        <ColorPickerPlane hue={hue} />
 
         {/* Row 2: formula spanning both columns */}
         <div className="col-span-2">
@@ -518,11 +517,125 @@ function SolutionSection() {
 }
 
 // ---------------------------------------------------------------------------
+// Hue picker — horizontal gradient bar for selecting hue angle
+// ---------------------------------------------------------------------------
+
+const HUE_PRESETS: { label: string; hue: number }[] = [
+  { label: "Red", hue: 0 },
+  { label: "Orange", hue: 30 },
+  { label: "Gold", hue: 45 },
+  { label: "Green", hue: 150 },
+  { label: "Teal", hue: 180 },
+  { label: "Blue", hue: 220 },
+  { label: "Indigo", hue: 245 },
+  { label: "Purple", hue: 280 },
+  { label: "Rose", hue: 340 },
+];
+
+function HuePicker({
+  hue,
+  onChange,
+  onReset,
+  isDefault,
+}: {
+  hue: number;
+  onChange: (h: number) => void;
+  onReset: () => void;
+  isDefault: boolean;
+}) {
+  const barRef = useRef<HTMLDivElement>(null);
+
+  const hueFromPointer = useCallback((clientX: number) => {
+    const bar = barRef.current;
+    if (!bar) return;
+    const rect = bar.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    onChange(Math.round(ratio * 360));
+  }, [onChange]);
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    hueFromPointer(e.clientX);
+  }, [hueFromPointer]);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (e.buttons === 0) return;
+    hueFromPointer(e.clientX);
+  }, [hueFromPointer]);
+
+  return (
+    <div className="space-y-2">
+      {/* Presets + reset */}
+      <div className="flex items-center gap-1.5">
+        {HUE_PRESETS.map((p) => (
+          <button
+            key={p.hue}
+            onClick={() => onChange(p.hue)}
+            title={`${p.label} (${p.hue}°)`}
+            className="h-5 flex-1 rounded-sm transition-shadow"
+            style={{
+              backgroundColor: `hsl(${p.hue} 100% 50%)`,
+              boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(220 10% 80%)" : "none",
+            }}
+          />
+        ))}
+
+        {/* Reset */}
+        <button
+          onClick={onReset}
+          title={`Reset to ${DEFAULT_HUE}°`}
+          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity"
+          style={{ opacity: isDefault ? 0.25 : 0.7 }}
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(220_10%_60%)]">
+            <path
+              d="M2 2v3h3M10 10V7H7"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9.5 4.5A4 4 0 0 0 3.17 2.83L2 4M2.5 7.5A4 4 0 0 0 8.83 9.17L10 8"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Gradient bar */}
+      <div
+        ref={barRef}
+        className="h-6 rounded-sm cursor-crosshair relative"
+        style={{
+          background: "linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))",
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+      >
+        <div
+          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
+          style={{
+            left: `${(hue / 360) * 100}%`,
+            backgroundColor: `hsl(${hue} 100% 50%)`,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Exported components
 // ---------------------------------------------------------------------------
 
 export function AboutButton() {
   const [open, setOpen] = useState(false);
+  const [hue, setHue] = useState(DEFAULT_HUE);
+  const strips = useMemo(() => buildStrips(hue), [hue]);
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -584,40 +697,62 @@ export function AboutButton() {
 
                   {/* Hue indicator — swatch aligned with L=50, labels flanking it */}
                   <div />
-                  <div className="relative">
-                    <div className="grid" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
-                      {Array.from({ length: STRIP_STEPS }, (_, i) => (
-                        <div key={i} className="h-12">
-                          {i === 4 && (
-                            <div
-                              className="h-full rounded-sm"
-                              style={{ backgroundColor: `hsl(${REF_HUE} 100% 50%)` }}
-                            />
-                          )}
+                  <div>
+                    <Popover.Root>
+                      <div className="relative">
+                        <div className="grid" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
+                          {Array.from({ length: STRIP_STEPS }, (_, i) => (
+                            <div key={i} className="h-12">
+                              {i === 4 && (
+                                <Popover.Trigger asChild>
+                                  <button
+                                    className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+                                    style={{ backgroundColor: `hsl(${hue} 100% 50%)` }}
+                                  />
+                                </Popover.Trigger>
+                              )}
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                    {/* Helper text, right-aligned to swatch left edge */}
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight text-right"
-                      style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
-                    >
-                      Reference hue for<br />examples below
-                    </div>
-                    {/* Values stacked vertically, left-aligned to swatch right edge */}
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight"
-                      style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
-                    >
-                      <div className="grid grid-cols-[auto_1fr] gap-x-1">
-                        <span className="text-[13px]">H:</span>
-                        <span className="text-[13px]">{REF_HUE}°</span>
-                        <span className="text-[hsl(220_10%_35%)]">S:</span>
-                        <span className="text-[hsl(220_10%_35%)]">100%</span>
-                        <span className="text-[hsl(220_10%_35%)]">L:</span>
-                        <span className="text-[hsl(220_10%_35%)]">50%</span>
+                        {/* Helper text, right-aligned to swatch left edge */}
+                        <div
+                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight text-right"
+                          style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
+                        >
+                          Reference hue for<br />examples below
+                        </div>
+                        {/* Values stacked vertically, left-aligned to swatch right edge */}
+                        <div
+                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight"
+                          style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
+                        >
+                          <div className="grid grid-cols-[auto_1fr] gap-x-1">
+                            <span className="text-[13px]">H:</span>
+                            <span className="text-[13px]">{hue}°</span>
+                            <span className="text-[hsl(220_10%_35%)]">S:</span>
+                            <span className="text-[hsl(220_10%_35%)]">100%</span>
+                            <span className="text-[hsl(220_10%_35%)]">L:</span>
+                            <span className="text-[hsl(220_10%_35%)]">50%</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                      <Popover.Portal>
+                        <Popover.Content
+                          side="right"
+                          sideOffset={12}
+                          align="center"
+                          className="w-56 p-3 rounded-lg bg-[hsl(220_10%_10%)] border border-white/[0.08] shadow-xl z-[60]"
+                        >
+                          <HuePicker
+                            hue={hue}
+                            onChange={setHue}
+                            onReset={() => setHue(DEFAULT_HUE)}
+                            isDefault={hue === DEFAULT_HUE}
+                          />
+                          <Popover.Arrow className="fill-[hsl(220_10%_10%)]" />
+                        </Popover.Content>
+                      </Popover.Portal>
+                    </Popover.Root>
                   </div>
 
                   {/* Lightness header — right column only */}
@@ -666,7 +801,7 @@ export function AboutButton() {
 
                   {/* The solution — spans both columns, uses its own 1fr 1fr subgrid */}
                   <div className="col-span-2">
-                    <SolutionSection />
+                    <SolutionSection hue={hue} />
                   </div>
 
                   {/* Boundary strip */}
