@@ -79,7 +79,7 @@ function Strip({ colors, label, mark }: StripProps) {
   return (
     <div>
       {label && (
-        <span className="text-[9px] font-mono uppercase tracking-wider text-white/20 mb-1 block">{label}</span>
+        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(220_10%_50%)] mb-1 block">{label}</span>
       )}
       <div className="flex rounded-lg overflow-hidden">
         {colors.map((c, i) => (
@@ -95,7 +95,7 @@ function Strip({ colors, label, mark }: StripProps) {
             return (
               <div key={i} className="flex-1 text-center leading-1.5">
                 {text && (
-                  <span className={`text-[8px] font-mono ${m === "ok" ? "text-white/75" : "text-white/25"}`}>
+                  <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(220_10%_65%)]" : "text-[hsl(220_10%_40%)]"}`}>
                     {text}
                   </span>
                 )}
@@ -112,7 +112,7 @@ function LightnessHeader() {
   return (
     <div className="flex">
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="flex-1 text-center text-[9px] font-mono text-white/20">
+        <div key={l} className="flex-1 text-center text-[9px] font-mono text-[hsl(220_10%_50%)]">
           {l}
         </div>
       ))}
@@ -146,28 +146,107 @@ function ColorPickerPlane() {
   }
 
   // Parabolic curve: perceptual boundary scaled so edges reach ~50%
+  // Path goes top (l=100) to bottom (l=0) so it draws top→bottom
   const curvePoints: string[] = [];
   const edgeMultiplier = getSaturation(0, REF_SMOD);
   const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
-  for (let l = 0; l <= 100; l += 2) {
+  for (let l = 100; l >= 0; l -= 2) {
     const multiplier = getSaturation(l, REF_SMOD);
     const sat = boundaryScale * multiplier;
     const px = sat * size;
     const py = (1 - l / 100) * size;
-    curvePoints.push(`${l === 0 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
+    curvePoints.push(`${l === 100 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
+  }
+
+  // Swatches along the curve (one per grid row, sampled every few rows)
+  const sampleInterval = 4;
+  const curveDots: { cx: number; cy: number; delay: number }[] = [];
+  for (let row = 0; row < res; row += sampleInterval) {
+    const light = 1 - row / (res - 1);
+    const lInt = Math.round(light * 100);
+    const multiplier = getSaturation(lInt, REF_SMOD);
+    const sat = boundaryScale * multiplier;
+    curveDots.push({
+      cx: sat * size,
+      cy: row * cellSize,
+      delay: 0.5 + (row / res) * 1.2,
+    });
+  }
+
+  // Boundary cells: for each row, find the column on the curve
+  // Timeline (12s cycle):
+  //   0-2s   bare picker
+  //   2-4s   line draws top→bottom
+  //   4-5s   line holds
+  //   5-6s   line fades out
+  //   6-8s   swatches highlight sequentially top→bottom
+  //   8-9s   swatches hold
+  //   9-10s  swatches fade
+  //   10-12s bare picker
+  const pause = 1;
+  const drawDur = 2;
+  const lineHold = 2;
+  const lineFade = 1;
+  const swatchStart = pause + drawDur + lineHold + lineFade; // 6s
+  const swatchDraw = 2;
+  const swatchHold = 2;
+  const swatchFade = 1;
+  const cycle = 12;
+
+  const boundaryCells: { x: number; y: number; stagger: number }[] = [];
+  for (let row = 0; row < res; row++) {
+    const light = 1 - row / (res - 1);
+    const lInt = Math.round(light * 100);
+    const multiplier = getSaturation(lInt, REF_SMOD);
+    const sat = boundaryScale * multiplier;
+    const col = Math.round(sat * (res - 1));
+    if (col >= 0 && col < res) {
+      boundaryCells.push({
+        x: col * cellSize,
+        y: row * cellSize,
+        stagger: (row / res) * swatchDraw, // offset within the swatch phase
+      });
+    }
   }
 
   return (
     <div className="flex gap-1.5">
-      <span className="text-[10px] font-mono text-white/25 self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
-      <div className="flex flex-col gap-1.5">
-        <div className="rounded-lg overflow-hidden border border-white/[0.06]">
+      <div className="flex flex-col gap-1.5 w-full min-w-0">
+        <div className="rounded overflow-hidden border border-white/[0.06]">
           <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto block">
             {cells.map((c, i) => (
               <rect key={i} x={c.x} y={c.y} width={cellSize + 0.5} height={cellSize + 0.5} fill={c.color} />
             ))}
+            {/* Clip mask for line: wipes top→bottom in, then top→bottom out */}
+            <defs>
+              <clipPath id="lineReveal">
+                <motion.rect
+                  x={0}
+                  width={size}
+                  initial={{ y: 0, height: 0 }}
+                  animate={{
+                    y:      [0, 0, 0,    0,    size],
+                    height: [0, 0, size,  size, 0],
+                  }}
+                  transition={{
+                    duration: cycle,
+                    times: [
+                      0,
+                      pause / cycle,                                       // 2s: start draw
+                      (pause + drawDur) / cycle,                           // 4s: fully revealed
+                      (pause + drawDur + lineHold) / cycle,                // 5s: start exit
+                      (pause + drawDur + lineHold + lineFade) / cycle,     // 6s: fully hidden
+                    ],
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                  }}
+                />
+              </clipPath>
+            </defs>
+            {/* Dashed curve line */}
             <path
               d={curvePoints.join("")}
               fill="none"
@@ -175,10 +254,40 @@ function ColorPickerPlane() {
               strokeWidth={1.5}
               strokeDasharray="4 3"
               opacity={0.6}
+              clipPath="url(#lineReveal)"
             />
+            {/* Outline swatches: appear sequentially, then disappear sequentially */}
+            {boundaryCells.map((cell, i) => {
+              const onTime = (swatchStart + cell.stagger) / cycle;
+              const onEnd = Math.min(onTime + 0.01, 1);
+              const offStart = (swatchStart + swatchDraw + swatchHold + cell.stagger * (swatchFade / swatchDraw)) / cycle;
+              const offEnd = Math.min(offStart + 0.01, 1);
+              return (
+                <motion.rect
+                  key={`b-${i}`}
+                  x={cell.x}
+                  y={cell.y}
+                  width={cellSize}
+                  height={cellSize}
+                  fill="none"
+                  stroke="white"
+                  strokeWidth={0.5}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 0, 0.35, 0.35, 0, 0],
+                  }}
+                  transition={{
+                    duration: cycle,
+                    times: [0, onTime, onEnd, offStart, offEnd, 1],
+                    ease: "linear",
+                    repeat: Infinity,
+                  }}
+                />
+              );
+            })}
           </svg>
         </div>
-        <span className="text-[10px] font-mono text-white/25 text-center">
+        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)] text-center">
           Saturation
         </span>
       </div>
@@ -187,135 +296,222 @@ function ColorPickerPlane() {
 }
 
 // ---------------------------------------------------------------------------
-// Curve + formula figure
+// Curve graph + rotated picker alignment (square, side-by-side)
 // ---------------------------------------------------------------------------
 
-function CurveAndFormula() {
-  const w = 480;
-  const h = 140;
-  const pad = { l: 40, r: 12, t: 16, b: 24 };
-  const pw = w - pad.l - pad.r;
-  const ph = h - pad.t - pad.b;
+function useCurvePickerVisuals() {
+  const size = 200;
+  const res = 40;
+  const cellSize = size / res;
 
-  const points: { x: number; y: number }[] = [];
+  // Shared Y-axis: full 0→1 saturation range (matches original picker)
+  const edgeMult = getSaturation(0, REF_SMOD);
+  const bScale = 0.5 / edgeMult;
+  const maxSat = 1.0;
+
+  // Curve data: lightness → boundary saturation
+  const curveData: { l: number; sat: number }[] = [];
   for (let l = 0; l <= 100; l += 2) {
-    points.push({ x: l, y: getSaturation(l, REF_SMOD) });
+    curveData.push({ l, sat: bScale * getSaturation(l, REF_SMOD) });
   }
-  const allY = points.map((p) => p.y);
-  const yMin = Math.min(...allY) * 0.92;
-  const yMax = Math.max(...allY) * 1.06;
 
-  const toX = (l: number) => pad.l + (l / 100) * pw;
-  const toY = (v: number) => pad.t + (1 - (v - yMin) / (yMax - yMin)) * ph;
+  // Shared coordinate mapping
+  const toX = (l: number) => (l / 100) * size;
+  const toY = (sat: number) => (1 - sat / maxSat) * size;
 
-  const d = points
+  const curvePath = curveData
     .map(
       (p, i) =>
-        `${i === 0 ? "M" : "L"}${toX(p.x).toFixed(1)},${toY(p.y).toFixed(1)}`,
+        `${i === 0 ? "M" : "L"}${toX(p.l).toFixed(1)},${toY(p.sat).toFixed(1)}`,
     )
     .join("");
 
-  const baselineY = toY(1);
+  const fillPath = `${curvePath} L${size},${size} L0,${size} Z`;
+
+  // Rotated picker grid: x=lightness, y=saturation (high at top)
+  const pickerCells: { x: number; y: number; color: string }[] = [];
+  for (let row = 0; row < res; row++) {
+    for (let col = 0; col < res; col++) {
+      const light = col / (res - 1);
+      const sat = (1 - row / (res - 1)) * maxSat;
+      pickerCells.push({
+        x: col * cellSize,
+        y: row * cellSize,
+        color: chroma.hsl(REF_HUE, sat, light).hex(),
+      });
+    }
+  }
+
+  // Saturation gridline values
+  const satGridLines = [0.1, 0.2, 0.3, 0.4, 0.5];
+
+  // Shared picker/graph visual wrapper
+  const VisualPanel = ({ children, label }: { children: React.ReactNode; label: string }) => (
+    <div className="flex gap-1.5">
+      <span
+        className="text-[10px] font-mono text-[hsl(220_10%_50%)] self-center shrink-0"
+        style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+      >
+        {label}
+      </span>
+      <div className="w-full">{children}</div>
+    </div>
+  );
+
+  return {
+    curveGraph: (
+      <VisualPanel label="S(L)">
+        <svg
+          viewBox={`0 0 ${size} ${size}`}
+          className="w-full h-auto block rounded border border-white/[0.06] bg-white/[0.02]"
+        >
+          {satGridLines.map((s) => (
+            <line
+              key={`h-${s}`}
+              x1={0}
+              y1={toY(s)}
+              x2={size}
+              y2={toY(s)}
+              stroke="white"
+              strokeOpacity={0.04}
+              strokeWidth={0.5}
+            />
+          ))}
+          {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((l) => (
+            <line
+              key={`v-${l}`}
+              x1={toX(l)}
+              y1={0}
+              x2={toX(l)}
+              y2={size}
+              stroke="white"
+              strokeOpacity={0.04}
+              strokeWidth={0.5}
+            />
+          ))}
+          <path d={fillPath} fill="url(#alignFill)" />
+          <defs>
+            <linearGradient id="alignFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(38 90% 55%)" stopOpacity={0.1} />
+              <stop offset="100%" stopColor="hsl(38 90% 55%)" stopOpacity={0.01} />
+            </linearGradient>
+          </defs>
+          <path
+            d={curvePath}
+            fill="none"
+            stroke="hsl(38 90% 55%)"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <text
+            x={toX(50)}
+            y={toY(curveData[25].sat) + 12}
+            textAnchor="middle"
+            className="text-[8px] fill-[hsl(220_10%_50%)] font-mono"
+          >
+            min
+          </text>
+        </svg>
+        <div className="flex justify-between mt-1">
+          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">0</span>
+          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">L</span>
+          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">100</span>
+        </div>
+      </VisualPanel>
+    ),
+    rotatedPicker: (
+      <VisualPanel label="Saturation">
+        <svg
+          viewBox={`0 0 ${size} ${size}`}
+          className="w-full h-auto block rounded border border-white/[0.06] overflow-hidden"
+        >
+          {pickerCells.map((c, i) => (
+            <rect
+              key={i}
+              x={c.x}
+              y={c.y}
+              width={cellSize + 0.5}
+              height={cellSize + 0.5}
+              fill={c.color}
+            />
+          ))}
+          <path
+            d={curvePath}
+            fill="none"
+            stroke="white"
+            strokeWidth={1.5}
+            strokeDasharray="4 3"
+            opacity={0.5}
+          />
+        </svg>
+        <div className="mt-1 text-center">
+          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Lightness</span>
+        </div>
+      </VisualPanel>
+    ),
+  };
+}
+
+function Formula() {
+  return (
+    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-2.5 font-mono text-[11px] text-white/45 flex items-center justify-between gap-4 flex-wrap">
+      <div>
+        <span className="text-amber-400/60">S</span>(L) = 1 + ((L - 50)
+        <sup>2</sup> / <span className="text-amber-400/60">p</span> - 50
+        <sup>2</sup> / <span className="text-amber-400/60">p</span>) / 100
+      </div>
+      <div className="text-[10px] text-white/25">
+        L = lightness &middot;{" "}
+        <span className="text-amber-400/40">p</span> = adjustment
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Solution section — single CSS grid so all 3 visuals share one column width
+// ---------------------------------------------------------------------------
+
+function SolutionSection() {
+  const { curveGraph, rotatedPicker } = useCurvePickerVisuals();
 
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
-      <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-auto">
-        {/* Baseline */}
-        <line
-          x1={pad.l}
-          y1={baselineY}
-          x2={w - pad.r}
-          y2={baselineY}
-          stroke="rgba(255,255,255,0.1)"
-          strokeWidth={1}
-          strokeDasharray="4 3"
-        />
-        <text
-          x={pad.l - 6}
-          y={baselineY + 3}
-          textAnchor="end"
-          className="text-[8px] fill-white/25 font-mono"
-        >
-          1.0x
-        </text>
-
-        {/* Fill under curve */}
-        <path
-          d={`${d} L${toX(100).toFixed(1)},${(pad.t + ph).toFixed(1)} L${toX(0).toFixed(1)},${(pad.t + ph).toFixed(1)} Z`}
-          fill="url(#aboutCurveFill)"
-        />
-        <defs>
-          <linearGradient id="aboutCurveFill" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="0%"
-              stopColor="hsl(38 90% 55%)"
-              stopOpacity="0.1"
-            />
-            <stop
-              offset="100%"
-              stopColor="hsl(38 90% 55%)"
-              stopOpacity="0.01"
-            />
-          </linearGradient>
-        </defs>
-
-        {/* Curve */}
-        <path
-          d={d}
-          fill="none"
-          stroke="hsl(38 90% 55%)"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-
-        {/* Annotations */}
-        <text
-          x={toX(50)}
-          y={toY(getSaturation(50, REF_SMOD)) + 14}
-          textAnchor="middle"
-          className="text-[9px] fill-white/25 font-mono"
-        >
-          min at L=50
-        </text>
-
-        {/* X axis */}
-        <text
-          x={toX(0)}
-          y={h - 4}
-          className="text-[8px] fill-white/15 font-mono"
-        >
-          dark
-        </text>
-        <text
-          x={toX(50)}
-          y={h - 4}
-          textAnchor="middle"
-          className="text-[8px] fill-white/15 font-mono"
-        >
-          lightness
-        </text>
-        <text
-          x={toX(100)}
-          y={h - 4}
-          textAnchor="end"
-          className="text-[8px] fill-white/15 font-mono"
-        >
-          light
-        </text>
-      </svg>
-
-      {/* Formula row */}
-      <div className="px-4 py-2.5 border-t border-white/[0.06] bg-black/30 font-mono text-[11px] text-white/45 flex items-center justify-between gap-4 flex-wrap">
+    <div className="mt-2 pt-8 border-t border-white/[0.06]">
+      <div className="grid grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
+        {/* Row 1: explanation text | animated picker */}
         <div>
-          <span className="text-amber-400/60">S</span>(L) = 1 + ((L - 50)
-          <sup>2</sup> / <span className="text-amber-400/60">p</span> - 50
-          <sup>2</sup> / <span className="text-amber-400/60">p</span>) / 100
+          <p className="text-[13px] font-semibold text-white/70 mb-3">The solution</p>
+          <p className="text-[13px] leading-relaxed text-white/45 mb-3">
+            In a color picker, the boundary between neutral and
+            chromatic is not a straight line. It follows a curve:
+            colours at the extremes of lightness need more
+            saturation to register as tinted, while midtones
+            need less.
+            <sup className="text-[9px] text-white/25 ml-0.5">1</sup>
+          </p>
+          <p className="text-[13px] leading-relaxed text-white/45">
+            This boundary is approximately parabolic. It can be
+            expressed as a formula that takes a lightness value
+            and returns a saturation multiplier.
+            <sup className="text-[9px] text-white/25 ml-0.5">2</sup>
+          </p>
         </div>
-        <div className="text-[10px] text-white/25">
-          L = lightness &middot;{" "}
-          <span className="text-amber-400/40">p</span> = adjustment
+        <ColorPickerPlane />
+
+        {/* Row 2: formula spanning both columns */}
+        <div className="col-span-2">
+          <Formula />
         </div>
+
+        {/* Row 3: curve graph | rotated picker */}
+        {curveGraph}
+        {rotatedPicker}
+
+        {/* Caption spanning both columns */}
+        <p className="col-span-2 text-[11px] text-white/25 text-center">
+          The formula&rsquo;s curve (left) traces the perceptual boundary visible in the color field (right).
+        </p>
       </div>
     </div>
   );
@@ -377,20 +573,20 @@ export function AboutButton() {
                   How it works
                 </Dialog.Title>
 
-                <p className="text-[13px] leading-relaxed text-white/50 mb-6">
+                <p className="text-[13px] leading-relaxed text-white/50 mb-8">
                   Neutral palettes need saturation that varies with lightness.
                   A fixed saturation value always compromises one end of the
                   scale.
                 </p>
 
-                <div className="space-y-5">
+                <div className="space-y-8">
                   {/* Table of strips */}
-                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-4 items-center">
+                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-5 items-center">
                     {/* Header row */}
                     <div />
                     <div>
                       <div className="flex items-center gap-1 mb-1">
-                        <span className="text-[9px] font-mono text-white/25 uppercase tracking-wider">Lightness</span>
+                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Lightness</span>
                       </div>
                       <LightnessHeader />
                     </div>
@@ -399,7 +595,7 @@ export function AboutButton() {
                     <div>
                       <div className="flex items-baseline justify-between mb-1">
                         <p className="text-[13px] font-semibold text-white/70">Achromatic Baseline</p>
-                        <span className="text-[10px] font-mono text-white/25">Saturation: 0%</span>
+                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: 0%</span>
                       </div>
                       <p className="text-[13px] leading-relaxed text-white/45">
                         Unsaturated grayscale. Functional, but lacks character or brand identity.
@@ -411,7 +607,7 @@ export function AboutButton() {
                     <div>
                       <div className="flex items-baseline justify-between mb-1">
                         <p className="text-[13px] font-semibold text-white/70">Fixed low saturation</p>
-                        <span className="text-[10px] font-mono text-white/25">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                       </div>
                       <p className="text-[13px] leading-relaxed text-white/45">
                         Desired neutral midtones, but dark and light ends become effectively desaturated.
@@ -423,7 +619,7 @@ export function AboutButton() {
                     <div>
                       <div className="flex items-baseline justify-between mb-1">
                         <p className="text-[13px] font-semibold text-white/70">Fixed high saturation</p>
-                        <span className="text-[10px] font-mono text-white/25">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
                       </div>
                       <p className="text-[13px] leading-relaxed text-white/45">
                         Raising it to recover the extremes pushes the midrange
@@ -434,34 +630,15 @@ export function AboutButton() {
 
                   </div>
 
-                  {/* The solution */}
-                  <div className="mt-6 mb-2">
-                    <p className="text-[13px] font-semibold text-white/70 mb-2">The solution</p>
-                    <div className="grid grid-cols-[1fr_1fr] gap-6 items-start">
-                      <div>
-                        <p className="text-[13px] leading-relaxed text-white/45 mb-3">
-                          In a color picker, the boundary between neutral and
-                          chromatic is not a straight line. It follows a curve:
-                          colours at the extremes of lightness need more
-                          saturation to register as tinted, while midtones
-                          need less.
-                        </p>
-                        <p className="text-[13px] leading-relaxed text-white/45">
-                          This boundary is approximately parabolic. Sampling
-                          saturation along the curve produces even perceived
-                          chroma across the full lightness range.
-                        </p>
-                      </div>
-                      <ColorPickerPlane />
-                    </div>
-                  </div>
+                  {/* The solution — single grid ensures all visuals share the same column width */}
+                  <SolutionSection />
 
                   {/* Boundary strip — matches the picker curve */}
-                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-4 items-center">
+                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-5 items-center">
                     <div>
                       <div className="flex items-baseline justify-between mb-1">
                         <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
-                        <span className="text-[10px] font-mono text-white/25">
+                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
                           {"Saturation: "}
                           {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
                           {"/"}
@@ -471,22 +648,19 @@ export function AboutButton() {
                         </span>
                       </div>
                       <p className="text-[13px] leading-relaxed text-white/45">
-                        Saturation values along the curve. Even chroma, but
-                        too saturated for a neutral palette.
+                        Sampling saturation along the curve produces even
+                        perceived chroma, but is too saturated for neutrals.
                       </p>
                     </div>
                     <Strip colors={strips.boundary} mark={markCurved} />
                   </div>
 
-                  {/* Curve graph + formula */}
-                  <CurveAndFormula />
-
                   {/* Final result strip */}
-                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-4 items-center">
+                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-5 items-center">
                     <div>
                       <div className="flex items-baseline justify-between mb-1">
                         <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
-                        <span className="text-[10px] font-mono text-white/25">
+                        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
                           {"Saturation: "}
                           {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
                           {"/"}
@@ -505,26 +679,33 @@ export function AboutButton() {
                   </div>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-white/[0.06] text-[11px] text-white/30">
-                  Based on{" "}
-                  <a
-                    href="https://www.desmos.com/calculator/02ufrfsuzy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-400/50 hover:text-amber-400/70 underline underline-offset-2 transition-colors"
-                  >
-                    this Desmos formula
-                  </a>
-                  , inspired by{" "}
-                  <a
-                    href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-400/50 hover:text-amber-400/70 underline underline-offset-2 transition-colors"
-                  >
-                    this article
-                  </a>
-                  .
+                <div className="mt-8 pt-4 border-t border-white/[0.06] text-[11px] text-white/30 space-y-1.5">
+                  <p>
+                    <sup className="text-[9px] text-white/25 mr-1">1</sup>
+                    Concept from{" "}
+                    <a
+                      href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-400/50 hover:text-amber-400/70 underline underline-offset-2 transition-colors"
+                    >
+                      The secret to creating neutral color palettes
+                    </a>
+                    {" "}by Pablo Figueiredo.
+                  </p>
+                  <p>
+                    <sup className="text-[9px] text-white/25 mr-1">2</sup>
+                    Formula adapted from{" "}
+                    <a
+                      href="https://www.desmos.com/calculator/02ufrfsuzy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-400/50 hover:text-amber-400/70 underline underline-offset-2 transition-colors"
+                    >
+                      Desmos visualization
+                    </a>
+                    {" "}by Grant Kiely.
+                  </p>
                 </div>
 
                 <Dialog.Close asChild>
