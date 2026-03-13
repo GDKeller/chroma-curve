@@ -39,6 +39,7 @@ function buildStrips() {
   const zero: string[] = [];
   const forMid: string[] = [];
   const forExtremes: string[] = [];
+  const boundary: string[] = [];
   const curved: string[] = [];
   for (let i = 0; i < STRIP_STEPS; i++) {
     const lInt = 5 + i * (90 / (STRIP_STEPS - 1)); // L5 through L95
@@ -46,19 +47,27 @@ function buildStrips() {
     zero.push(chroma.hsl(REF_HUE, 0, l).hex());
     forMid.push(chroma.hsl(REF_HUE, SAT_FOR_MID, l).hex());
     forExtremes.push(chroma.hsl(REF_HUE, SAT_FOR_EXTREMES, l).hex());
+    boundary.push(
+      chroma
+        .hsl(REF_HUE, BOUNDARY_SCALE * getSaturation(lInt, REF_SMOD), l)
+        .hex(),
+    );
     curved.push(
       chroma
         .hsl(REF_HUE, SAT_CURVED * getSaturation(lInt, REF_SMOD), l)
         .hex(),
     );
   }
-  return { zero, forMid, forExtremes, curved };
+  return { zero, forMid, forExtremes, boundary, curved };
 }
 
 // Lightness step labels
 const LIGHTNESS_LABELS = Array.from({ length: STRIP_STEPS }, (_, i) =>
   Math.round(5 + i * (90 / (STRIP_STEPS - 1)))
 );
+
+// Scale factor so parabola edges reach 50% sat (perceptual boundary)
+const BOUNDARY_SCALE = 0.5 / getSaturation(LIGHTNESS_LABELS[0], REF_SMOD);
 
 interface StripProps {
   colors: string[];
@@ -114,7 +123,71 @@ function LightnessHeader() {
 const strips = buildStrips();
 
 // ---------------------------------------------------------------------------
-// Curve + formula figure (compact, shown below the explanation)
+// Color picker plane — saturation (x) vs lightness (y) with parabolic curve
+// ---------------------------------------------------------------------------
+
+function ColorPickerPlane() {
+  const size = 200;
+  const res = 40; // grid resolution
+  const cellSize = size / res;
+
+  // Build pixel grid
+  const cells: { x: number; y: number; color: string }[] = [];
+  for (let row = 0; row < res; row++) {
+    for (let col = 0; col < res; col++) {
+      const sat = col / (res - 1); // 0→1 left to right
+      const light = 1 - row / (res - 1); // 1→0 top to bottom
+      cells.push({
+        x: col * cellSize,
+        y: row * cellSize,
+        color: chroma.hsl(REF_HUE, sat, light).hex(),
+      });
+    }
+  }
+
+  // Parabolic curve: perceptual boundary scaled so edges reach ~50%
+  const curvePoints: string[] = [];
+  const edgeMultiplier = getSaturation(0, REF_SMOD);
+  const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
+  for (let l = 0; l <= 100; l += 2) {
+    const multiplier = getSaturation(l, REF_SMOD);
+    const sat = boundaryScale * multiplier;
+    const px = sat * size;
+    const py = (1 - l / 100) * size;
+    curvePoints.push(`${l === 0 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
+  }
+
+  return (
+    <div className="flex gap-1.5">
+      <span className="text-[10px] font-mono text-white/25 self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+        Lightness
+      </span>
+      <div className="flex flex-col gap-1.5">
+        <div className="rounded-lg overflow-hidden border border-white/[0.06]">
+          <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto block">
+            {cells.map((c, i) => (
+              <rect key={i} x={c.x} y={c.y} width={cellSize + 0.5} height={cellSize + 0.5} fill={c.color} />
+            ))}
+            <path
+              d={curvePoints.join("")}
+              fill="none"
+              stroke="white"
+              strokeWidth={1.5}
+              strokeDasharray="4 3"
+              opacity={0.6}
+            />
+          </svg>
+        </div>
+        <span className="text-[10px] font-mono text-white/25 text-center">
+          Saturation
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Curve + formula figure
 // ---------------------------------------------------------------------------
 
 function CurveAndFormula() {
@@ -359,10 +432,60 @@ export function AboutButton() {
                     </div>
                     <Strip colors={strips.forExtremes} mark={markForExtremes} />
 
-                    {/* Curved */}
+                  </div>
+
+                  {/* The solution */}
+                  <div className="mt-6 mb-2">
+                    <p className="text-[13px] font-semibold text-white/70 mb-2">The solution</p>
+                    <div className="grid grid-cols-[1fr_1fr] gap-6 items-start">
+                      <div>
+                        <p className="text-[13px] leading-relaxed text-white/45 mb-3">
+                          In a color picker, the boundary between neutral and
+                          chromatic is not a straight line. It follows a curve:
+                          colours at the extremes of lightness need more
+                          saturation to register as tinted, while midtones
+                          need less.
+                        </p>
+                        <p className="text-[13px] leading-relaxed text-white/45">
+                          This boundary is approximately parabolic. Sampling
+                          saturation along the curve produces even perceived
+                          chroma across the full lightness range.
+                        </p>
+                      </div>
+                      <ColorPickerPlane />
+                    </div>
+                  </div>
+
+                  {/* Boundary strip — matches the picker curve */}
+                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-4 items-center">
                     <div>
                       <div className="flex items-baseline justify-between mb-1">
-                        <p className="text-[13px] font-semibold text-white/70">Parabolic curve</p>
+                        <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
+                        <span className="text-[10px] font-mono text-white/25">
+                          {"Saturation: "}
+                          {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
+                          {"/"}
+                          {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD) * 100)}
+                          {"/"}
+                          {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD) * 100)}%
+                        </span>
+                      </div>
+                      <p className="text-[13px] leading-relaxed text-white/45">
+                        Saturation values along the curve. Even chroma, but
+                        too saturated for a neutral palette.
+                      </p>
+                    </div>
+                    <Strip colors={strips.boundary} mark={markCurved} />
+                  </div>
+
+                  {/* Curve graph + formula */}
+                  <CurveAndFormula />
+
+                  {/* Final result strip */}
+                  <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-4 items-center">
+                    <div>
+                      <div className="flex items-baseline justify-between mb-1">
+                        <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
                         <span className="text-[10px] font-mono text-white/25">
                           {"Saturation: "}
                           {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
@@ -373,21 +496,13 @@ export function AboutButton() {
                         </span>
                       </div>
                       <p className="text-[13px] leading-relaxed text-white/45">
-                        Compensates edges up and middle down to keep chroma visually consistent.
+                        Reducing the base saturation scales the whole curve
+                        down. The formula preserves the ratio between
+                        midtones and extremes at any base value.
                       </p>
                     </div>
                     <Strip colors={strips.curved} mark={markCurved} />
                   </div>
-
-                  {/* Graph + formula */}
-                  <details className="group">
-                    <summary className="text-[12px] font-medium text-white/35 cursor-pointer hover:text-white/50 transition-colors select-none mb-3">
-                      The math
-                    </summary>
-                    <div className="mb-1">
-                      <CurveAndFormula />
-                    </div>
-                  </details>
                 </div>
 
                 <div className="mt-5 pt-3 border-t border-white/[0.06] text-[11px] text-white/30">
