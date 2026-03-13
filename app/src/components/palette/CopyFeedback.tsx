@@ -15,7 +15,7 @@ export function CopyFeedback({ visible }: CopyFeedbackProps) {
           transition={{ duration: 0.15 }}
           className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-sm pointer-events-none"
         >
-          <span className="text-xs font-mono font-semibold text-amber-400 tracking-wide">
+          <span className="text-xs font-mono font-semibold text-white tracking-wide">
             Copied!
           </span>
         </motion.div>

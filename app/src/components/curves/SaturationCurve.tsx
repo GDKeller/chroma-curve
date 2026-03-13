@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import chroma from "chroma-js";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
 import type { ColorEntry } from "../../types/palette";
@@ -7,17 +8,18 @@ interface SaturationCurveProps {
   entries: ColorEntry[];
 }
 
-const W = 480;
-const H = 240;
+const W = 400;
+const H = 400;
 const PAD = { top: 24, right: 24, bottom: 36, left: 48 };
 const PLOT_W = W - PAD.left - PAD.right;
 const PLOT_H = H - PAD.top - PAD.bottom;
 
 export function SaturationCurve({ entries }: SaturationCurveProps) {
+  const hue = usePaletteStore((s) => s.hue);
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
 
-  const { curvePath, yMin, yMax, effectiveDots, gridLines } = useMemo(() => {
+  const { curvePath, yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors } = useMemo(() => {
     // Sample the curve at every integer lightness
     const points: { x: number; y: number }[] = [];
     for (let l = 0; l <= 100; l++) {
@@ -50,18 +52,29 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
       };
     });
 
-    // Horizontal grid lines
-    const gridCount = 4;
-    const gridLines = Array.from({ length: gridCount + 1 }, (_, i) => {
-      const v = yMin + (i / gridCount) * (yMax - yMin);
-      return {
+    // Horizontal grid lines at round values, always including 1.0
+    const step = yMax - yMin > 1.5 ? 0.5 : 0.25;
+    const gridVals: number[] = [];
+    const lo = Math.ceil(yMin / step) * step;
+    for (let v = lo; v <= yMax; v += step) {
+      gridVals.push(parseFloat(v.toFixed(2)));
+    }
+    if (!gridVals.includes(1)) gridVals.push(1);
+    const gridLines = gridVals
+      .sort((a, b) => a - b)
+      .map((v) => ({
         y: toSvgY(v),
         label: v.toFixed(2),
-      };
-    });
+      }));
 
-    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines };
-  }, [sMod, saturation, entries]);
+    // Comparison strips: unadjusted (flat sat) vs adjusted (curve-modulated)
+    const unadjustedColors = entries.map((e) =>
+      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
+    );
+    const adjustedColors = entries.map((e) => e.hex);
+
+    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors };
+  }, [sMod, saturation, hue, entries]);
 
   // Vertical grid lines at lightness landmarks
   const xGridValues = [0, 25, 50, 75, 100];
@@ -70,23 +83,12 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
   return (
     <div className="mx-4 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
       <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
-        <div>
-          <h3 className="text-[13px] font-semibold text-white/70 tracking-wide">
-            Saturation Curve
-          </h3>
-          <p className="text-[11px] text-white/30 mt-0.5">
-            Multiplier across lightness &middot; dots show palette steps
-          </p>
-        </div>
-        <div className="flex gap-4 text-[11px] font-mono text-white/40">
-          <span>
-            <span className="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1 align-middle" />
-            multiplier
-          </span>
-          <span>
-            <span className="inline-block w-2 h-2 rounded-full bg-white/50 mr-1 align-middle" />
-            palette step
-          </span>
+        <h3 className="text-[13px] font-semibold text-white/70 tracking-wide">
+          Saturation Adjustment
+        </h3>
+        <div className="text-[11px] font-mono text-white/40">
+          <span className="inline-block w-2 h-2 rounded-full bg-white/50 mr-1 align-middle" />
+          palette step
         </div>
       </div>
       <svg
@@ -110,7 +112,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-[9px] fill-white/25 font-mono"
+              className="text-[11px] fill-white/30 font-mono"
             >
               {g.label}
             </text>
@@ -132,7 +134,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-[9px] fill-white/25 font-mono"
+              className="text-[11px] fill-white/30 font-mono"
             >
               {l}
             </text>
@@ -173,7 +175,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         <path
           d={curvePath}
           fill="none"
-          stroke="hsl(38 90% 55%)"
+          stroke="rgba(255,255,255,0.7)"
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -192,6 +194,31 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           />
         ))}
       </svg>
+
+      {/* Comparison strips */}
+      <details className="px-4 pb-3">
+        <summary className="text-[11px] font-mono text-white/30 cursor-pointer select-none py-2 hover:text-white/50 transition-colors">
+          Compare
+        </summary>
+        <div className="space-y-2 pt-1">
+          <div>
+            <span className="text-[10px] font-mono text-white/30 block mb-1">Unadjusted</span>
+            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+              {unadjustedColors.map((c, i) => (
+                <div key={i} style={{ backgroundColor: c }} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <span className="text-[10px] font-mono text-white/30 block mb-1">Adjusted</span>
+            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+              {adjustedColors.map((c, i) => (
+                <div key={i} style={{ backgroundColor: c }} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   );
 }

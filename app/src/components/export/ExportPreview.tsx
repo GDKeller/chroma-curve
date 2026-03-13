@@ -15,7 +15,7 @@ export function ExportPreview({ code }: ExportPreviewProps) {
       <button
         type="button"
         onClick={() => copy(code, "export")}
-        className="absolute top-3 right-3 px-3 py-1 text-xs font-medium rounded-md bg-amber-400/15 text-amber-400 hover:bg-amber-400/25 transition-colors cursor-pointer"
+        className="absolute top-3 right-3 px-3 py-1 text-xs font-medium rounded-md bg-white/10 text-white/90 hover:bg-white/15 transition-colors cursor-pointer"
       >
         {copiedLabel === "export" ? "Copied!" : "Copy All"}
       </button>

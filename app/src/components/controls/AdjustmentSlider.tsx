@@ -1,13 +1,16 @@
 import { usePaletteStore } from "../../store/paletteStore";
 import { SliderBase } from "./SliderBase";
 
-/**
- * Maps sMod value to a percentage label matching the original:
- * tooltip shows  0 - (50^2 / sMod)  rounded to nearest int, with % suffix.
- */
-function formatAdjustment(sMod: number): string {
-  const v = 0 - Math.pow(50, 2) / sMod;
-  return `${Math.round(v)}%`;
+// Display: 0% = no curve (sMod=0), -1% to -100% = increasing curve strength.
+// Slider is linear in this percentage; we convert to/from sMod internally.
+function pctToSMod(pct: number): number {
+  if (pct === 0) return 0;
+  return 2500 / -pct;
+}
+
+function sModToPct(sMod: number): number {
+  if (sMod === 0) return 0;
+  return Math.round(-2500 / sMod);
 }
 
 export function AdjustmentSlider() {
@@ -17,12 +20,12 @@ export function AdjustmentSlider() {
   return (
     <SliderBase
       label="Adjustment"
-      value={sMod}
-      min={25}
-      max={2500}
+      value={sModToPct(sMod)}
+      min={-100}
+      max={0}
       step={1}
-      onValueChange={setSMod}
-      formatValue={formatAdjustment}
+      onValueChange={(v) => setSMod(pctToSMod(v))}
+      formatValue={(v) => `${v}%`}
     />
   );
 }

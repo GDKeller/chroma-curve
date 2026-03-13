@@ -14,7 +14,7 @@ export function ColorSwatch({ entry, isCopied, onCopy }: ColorSwatchProps) {
   return (
     <button
       type="button"
-      className="relative flex flex-col justify-center gap-0.5 px-4 py-3 min-h-[72px] text-left transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(220_10%_6%)]"
+      className="relative flex flex-col justify-center gap-0.5 px-4 py-3 min-h-[72px] text-left transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(0_0%_6%)]"
       style={{ backgroundColor: entry.hex, color: textColor }}
       onClick={() => onCopy(`hsl(${entry.hslString})`, entry.label)}
       title={`Copy ${entry.label}`}

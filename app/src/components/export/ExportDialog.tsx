@@ -18,7 +18,7 @@ export function ExportDialog() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-amber-400/15 text-amber-400 hover:bg-amber-400/25 transition-colors cursor-pointer"
+          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-white/10 text-white/90 hover:bg-white/15 transition-colors cursor-pointer"
         >
           Export
         </button>
@@ -41,7 +41,7 @@ export function ExportDialog() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-2xl bg-[hsl(220_10%_10%)] border border-white/[0.08] shadow-2xl"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-2xl bg-[hsl(0_0%_10%)] border border-white/[0.08] shadow-2xl"
               >
                 <Dialog.Title className="text-lg font-semibold text-white/90 mb-4">
                   Export Palette

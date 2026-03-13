@@ -80,7 +80,7 @@ function Strip({ colors, label, mark }: StripProps) {
   return (
     <div>
       {label && (
-        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(220_10%_50%)] mb-1 block">{label}</span>
+        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(0_0%_50%)] mb-1 block">{label}</span>
       )}
       <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c, i) => (
@@ -96,7 +96,7 @@ function Strip({ colors, label, mark }: StripProps) {
             return (
               <div key={i} className="text-center leading-1.5">
                 {text && (
-                  <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(220_10%_65%)]" : "text-[hsl(220_10%_40%)]"}`}>
+                  <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(0_0%_65%)]" : "text-[hsl(0_0%_40%)]"}`}>
                     {text}
                   </span>
                 )}
@@ -113,7 +113,7 @@ function LightnessHeader() {
   return (
     <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="text-center text-[9px] font-mono text-[hsl(220_10%_50%)]">
+        <div key={l} className="text-center text-[9px] font-mono text-[hsl(0_0%_50%)]">
           {l}
         </div>
       ))}
@@ -210,7 +210,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
 
   return (
     <div className="flex gap-1.5">
-      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
@@ -286,7 +286,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
             })}
           </svg>
         </div>
-        <span className="text-[10px] font-mono text-[hsl(220_10%_50%)] text-center">
+        <span className="text-[10px] font-mono text-[hsl(0_0%_50%)] text-center">
           Saturation
         </span>
       </div>
@@ -348,7 +348,7 @@ function useCurvePickerVisuals(hue: number) {
   const VisualPanel = ({ children, label }: { children: React.ReactNode; label: string }) => (
     <div className="flex gap-1.5">
       <span
-        className="text-[10px] font-mono text-[hsl(220_10%_50%)] self-center shrink-0"
+        className="text-[10px] font-mono text-[hsl(0_0%_50%)] self-center shrink-0"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
       >
         {label}
@@ -391,14 +391,14 @@ function useCurvePickerVisuals(hue: number) {
           <path d={fillPath} fill="url(#alignFill)" />
           <defs>
             <linearGradient id="alignFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(38 90% 55%)" stopOpacity={0.1} />
-              <stop offset="100%" stopColor="hsl(38 90% 55%)" stopOpacity={0.01} />
+              <stop offset="0%" stopColor="white" stopOpacity={0.1} />
+              <stop offset="100%" stopColor="white" stopOpacity={0.01} />
             </linearGradient>
           </defs>
           <path
             d={curvePath}
             fill="none"
-            stroke="hsl(38 90% 55%)"
+            stroke="rgba(255,255,255,0.7)"
             strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -407,15 +407,15 @@ function useCurvePickerVisuals(hue: number) {
             x={toX(50)}
             y={toY(curveData[25].sat) + 12}
             textAnchor="middle"
-            className="text-[8px] fill-[hsl(220_10%_50%)] font-mono"
+            className="text-[8px] fill-[hsl(0_0%_50%)] font-mono"
           >
             min
           </text>
         </svg>
         <div className="flex justify-between mt-1">
-          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">0</span>
-          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">L</span>
-          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">100</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">0</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">L</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">100</span>
         </div>
       </VisualPanel>
     ),
@@ -445,7 +445,7 @@ function useCurvePickerVisuals(hue: number) {
           />
         </svg>
         <div className="mt-1 text-center">
-          <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Lightness</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Lightness</span>
         </div>
       </VisualPanel>
     ),
@@ -456,13 +456,13 @@ function Formula() {
   return (
     <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-2.5 font-mono text-[11px] text-white/45 flex items-center justify-between gap-4 flex-wrap">
       <div>
-        <span className="text-amber-400/60">S</span>(L) = 1 + ((L - 50)
-        <sup>2</sup> / <span className="text-amber-400/60">p</span> - 50
-        <sup>2</sup> / <span className="text-amber-400/60">p</span>) / 100
+        <span className="text-white/60">S</span>(L) = 1 + ((L - 50)
+        <sup>2</sup> / <span className="text-white/60">p</span> - 50
+        <sup>2</sup> / <span className="text-white/60">p</span>) / 100
       </div>
       <div className="text-[10px] text-white/25">
         L = lightness &middot;{" "}
-        <span className="text-amber-400/40">p</span> = adjustment
+        <span className="text-white/40">p</span> = adjustment
       </div>
     </div>
   );
@@ -575,7 +575,7 @@ function HuePicker({
             className="h-5 flex-1 rounded-sm transition-shadow"
             style={{
               backgroundColor: `hsl(${p.hue} 100% 50%)`,
-              boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(220 10% 80%)" : "none",
+              boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(0 0% 80%)" : "none",
             }}
           />
         ))}
@@ -587,7 +587,7 @@ function HuePicker({
           className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(220_10%_60%)]">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(0_0%_60%)]">
             <path
               d="M2 2v3h3M10 10V7H7"
               stroke="currentColor"
@@ -680,7 +680,7 @@ export function AboutButton() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-6 rounded-2xl bg-[hsl(220_10%_6%)] border border-white/[0.08] shadow-2xl max-h-[85vh] overflow-y-auto"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-6 rounded-2xl bg-[hsl(0_0%_6%)] border border-white/[0.08] shadow-2xl max-h-[85vh] overflow-y-auto"
               >
                 <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-8">
                   {/* Title + intro — span both columns */}
@@ -716,23 +716,23 @@ export function AboutButton() {
                         </div>
                         {/* Helper text, right-aligned to swatch left edge */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight text-right"
+                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight text-right"
                           style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
                         >
                           Reference hue for<br />examples below
                         </div>
                         {/* Values stacked vertically, left-aligned to swatch right edge */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(220_10%_50%)] whitespace-nowrap leading-tight"
+                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight"
                           style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
                         >
                           <div className="grid grid-cols-[auto_1fr] gap-x-1">
                             <span className="text-[13px]">H:</span>
                             <span className="text-[13px]">{hue}°</span>
-                            <span className="text-[hsl(220_10%_35%)]">S:</span>
-                            <span className="text-[hsl(220_10%_35%)]">100%</span>
-                            <span className="text-[hsl(220_10%_35%)]">L:</span>
-                            <span className="text-[hsl(220_10%_35%)]">50%</span>
+                            <span className="text-[hsl(0_0%_35%)]">S:</span>
+                            <span className="text-[hsl(0_0%_35%)]">100%</span>
+                            <span className="text-[hsl(0_0%_35%)]">L:</span>
+                            <span className="text-[hsl(0_0%_35%)]">50%</span>
                           </div>
                         </div>
                       </div>
@@ -741,7 +741,7 @@ export function AboutButton() {
                           side="right"
                           sideOffset={12}
                           align="center"
-                          className="w-56 p-3 rounded-lg bg-[hsl(220_10%_10%)] border border-white/[0.08] shadow-xl z-[60]"
+                          className="w-56 p-3 rounded-lg bg-[hsl(0_0%_10%)] border border-white/[0.08] shadow-xl z-[60]"
                         >
                           <HuePicker
                             hue={hue}
@@ -749,7 +749,7 @@ export function AboutButton() {
                             onReset={() => setHue(DEFAULT_HUE)}
                             isDefault={hue === DEFAULT_HUE}
                           />
-                          <Popover.Arrow className="fill-[hsl(220_10%_10%)]" />
+                          <Popover.Arrow className="fill-[hsl(0_0%_10%)]" />
                         </Popover.Content>
                       </Popover.Portal>
                     </Popover.Root>
@@ -758,7 +758,7 @@ export function AboutButton() {
                   {/* Lightness header — right column only */}
                   <div />
                   <div>
-                    <span className="text-[10px] font-mono text-[hsl(220_10%_50%)] mb-1 block">Lightness</span>
+                    <span className="text-[10px] font-mono text-[hsl(0_0%_50%)] mb-1 block">Lightness</span>
                     <LightnessHeader />
                   </div>
 
@@ -766,7 +766,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Achromatic Baseline</p>
-                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: 0%</span>
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Saturation: 0%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">
                       Unsaturated grayscale. Functional, but lacks character or brand identity.
@@ -778,7 +778,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Fixed low saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">
                       Desired neutral midtones, but dark and light ends become effectively desaturated.
@@ -790,7 +790,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Fixed high saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">
                       Raising it to recover the extremes pushes the midrange
@@ -808,7 +808,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
-                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">
                         {"Saturation: "}
                         {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
                         {"/"}
@@ -828,7 +828,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
-                      <span className="text-[10px] font-mono text-[hsl(220_10%_50%)]">
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">
                         {"Saturation: "}
                         {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
                         {"/"}
@@ -854,7 +854,7 @@ export function AboutButton() {
                       href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-400/50 hover:text-amber-400/70 underline underline-offset-2 transition-colors"
+                      className="text-white/50 hover:text-white/70 underline underline-offset-2 transition-colors"
                     >
                       The secret to creating neutral color palettes
                     </a>
@@ -867,7 +867,7 @@ export function AboutButton() {
                       href="https://www.desmos.com/calculator/02ufrfsuzy"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-400/50 hover:text-amber-400/70 underline underline-offset-2 transition-colors"
+                      className="text-white/50 hover:text-white/70 underline underline-offset-2 transition-colors"
                     >
                       Desmos visualization
                     </a>
@@ -905,11 +905,3 @@ export function AboutButton() {
   );
 }
 
-export function AboutCaption() {
-  return (
-    <p className="text-[11px] text-white/30 mx-4 mt-1 mb-2">
-      Saturation is modulated by a parabolic curve across lightness. Click a
-      swatch to copy its value. Use Export for CSS, Tailwind, or JSON tokens.
-    </p>
-  );
-}

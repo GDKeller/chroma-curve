@@ -10,12 +10,17 @@ export function Header() {
             Chroma Neutrals
           </h1>
           <p className="text-[13px] text-white/40">
-            Neutral palette generator with parabolic saturation curve
+            Tinted neutral palettes with parabolic saturation correction
           </p>
         </div>
         <AboutButton />
       </div>
-      <ExportDialog />
+      <div className="flex items-center gap-3">
+        <span className="text-[11px] text-white/30">
+          Click swatch to copy
+        </span>
+        <ExportDialog />
+      </div>
     </header>
   );
 }

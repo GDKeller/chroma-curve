@@ -6,6 +6,7 @@ import type { ColorEntry, PaletteParams } from "../types/palette";
  * See: https://www.desmos.com/calculator/02ufrfsuzy
  */
 export function getSaturation(lightness: number, sMod: number): number {
+  if (sMod === 0) return 1;
   const o = 50;
   return 1 + (Math.pow(lightness - o, 2) / sMod - Math.pow(o, 2) / sMod) / 100;
 }
@@ -17,26 +18,30 @@ export function generateNeutrals(params: PaletteParams): ColorEntry[] {
   const distance = 0.01;
 
   const entries: ColorEntry[] = [];
+  const seen = new Set<number>();
   let value = min;
   let step = 0;
 
   while (value < max) {
     const i = Math.floor(value * 100);
-    const sK = getSaturation(i, sMod);
-    const color = chroma.hsl(hue, saturation * sK, value);
+    if (!seen.has(i)) {
+      seen.add(i);
+      const sK = getSaturation(i, sMod);
+      const color = chroma.hsl(hue, saturation * sK, value);
 
-    const [h, s, l] = color.hsl();
-    const hRound = Math.round(h) || 0;
-    const sRound = Math.round(Math.round((s + Number.EPSILON) * 100 * 100) / 100);
-    const lRound = Math.round(Math.round((l + Number.EPSILON) * 100 * 100) / 100);
+      const [h, s, l] = color.hsl();
+      const hRound = Math.round(h) || 0;
+      const sRound = Math.round(Math.round((s + Number.EPSILON) * 100 * 100) / 100);
+      const lRound = Math.round(Math.round((l + Number.EPSILON) * 100 * 100) / 100);
 
-    entries.push({
-      label: `grey-${i}`,
-      lightness: i,
-      hsl: [h, s, l],
-      hslString: `${hRound}deg ${sRound}% ${lRound}%`,
-      hex: color.hex(),
-    });
+      entries.push({
+        label: `grey-${i}`,
+        lightness: i,
+        hsl: [h, s, l],
+        hslString: `${hRound}deg ${sRound}% ${lRound}%`,
+        hex: color.hex(),
+      });
+    }
 
     step++;
     value = step * distance + min;

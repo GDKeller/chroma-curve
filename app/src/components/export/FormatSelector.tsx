@@ -23,7 +23,7 @@ export function FormatSelector({ value, onChange }: FormatSelectorProps) {
           <Tabs.Trigger
             key={f.value}
             value={f.value}
-            className="flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-white/50 transition-colors data-[state=active]:bg-amber-400/15 data-[state=active]:text-amber-400 hover:text-white/70 cursor-pointer"
+            className="flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-white/50 transition-colors data-[state=active]:bg-white/10 data-[state=active]:text-white hover:text-white/70 cursor-pointer"
           >
             {f.label}
           </Tabs.Trigger>
