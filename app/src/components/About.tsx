@@ -36,6 +36,14 @@ const markForExtremes = (i: number): SwatchMark => {
 // Curved: all correct
 const markCurved = (): SwatchMark => "ok";
 
+// Lightness step labels
+const LIGHTNESS_LABELS = Array.from({ length: STRIP_STEPS }, (_, i) =>
+  Math.round(5 + i * (90 / (STRIP_STEPS - 1)))
+);
+
+// Scale factor so parabola edges reach 50% sat (perceptual boundary)
+const BOUNDARY_SCALE = 0.5 / getSaturation(LIGHTNESS_LABELS[0], REF_SMOD);
+
 function buildStrips(hue: number) {
   const zero: string[] = [];
   const forMid: string[] = [];
@@ -61,14 +69,6 @@ function buildStrips(hue: number) {
   }
   return { zero, forMid, forExtremes, boundary, curved };
 }
-
-// Lightness step labels
-const LIGHTNESS_LABELS = Array.from({ length: STRIP_STEPS }, (_, i) =>
-  Math.round(5 + i * (90 / (STRIP_STEPS - 1)))
-);
-
-// Scale factor so parabola edges reach 50% sat (perceptual boundary)
-const BOUNDARY_SCALE = 0.5 / getSaturation(LIGHTNESS_LABELS[0], REF_SMOD);
 
 interface StripProps {
   colors: string[];
@@ -166,23 +166,6 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   const edgeMultiplier = getSaturation(0, REF_SMOD);
   const boundaryScale = 0.5 / edgeMultiplier;
 
-  // Swatches along the curve (one per grid row, sampled every few rows)
-  const sampleInterval = 4;
-  const curveDots = useMemo(() => {
-    const dots: { cx: number; cy: number; delay: number }[] = [];
-    for (let row = 0; row < res; row += sampleInterval) {
-      const light = 1 - row / (res - 1);
-      const lInt = Math.round(light * 100);
-      const multiplier = getSaturation(lInt, REF_SMOD);
-      const sat = boundaryScale * multiplier;
-      dots.push({
-        cx: sat * size,
-        cy: row * cellSize,
-        delay: 0.5 + (row / res) * 1.2,
-      });
-    }
-    return dots;
-  }, [hue]);
 
   // Boundary cells: for each row, find the column on the curve
   // Timeline (12s cycle):

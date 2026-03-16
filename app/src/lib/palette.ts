@@ -6,6 +6,8 @@ import type { ColorEntry, PaletteParams } from "../types/palette";
  * See: https://www.desmos.com/calculator/02ufrfsuzy
  */
 export function getSaturation(lightness: number, sMod: number): number {
+  // sMod=0 means no curve adjustment — return baseline multiplier of 1.
+  // This also prevents division by zero in the formula below.
   if (sMod === 0) return 1;
   const o = 50;
   return 1 + (Math.pow(lightness - o, 2) / sMod - Math.pow(o, 2) / sMod) / 100;
