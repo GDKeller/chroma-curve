@@ -702,6 +702,7 @@ export function AboutButton() {
                               {i === 4 && (
                                 <Popover.Trigger asChild>
                                   <button
+                                    aria-label="Change reference hue"
                                     className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
                                     style={{ backgroundColor: `hsl(${hue} 100% 50%)` }}
                                   />

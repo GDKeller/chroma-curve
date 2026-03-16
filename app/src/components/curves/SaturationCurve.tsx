@@ -2,18 +2,13 @@ import { useMemo, useState } from "react";
 import chroma from "chroma-js";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
-import { ToggleSwitch } from "../controls/ToggleSwitch";
 import type { ColorEntry } from "../../types/palette";
+import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
 interface SaturationCurveProps {
   entries: ColorEntry[];
 }
 
-const W = 400;
-const H = 400;
-const PAD = { top: 24, right: 24, bottom: 36, left: 48 };
-const PLOT_W = W - PAD.left - PAD.right;
-const PLOT_H = H - PAD.top - PAD.bottom;
 
 export function SaturationCurve({ entries }: SaturationCurveProps) {
   const [showDots, setShowDots] = useState(true);
@@ -84,29 +79,15 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         <h3 className="text-[13px] font-semibold text-white/70 tracking-wide">
           Saturation Adjustment
         </h3>
-        <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/55">steps</span>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={showDots}
-            onClick={() => setShowDots((v) => !v)}
-            className="relative w-5 h-2.5 rounded-full transition-colors"
-            style={{ backgroundColor: showDots ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.06)" }}
-          >
-            <span
-              className="absolute top-px left-px w-2 h-2 rounded-full bg-white/70 transition-transform"
-              style={{ transform: showDots ? "translateX(10px)" : "translateX(0)" }}
-            />
-          </button>
-        </label>
+        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
       </div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto"
         role="img"
-        aria-label="Saturation curve showing how the saturation multiplier varies across lightness values"
+        aria-labelledby="sat-curve-title"
       >
+        <title id="sat-curve-title">Saturation adjustment curve</title>
         {/* Grid lines - horizontal */}
         {gridLines.map((g) => (
           <g key={g.label}>

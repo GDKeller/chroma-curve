@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { ColorSwatch } from "./ColorSwatch";
-import { ToggleSwitch } from "../controls/ToggleSwitch";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import type { ColorEntry } from "../../types/palette";
 
