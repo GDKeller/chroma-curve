@@ -88,7 +88,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           Saturation Adjustment
         </h3>
         <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/20">steps</span>
+          <span className="text-[9px] font-mono text-white/55">steps</span>
           <button
             type="button"
             role="switch"
