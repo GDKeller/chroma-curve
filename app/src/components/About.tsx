@@ -587,7 +587,7 @@ function HuePicker({
         <button
           onClick={onReset}
           title={`Reset to ${DEFAULT_HUE}°`}
-          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity"
+          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(0_0%_10%)]"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(0_0%_60%)]">
