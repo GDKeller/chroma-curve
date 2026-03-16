@@ -1,4 +1,3 @@
-import * as Tabs from "@radix-ui/react-tabs";
 import type { ExportFormat, ColorSpace } from "../../types/palette";
 
 interface FormatSelectorProps {
@@ -27,8 +26,9 @@ const spaces: { value: ColorSpace; label: string }[] = [
   { value: "oklch", label: "OKLCH" },
 ];
 
-const tabTrigger =
-  "flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-white/50 transition-colors data-[state=active]:bg-white/10 data-[state=active]:text-white hover:text-white/70 cursor-pointer";
+const btnBase =
+  "flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-white/50 transition-colors hover:text-white/70 cursor-pointer";
+const btnActive = "bg-white/10 text-white";
 
 export function FormatSelector({
   format,
@@ -42,35 +42,45 @@ export function FormatSelector({
         <span className="text-[11px] font-mono text-white/30 uppercase tracking-wider mb-1 block">
           Format
         </span>
-        <Tabs.Root
-          value={format}
-          onValueChange={(v) => onFormatChange(v as ExportFormat)}
+        <div
+          role="radiogroup"
+          aria-label="Export format"
+          className="flex gap-1 p-1 rounded-lg bg-white/[0.04]"
         >
-          <Tabs.List className="flex gap-1 p-1 rounded-lg bg-white/[0.04]">
-            {formats.map((f) => (
-              <Tabs.Trigger key={f.value} value={f.value} className={tabTrigger}>
-                {f.label}
-              </Tabs.Trigger>
-            ))}
-          </Tabs.List>
-        </Tabs.Root>
+          {formats.map((f) => (
+            <button
+              key={f.value}
+              role="radio"
+              aria-checked={format === f.value}
+              className={`${btnBase} ${format === f.value ? btnActive : ""}`}
+              onClick={() => onFormatChange(f.value)}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
       </div>
       <div>
         <span className="text-[11px] font-mono text-white/30 uppercase tracking-wider mb-1 block">
           Color Space
         </span>
-        <Tabs.Root
-          value={space}
-          onValueChange={(v) => onSpaceChange(v as ColorSpace)}
+        <div
+          role="radiogroup"
+          aria-label="Color space"
+          className="flex gap-1 p-1 rounded-lg bg-white/[0.04]"
         >
-          <Tabs.List className="flex gap-1 p-1 rounded-lg bg-white/[0.04]">
-            {spaces.map((s) => (
-              <Tabs.Trigger key={s.value} value={s.value} className={tabTrigger}>
-                {s.label}
-              </Tabs.Trigger>
-            ))}
-          </Tabs.List>
-        </Tabs.Root>
+          {spaces.map((s) => (
+            <button
+              key={s.value}
+              role="radio"
+              aria-checked={space === s.value}
+              className={`${btnBase} ${space === s.value ? btnActive : ""}`}
+              onClick={() => onSpaceChange(s.value)}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
