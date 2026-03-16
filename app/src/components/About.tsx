@@ -145,7 +145,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
       }
     }
     return result;
-  }, [hue]);
+  }, [hue, cellSize]);
 
   // Parabolic curve: perceptual boundary scaled so edges reach ~50%
   // Path goes top (l=100) to bottom (l=0) so it draws top→bottom
@@ -161,7 +161,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
       points.push(`${l === 100 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
     }
     return points;
-  }, [hue]);
+  }, []);
 
   const edgeMultiplier = getSaturation(0, REF_SMOD);
   const boundaryScale = 0.5 / edgeMultiplier;
@@ -204,7 +204,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
       }
     }
     return result;
-  }, [hue]);
+  }, [boundaryScale, cellSize]);
 
   return (
     <div className="flex gap-1.5">
@@ -355,7 +355,7 @@ function useCurvePickerVisuals(hue: number) {
     }
 
     return { pickerCells, curveData, curvePath, fillPath };
-  }, [hue]);
+  }, [hue, bScale, cellSize, toX, toY]);
 
   // Saturation gridline values
   const satGridLines = [0.1, 0.2, 0.3, 0.4, 0.5];
@@ -612,12 +612,31 @@ function HuePicker({
       {/* Gradient bar */}
       <div
         ref={barRef}
-        className="h-6 rounded-sm cursor-crosshair relative"
+        role="slider"
+        tabIndex={0}
+        aria-valuemin={0}
+        aria-valuemax={360}
+        aria-valuenow={hue}
+        aria-label="Reference hue angle"
+        className="h-6 rounded-sm cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
         style={{
           background: "linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))",
         }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
+        onKeyDown={(e) => {
+          const step = e.shiftKey ? 10 : 1;
+          let next: number | null = null;
+          if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+            next = (hue + step) % 360;
+          } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+            next = (hue - step + 360) % 360;
+          }
+          if (next !== null) {
+            e.preventDefault();
+            onChange(next);
+          }
+        }}
       >
         <div
           className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
