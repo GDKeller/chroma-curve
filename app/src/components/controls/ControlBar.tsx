@@ -9,7 +9,7 @@ export function ControlBar() {
         <HueSlider />
         <SaturationSlider />
         <AdjustmentSlider />
-      </nav>
+      </div>
     </nav>
   );
 }

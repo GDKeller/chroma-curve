@@ -9,7 +9,6 @@ interface EffectiveSaturationProps {
   entries: ColorEntry[];
 }
 
-
 export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
   const [showDots, setShowDots] = useState(true);
   const sMod = usePaletteStore((s) => s.sMod);

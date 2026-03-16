@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import type { ColorEntry } from "../../types/palette";
 
 interface PaletteStripProps {
@@ -5,9 +6,11 @@ interface PaletteStripProps {
 }
 
 export function PaletteStrip({ entries }: PaletteStripProps) {
+  const reversed = useMemo(() => [...entries].reverse(), [entries]);
+
   return (
     <div aria-hidden="true" className="h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
-      {[...entries].reverse().map((entry) => (
+      {reversed.map((entry) => (
         <div
           key={entry.label}
           className="min-w-0"

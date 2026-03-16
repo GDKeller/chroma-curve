@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import { FormatSelector } from "./FormatSelector";
@@ -12,7 +12,10 @@ export function ExportDialog() {
   const [format, setFormat] = useState<ExportFormat>("css");
   const [space, setSpace] = useState<ColorSpace>("hsl");
   const entries = usePalette();
-  const code = formatPalette(entries, format, space);
+  const code = useMemo(
+    () => (open ? formatPalette(entries, format, space) : ""),
+    [open, entries, format, space],
+  );
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>

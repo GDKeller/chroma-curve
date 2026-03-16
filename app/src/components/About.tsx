@@ -130,6 +130,9 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   const res = 40; // grid resolution
   const cellSize = size / res;
 
+  const edgeMultiplier = getSaturation(0, REF_SMOD);
+  const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
+
   // Build pixel grid
   const cells = useMemo(() => {
     const result: { x: number; y: number; color: string }[] = [];
@@ -151,8 +154,6 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   // Path goes top (l=100) to bottom (l=0) so it draws top→bottom
   const curvePoints = useMemo(() => {
     const points: string[] = [];
-    const edgeMultiplier = getSaturation(0, REF_SMOD);
-    const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
     for (let l = 100; l >= 0; l -= 2) {
       const multiplier = getSaturation(l, REF_SMOD);
       const sat = boundaryScale * multiplier;
@@ -161,11 +162,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
       points.push(`${l === 100 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
     }
     return points;
-  }, []);
-
-  const edgeMultiplier = getSaturation(0, REF_SMOD);
-  const boundaryScale = 0.5 / edgeMultiplier;
-
+  }, [boundaryScale]);
 
   // Boundary cells: for each row, find the column on the curve
   // Timeline (12s cycle):
