@@ -4,16 +4,12 @@ import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
 import { ToggleSwitch } from "../controls/ToggleSwitch";
 import type { ColorEntry } from "../../types/palette";
+import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
 interface SaturationCurveProps {
   entries: ColorEntry[];
 }
 
-const W = 400;
-const H = 400;
-const PAD = { top: 24, right: 24, bottom: 36, left: 48 };
-const PLOT_W = W - PAD.left - PAD.right;
-const PLOT_H = H - PAD.top - PAD.bottom;
 
 export function SaturationCurve({ entries }: SaturationCurveProps) {
   const [showDots, setShowDots] = useState(true);
@@ -32,13 +28,10 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
     const yMin = Math.min(...allY, 0);
     const yMax = Math.max(...allY) * 1.1;
 
-    const toSvgX = (l: number) => PAD.left + (l / 100) * PLOT_W;
-    const toSvgY = (v: number) => PAD.top + (1 - (v - yMin) / (yMax - yMin)) * PLOT_H;
-
     // Build SVG path for the multiplier curve
     const pathParts = points.map((p, i) => {
       const cmd = i === 0 ? "M" : "L";
-      return `${cmd}${toSvgX(p.x).toFixed(2)},${toSvgY(p.y).toFixed(2)}`;
+      return `${cmd}${toSvgX(p.x).toFixed(2)},${toSvgY(p.y, yMin, yMax).toFixed(2)}`;
     });
 
     // Dots for each palette entry showing effective saturation
@@ -47,7 +40,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
       const effective = saturation * sK;
       return {
         cx: toSvgX(e.lightness),
-        cy: toSvgY(sK),
+        cy: toSvgY(sK, yMin, yMax),
         effective: Math.round(effective * 100),
         lightness: e.lightness,
         hex: e.hex,
@@ -65,7 +58,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
     const gridLines = gridVals
       .sort((a, b) => a - b)
       .map((v) => ({
-        y: toSvgY(v),
+        y: toSvgY(v, yMin, yMax),
         label: v.toFixed(2),
       }));
 
@@ -80,7 +73,6 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
 
   // Vertical grid lines at lightness landmarks
   const xGridValues = [0, 25, 50, 75, 100];
-  const toSvgX = (l: number) => PAD.left + (l / 100) * PLOT_W;
 
   return (
     <div className="mx-4 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
@@ -162,9 +154,9 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         {/* 1.0 baseline */}
         <line
           x1={PAD.left}
-          y1={PAD.top + (1 - (1 - yMin) / (yMax - yMin)) * PLOT_H}
+          y1={toSvgY(1, yMin, yMax)}
           x2={W - PAD.right}
-          y2={PAD.top + (1 - (1 - yMin) / (yMax - yMin)) * PLOT_H}
+          y2={toSvgY(1, yMin, yMax)}
           stroke="rgba(255,255,255,0.12)"
           strokeWidth={1}
           strokeDasharray="4 3"
