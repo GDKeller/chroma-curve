@@ -6,7 +6,7 @@ interface PaletteStripProps {
 
 export function PaletteStrip({ entries }: PaletteStripProps) {
   return (
-    <div className="h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
+    <div aria-hidden="true" className="h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
       {[...entries].reverse().map((entry) => (
         <div
           key={entry.label}
