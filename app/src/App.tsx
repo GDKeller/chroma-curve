@@ -4,6 +4,7 @@ import { ControlBar } from "./components/controls/ControlBar";
 import { PaletteStrip } from "./components/palette/PaletteStrip";
 import { PaletteGrid } from "./components/palette/PaletteGrid";
 import { SaturationCurve } from "./components/curves/SaturationCurve";
+import { EffectiveSaturation } from "./components/curves/EffectiveSaturation";
 import { usePalette } from "./hooks/usePalette";
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           <PaletteGrid entries={entries} />
           <div className="flex flex-col gap-4 lg:mr-4">
             <SaturationCurve entries={entries} />
+            <EffectiveSaturation entries={entries} />
           </div>
         </div>
       </div>

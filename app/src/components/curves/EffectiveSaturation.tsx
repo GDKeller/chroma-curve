@@ -1,10 +1,9 @@
 import { useMemo, useState } from "react";
-import chroma from "chroma-js";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
 import type { ColorEntry } from "../../types/palette";
 
-interface SaturationCurveProps {
+interface EffectiveSaturationProps {
   entries: ColorEntry[];
 }
 
@@ -14,70 +13,58 @@ const PAD = { top: 24, right: 24, bottom: 36, left: 48 };
 const PLOT_W = W - PAD.left - PAD.right;
 const PLOT_H = H - PAD.top - PAD.bottom;
 
-export function SaturationCurve({ entries }: SaturationCurveProps) {
+export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
   const [showDots, setShowDots] = useState(true);
-  const hue = usePaletteStore((s) => s.hue);
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
 
-  const { curvePath, yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors } = useMemo(() => {
-    // Sample the curve at every integer lightness
+  const { curvePath, baseLine, dots, gridLines } = useMemo(() => {
+    // Sample effective saturation at every integer lightness
     const points: { x: number; y: number }[] = [];
     for (let l = 0; l <= 100; l++) {
-      points.push({ x: l, y: getSaturation(l, sMod) });
+      points.push({ x: l, y: saturation * getSaturation(l, sMod) });
     }
 
-    const allY = points.map((p) => p.y);
-    const yMin = Math.min(...allY, 0);
-    const yMax = Math.max(...allY) * 1.1;
+    const yMin = 0;
+    const yMax = 1; // fixed 0–100% range
 
     const toSvgX = (l: number) => PAD.left + (l / 100) * PLOT_W;
     const toSvgY = (v: number) => PAD.top + (1 - (v - yMin) / (yMax - yMin)) * PLOT_H;
 
-    // Build SVG path for the multiplier curve
+    // Effective saturation curve path
     const pathParts = points.map((p, i) => {
       const cmd = i === 0 ? "M" : "L";
       return `${cmd}${toSvgX(p.x).toFixed(2)},${toSvgY(p.y).toFixed(2)}`;
     });
 
-    // Dots for each palette entry showing effective saturation
-    const effectiveDots = entries.map((e) => {
+    // Flat baseline at base saturation
+    const baseY = toSvgY(saturation);
+    const baseLine = {
+      y: baseY,
+      label: `${Math.round(saturation * 100)}%`,
+    };
+
+    // Dots at palette entry positions
+    const dots = entries.map((e) => {
       const sK = getSaturation(e.lightness, sMod);
       const effective = saturation * sK;
       return {
         cx: toSvgX(e.lightness),
-        cy: toSvgY(sK),
-        effective: Math.round(effective * 100),
+        cy: toSvgY(effective),
         lightness: e.lightness,
         hex: e.hex,
       };
     });
 
-    // Horizontal grid lines at round values, always including 1.0
-    const step = yMax - yMin > 1.5 ? 0.5 : 0.25;
-    const gridVals: number[] = [];
-    const lo = Math.ceil(yMin / step) * step;
-    for (let v = lo; v <= yMax; v += step) {
-      gridVals.push(parseFloat(v.toFixed(2)));
-    }
-    if (!gridVals.includes(1)) gridVals.push(1);
-    const gridLines = gridVals
-      .sort((a, b) => a - b)
-      .map((v) => ({
-        y: toSvgY(v),
-        label: v.toFixed(2),
-      }));
+    // Horizontal grid lines at fixed 10% intervals
+    const gridLines = Array.from({ length: 11 }, (_, i) => {
+      const v = i * 0.1;
+      return { y: toSvgY(v), label: `${i * 10}%` };
+    });
 
-    // Comparison strips: unadjusted (flat sat) vs adjusted (curve-modulated)
-    const unadjustedColors = entries.map((e) =>
-      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
-    );
-    const adjustedColors = entries.map((e) => e.hex);
+    return { curvePath: pathParts.join(""), baseLine, dots, gridLines };
+  }, [sMod, saturation, entries]);
 
-    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors };
-  }, [sMod, saturation, hue, entries]);
-
-  // Vertical grid lines at lightness landmarks
   const xGridValues = [0, 25, 50, 75, 100];
   const toSvgX = (l: number) => PAD.left + (l / 100) * PLOT_W;
 
@@ -85,7 +72,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
     <div className="mx-4 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
       <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
         <h3 className="text-[13px] font-semibold text-white/70 tracking-wide">
-          Saturation Adjustment
+          Computed Saturation
         </h3>
         <label className="flex items-center gap-1 cursor-pointer">
           <span className="text-[9px] font-mono text-white/20">steps</span>
@@ -108,7 +95,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto"
         role="img"
-        aria-label="Saturation curve showing how the saturation multiplier varies across lightness values"
+        aria-label="Effective saturation distribution across lightness values"
       >
         {/* Grid lines - horizontal */}
         {gridLines.map((g) => (
@@ -170,21 +157,21 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           className="text-[10px] fill-white/30 font-sans"
           transform={`rotate(-90, 12, ${PAD.top + PLOT_H / 2})`}
         >
-          Multiplier
+          Saturation
         </text>
 
-        {/* 1.0 baseline */}
+        {/* Base saturation line (flat / unadjusted) */}
         <line
           x1={PAD.left}
-          y1={PAD.top + (1 - (1 - yMin) / (yMax - yMin)) * PLOT_H}
+          y1={baseLine.y}
           x2={W - PAD.right}
-          y2={PAD.top + (1 - (1 - yMin) / (yMax - yMin)) * PLOT_H}
-          stroke="rgba(255,255,255,0.12)"
+          y2={baseLine.y}
+          stroke="rgba(255,255,255,0.2)"
           strokeWidth={1}
           strokeDasharray="4 3"
         />
 
-        {/* Saturation curve */}
+        {/* Effective saturation curve */}
         <path
           d={curvePath}
           fill="none"
@@ -195,7 +182,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         />
 
         {/* Palette entry dots */}
-        {showDots && effectiveDots.map((d) => (
+        {showDots && dots.map((d) => (
           <circle
             key={d.lightness}
             cx={d.cx}
@@ -207,31 +194,6 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           />
         ))}
       </svg>
-
-      {/* Comparison strips */}
-      <details className="px-4 pb-3">
-        <summary className="text-[11px] font-mono text-white/30 cursor-pointer select-none py-2 hover:text-white/50 transition-colors">
-          Compare
-        </summary>
-        <div className="space-y-2 pt-1">
-          <div>
-            <span className="text-[10px] font-mono text-white/30 block mb-1">Unadjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
-              {unadjustedColors.map((c, i) => (
-                <div key={i} style={{ backgroundColor: c }} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <span className="text-[10px] font-mono text-white/30 block mb-1">Adjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
-              {adjustedColors.map((c, i) => (
-                <div key={i} style={{ backgroundColor: c }} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </details>
     </div>
   );
 }
