@@ -37,8 +37,10 @@ export function formatPalette(
   switch (format) {
     case "css":
       return formatCSS(entries, space);
-    case "tailwind":
-      return formatTailwind(entries, space);
+    case "tw4":
+      return formatTailwindV4(entries, space);
+    case "tw3":
+      return formatTailwindV3(entries, space);
     case "json":
       return formatJSON(entries, space);
     case "text":
@@ -53,11 +55,25 @@ function formatCSS(entries: ColorEntry[], space: ColorSpace): string {
   return `:root {\n${vars}\n}`;
 }
 
-function formatTailwind(entries: ColorEntry[], space: ColorSpace): string {
+function formatTailwindV4(entries: ColorEntry[], space: ColorSpace): string {
   const vars = entries
     .map((e) => `  --color-${e.label}: ${colorValue(e, space)};`)
     .join("\n");
   return `@theme {\n${vars}\n}`;
+}
+
+function formatTailwindV3(entries: ColorEntry[], space: ColorSpace): string {
+  const colors: Record<string, string> = {};
+  for (const e of entries) {
+    const num = e.label.replace("grey-", "");
+    colors[num] = colorValue(e, space);
+  }
+  const inner = JSON.stringify({ grey: colors }, null, 4)
+    .split("\n")
+    .map((line) => `      ${line}`)
+    .join("\n")
+    .trim();
+  return `/** @type {import('tailwindcss').Config} */\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: ${inner},\n    },\n  },\n};`;
 }
 
 function formatJSON(entries: ColorEntry[], space: ColorSpace): string {
@@ -81,7 +97,8 @@ function formatText(entries: ColorEntry[], space: ColorSpace): string {
 
 const FORMAT_EXTENSIONS: Record<ExportFormat, string> = {
   css: "css",
-  tailwind: "css",
+  tw4: "css",
+  tw3: "js",
   json: "json",
   text: "txt",
 };

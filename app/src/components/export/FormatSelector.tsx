@@ -10,7 +10,8 @@ interface FormatSelectorProps {
 
 const formats: { value: ExportFormat; label: string }[] = [
   { value: "css", label: "CSS" },
-  { value: "tailwind", label: "Tailwind" },
+  { value: "tw4", label: "TW v4" },
+  { value: "tw3", label: "TW v3" },
   { value: "json", label: "JSON" },
   { value: "text", label: "Text" },
 ];
