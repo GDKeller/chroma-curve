@@ -684,6 +684,9 @@ export function AboutButton() {
                     <Dialog.Title className="text-lg font-semibold text-white/90 mb-2">
                       How it works
                     </Dialog.Title>
+                    <Dialog.Description className="sr-only">
+                      Explanation of the parabolic saturation curve used to generate neutral palettes
+                    </Dialog.Description>
                     <p className="text-[13px] leading-relaxed text-white/50">
                       Neutral palettes need saturation that varies with lightness.
                       A fixed saturation value always compromises one end of the

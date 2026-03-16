@@ -17,6 +17,7 @@ export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
         <button
           type="button"
           onClick={onDownload}
+          aria-label="Download palette file"
           className="px-3 py-1 text-xs font-medium rounded-md bg-white/10 text-white/90 hover:bg-white/15 transition-colors cursor-pointer"
         >
           Download
@@ -24,6 +25,7 @@ export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
         <button
           type="button"
           onClick={() => copy(code, "export")}
+          aria-label="Copy palette code"
           className="px-3 py-1 text-xs font-medium rounded-md bg-white/10 text-white/90 hover:bg-white/15 transition-colors cursor-pointer"
         >
           {copiedLabel === "export" ? "Copied!" : "Copy"}
