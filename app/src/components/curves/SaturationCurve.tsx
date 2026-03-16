@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import chroma from "chroma-js";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
+import { ToggleSwitch } from "../controls/ToggleSwitch";
 import type { ColorEntry } from "../../types/palette";
 import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
