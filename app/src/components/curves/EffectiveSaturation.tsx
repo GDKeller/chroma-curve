@@ -2,16 +2,11 @@ import { useMemo, useState } from "react";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
 import type { ColorEntry } from "../../types/palette";
+import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
 interface EffectiveSaturationProps {
   entries: ColorEntry[];
 }
-
-const W = 400;
-const H = 400;
-const PAD = { top: 24, right: 24, bottom: 36, left: 48 };
-const PLOT_W = W - PAD.left - PAD.right;
-const PLOT_H = H - PAD.top - PAD.bottom;
 
 export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
   const [showDots, setShowDots] = useState(true);
@@ -28,17 +23,14 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
     const yMin = 0;
     const yMax = 1; // fixed 0–100% range
 
-    const toSvgX = (l: number) => PAD.left + (l / 100) * PLOT_W;
-    const toSvgY = (v: number) => PAD.top + (1 - (v - yMin) / (yMax - yMin)) * PLOT_H;
-
     // Effective saturation curve path
     const pathParts = points.map((p, i) => {
       const cmd = i === 0 ? "M" : "L";
-      return `${cmd}${toSvgX(p.x).toFixed(2)},${toSvgY(p.y).toFixed(2)}`;
+      return `${cmd}${toSvgX(p.x).toFixed(2)},${toSvgY(p.y, yMin, yMax).toFixed(2)}`;
     });
 
     // Flat baseline at base saturation
-    const baseY = toSvgY(saturation);
+    const baseY = toSvgY(saturation, yMin, yMax);
     const baseLine = {
       y: baseY,
       label: `${Math.round(saturation * 100)}%`,
@@ -50,7 +42,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
       const effective = saturation * sK;
       return {
         cx: toSvgX(e.lightness),
-        cy: toSvgY(effective),
+        cy: toSvgY(effective, yMin, yMax),
         lightness: e.lightness,
         hex: e.hex,
       };
@@ -59,14 +51,13 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
     // Horizontal grid lines at fixed 10% intervals
     const gridLines = Array.from({ length: 11 }, (_, i) => {
       const v = i * 0.1;
-      return { y: toSvgY(v), label: `${i * 10}%` };
+      return { y: toSvgY(v, yMin, yMax), label: `${i * 10}%` };
     });
 
     return { curvePath: pathParts.join(""), baseLine, dots, gridLines };
   }, [sMod, saturation, entries]);
 
   const xGridValues = [0, 25, 50, 75, 100];
-  const toSvgX = (l: number) => PAD.left + (l / 100) * PLOT_W;
 
   return (
     <div className="mx-4 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
