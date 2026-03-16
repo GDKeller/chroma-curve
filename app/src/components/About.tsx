@@ -83,8 +83,8 @@ function Strip({ colors, label, mark }: StripProps) {
         <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
       )}
       <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
-        {colors.map((c, i) => (
-          <div key={i} className="h-12" style={{ backgroundColor: c }} />
+        {colors.map((c) => (
+          <div key={c} className="h-12" style={{ backgroundColor: c }} />
         ))}
       </div>
       {mark && (
@@ -94,7 +94,7 @@ function Strip({ colors, label, mark }: StripProps) {
             const text =
               m === "ok" ? "ok" : m === "high" ? "hi" : m === "low" ? "lo" : null;
             return (
-              <div key={i} className="text-center leading-1.5">
+              <div key={`mark-${i}`} className="text-center leading-1.5">
                 {text && (
                   <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(0_0%_65%)]" : "text-[hsl(0_0%_40%)]"}`}>
                     {text}
@@ -721,8 +721,7 @@ export function AboutButton() {
                   </div>
 
                   {/* Hue indicator — swatch aligned with L=50, labels flanking it */}
-                  <div />
-                  <div>
+                  <div className="col-start-2">
                     <Popover.Root>
                       <div className="relative">
                         <div className="grid" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
@@ -782,8 +781,7 @@ export function AboutButton() {
                   </div>
 
                   {/* Lightness header — right column only */}
-                  <div />
-                  <div>
+                  <div className="col-start-2">
                     <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
                     <LightnessHeader />
                   </div>

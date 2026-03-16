@@ -33,8 +33,8 @@ export function generateNeutrals(params: PaletteParams): ColorEntry[] {
 
       const [h, s, l] = color.hsl();
       const hRound = Math.round(h) || 0;
-      const sRound = Math.round(Math.round((s + Number.EPSILON) * 100 * 100) / 100);
-      const lRound = Math.round(Math.round((l + Number.EPSILON) * 100 * 100) / 100);
+      const sRound = Math.round(s * 10000) / 100;
+      const lRound = Math.round(l * 10000) / 100;
 
       entries.push({
         label: `grey-${i}`,

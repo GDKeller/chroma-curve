@@ -48,7 +48,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   const { copiedLabel, copy } = useCopyToClipboard();
   const [showBorders, setShowBorders] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
-  const [swatchCount, setSwatchCount] = useState<number>(98);
+  const [swatchCount, setSwatchCount] = useState<number>(entries.length);
   const [orientation, setOrientation] = useState<Orientation>("picker");
 
   const { displayEntries, cols } = useMemo(() => {

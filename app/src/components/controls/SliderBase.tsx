@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import * as Slider from "@radix-ui/react-slider";
 
 interface SliderBaseProps {
@@ -7,7 +8,7 @@ interface SliderBaseProps {
   max: number;
   step: number;
   onValueChange: (value: number) => void;
-  trackStyle?: React.CSSProperties;
+  trackStyle?: CSSProperties;
   formatValue?: (value: number) => string;
 }
 
