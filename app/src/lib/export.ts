@@ -15,14 +15,14 @@ function colorValue(entry: ColorEntry, space: ColorSpace): string {
     case "hcl": {
       const [h, c2, l] = c.hcl();
       const hR = Math.round(h || 0);
-      const cR = Math.round(c2 * 10) / 10;
+      const cR = Math.round((c2 || 0) * 10) / 10;
       const lR = Math.round(l * 10) / 10;
       return `hcl(${hR}, ${cR}, ${lR})`;
     }
     case "oklch": {
       const [l, c2, h] = c.oklch();
       const lR = Math.round(l * 1000) / 1000;
-      const cR = Math.round(c2 * 1000) / 1000;
+      const cR = Math.round((c2 || 0) * 1000) / 1000;
       const hR = Math.round(h || 0);
       return `oklch(${lR} ${cR} ${hR})`;
     }
@@ -114,7 +114,7 @@ function formatGPL(entries: ColorEntry[]): string {
   for (const e of entries) {
     const c = chroma(e.hex);
     const [r, g, b] = c.rgb();
-    lines.push(`${String(r).padStart(3)} ${String(g).padStart(3)} ${String(b).padStart(3)}\t${e.label}`);
+    lines.push(`${String(Math.round(r)).padStart(3)} ${String(Math.round(g)).padStart(3)} ${String(Math.round(b)).padStart(3)}\t${e.label}`);
   }
   return lines.join("\n");
 }
