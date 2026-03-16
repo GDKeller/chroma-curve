@@ -12,7 +12,10 @@ const formats: { value: ExportFormat; label: string }[] = [
   { value: "css", label: "CSS" },
   { value: "tw4", label: "TW v4" },
   { value: "tw3", label: "TW v3" },
+  { value: "scss", label: "SCSS" },
+  { value: "js", label: "JS/TS" },
   { value: "json", label: "JSON" },
+  { value: "gpl", label: "GPL" },
   { value: "text", label: "Text" },
 ];
 

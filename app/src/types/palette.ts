@@ -12,6 +12,6 @@ export interface ColorEntry {
   hex: string;
 }
 
-export type ExportFormat = "css" | "tw4" | "tw3" | "json" | "text";
+export type ExportFormat = "css" | "tw4" | "tw3" | "scss" | "js" | "json" | "gpl" | "text";
 
 export type ColorSpace = "hsl" | "hex" | "rgb" | "hcl" | "oklch";

@@ -41,8 +41,14 @@ export function formatPalette(
       return formatTailwindV4(entries, space);
     case "tw3":
       return formatTailwindV3(entries, space);
+    case "scss":
+      return formatSCSS(entries, space);
+    case "js":
+      return formatJS(entries, space);
     case "json":
       return formatJSON(entries, space);
+    case "gpl":
+      return formatGPL(entries);
     case "text":
       return formatText(entries, space);
   }
@@ -76,6 +82,21 @@ function formatTailwindV3(entries: ColorEntry[], space: ColorSpace): string {
   return `/** @type {import('tailwindcss').Config} */\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: ${inner},\n    },\n  },\n};`;
 }
 
+function formatSCSS(entries: ColorEntry[], space: ColorSpace): string {
+  return entries
+    .map((e) => `$${e.label}: ${colorValue(e, space)};`)
+    .join("\n");
+}
+
+function formatJS(entries: ColorEntry[], space: ColorSpace): string {
+  const colors: Record<string, string> = {};
+  for (const e of entries) {
+    const num = e.label.replace("grey-", "");
+    colors[num] = colorValue(e, space);
+  }
+  return `export const grey = ${JSON.stringify(colors, null, 2)} as const;`;
+}
+
 function formatJSON(entries: ColorEntry[], space: ColorSpace): string {
   const tokens: Record<string, { $value: string; $type: string }> = {};
   for (const e of entries) {
@@ -86,6 +107,16 @@ function formatJSON(entries: ColorEntry[], space: ColorSpace): string {
     };
   }
   return JSON.stringify({ grey: tokens }, null, 2);
+}
+
+function formatGPL(entries: ColorEntry[]): string {
+  const lines = ["GIMP Palette", "Name: Grey Neutrals", `Columns: ${entries.length}`, "#"];
+  for (const e of entries) {
+    const c = chroma(e.hex);
+    const [r, g, b] = c.rgb();
+    lines.push(`${String(r).padStart(3)} ${String(g).padStart(3)} ${String(b).padStart(3)}\t${e.label}`);
+  }
+  return lines.join("\n");
 }
 
 function formatText(entries: ColorEntry[], space: ColorSpace): string {
@@ -99,7 +130,10 @@ const FORMAT_EXTENSIONS: Record<ExportFormat, string> = {
   css: "css",
   tw4: "css",
   tw3: "js",
+  scss: "scss",
+  js: "ts",
   json: "json",
+  gpl: "gpl",
   text: "txt",
 };
 
