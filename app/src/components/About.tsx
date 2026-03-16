@@ -298,6 +298,20 @@ function ColorPickerPlane({ hue }: { hue: number }) {
 // Curve graph + rotated picker alignment (square, side-by-side)
 // ---------------------------------------------------------------------------
 
+function VisualPanel({ children, label }: { children: React.ReactNode; label: string }) {
+  return (
+    <div className="flex gap-1.5">
+      <span
+        className="text-[10px] font-mono text-[hsl(0_0%_50%)] self-center shrink-0"
+        style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+      >
+        {label}
+      </span>
+      <div className="w-full">{children}</div>
+    </div>
+  );
+}
+
 function useCurvePickerVisuals(hue: number) {
   const size = 200;
   const res = 40;
@@ -343,19 +357,6 @@ function useCurvePickerVisuals(hue: number) {
 
   // Saturation gridline values
   const satGridLines = [0.1, 0.2, 0.3, 0.4, 0.5];
-
-  // Shared picker/graph visual wrapper
-  const VisualPanel = ({ children, label }: { children: React.ReactNode; label: string }) => (
-    <div className="flex gap-1.5">
-      <span
-        className="text-[10px] font-mono text-[hsl(0_0%_50%)] self-center shrink-0"
-        style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-      >
-        {label}
-      </span>
-      <div className="w-full">{children}</div>
-    </div>
-  );
 
   return {
     curveGraph: (
