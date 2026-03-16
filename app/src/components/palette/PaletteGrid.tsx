@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ColorSwatch } from "./ColorSwatch";
+import { ToggleSwitch } from "../controls/ToggleSwitch";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import type { ColorEntry } from "../../types/palette";
 
@@ -69,7 +70,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
     <div>
       <div className="flex justify-end items-center gap-3 px-4 lg:pr-0 mb-1">
         <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/20">swatches</span>
+          <span className="text-[9px] font-mono text-white/55">swatches</span>
           <select
             value={swatchCount}
             onChange={(e) => setSwatchCount(Number(e.target.value))}
@@ -83,7 +84,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
           </select>
         </label>
         <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/20">orientation</span>
+          <span className="text-[9px] font-mono text-white/55">orientation</span>
           <select
             value={orientation}
             onChange={(e) => setOrientation(e.target.value as Orientation)}
@@ -93,38 +94,8 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
             <option value="rotated" className="bg-[hsl(0_0%_10%)]">rotated</option>
           </select>
         </label>
-        <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/20">labels</span>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={showLabels}
-            onClick={() => setShowLabels((v) => !v)}
-            className="relative w-5 h-2.5 rounded-full transition-colors"
-            style={{ backgroundColor: showLabels ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.06)" }}
-          >
-            <span
-              className="absolute top-px left-px w-2 h-2 rounded-full bg-white/70 transition-transform"
-              style={{ transform: showLabels ? "translateX(10px)" : "translateX(0)" }}
-            />
-          </button>
-        </label>
-        <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/20">borders</span>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={showBorders}
-            onClick={() => setShowBorders((v) => !v)}
-            className="relative w-5 h-2.5 rounded-full transition-colors"
-            style={{ backgroundColor: showBorders ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.06)" }}
-          >
-            <span
-              className="absolute top-px left-px w-2 h-2 rounded-full bg-white/70 transition-transform"
-              style={{ transform: showBorders ? "translateX(10px)" : "translateX(0)" }}
-            />
-          </button>
-        </label>
+        <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
+        <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
       </div>
       <div
         className={`grid ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden ${showBorders ? "gap-px bg-white/[0.04]" : "gap-0"}`}

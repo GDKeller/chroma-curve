@@ -69,17 +69,24 @@ function formatTailwindV4(entries: ColorEntry[], space: ColorSpace): string {
 }
 
 function formatTailwindV3(entries: ColorEntry[], space: ColorSpace): string {
-  const colors: Record<string, string> = {};
+  const lines: string[] = [];
   for (const e of entries) {
-    const num = e.label.replace("grey-", "");
-    colors[num] = colorValue(e, space);
+    lines.push(`        ${String(e.lightness)}: "${colorValue(e, space)}",`);
   }
-  const inner = JSON.stringify({ grey: colors }, null, 4)
-    .split("\n")
-    .map((line) => `      ${line}`)
-    .join("\n")
-    .trim();
-  return `/** @type {import('tailwindcss').Config} */\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: ${inner},\n    },\n  },\n};`;
+  return [
+    "/** @type {import('tailwindcss').Config} */",
+    "module.exports = {",
+    "  theme: {",
+    "    extend: {",
+    "      colors: {",
+    '        grey: {',
+    ...lines,
+    "        },",
+    "      },",
+    "    },",
+    "  },",
+    "};",
+  ].join("\n");
 }
 
 function formatSCSS(entries: ColorEntry[], space: ColorSpace): string {
@@ -91,8 +98,7 @@ function formatSCSS(entries: ColorEntry[], space: ColorSpace): string {
 function formatJS(entries: ColorEntry[], space: ColorSpace): string {
   const colors: Record<string, string> = {};
   for (const e of entries) {
-    const num = e.label.replace("grey-", "");
-    colors[num] = colorValue(e, space);
+    colors[String(e.lightness)] = colorValue(e, space);
   }
   return `export const grey = ${JSON.stringify(colors, null, 2)} as const;`;
 }
@@ -100,8 +106,7 @@ function formatJS(entries: ColorEntry[], space: ColorSpace): string {
 function formatJSON(entries: ColorEntry[], space: ColorSpace): string {
   const tokens: Record<string, { $value: string; $type: string }> = {};
   for (const e of entries) {
-    const num = e.label.replace("grey-", "");
-    tokens[num] = {
+    tokens[String(e.lightness)] = {
       $value: colorValue(e, space),
       $type: "color",
     };
@@ -137,6 +142,17 @@ const FORMAT_EXTENSIONS: Record<ExportFormat, string> = {
   text: "txt",
 };
 
+const FORMAT_MIME_TYPES: Record<ExportFormat, string> = {
+  css: "text/css",
+  tw4: "text/css",
+  tw3: "text/javascript",
+  scss: "text/css",
+  js: "text/javascript",
+  json: "application/json",
+  gpl: "text/plain",
+  text: "text/plain",
+};
+
 export function downloadPalette(
   entries: ColorEntry[],
   format: ExportFormat,
@@ -144,7 +160,8 @@ export function downloadPalette(
 ): void {
   const content = formatPalette(entries, format, space);
   const ext = FORMAT_EXTENSIONS[format];
-  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const mime = FORMAT_MIME_TYPES[format];
+  const blob = new Blob([content], { type: `${mime};charset=utf-8` });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
