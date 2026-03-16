@@ -86,8 +86,9 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto"
         role="img"
-        aria-label="Saturation curve showing how the saturation multiplier varies across lightness values"
+        aria-labelledby="sat-curve-title"
       >
+        <title id="sat-curve-title">Saturation adjustment curve</title>
         {/* Grid lines - horizontal */}
         {gridLines.map((g) => (
           <g key={g.label}>

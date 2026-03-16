@@ -47,6 +47,9 @@ export function ExportDialog() {
                 <Dialog.Title className="text-lg font-semibold text-white/90 mb-4">
                   Export Palette
                 </Dialog.Title>
+                <Dialog.Description className="sr-only">
+                  Export your palette in various code formats and color spaces
+                </Dialog.Description>
                 <div className="flex flex-col gap-4">
                   <FormatSelector
                     format={format}

@@ -710,6 +710,9 @@ export function AboutButton() {
                     <Dialog.Title className="text-lg font-semibold text-white/90 mb-2">
                       How it works
                     </Dialog.Title>
+                    <Dialog.Description className="sr-only">
+                      Explanation of the parabolic saturation curve used to generate neutral palettes
+                    </Dialog.Description>
                     <p className="text-[13px] leading-relaxed text-white/50">
                       Neutral palettes need saturation that varies with lightness.
                       A fixed saturation value always compromises one end of the
@@ -728,6 +731,7 @@ export function AboutButton() {
                               {i === 4 && (
                                 <Popover.Trigger asChild>
                                   <button
+                                    aria-label="Change reference hue"
                                     className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
                                     style={{ backgroundColor: `hsl(${hue} 100% 50%)` }}
                                   />

@@ -73,8 +73,9 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto"
         role="img"
-        aria-label="Effective saturation distribution across lightness values"
+        aria-labelledby="eff-sat-title"
       >
+        <title id="eff-sat-title">Effective saturation chart</title>
         {/* Grid lines - horizontal */}
         {gridLines.map((g) => (
           <g key={g.label}>
