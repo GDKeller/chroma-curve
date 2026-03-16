@@ -80,7 +80,7 @@ function Strip({ colors, label, mark }: StripProps) {
   return (
     <div>
       {label && (
-        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(0_0%_50%)] mb-1 block">{label}</span>
+        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
       )}
       <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c, i) => (
@@ -113,7 +113,7 @@ function LightnessHeader() {
   return (
     <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="text-center text-[9px] font-mono text-[hsl(0_0%_50%)]">
+        <div key={l} className="text-center text-[9px] font-mono text-[hsl(0_0%_60%)]">
           {l}
         </div>
       ))}
@@ -130,47 +130,39 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   const res = 40; // grid resolution
   const cellSize = size / res;
 
+  const edgeMultiplier = getSaturation(0, REF_SMOD);
+  const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
+
   // Build pixel grid
-  const cells: { x: number; y: number; color: string }[] = [];
-  for (let row = 0; row < res; row++) {
-    for (let col = 0; col < res; col++) {
-      const sat = col / (res - 1); // 0→1 left to right
-      const light = 1 - row / (res - 1); // 1→0 top to bottom
-      cells.push({
-        x: col * cellSize,
-        y: row * cellSize,
-        color: chroma.hsl(hue, sat, light).hex(),
-      });
+  const cells = useMemo(() => {
+    const result: { x: number; y: number; color: string }[] = [];
+    for (let row = 0; row < res; row++) {
+      for (let col = 0; col < res; col++) {
+        const sat = col / (res - 1); // 0→1 left to right
+        const light = 1 - row / (res - 1); // 1→0 top to bottom
+        result.push({
+          x: col * cellSize,
+          y: row * cellSize,
+          color: chroma.hsl(hue, sat, light).hex(),
+        });
+      }
     }
-  }
+    return result;
+  }, [hue, cellSize]);
 
   // Parabolic curve: perceptual boundary scaled so edges reach ~50%
   // Path goes top (l=100) to bottom (l=0) so it draws top→bottom
-  const curvePoints: string[] = [];
-  const edgeMultiplier = getSaturation(0, REF_SMOD);
-  const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
-  for (let l = 100; l >= 0; l -= 2) {
-    const multiplier = getSaturation(l, REF_SMOD);
-    const sat = boundaryScale * multiplier;
-    const px = sat * size;
-    const py = (1 - l / 100) * size;
-    curvePoints.push(`${l === 100 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
-  }
-
-  // Swatches along the curve (one per grid row, sampled every few rows)
-  const sampleInterval = 4;
-  const curveDots: { cx: number; cy: number; delay: number }[] = [];
-  for (let row = 0; row < res; row += sampleInterval) {
-    const light = 1 - row / (res - 1);
-    const lInt = Math.round(light * 100);
-    const multiplier = getSaturation(lInt, REF_SMOD);
-    const sat = boundaryScale * multiplier;
-    curveDots.push({
-      cx: sat * size,
-      cy: row * cellSize,
-      delay: 0.5 + (row / res) * 1.2,
-    });
-  }
+  const curvePoints = useMemo(() => {
+    const points: string[] = [];
+    for (let l = 100; l >= 0; l -= 2) {
+      const multiplier = getSaturation(l, REF_SMOD);
+      const sat = boundaryScale * multiplier;
+      const px = sat * size;
+      const py = (1 - l / 100) * size;
+      points.push(`${l === 100 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
+    }
+    return points;
+  }, [boundaryScale]);
 
   // Boundary cells: for each row, find the column on the curve
   // Timeline (12s cycle):
@@ -192,25 +184,28 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   const swatchFade = 1;
   const cycle = 12;
 
-  const boundaryCells: { x: number; y: number; stagger: number }[] = [];
-  for (let row = 0; row < res; row++) {
-    const light = 1 - row / (res - 1);
-    const lInt = Math.round(light * 100);
-    const multiplier = getSaturation(lInt, REF_SMOD);
-    const sat = boundaryScale * multiplier;
-    const col = Math.round(sat * (res - 1));
-    if (col >= 0 && col < res) {
-      boundaryCells.push({
-        x: col * cellSize,
-        y: row * cellSize,
-        stagger: (row / res) * swatchDraw, // offset within the swatch phase
-      });
+  const boundaryCells = useMemo(() => {
+    const result: { x: number; y: number; stagger: number }[] = [];
+    for (let row = 0; row < res; row++) {
+      const light = 1 - row / (res - 1);
+      const lInt = Math.round(light * 100);
+      const multiplier = getSaturation(lInt, REF_SMOD);
+      const sat = boundaryScale * multiplier;
+      const col = Math.round(sat * (res - 1));
+      if (col >= 0 && col < res) {
+        result.push({
+          x: col * cellSize,
+          y: row * cellSize,
+          stagger: (row / res) * swatchDraw, // offset within the swatch phase
+        });
+      }
     }
-  }
+    return result;
+  }, [boundaryScale, cellSize]);
 
   return (
     <div className="flex gap-1.5">
-      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
@@ -286,7 +281,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
             })}
           </svg>
         </div>
-        <span className="text-[10px] font-mono text-[hsl(0_0%_50%)] text-center">
+        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] text-center">
           Saturation
         </span>
       </div>
@@ -302,7 +297,7 @@ function VisualPanel({ children, label }: { children: React.ReactNode; label: st
   return (
     <div className="flex gap-1.5">
       <span
-        className="text-[10px] font-mono text-[hsl(0_0%_50%)] self-center shrink-0"
+        className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center shrink-0"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
       >
         {label}
@@ -414,9 +409,9 @@ function useCurvePickerVisuals(hue: number) {
           </text>
         </svg>
         <div className="flex justify-between mt-1">
-          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">0</span>
-          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">L</span>
-          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">100</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">0</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">L</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">100</span>
         </div>
       </VisualPanel>
     ),
@@ -446,7 +441,7 @@ function useCurvePickerVisuals(hue: number) {
           />
         </svg>
         <div className="mt-1 text-center">
-          <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Lightness</span>
+          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Lightness</span>
         </div>
       </VisualPanel>
     ),
@@ -759,7 +754,7 @@ export function AboutButton() {
                   {/* Lightness header — right column only */}
                   <div />
                   <div>
-                    <span className="text-[10px] font-mono text-[hsl(0_0%_50%)] mb-1 block">Lightness</span>
+                    <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
                     <LightnessHeader />
                   </div>
 
@@ -767,7 +762,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Achromatic Baseline</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Saturation: 0%</span>
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: 0%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">
                       Unsaturated grayscale. Functional, but lacks character or brand identity.
@@ -779,7 +774,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Fixed low saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">
                       Desired neutral midtones, but dark and light ends become effectively desaturated.
@@ -791,7 +786,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Fixed high saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">
                       Raising it to recover the extremes pushes the midrange
@@ -809,7 +804,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
                         {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
                         {"/"}
@@ -829,7 +824,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_50%)]">
+                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
                         {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
                         {"/"}
