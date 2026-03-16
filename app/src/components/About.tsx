@@ -307,149 +307,151 @@ function VisualPanel({ children, label }: { children: React.ReactNode; label: st
   );
 }
 
-function useCurvePickerVisuals(hue: number) {
-  const size = 200;
-  const res = 40;
-  const cellSize = size / res;
+const CURVE_SIZE = 200;
+const CURVE_RES = 40;
+const CURVE_CELL = CURVE_SIZE / CURVE_RES;
+const SAT_GRID_LINES = [0.1, 0.2, 0.3, 0.4, 0.5];
+const CURVE_EDGE_MULT = getSaturation(0, REF_SMOD);
+const CURVE_BSCALE = 0.5 / CURVE_EDGE_MULT;
 
-  // Shared Y-axis: full 0→1 saturation range (matches original picker)
-  const edgeMult = getSaturation(0, REF_SMOD);
-  const bScale = 0.5 / edgeMult;
-  const maxSat = 1.0;
+function curveToX(l: number) { return (l / 100) * CURVE_SIZE; }
+function curveToY(sat: number) { return (1 - sat) * CURVE_SIZE; }
 
-  // Shared coordinate mapping
-  const toX = useCallback((l: number) => (l / 100) * size, []);
-  const toY = useCallback((sat: number) => (1 - sat / maxSat) * size, []);
-
-  const { pickerCells, curveData, curvePath, fillPath } = useMemo(() => {
-    // Curve data: lightness → boundary saturation
+function useCurvePickerData(hue: number) {
+  return useMemo(() => {
     const curveData: { l: number; sat: number }[] = [];
     for (let l = 0; l <= 100; l += 2) {
-      curveData.push({ l, sat: bScale * getSaturation(l, REF_SMOD) });
+      curveData.push({ l, sat: CURVE_BSCALE * getSaturation(l, REF_SMOD) });
     }
 
     const curvePath = curveData
       .map(
         (p, i) =>
-          `${i === 0 ? "M" : "L"}${toX(p.l).toFixed(1)},${toY(p.sat).toFixed(1)}`,
+          `${i === 0 ? "M" : "L"}${curveToX(p.l).toFixed(1)},${curveToY(p.sat).toFixed(1)}`,
       )
       .join("");
 
-    const fillPath = `${curvePath} L${size},${size} L0,${size} Z`;
+    const fillPath = `${curvePath} L${CURVE_SIZE},${CURVE_SIZE} L0,${CURVE_SIZE} Z`;
 
-    // Rotated picker grid: x=lightness, y=saturation (high at top)
     const pickerCells: { x: number; y: number; color: string }[] = [];
-    for (let row = 0; row < res; row++) {
-      for (let col = 0; col < res; col++) {
-        const light = col / (res - 1);
-        const sat = (1 - row / (res - 1)) * maxSat;
+    for (let row = 0; row < CURVE_RES; row++) {
+      for (let col = 0; col < CURVE_RES; col++) {
+        const light = col / (CURVE_RES - 1);
+        const sat = 1 - row / (CURVE_RES - 1);
         pickerCells.push({
-          x: col * cellSize,
-          y: row * cellSize,
+          x: col * CURVE_CELL,
+          y: row * CURVE_CELL,
           color: chroma.hsl(hue, sat, light).hex(),
         });
       }
     }
 
-    return { pickerCells, curveData, curvePath, fillPath };
-  }, [hue, bScale, cellSize, toX, toY]);
+    return { curveData, curvePath, fillPath, pickerCells };
+  }, [hue]);
+}
 
-  // Saturation gridline values
-  const satGridLines = [0.1, 0.2, 0.3, 0.4, 0.5];
-
-  return {
-    curveGraph: (
-      <VisualPanel label="S(L)">
-        <svg
-          viewBox={`0 0 ${size} ${size}`}
-          className="w-full h-auto block rounded border border-white/[0.06] bg-white/[0.02]"
-        >
-          {satGridLines.map((s) => (
-            <line
-              key={`h-${s}`}
-              x1={0}
-              y1={toY(s)}
-              x2={size}
-              y2={toY(s)}
-              stroke="white"
-              strokeOpacity={0.04}
-              strokeWidth={0.5}
-            />
-          ))}
-          {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((l) => (
-            <line
-              key={`v-${l}`}
-              x1={toX(l)}
-              y1={0}
-              x2={toX(l)}
-              y2={size}
-              stroke="white"
-              strokeOpacity={0.04}
-              strokeWidth={0.5}
-            />
-          ))}
-          <path d={fillPath} fill="url(#alignFill)" />
-          <defs>
-            <linearGradient id="alignFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="white" stopOpacity={0.1} />
-              <stop offset="100%" stopColor="white" stopOpacity={0.01} />
-            </linearGradient>
-          </defs>
-          <path
-            d={curvePath}
-            fill="none"
-            stroke="rgba(255,255,255,0.7)"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <text
-            x={toX(50)}
-            y={toY(curveData[25].sat) + 12}
-            textAnchor="middle"
-            className="text-[8px] fill-[hsl(0_0%_50%)] font-mono"
-          >
-            min
-          </text>
-        </svg>
-        <div className="flex justify-between mt-1">
-          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">0</span>
-          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">L</span>
-          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">100</span>
-        </div>
-      </VisualPanel>
-    ),
-    rotatedPicker: (
-      <VisualPanel label="Saturation">
-        <svg
-          viewBox={`0 0 ${size} ${size}`}
-          className="w-full h-auto block rounded border border-white/[0.06] overflow-hidden"
-        >
-          {pickerCells.map((c, i) => (
-            <rect
-              key={i}
-              x={c.x}
-              y={c.y}
-              width={cellSize + 0.5}
-              height={cellSize + 0.5}
-              fill={c.color}
-            />
-          ))}
-          <path
-            d={curvePath}
-            fill="none"
+function CurveGraph({ curvePath, fillPath, curveData }: {
+  curvePath: string;
+  fillPath: string;
+  curveData: { l: number; sat: number }[];
+}) {
+  return (
+    <VisualPanel label="S(L)">
+      <svg
+        viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
+        className="w-full h-auto block rounded border border-white/[0.06] bg-white/[0.02]"
+      >
+        {SAT_GRID_LINES.map((s) => (
+          <line
+            key={`h-${s}`}
+            x1={0}
+            y1={curveToY(s)}
+            x2={CURVE_SIZE}
+            y2={curveToY(s)}
             stroke="white"
-            strokeWidth={1.5}
-            strokeDasharray="4 3"
-            opacity={0.5}
+            strokeOpacity={0.04}
+            strokeWidth={0.5}
           />
-        </svg>
-        <div className="mt-1 text-center">
-          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Lightness</span>
-        </div>
-      </VisualPanel>
-    ),
-  };
+        ))}
+        {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((l) => (
+          <line
+            key={`v-${l}`}
+            x1={curveToX(l)}
+            y1={0}
+            x2={curveToX(l)}
+            y2={CURVE_SIZE}
+            stroke="white"
+            strokeOpacity={0.04}
+            strokeWidth={0.5}
+          />
+        ))}
+        <path d={fillPath} fill="url(#alignFill)" />
+        <defs>
+          <linearGradient id="alignFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="white" stopOpacity={0.1} />
+            <stop offset="100%" stopColor="white" stopOpacity={0.01} />
+          </linearGradient>
+        </defs>
+        <path
+          d={curvePath}
+          fill="none"
+          stroke="rgba(255,255,255,0.7)"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <text
+          x={curveToX(50)}
+          y={curveToY(curveData[25].sat) + 12}
+          textAnchor="middle"
+          className="text-[8px] fill-[hsl(0_0%_50%)] font-mono"
+        >
+          min
+        </text>
+      </svg>
+      <div className="flex justify-between mt-1">
+        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">0</span>
+        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">L</span>
+        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">100</span>
+      </div>
+    </VisualPanel>
+  );
+}
+
+function RotatedPicker({ pickerCells, curvePath }: {
+  pickerCells: { x: number; y: number; color: string }[];
+  curvePath: string;
+}) {
+  return (
+    <VisualPanel label="Saturation">
+      <svg
+        viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
+        className="w-full h-auto block rounded border border-white/[0.06] overflow-hidden"
+      >
+        {pickerCells.map((c, i) => (
+          <rect
+            key={i}
+            x={c.x}
+            y={c.y}
+            width={CURVE_CELL + 0.5}
+            height={CURVE_CELL + 0.5}
+            fill={c.color}
+          />
+        ))}
+        <path
+          d={curvePath}
+          fill="none"
+          stroke="white"
+          strokeWidth={1.5}
+          strokeDasharray="4 3"
+          opacity={0.5}
+        />
+      </svg>
+      <div className="mt-1 text-center">
+        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Lightness</span>
+      </div>
+    </VisualPanel>
+  );
 }
 
 function Formula() {
@@ -473,7 +475,7 @@ function Formula() {
 // ---------------------------------------------------------------------------
 
 function SolutionSection({ hue }: { hue: number }) {
-  const { curveGraph, rotatedPicker } = useCurvePickerVisuals(hue);
+  const { curveData, curvePath, fillPath, pickerCells } = useCurvePickerData(hue);
 
   return (
     <div className="mt-2 pt-8 border-t border-white/[0.06]">
@@ -504,8 +506,8 @@ function SolutionSection({ hue }: { hue: number }) {
         </div>
 
         {/* Row 3: curve graph | rotated picker */}
-        {curveGraph}
-        {rotatedPicker}
+        <CurveGraph curvePath={curvePath} fillPath={fillPath} curveData={curveData} />
+        <RotatedPicker pickerCells={pickerCells} curvePath={curvePath} />
 
         {/* Caption spanning both columns */}
         <p className="col-span-2 text-[11px] text-white/25 text-center">

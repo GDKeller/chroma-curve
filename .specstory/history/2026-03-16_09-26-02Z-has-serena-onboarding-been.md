@@ -43174,7 +43174,7 @@ _**Agent (claude-opus-4-6 2026-03-16 12:05:03Z)**_
 
 The merge from EPIC-0002 isn't committed yet. Let me commit the merge first, then handle TASK-0013.
 
-_**Agent (claude-opus-4-6 2026-03-16 12:05:05Z)**_
+_**Agent (claude-opus-4-6 2026-03-16 12:05:39Z)**_
 
 <tool-use data-tool-type="shell" data-tool-name="Bash"><details>
 <summary>Tool use: **Bash**</summary>
@@ -43186,4 +43186,296 @@ merge: integrate EPIC-0002 contrast and legibility fixes
 EOF
 )" 2>&1
 ```
+
+```text
+error: no cherry-pick or revert in progress
+fatal: cherry-pick failed
+[main 5537b22] merge: integrate EPIC-0002 contrast and legibility fixes
+```
 </details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:05:44Z)**_
+
+Good. Now TASK-0013 (refactor hook to return data not JSX). The cherry-pick will likely conflict heavily given how much About.tsx has changed. Let me implement it directly since I know the current state.
+
+_**Agent (claude-opus-4-6 2026-03-16 12:05:45Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+   305→      <div className="w-full">{children}</div>
+   306→    </div>
+   307→  );
+   308→}
+   309→
+   310→function useCurvePickerVisuals(hue: number) {
+   311→  const size = 200;
+   312→  const res = 40;
+   313→  const cellSize = size / res;
+   314→
+   315→  // Shared Y-axis: full 0→1 saturation range (matches original picker)
+   316→  const edgeMult = getSaturation(0, REF_SMOD);
+   317→  const bScale = 0.5 / edgeMult;
+   318→  const maxSat = 1.0;
+   319→
+   320→  // Shared coordinate mapping
+   321→  const toX = useCallback((l: number) => (l / 100) * size, []);
+   322→  const toY = useCallback((sat: number) => (1 - sat / maxSat) * size, []);
+   323→
+   324→  const { pickerCells, curveData, curvePath, fillPath } = useMemo(() => {
+   325→    // Curve data: lightness → boundary saturation
+   326→    const curveData: { l: number; sat: number }[] = [];
+   327→    for (let l = 0; l <= 100; l += 2) {
+   328→      curveData.push({ l, sat: bScale * getSaturation(l, REF_SMOD) });
+   329→    }
+   330→
+   331→    const curvePath = curveData
+   332→      .map(
+   333→        (p, i) =>
+   334→          `${i === 0 ? "M" : "L"}${toX(p.l).toFixed(1)},${toY(p.sat).toFixed(1)}`,
+   335→      )
+   336→      .join("");
+   337→
+   338→    const fillPath = `${curvePath} L${size},${size} L0,${size} Z`;
+   339→
+   340→    // Rotated picker grid: x=lightness, y=saturation (high at top)
+   341→    const pickerCells: { x: number; y: number; color: string }[] = [];
+   342→    for (let row = 0; row < res; row++) {
+   343→      for (let col = 0; col < res; col++) {
+   344→        const light = col / (res - 1);
+   345→        const sat = (1 - row / (res - 1)) * maxSat;
+   346→        pickerCells.push({
+   347→          x: col * cellSize,
+   348→          y: row * cellSize,
+   349→          color: chroma.hsl(hue, sat, light).hex(),
+   350→        });
+   351→      }
+   352→    }
+   353→
+   354→    return { pickerCells, curveData, curvePath, fillPath };
+   355→  }, [hue, bScale, cellSize, toX, toY]);
+   356→
+   357→  // Saturation gridline values
+   358→  const satGridLines = [0.1, 0.2, 0.3, 0.4, 0.5];
+   359→
+   360→  return {
+   361→    curveGraph: (
+   362→      <VisualPanel label="S(L)">
+   363→        <svg
+   364→          viewBox={`0 0 ${size} ${size}`}
+   365→          className="w-full h-auto block rounded border border-white/[0.06] bg-white/[0.02]"
+   366→        >
+   367→          {satGridLines.map((s) => (
+   368→            <line
+   369→              key={`h-${s}`}
+   370→              x1={0}
+   371→              y1={toY(s)}
+   372→              x2={size}
+   373→              y2={toY(s)}
+   374→              stroke="white"
+   375→              strokeOpacity={0.04}
+   376→              strokeWidth={0.5}
+   377→            />
+   378→          ))}
+   379→          {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((l) => (
+   380→            <line
+   381→              key={`v-${l}`}
+   382→              x1={toX(l)}
+   383→              y1={0}
+   384→              x2={toX(l)}
+   385→              y2={size}
+   386→              stroke="white"
+   387→              strokeOpacity={0.04}
+   388→              strokeWidth={0.5}
+   389→            />
+   390→          ))}
+   391→          <path d={fillPath} fill="url(#alignFill)" />
+   392→          <defs>
+   393→            <linearGradient id="alignFill" x1="0" y1="0" x2="0" y2="1">
+   394→              <stop offset="0%" stopColor="white" stopOpacity={0.1} />
+   395→              <stop offset="100%" stopColor="white" stopOpacity={0.01} />
+   396→            </linearGradient>
+   397→          </defs>
+   398→          <path
+   399→            d={curvePath}
+   400→            fill="none"
+   401→            stroke="rgba(255,255,255,0.7)"
+   402→            strokeWidth={2}
+   403→            strokeLinecap="round"
+   404→            strokeLinejoin="round"
+   405→          />
+   406→          <text
+   407→            x={toX(50)}
+   408→            y={toY(curveData[25].sat) + 12}
+   409→            textAnchor="middle"
+   410→            className="text-[8px] fill-[hsl(0_0%_50%)] font-mono"
+   411→          >
+   412→            min
+   413→          </text>
+   414→        </svg>
+   415→        <div className="flex justify-between mt-1">
+   416→          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">0</span>
+   417→          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">L</span>
+   418→          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">100</span>
+   419→        </div>
+   420→      </VisualPanel>
+   421→    ),
+   422→    rotatedPicker: (
+   423→      <VisualPanel label="Saturation">
+   424→        <svg
+   425→          viewBox={`0 0 ${size} ${size}`}
+   426→          className="w-full h-auto block rounded border border-white/[0.06] overflow-hidden"
+   427→        >
+   428→          {pickerCells.map((c, i) => (
+   429→            <rect
+   430→              key={i}
+   431→              x={c.x}
+   432→              y={c.y}
+   433→              width={cellSize + 0.5}
+   434→              height={cellSize + 0.5}
+   435→              fill={c.color}
+   436→            />
+   437→          ))}
+   438→          <path
+   439→            d={curvePath}
+   440→            fill="none"
+   441→            stroke="white"
+   442→            strokeWidth={1.5}
+   443→            strokeDasharray="4 3"
+   444→            opacity={0.5}
+   445→          />
+   446→        </svg>
+   447→        <div className="mt-1 text-center">
+   448→          <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Lightness</span>
+   449→        </div>
+   450→      </VisualPanel>
+   451→    ),
+   452→  };
+   453→}
+   454→
+   455→function Formula() {
+   456→  return (
+   457→    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-2.5 font-mono text-[11px] text-white/45 flex items-center justify-between gap-4 flex-wrap">
+   458→      <div>
+   459→        <span className="text-white/60">S</span>(L) = 1 + ((L - 50)
+   460→        <sup>2</sup> / <span className="text-white/60">p</span> - 50
+   461→        <sup>2</sup> / <span className="text-white/60">p</span>) / 100
+   462→      </div>
+   463→      <div className="text-[10px] text-white/25">
+   464→        L = lightness &middot;{" "}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:05:51Z)**_
+
+I'll refactor `useCurvePickerVisuals` to return data and create `CurveGraph` and `RotatedPicker` as proper components.
+
+_**Agent (claude-opus-4-6 2026-03-16 12:06:18Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-colours-neutrals/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:06:24Z)**_
+
+Now update `SolutionSection` to use the new components.
+
+_**Agent (claude-opus-4-6 2026-03-16 12:06:35Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-colours-neutrals/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:06:43Z)**_
+
+Now check if `useCallback` is still needed in the imports (it was used by the old hook).
+
+_**Agent (claude-opus-4-6 2026-03-16 12:06:43Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Check if useCallback is still used
+
+`grep -n "useCallback" app/src/components/About.tsx`
+
+```text
+1:import { useCallback, useMemo, useRef, useState } from "react";
+550:  const hueFromPointer = useCallback((clientX: number) => {
+558:  const onPointerDown = useCallback((e: React.PointerEvent) => {
+563:  const onPointerMove = useCallback((e: React.PointerEvent) => {
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:06:50Z)**_
+
+Good, `useCallback` is still used in `HuePicker`. Let me build and lint.
+
+_**Agent (claude-opus-4-6 2026-03-16 12:06:55Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Build and lint after TASK-0013 refactor
+
+`cd /Users/grant/code/chroma-colours-neutrals/app && npm run build 2>&1 && npm run lint 2>&1`
+
+```text
+> app@0.0.0 build
+> tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 630 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                               0.40 kB │ gzip:   0.27 kB
+dist/assets/geist-mono-cyrillic-400-normal-Ce5q_31Z.woff2     5.46 kB
+dist/assets/geist-mono-latin-ext-400-normal-Cgks_Qgx.woff2    6.42 kB
+dist/assets/geist-mono-cyrillic-400-normal-BPBWmzPh.woff      7.16 kB
+dist/assets/geist-mono-latin-ext-400-normal-CxNRRMGd.woff     8.74 kB
+dist/assets/geist-mono-latin-400-normal-LC9RFr9I.woff2       14.71 kB
+dist/assets/geist-mono-latin-400-normal-CoULgQGM.woff        19.17 kB
+dist/assets/geist-sans-latin-400-normal-gapTbOY8.woff2       33.40 kB
+dist/assets/geist-sans-latin-500-normal-uokXdC-Q.woff2       34.72 kB
+dist/assets/geist-sans-latin-600-normal-DFOURf8L.woff2       35.29 kB
+dist/assets/geist-sans-latin-400-normal-BOaIZNA2.woff        38.91 kB
+dist/assets/geist-sans-latin-500-normal-CN2lyvyL.woff        40.52 kB
+dist/assets/geist-sans-latin-600-normal-CA1yjETN.woff        41.20 kB
+dist/assets/index-DTBSc7s_.css                               28.48 kB │ gzip:   5.95 kB
+dist/assets/index-DTeNwZRy.js                               476.92 kB │ gzip: 157.12 kB
+✓ built in 975ms
+
+> app@0.0.0 lint
+> eslint .
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:07:00Z)**_
+
+Everything passes. Now let me check what's missing. Let me also check EPIC-0004 for any unique commits.
+
+_**Agent (claude-opus-4-6 2026-03-16 12:07:02Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Check for unique commits on EPIC-0004
+
+`git log --oneline fix/epic-0004-code-quality --not main fix/epic-0001-accessibility fix/epic-0002-contrast fix/epic-0003-performance 2>&1`
+
+```text
+(Bash completed with no output)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:07:08Z)**_
+
+No unique commits — EPIC-0004 work was absorbed into other branches. Let me now commit everything and shut down agents.
