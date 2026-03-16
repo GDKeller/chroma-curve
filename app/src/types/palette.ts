@@ -12,4 +12,6 @@ export interface ColorEntry {
   hex: string;
 }
 
-export type ExportFormat = "css" | "tailwind" | "json";
+export type ExportFormat = "css" | "tailwind" | "json" | "text";
+
+export type ColorSpace = "hsl" | "hex" | "rgb" | "hcl" | "oklch";
