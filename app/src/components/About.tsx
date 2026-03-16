@@ -329,8 +329,8 @@ function useCurvePickerVisuals(hue: number) {
   }
 
   // Shared coordinate mapping
-  const toX = (l: number) => (l / 100) * size;
-  const toY = (sat: number) => (1 - sat / maxSat) * size;
+  const toX = useCallback((l: number) => (l / 100) * size, []);
+  const toY = useCallback((sat: number) => (1 - sat / maxSat) * size, []);
 
   const curvePath = curveData
     .map(
@@ -573,7 +573,7 @@ function HuePicker({
             key={p.hue}
             onClick={() => onChange(p.hue)}
             title={`${p.label} (${p.hue}°)`}
-            className="h-5 flex-1 rounded-sm transition-shadow"
+            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(0_0%_10%)]"
             style={{
               backgroundColor: `hsl(${p.hue} 100% 50%)`,
               boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(0 0% 80%)" : "none",
