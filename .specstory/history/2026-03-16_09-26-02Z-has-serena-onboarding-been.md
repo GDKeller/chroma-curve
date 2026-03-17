@@ -43479,3 +43479,261 @@ Check for unique commits on EPIC-0004
 _**Agent (claude-opus-4-6 2026-03-16 12:07:08Z)**_
 
 No unique commits — EPIC-0004 work was absorbed into other branches. Let me now commit everything and shut down agents.
+
+_**Agent (claude-opus-4-6 2026-03-16 12:07:09Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit TASK-0013 refactor
+
+```bash
+git add -A && git commit -m "$(cat <<'EOF'
+refactor(about): extract CurveGraph and RotatedPicker from hook, return data not JSX
+EOF
+)" 2>&1
+```
+
+```text
+[main d28ec8f] refactor(about): extract CurveGraph and RotatedPicker from hook, return data not JSX
+ 2 files changed, 419 insertions(+), 125 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-16 12:07:16Z)**_
+
+Now let me update the board task statuses and shut down the agents.
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:17Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Mark all board tasks as done
+
+`for f in board/tasks/TASK-*.md; do sed -i '' 's/status: open/status: done/' "$f"; done`
+
+```text
+(Bash completed with no output)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:41Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Mark all EPICs as done
+
+`for f in board/EPIC-*.md; do sed -i '' 's/status: open/status: done/' "$f"; done`
+
+```text
+(Bash completed with no output)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:47Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit board status updates
+
+```bash
+git add board/ && git commit -m "$(cat <<'EOF'
+docs(board): mark all review EPICs and TASKs as done
+EOF
+)" 2>&1
+```
+
+```text
+[main fcc0565] docs(board): mark all review EPICs and TASKs as done
+ 24 files changed, 24 insertions(+), 24 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:52Z)**_
+
+Now shut down the agents and clean up branches.
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:53Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+```text
+{
+  "success": true,
+  "message": "Shutdown request sent to epic-0001-a11y. Request ID: shutdown-1773727313826@epic-0001-a11y",
+  "request_id": "shutdown-1773727313826@epic-0001-a11y",
+  "target": "epic-0001-a11y"
+}
+```
+</details></tool-use>
+
+_**Agent - sidechain (2026-03-17 06:01:54Z)**_
+
+<teammate-message teammate_id="team-lead">
+{"type":"shutdown_request","requestId":"shutdown-1773727313826@epic-0001-a11y","from":"team-lead","reason":"All work merged. Shutting down.","timestamp":"2026-03-17T06:01:53.826Z"}
+</teammate-message>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:54Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+```text
+{
+  "success": true,
+  "message": "Shutdown request sent to epic-0002-contrast. Request ID: shutdown-1773727314335@epic-0002-contrast",
+  "request_id": "shutdown-1773727314335@epic-0002-contrast",
+  "target": "epic-0002-contrast"
+}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:54Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+```text
+{
+  "success": true,
+  "message": "Shutdown request sent to epic-0003-perf. Request ID: shutdown-1773727314703@epic-0003-perf",
+  "request_id": "shutdown-1773727314703@epic-0003-perf",
+  "target": "epic-0003-perf"
+}
+```
+</details></tool-use>
+
+_**Agent - sidechain (2026-03-17 06:01:54Z)**_
+
+<teammate-message teammate_id="team-lead">
+{"type":"shutdown_request","requestId":"shutdown-1773727314335@epic-0002-contrast","from":"team-lead","reason":"All work merged. Shutting down.","timestamp":"2026-03-17T06:01:54.335Z"}
+</teammate-message>
+
+_**Agent - sidechain (2026-03-17 06:01:55Z)**_
+
+<teammate-message teammate_id="team-lead">
+{"type":"shutdown_request","requestId":"shutdown-1773727314703@epic-0003-perf","from":"team-lead","reason":"All work merged. Shutting down.","timestamp":"2026-03-17T06:01:54.703Z"}
+</teammate-message>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:56Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+```text
+{
+  "success": true,
+  "message": "Shutdown request sent to epic-0004-quality. Request ID: shutdown-1773727316133@epic-0004-quality",
+  "request_id": "shutdown-1773727316133@epic-0004-quality",
+  "target": "epic-0004-quality"
+}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:01:56Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+```text
+{
+  "success": true,
+  "message": "Shutdown request sent to epic-0005-export. Request ID: shutdown-1773727316378@epic-0005-export",
+  "request_id": "shutdown-1773727316378@epic-0005-export",
+  "target": "epic-0005-export"
+}
+```
+</details></tool-use>
+
+_**Agent - sidechain (2026-03-17 06:01:56Z)**_
+
+<teammate-message teammate_id="team-lead">
+{"type":"shutdown_request","requestId":"shutdown-1773727316133@epic-0004-quality","from":"team-lead","reason":"All work merged. Shutting down.","timestamp":"2026-03-17T06:01:56.133Z"}
+</teammate-message>
+
+_**Agent - sidechain (2026-03-17 06:01:56Z)**_
+
+<teammate-message teammate_id="team-lead">
+{"type":"shutdown_request","requestId":"shutdown-1773727316378@epic-0005-export","from":"team-lead","reason":"All work merged. Shutting down.","timestamp":"2026-03-17T06:01:56.378Z"}
+</teammate-message>
+
+_**Agent - sidechain (claude-opus-4-6 2026-03-17 06:01:58Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+**Input:**
+
+- approve: `true`
+- request_id: `shutdown-1773727313826@epic-0001-a11y`
+- type: `shutdown_response`
+
+</details></tool-use>
+
+_**Agent - sidechain (claude-opus-4-6 2026-03-17 06:01:59Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+**Input:**
+
+- approve: `true`
+- request_id: `shutdown-1773727314703@epic-0003-perf`
+- type: `shutdown_response`
+
+</details></tool-use>
+
+_**Agent - sidechain (claude-opus-4-6 2026-03-17 06:02:00Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+**Input:**
+
+- approve: `true`
+- request_id: `shutdown-1773727316378@epic-0005-export`
+- type: `shutdown_response`
+
+</details></tool-use>
+
+_**Agent - sidechain (claude-opus-4-6 2026-03-17 06:02:00Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+**Input:**
+
+- approve: `true`
+- request_id: `shutdown-1773727316133@epic-0004-quality`
+- type: `shutdown_response`
+
+</details></tool-use>
+
+_**Agent - sidechain (claude-opus-4-6 2026-03-17 06:02:02Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="SendMessage"><details>
+<summary>Tool use: **SendMessage**</summary>
+
+**Input:**
+
+- approve: `true`
+- request_id: `shutdown-1773727314335@epic-0002-contrast`
+- type: `shutdown_response`
+
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-17 06:02:11Z)**_
+
+All done. Here's a summary of what was accomplished:
+
+**19 tasks across 5 EPICs — all merged to main:**
+
+| EPIC | Tasks | Key Changes |
+|------|-------|-------------|
+| **0001 — Accessibility** | 6 tasks | Shared `ToggleSwitch` with ARIA + larger hit area, keyboard hue slider, focus styles, semantic landmarks (`<main>`, `<nav>`, `aria-hidden`), aria-labels/descriptions, `MotionConfig reducedMotion="user"` |
+| **0002 — Contrast** | 2 tasks | Raised functional labels to WCAG AA (white/55–60), compact swatches use tooltips instead of illegible 7px text |
+| **0003 — Performance** | 3 tasks | Memoized 3200+ SVG elements in About.tsx, deferred `formatPalette` when dialog closed, memoized PaletteStrip reverse |
+| **0004 — Code Quality** | 4 tasks | Documented getSaturation guard, reordered constants, extracted `chartConstants.ts`, simplified rounding, replaced empty div spacers with `col-start-2` |
+| **0005 — Export Polish** | 4 tasks | Clipboard error handling, GPL float fix, NaN guards, proper MIME types, `lightness` instead of string parsing, radiogroup replacing Tabs |
+
+**Plus:** Refactored `useCurvePickerVisuals` into `useCurvePickerData` hook + `CurveGraph`/`RotatedPicker` components (TASK-0013).
