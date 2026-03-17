@@ -1,7 +1,7 @@
 ---
 type: epic
 created: 2026-03-16
-status: open
+status: done
 ---
 
 # Code Quality & Cleanup

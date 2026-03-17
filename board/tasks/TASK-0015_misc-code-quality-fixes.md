@@ -1,7 +1,7 @@
 ---
 type: task
 created: 2026-03-16
-status: open
+status: done
 epic: EPIC-0004
 priority: low
 refs: [CQ-10, CQ-12, CQ-13, CQ-14, CQ-15]

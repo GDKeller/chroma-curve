@@ -1,7 +1,7 @@
 ---
 type: task
 created: 2026-03-16
-status: open
+status: done
 epic: EPIC-0001
 priority: high
 refs: [UX-1, UX-2, CQ-6]
