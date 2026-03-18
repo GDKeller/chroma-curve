@@ -10,8 +10,8 @@ interface PaletteState {
 }
 
 export const usePaletteStore = create<PaletteState>((set) => ({
-  hue: 200,
-  saturation: 0.2,
+  hue: 220,
+  saturation: 0.5,
   sMod: 70,
   setHue: (hue) => set({ hue }),
   setSaturation: (saturation) => set({ saturation }),

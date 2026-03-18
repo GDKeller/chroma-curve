@@ -10,7 +10,7 @@ export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
   const id = useId();
   return (
     <label className="flex items-center gap-1 cursor-pointer">
-      <span id={id} className="text-[9px] font-mono text-white/55">
+      <span id={id} className="text-[11px] font-mono text-white/55">
         {label}
       </span>
       <button

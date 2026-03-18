@@ -15,8 +15,8 @@ export function getSaturation(lightness: number, sMod: number): number {
 
 export function generateNeutrals(params: PaletteParams): ColorEntry[] {
   const { hue, saturation, sMod } = params;
-  const min = 0.03;
-  const max = 1.01;
+  const min = 0.02;
+  const max = 0.99;
   const distance = 0.01;
 
   const entries: ColorEntry[] = [];
