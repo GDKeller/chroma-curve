@@ -2,6 +2,8 @@ export interface PaletteParams {
   hue: number;
   saturation: number;
   sMod: number;
+  lMin: number;
+  lMax: number;
 }
 
 export interface ColorEntry {

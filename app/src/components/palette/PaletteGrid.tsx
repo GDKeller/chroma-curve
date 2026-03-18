@@ -8,7 +8,7 @@ interface PaletteGridProps {
   entries: ColorEntry[];
 }
 
-const STEP_OPTIONS = [8, 9, 10, 12, 16, 20, 24, 48, 98];
+const STEP_OPTIONS = [8, 9, 10, 12, 16, 20, 24, 48];
 
 type Layout = "row" | "column" | "vertical" | "horizontal";
 
@@ -48,33 +48,12 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   const { copiedLabel, copy } = useCopyToClipboard();
   const [showBorders, setShowBorders] = useState(false);
   const [showLabels, setShowLabels] = useState(true);
-  const [showBW, setShowBW] = useState(false);
   const [reversed, setReversed] = useState(false);
   const [swatchCount, setSwatchCount] = useState<number>(STEP_OPTIONS[0]);
   const [layout, setLayout] = useState<Layout>("row");
 
-  const BLACK_ENTRY: ColorEntry = {
-    label: "black",
-    lightness: 0,
-    hsl: [0, 0, 0],
-    hslString: "0deg 0% 0%",
-    hex: "#000000",
-  };
-
-  const WHITE_ENTRY: ColorEntry = {
-    label: "white",
-    lightness: 100,
-    hsl: [0, 0, 1],
-    hslString: "0deg 0% 100%",
-    hex: "#ffffff",
-  };
-
   const { displayEntries, cols } = useMemo(() => {
-    let sampled = sampleEntries(entries, swatchCount);
-
-    if (showBW) {
-      sampled = [WHITE_ENTRY, ...sampled, BLACK_ENTRY];
-    }
+    const sampled = sampleEntries(entries, swatchCount);
 
     // Default order for all layouts is dark→light (reverse the light→dark entries)
     const ordered = reversed ? sampled : sampled.slice().reverse();
@@ -94,7 +73,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
     }
     // horizontal: lightness flows left→right via column-major reorder
     return { displayEntries: toColumnMajor(ordered, cols), cols };
-  }, [entries, swatchCount, layout, showBW, reversed]);
+  }, [entries, swatchCount, layout, reversed]);
 
   return (
     <div>
@@ -111,6 +90,9 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
                 {n}
               </option>
             ))}
+            <option value={entries.length} className="bg-[hsl(0_0%_10%)]">
+              all ({entries.length})
+            </option>
           </select>
         </label>
         <label className="flex items-center gap-1 cursor-pointer">
@@ -127,7 +109,6 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
           </select>
         </label>
         <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
-        <ToggleSwitch label="B/W" checked={showBW} onChange={setShowBW} />
         <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
         <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
       </div>

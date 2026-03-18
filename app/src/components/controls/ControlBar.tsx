@@ -1,6 +1,7 @@
 import { HueSlider } from "./HueSlider";
 import { SaturationSlider } from "./SaturationSlider";
 import { AdjustmentSlider } from "./AdjustmentSlider";
+import { LightnessRange } from "./LightnessRange";
 
 export function ControlBar() {
   return (
@@ -9,6 +10,7 @@ export function ControlBar() {
         <HueSlider />
         <SaturationSlider />
         <AdjustmentSlider />
+        <LightnessRange />
       </div>
     </nav>
   );

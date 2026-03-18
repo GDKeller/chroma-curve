@@ -14,39 +14,27 @@ export function getSaturation(lightness: number, sMod: number): number {
 }
 
 export function generateNeutrals(params: PaletteParams): ColorEntry[] {
-  const { hue, saturation, sMod } = params;
-  const min = 0.02;
-  const max = 0.99;
-  const distance = 0.01;
+  const { hue, saturation, sMod, lMin, lMax } = params;
 
   const entries: ColorEntry[] = [];
-  const seen = new Set<number>();
-  let value = min;
-  let step = 0;
 
-  while (value < max) {
-    const i = Math.floor(value * 100);
-    if (!seen.has(i)) {
-      seen.add(i);
-      const sK = getSaturation(i, sMod);
-      const color = chroma.hsl(hue, saturation * sK, value);
+  for (let i = lMin; i <= lMax; i++) {
+    const l = i / 100;
+    const sK = getSaturation(i, sMod);
+    const color = chroma.hsl(hue, saturation * sK, l);
 
-      const [h, s, l] = color.hsl();
-      const hRound = Math.round(h) || 0;
-      const sRound = Math.round(s * 10000) / 100;
-      const lRound = Math.round(l * 10000) / 100;
+    const [h, s, lVal] = color.hsl();
+    const hRound = Math.round(h) || 0;
+    const sRound = Math.round(s * 10000) / 100;
+    const lRound = Math.round(lVal * 10000) / 100;
 
-      entries.push({
-        label: `grey-${i}`,
-        lightness: i,
-        hsl: [h, s, l],
-        hslString: `${hRound}deg ${sRound}% ${lRound}%`,
-        hex: color.hex(),
-      });
-    }
-
-    step++;
-    value = step * distance + min;
+    entries.push({
+      label: `grey-${i}`,
+      lightness: i,
+      hsl: [h, s, lVal],
+      hslString: `${hRound}deg ${sRound}% ${lRound}%`,
+      hex: color.hex(),
+    });
   }
 
   return entries.reverse();
