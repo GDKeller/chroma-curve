@@ -8,9 +8,9 @@ interface PaletteGridProps {
   entries: ColorEntry[];
 }
 
-const STEP_OPTIONS = [8, 10, 12, 16, 20, 24, 48, 98];
+const STEP_OPTIONS = [8, 9, 10, 12, 16, 20, 24, 48];
 
-type Orientation = "picker" | "rotated";
+type Layout = "row" | "column" | "vertical" | "horizontal";
 
 function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
   if (count >= entries.length) return entries;
@@ -46,54 +46,69 @@ function toColumnMajor(entries: ColorEntry[], cols: number): ColorEntry[] {
 
 export function PaletteGrid({ entries }: PaletteGridProps) {
   const { copiedLabel, copy } = useCopyToClipboard();
-  const [showBorders, setShowBorders] = useState(true);
+  const [showBorders, setShowBorders] = useState(false);
   const [showLabels, setShowLabels] = useState(true);
-  const [swatchCount, setSwatchCount] = useState<number>(entries.length);
-  const [orientation, setOrientation] = useState<Orientation>("picker");
+  const [reversed, setReversed] = useState(false);
+  const [swatchCount, setSwatchCount] = useState<number>(STEP_OPTIONS[0]);
+  const [layout, setLayout] = useState<Layout>("row");
 
   const { displayEntries, cols } = useMemo(() => {
     const sampled = sampleEntries(entries, swatchCount);
-    const cols = bestCols(sampled.length);
 
-    if (orientation === "picker") {
-      // Light at top, dark at bottom — entries are light→dark,
-      // row-major: flows left→right across rows, then next row
-      return { displayEntries: sampled, cols };
+    // Default order for all layouts is dark→light (reverse the light→dark entries)
+    const ordered = reversed ? sampled : sampled.slice().reverse();
+
+    if (layout === "row") {
+      return { displayEntries: ordered, cols: ordered.length };
     }
-    // Rotated 90°: dark at top-left, light at bottom-right
-    // entries reversed to dark→light, then column-major so lightness flows down
-    const reversed = sampled.slice().reverse();
-    return { displayEntries: toColumnMajor(reversed, cols), cols };
-  }, [entries, swatchCount, orientation]);
+
+    if (layout === "column") {
+      return { displayEntries: ordered, cols: 1 };
+    }
+
+    const cols = bestCols(ordered.length);
+
+    if (layout === "vertical") {
+      return { displayEntries: ordered, cols };
+    }
+    // horizontal: lightness flows left→right via column-major reorder
+    return { displayEntries: toColumnMajor(ordered, cols), cols };
+  }, [entries, swatchCount, layout, reversed]);
 
   return (
     <div>
-      <div className="flex justify-end items-center gap-3 px-4 lg:pr-0 mb-1">
+      <div className="flex justify-end items-center gap-4 px-4 lg:pr-0 mb-3">
         <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/55">swatches</span>
+          <span className="text-[11px] font-mono text-white/55">swatches</span>
           <select
             value={swatchCount}
             onChange={(e) => setSwatchCount(Number(e.target.value))}
-            className="text-[9px] font-mono text-white/40 bg-transparent border-none outline-none cursor-pointer"
+            className="text-[11px] font-mono text-white/40 bg-transparent border-none outline-none cursor-pointer"
           >
             {STEP_OPTIONS.map((n) => (
               <option key={n} value={n} className="bg-[hsl(0_0%_10%)]">
                 {n}
               </option>
             ))}
+            <option value={entries.length} className="bg-[hsl(0_0%_10%)]">
+              all ({entries.length})
+            </option>
           </select>
         </label>
         <label className="flex items-center gap-1 cursor-pointer">
-          <span className="text-[9px] font-mono text-white/55">orientation</span>
+          <span className="text-[11px] font-mono text-white/55">layout</span>
           <select
-            value={orientation}
-            onChange={(e) => setOrientation(e.target.value as Orientation)}
-            className="text-[9px] font-mono text-white/40 bg-transparent border-none outline-none cursor-pointer"
+            value={layout}
+            onChange={(e) => setLayout(e.target.value as Layout)}
+            className="text-[11px] font-mono text-white/40 bg-transparent border-none outline-none cursor-pointer"
           >
-            <option value="picker" className="bg-[hsl(0_0%_10%)]">picker</option>
-            <option value="rotated" className="bg-[hsl(0_0%_10%)]">rotated</option>
+            <option value="row" className="bg-[hsl(0_0%_10%)]">row</option>
+            <option value="column" className="bg-[hsl(0_0%_10%)]">column</option>
+            <option value="vertical" className="bg-[hsl(0_0%_10%)]">vertical</option>
+            <option value="horizontal" className="bg-[hsl(0_0%_10%)]">horizontal</option>
           </select>
         </label>
+        <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
         <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
         <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
       </div>
@@ -108,7 +123,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
             isCopied={copiedLabel === entry.label}
             onCopy={copy}
             showLabels={showLabels}
-            compact={swatchCount > 24}
+            tall={layout === "row"}
           />
         ))}
       </div>
