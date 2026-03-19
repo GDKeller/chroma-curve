@@ -1,7 +1,10 @@
+export type SatMode = "endpoint" | "target";
+
 export interface PaletteParams {
   hue: number;
   saturation: number;
   sMod: number;
+  satMode: SatMode;
   lMin: number;
   lMax: number;
 }

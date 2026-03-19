@@ -42,7 +42,7 @@ const LIGHTNESS_LABELS = Array.from({ length: STRIP_STEPS }, (_, i) =>
 );
 
 // Scale factor so parabola edges reach 50% sat (perceptual boundary)
-const BOUNDARY_SCALE = 0.5 / getSaturation(LIGHTNESS_LABELS[0], REF_SMOD);
+const BOUNDARY_SCALE = 0.5 / getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint");
 
 function buildStrips(hue: number) {
   const zero: string[] = [];
@@ -58,12 +58,12 @@ function buildStrips(hue: number) {
     forExtremes.push(chroma.hsl(hue, SAT_FOR_EXTREMES, l).hex());
     boundary.push(
       chroma
-        .hsl(hue, BOUNDARY_SCALE * getSaturation(lInt, REF_SMOD), l)
+        .hsl(hue, BOUNDARY_SCALE * getSaturation(lInt, REF_SMOD, "endpoint"), l)
         .hex(),
     );
     curved.push(
       chroma
-        .hsl(hue, SAT_CURVED * getSaturation(lInt, REF_SMOD), l)
+        .hsl(hue, SAT_CURVED * getSaturation(lInt, REF_SMOD, "endpoint"), l)
         .hex(),
     );
   }
@@ -130,7 +130,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   const res = 40; // grid resolution
   const cellSize = size / res;
 
-  const edgeMultiplier = getSaturation(0, REF_SMOD);
+  const edgeMultiplier = getSaturation(0, REF_SMOD, "endpoint");
   const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
 
   // Build pixel grid
@@ -155,7 +155,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   const curvePoints = useMemo(() => {
     const points: string[] = [];
     for (let l = 100; l >= 0; l -= 2) {
-      const multiplier = getSaturation(l, REF_SMOD);
+      const multiplier = getSaturation(l, REF_SMOD, "endpoint");
       const sat = boundaryScale * multiplier;
       const px = sat * size;
       const py = (1 - l / 100) * size;
@@ -189,7 +189,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
     for (let row = 0; row < res; row++) {
       const light = 1 - row / (res - 1);
       const lInt = Math.round(light * 100);
-      const multiplier = getSaturation(lInt, REF_SMOD);
+      const multiplier = getSaturation(lInt, REF_SMOD, "endpoint");
       const sat = boundaryScale * multiplier;
       const col = Math.round(sat * (res - 1));
       if (col >= 0 && col < res) {
@@ -311,7 +311,7 @@ const CURVE_SIZE = 200;
 const CURVE_RES = 40;
 const CURVE_CELL = CURVE_SIZE / CURVE_RES;
 const SAT_GRID_LINES = [0.1, 0.2, 0.3, 0.4, 0.5];
-const CURVE_EDGE_MULT = getSaturation(0, REF_SMOD);
+const CURVE_EDGE_MULT = getSaturation(0, REF_SMOD, "endpoint");
 const CURVE_BSCALE = 0.5 / CURVE_EDGE_MULT;
 
 function curveToX(l: number) { return (l / 100) * CURVE_SIZE; }
@@ -321,7 +321,7 @@ function useCurvePickerData(hue: number) {
   return useMemo(() => {
     const curveData: { l: number; sat: number }[] = [];
     for (let l = 0; l <= 100; l += 2) {
-      curveData.push({ l, sat: CURVE_BSCALE * getSaturation(l, REF_SMOD) });
+      curveData.push({ l, sat: CURVE_BSCALE * getSaturation(l, REF_SMOD, "endpoint") });
     }
 
     const curvePath = curveData
@@ -833,11 +833,11 @@ export function AboutButton() {
                       <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
                       <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
-                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
+                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                         {"/"}
-                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD) * 100)}
+                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
                         {"/"}
-                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD) * 100)}%
+                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
                       </span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">
@@ -853,11 +853,11 @@ export function AboutButton() {
                       <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
                       <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
-                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD) * 100)}
+                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                         {"/"}
-                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD) * 100)}
+                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
                         {"/"}
-                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD) * 100)}%
+                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
                       </span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-white/45">

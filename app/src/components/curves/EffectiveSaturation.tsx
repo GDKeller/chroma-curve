@@ -13,12 +13,13 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
   const [showDots, setShowDots] = useState(true);
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
+  const satMode = usePaletteStore((s) => s.satMode);
 
   const { curvePath, baseLine, dots, gridLines } = useMemo(() => {
     // Sample effective saturation at every integer lightness
     const points: { x: number; y: number }[] = [];
     for (let l = 0; l <= 100; l++) {
-      points.push({ x: l, y: saturation * getSaturation(l, sMod) });
+      points.push({ x: l, y: saturation * getSaturation(l, sMod, satMode) });
     }
 
     const yMin = 0;
@@ -39,7 +40,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
 
     // Dots at palette entry positions
     const dots = entries.map((e) => {
-      const sK = getSaturation(e.lightness, sMod);
+      const sK = getSaturation(e.lightness, sMod, satMode);
       const effective = saturation * sK;
       return {
         cx: toSvgX(e.lightness),
@@ -56,7 +57,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
     });
 
     return { curvePath: pathParts.join(""), baseLine, dots, gridLines };
-  }, [sMod, saturation, entries]);
+  }, [sMod, saturation, satMode, entries]);
 
   const xGridValues = [0, 25, 50, 75, 100];
 

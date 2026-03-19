@@ -16,12 +16,13 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
   const hue = usePaletteStore((s) => s.hue);
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
+  const satMode = usePaletteStore((s) => s.satMode);
 
   const { curvePath, yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors } = useMemo(() => {
     // Sample the curve at every integer lightness
     const points: { x: number; y: number }[] = [];
     for (let l = 0; l <= 100; l++) {
-      points.push({ x: l, y: getSaturation(l, sMod) });
+      points.push({ x: l, y: getSaturation(l, sMod, satMode) });
     }
 
     const allY = points.map((p) => p.y);
@@ -36,7 +37,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
 
     // Dots for each palette entry showing effective saturation
     const effectiveDots = entries.map((e) => {
-      const sK = getSaturation(e.lightness, sMod);
+      const sK = getSaturation(e.lightness, sMod, satMode);
       const effective = saturation * sK;
       return {
         cx: toSvgX(e.lightness),
@@ -69,7 +70,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
     const adjustedColors = entries.map((e) => e.hex);
 
     return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors };
-  }, [sMod, saturation, hue, entries]);
+  }, [sMod, saturation, satMode, hue, entries]);
 
   // Vertical grid lines at lightness landmarks
   const xGridValues = [0, 25, 50, 75, 100];
