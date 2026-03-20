@@ -1,7 +1,7 @@
-# Chroma Colours Neutrals — Project Overview
+# Chroma Curve — Project Overview
 
 ## Purpose
-A neutral color palette generator that uses a parabolic saturation curve to create natural-feeling neutrals across lightness values. Originally a CodePen (vanilla HTML/JS/CSS), now rebuilt as a modern React/TypeScript app.
+A monochromatic palette generator that uses a parabolic saturation curve for perceptual balance across lightness values. Originally a CodePen (vanilla HTML/JS/CSS), now rebuilt as a modern React/TypeScript app.
 
 ## Tech Stack
 - **Framework**: React 19 + TypeScript 5.9

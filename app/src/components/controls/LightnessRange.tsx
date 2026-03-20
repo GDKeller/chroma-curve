@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import * as Slider from "@radix-ui/react-slider";
+import { Lock, LockOpen } from "@phosphor-icons/react";
 import { usePaletteStore } from "../../store/paletteStore";
 
 export function LightnessRange() {
@@ -16,7 +17,6 @@ export function LightnessRange() {
       return;
     }
 
-    const span = prevRef.current.lMax - prevRef.current.lMin;
     const minDelta = newMin - prevRef.current.lMin;
     const maxDelta = newMax - prevRef.current.lMax;
 
@@ -53,7 +53,7 @@ export function LightnessRange() {
             className={`text-[11px] font-mono cursor-pointer transition-colors ${locked ? "text-white/80" : "text-white/30"}`}
             title={locked ? "Unlock range" : "Lock range span"}
           >
-            {locked ? "locked" : "lock"}
+            {locked ? <Lock size={14} weight="fill" /> : <LockOpen size={14} />}
           </button>
           <span className="text-[13px] font-mono text-white/90 tabular-nums inline-flex">
             <span className="w-[2ch] text-right">{lMin}</span>

@@ -1,4 +1,4 @@
-# Chroma Colours Neutrals
+# Chroma Curve
 
 A Pen created on CodePen.
 

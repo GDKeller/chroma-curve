@@ -3,7 +3,7 @@ type: reference
 created: 2026-03-13
 ---
 
-# Parabolic Saturation Curve for Neutral Palettes
+# Parabolic Saturation Curve for Monochromatic Palettes
 
 Source: [The secret to creating neutral color palettes](https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718) by Pablo Figueiredo (Jan 2023)
 

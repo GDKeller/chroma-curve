@@ -1,6 +1,6 @@
-# Chroma Colours Neutrals
+# Chroma Curve
 
-Neutral color palette generator based on a saturation curve formula. Originally a CodePen (oxn-krtv/ExOwLBz).
+Monochromatic palette generator using a parabolic saturation curve for perceptual balance across lightness. Originally a CodePen (oxn-krtv/ExOwLBz).
 
 ## Architecture
 

@@ -3,6 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Popover from "@radix-ui/react-popover";
 import { AnimatePresence, motion } from "framer-motion";
 import chroma from "chroma-js";
+import { Info } from "@phosphor-icons/react";
 import { getSaturation } from "../lib/palette";
 
 const DEFAULT_HUE = 220;
@@ -666,21 +667,7 @@ export function AboutButton() {
           className="w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-colors cursor-pointer"
           aria-label="About this tool"
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle
-              cx="8"
-              cy="8"
-              r="7"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M8 7v4.5M8 4.5v.01"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+          <Info size={18} />
         </button>
       </Dialog.Trigger>
       <AnimatePresence>
@@ -710,12 +697,12 @@ export function AboutButton() {
                       How it works
                     </Dialog.Title>
                     <Dialog.Description className="sr-only">
-                      Explanation of the parabolic saturation curve used to generate neutral palettes
+                      Explanation of the parabolic saturation curve used to generate perceptually balanced monochromatic palettes
                     </Dialog.Description>
                     <p className="text-[13px] leading-relaxed text-white/50">
-                      Neutral palettes need saturation that varies with lightness.
-                      A fixed saturation value always compromises one end of the
-                      scale.
+                      Monochromatic palettes need saturation that varies with
+                      lightness. A fixed saturation value produces even chroma in
+                      the midrange but loses it at the extremes — or vice versa.
                     </p>
                   </div>
 

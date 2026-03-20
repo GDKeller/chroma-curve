@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
+import { Export } from "@phosphor-icons/react";
 import { FormatSelector } from "./FormatSelector";
 import { ExportPreview } from "./ExportPreview";
 import { formatPalette, downloadPalette } from "../../lib/export";
@@ -22,8 +23,9 @@ export function ExportDialog() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-white/10 text-white/90 hover:bg-white/15 transition-colors cursor-pointer"
+          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-white/10 text-white/90 hover:bg-white/15 transition-colors cursor-pointer flex items-center gap-1.5"
         >
+          <Export size={16} />
           Export
         </button>
       </Dialog.Trigger>

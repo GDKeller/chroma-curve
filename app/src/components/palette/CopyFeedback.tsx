@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { Check } from "@phosphor-icons/react";
 
 interface CopyFeedbackProps {
   visible: boolean;
@@ -15,9 +16,7 @@ export function CopyFeedback({ visible }: CopyFeedbackProps) {
           transition={{ duration: 0.15 }}
           className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-sm pointer-events-none"
         >
-          <span className="text-xs font-mono font-semibold text-white tracking-wide">
-            Copied!
-          </span>
+          <Check size={20} weight="bold" className="text-white" />
         </motion.div>
       )}
     </AnimatePresence>
