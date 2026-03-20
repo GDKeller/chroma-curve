@@ -2,20 +2,33 @@
 
 Monochromatic palette generator using a parabolic saturation curve for perceptual balance across lightness. Originally a CodePen (oxn-krtv/ExOwLBz).
 
+## Commands
+
+```bash
+cd app
+npm run dev      # Vite dev server
+npm run build    # tsc -b && vite build
+npm run lint     # ESLint
+```
+
 ## Architecture
 
-Vanilla HTML/JS/CSS app — no build step, no framework. Static files in `src/`.
+React 19 + TypeScript app built with Vite. All app code lives in `app/`.
 
-- `src/index.html` — UI with slider controls (hue, saturation, adjustment)
-- `src/script.js` — palette generation logic using chroma.js + noUiSlider
-- `src/style.css` — custom slider styles and layout
-- `dist/` — built/exported output
+- `app/src/components/` — React components (controls, palette grid, export dialog, about)
+- `app/src/lib/` — core logic: `palette.ts` (saturation curve), `colors.ts`, `export.ts`
+- `app/src/store/paletteStore.ts` — Zustand state (hue, saturation, lightness range, layout)
+- `app/src/hooks/` — `usePalette`, `useCopyToClipboard`
+- `src/` / `dist/` — legacy CodePen files (kept for reference)
 
-## Key Dependencies (loaded via CDN)
+## Key Dependencies
 
 - **chroma.js** — color manipulation and conversion
-- **noUiSlider** — range slider UI controls
-- **Tailwind CSS** — utility classes for layout
+- **Tailwind CSS 4** — styling (via @tailwindcss/vite)
+- **Zustand** — state management
+- **Radix UI** — dialog, popover, slider, tabs primitives
+- **Framer Motion** — animations
+- **Phosphor Icons** — iconography
 
 ## How It Works
 
