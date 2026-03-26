@@ -18,10 +18,11 @@ export function SaturationSlider() {
           <button
             type="button"
             onClick={() => setSatMode(satMode === "endpoint" ? "target" : "endpoint")}
-            className={`text-[11px] font-mono cursor-pointer transition-colors ${satMode === "target" ? "text-white/80" : "text-white/30"}`}
+            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${satMode === "target" ? "text-white/80" : "text-white/30"}`}
             title={satMode === "endpoint" ? "Slider controls endpoint saturation" : "Slider controls target (L50) saturation"}
           >
             {satMode === "target" ? <Crosshair size={14} weight="fill" /> : <ArrowsOutLineHorizontal size={14} />}
+            <span className="ml-0.5">{satMode}</span>
           </button>
           <span className="text-[13px] font-mono text-white/90 tabular-nums">
             {Math.round(saturation * 100)}%
