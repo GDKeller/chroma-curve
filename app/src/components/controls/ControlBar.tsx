@@ -9,6 +9,7 @@ export function ControlBar() {
       <div className="flex flex-wrap gap-6 max-w-5xl mx-auto">
         <HueSlider />
         <SaturationSlider />
+        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
         <AdjustmentSlider />
         <LightnessRange />
       </div>
