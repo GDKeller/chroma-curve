@@ -5,12 +5,12 @@ import { AboutButton } from "./About";
 export function Header() {
   return (
     <header className="flex items-center justify-between px-6 py-3">
-      <div className="flex items-center gap-3">
-        <h1 className="text-base font-semibold text-text-primary tracking-tight">
+      <div className="flex items-center gap-2">
+        <h1 className="text-xl font-semibold mr-4 text-text-primary tracking-tight">
           Chroma Curve
         </h1>
-        <p className="text-[12px] text-text-subtle hidden sm:block">
-          Parabolic saturation correction
+        <p className="text-[10px] text-text-subtle hidden sm:block max-w-40 leading-tight">
+          Parabolic saturation correction for monochromatic color palettes
         </p>
         <AboutButton />
       </div>
