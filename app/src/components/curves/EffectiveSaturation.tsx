@@ -63,8 +63,8 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
 
   return (
     <div className="mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden">
-      <div className="px-4 py-3 border-b border-border-default flex items-center justify-between">
-        <h3 className="text-[13px] font-semibold text-text-secondary tracking-wide">
+      <div className="px-4 py-2.5 border-b border-border-default flex items-center justify-between">
+        <h3 className="text-[11px] font-medium text-text-tertiary uppercase tracking-wider">
           Computed Saturation
         </h3>
         <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />

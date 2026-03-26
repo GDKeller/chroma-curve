@@ -4,20 +4,18 @@ import { AboutButton } from "./About";
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between px-6 py-4">
-      <div className="flex items-center gap-2">
-        <div>
-          <h1 className="text-lg font-semibold text-text-primary tracking-tight">
-            Chroma Curve
-          </h1>
-          <p className="text-[13px] text-text-tertiary">
-            Monochromatic palettes with parabolic saturation correction
-          </p>
-        </div>
+    <header className="flex items-center justify-between px-6 py-3">
+      <div className="flex items-center gap-3">
+        <h1 className="text-base font-semibold text-text-primary tracking-tight">
+          Chroma Curve
+        </h1>
+        <p className="text-[12px] text-text-subtle hidden sm:block">
+          Parabolic saturation correction
+        </p>
         <AboutButton />
       </div>
       <div className="flex items-center gap-3">
-        <span className="text-[11px] text-text-tertiary flex items-center gap-1">
+        <span className="text-[11px] text-text-subtle flex items-center gap-1 hidden md:flex">
           <Copy size={12} />
           Click swatch to copy
         </span>

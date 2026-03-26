@@ -38,8 +38,7 @@ export function SaturationSlider() {
         onValueChange={([v]) => setSaturation(v)}
       >
         <Slider.Track
-          className="relative grow rounded-full h-[6px] overflow-hidden"
-          style={{ backgroundColor: "var(--color-border-elevated)" }}
+          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
         >
           <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
         </Slider.Track>
