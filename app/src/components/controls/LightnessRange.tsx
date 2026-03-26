@@ -43,20 +43,20 @@ export function LightnessRange() {
   return (
     <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[13px] font-medium text-white/60 uppercase tracking-wider">
+        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
           Range
         </span>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setLocked(!locked)}
-            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${locked ? "text-white/80" : "text-white/30"}`}
+            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
             title={locked ? "Unlock range" : "Lock range span"}
           >
             {locked ? <Lock size={14} weight="fill" /> : <LockOpen size={14} />}
             <span className="ml-0.5">{locked ? "locked" : "lock"}</span>
           </button>
-          <span className="text-[13px] font-mono text-white/90 tabular-nums inline-flex">
+          <span className="text-[13px] font-mono text-text-primary tabular-nums inline-flex">
             <span className="w-[2ch] text-right">{lMin}</span>
             <span>–</span>
             <span className="w-[3ch]">{lMax}</span>
@@ -78,7 +78,7 @@ export function LightnessRange() {
             background: "linear-gradient(to right, hsl(0 0% 0%), hsl(0 0% 100%))",
           }}
         >
-          <Slider.Range className="absolute h-full rounded-full bg-white/20" />
+          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
         </Slider.Track>
         <Slider.Thumb
           className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"

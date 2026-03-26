@@ -24,7 +24,7 @@ export function HueSlider() {
         formatValue={(v) => `${v}°`}
       />
       <div
-        className="w-5 h-5 rounded-full shrink-0 mb-[2px] border border-white/10"
+        className="w-5 h-5 rounded-full shrink-0 mb-[2px] border border-border-elevated"
         style={{ backgroundColor: `hsl(${hue}, ${saturation * 100}%, 50%)` }}
       />
     </div>

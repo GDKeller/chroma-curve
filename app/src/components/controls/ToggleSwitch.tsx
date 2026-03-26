@@ -10,7 +10,7 @@ export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
   const id = useId();
   return (
     <label className="flex items-center gap-1 cursor-pointer">
-      <span id={id} className="text-[11px] font-mono text-white/55">
+      <span id={id} className="text-[11px] font-mono text-text-tertiary">
         {label}
       </span>
       <button
@@ -22,12 +22,12 @@ export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
         className="relative w-7 h-4 rounded-full transition-colors min-w-[28px]"
         style={{
           backgroundColor: checked
-            ? "rgba(255,255,255,0.25)"
-            : "rgba(255,255,255,0.06)",
+            ? "var(--color-surface-active-hover)"
+            : "var(--color-surface-hover)",
         }}
       >
         <span
-          className="absolute top-0.5 left-0.5 w-3 h-3 rounded-full bg-white/70 transition-transform"
+          className="absolute top-0.5 left-0.5 w-3 h-3 rounded-full bg-text-secondary transition-transform"
           style={{
             transform: checked ? "translateX(12px)" : "translateX(0)",
           }}

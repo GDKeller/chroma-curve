@@ -7,17 +7,17 @@ export function Header() {
     <header className="flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-2">
         <div>
-          <h1 className="text-lg font-semibold text-white/90 tracking-tight">
+          <h1 className="text-lg font-semibold text-text-primary tracking-tight">
             Chroma Curve
           </h1>
-          <p className="text-[13px] text-white/60">
+          <p className="text-[13px] text-text-tertiary">
             Monochromatic palettes with parabolic saturation correction
           </p>
         </div>
         <AboutButton />
       </div>
       <div className="flex items-center gap-3">
-        <span className="text-[11px] text-white/55 flex items-center gap-1">
+        <span className="text-[11px] text-text-tertiary flex items-center gap-1">
           <Copy size={12} />
           Click swatch to copy
         </span>

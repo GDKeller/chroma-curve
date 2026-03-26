@@ -62,9 +62,9 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
   const xGridValues = [0, 25, 50, 75, 100];
 
   return (
-    <div className="mx-4 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
-        <h3 className="text-[13px] font-semibold text-white/70 tracking-wide">
+    <div className="mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden">
+      <div className="px-4 py-3 border-b border-border-default flex items-center justify-between">
+        <h3 className="text-[13px] font-semibold text-text-secondary tracking-wide">
           Computed Saturation
         </h3>
         <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
@@ -84,14 +84,14 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
               y1={g.y}
               x2={W - PAD.right}
               y2={g.y}
-              stroke="rgba(255,255,255,0.06)"
+              stroke="var(--color-stroke-grid)"
               strokeWidth={1}
             />
             <text
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-[13px] fill-white/30 font-mono"
+              className="text-[13px] fill-text-faint font-mono"
             >
               {g.label}
             </text>
@@ -106,14 +106,14 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
               y1={PAD.top}
               x2={toSvgX(l)}
               y2={H - PAD.bottom}
-              stroke="rgba(255,255,255,0.06)"
+              stroke="var(--color-stroke-grid)"
               strokeWidth={1}
             />
             <text
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-[13px] fill-white/30 font-mono"
+              className="text-[13px] fill-text-faint font-mono"
             >
               {l}
             </text>
@@ -125,7 +125,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
           x={PAD.left + PLOT_W / 2}
           y={H - 4}
           textAnchor="middle"
-          className="text-[10px] fill-white/30 font-sans"
+          className="text-[10px] fill-text-faint font-sans"
         >
           Lightness
         </text>
@@ -133,7 +133,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
           x={12}
           y={PAD.top + PLOT_H / 2}
           textAnchor="middle"
-          className="text-[10px] fill-white/30 font-sans"
+          className="text-[10px] fill-text-faint font-sans"
           transform={`rotate(-90, 12, ${PAD.top + PLOT_H / 2})`}
         >
           Saturation
@@ -145,7 +145,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
           y1={baseLine.y}
           x2={W - PAD.right}
           y2={baseLine.y}
-          stroke="rgba(255,255,255,0.2)"
+          stroke="var(--color-stroke-axis)"
           strokeWidth={1}
           strokeDasharray="4 3"
         />
@@ -154,7 +154,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
         <path
           d={curvePath}
           fill="none"
-          stroke="rgba(255,255,255,0.7)"
+          stroke="var(--color-stroke-primary)"
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -168,7 +168,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
             cy={d.cy}
             r={3}
             fill={d.hex}
-            stroke="rgba(255,255,255,0.4)"
+            stroke="var(--color-stroke-secondary)"
             strokeWidth={1}
           />
         ))}

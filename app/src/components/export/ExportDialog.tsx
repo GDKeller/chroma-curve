@@ -23,7 +23,7 @@ export function ExportDialog() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-white/10 text-white/90 hover:bg-white/15 transition-colors cursor-pointer flex items-center gap-1.5"
+          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
         >
           <Export size={16} />
           Export
@@ -47,9 +47,9 @@ export function ExportDialog() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-2xl bg-[hsl(0_0%_10%)] border border-white/[0.08] shadow-2xl"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-2xl bg-surface-overlay border border-border-elevated shadow-2xl"
               >
-                <Dialog.Title className="text-lg font-semibold text-white/90 mb-4">
+                <Dialog.Title className="text-lg font-semibold text-text-primary mb-4">
                   Export Palette
                 </Dialog.Title>
                 <Dialog.Description className="sr-only">
@@ -70,7 +70,7 @@ export function ExportDialog() {
                 <Dialog.Close asChild>
                   <button
                     type="button"
-                    className="absolute top-4 right-4 text-white/40 hover:text-white/70 transition-colors cursor-pointer"
+                    className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
                     aria-label="Close"
                   >
                     <svg
