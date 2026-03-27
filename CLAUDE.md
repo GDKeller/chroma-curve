@@ -19,7 +19,6 @@ React 19 + TypeScript app built with Vite. All app code lives in `app/`.
 - `app/src/lib/` — core logic: `palette.ts` (saturation curve), `colors.ts`, `export.ts`
 - `app/src/store/paletteStore.ts` — Zustand state (hue, saturation, lightness range, layout)
 - `app/src/hooks/` — `usePalette`, `useCopyToClipboard`
-- `src/` / `dist/` — legacy CodePen files (kept for reference)
 
 ## Key Dependencies
 
