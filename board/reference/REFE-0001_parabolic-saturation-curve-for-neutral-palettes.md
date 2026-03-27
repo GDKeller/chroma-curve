@@ -45,6 +45,26 @@ getSaturation(lightness, sMod) = 1 + ((lightness - 50)^2 / sMod - 50^2 / sMod) /
 - At L=0 and L=100 (extremes), the multiplier is at its maximum
 - Desmos visualization: https://www.desmos.com/calculator/02ufrfsuzy
 
+### Desmos formula (preserved)
+
+The Desmos graph defines the following, where `o = 50` (midpoint) and `p` is the steepness parameter (`sMod`):
+
+```
+f(x) = 1 + ((x - o)^2 / p - o^2 / p) / 100
+```
+
+In JavaScript:
+
+```js
+const o = 50;
+const v = 1 + (Math.pow(l - o, 2) / p - Math.pow(o, 2) / p) / 100;
+```
+
+- `x` (or `l`): lightness value, 0–100
+- `o`: vertex position, fixed at 50 (center of lightness range)
+- `p`: steepness parameter (`sMod`) — lower = steeper parabola, more saturation boost at extremes
+- Output: a multiplier centered around the vertex minimum, rising toward both endpoints
+
 ## Three User Controls
 
 | Control | Maps to | Effect |

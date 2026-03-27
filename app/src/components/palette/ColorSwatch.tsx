@@ -16,7 +16,7 @@ export function ColorSwatch({ entry, isCopied, onCopy, showLabels = true, tall =
   return (
     <button
       type="button"
-      className={`relative flex flex-col justify-start gap-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(0_0%_6%)] group px-2 py-1.5 ${tall ? "min-h-[240px]" : "min-h-[120px]"}`}
+      className={`relative flex flex-col justify-start gap-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-base group px-2 py-1.5 ${tall ? "min-h-[240px]" : "min-h-[120px]"}`}
       style={{ backgroundColor: entry.hex, color: textColor }}
       onClick={() => onCopy(`hsl(${entry.hslString})`, entry.label)}
       title={`${entry.label} — hsl(${entry.hslString})`}

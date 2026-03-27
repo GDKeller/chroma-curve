@@ -11,20 +11,20 @@ export function SaturationSlider() {
   return (
     <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[13px] font-medium text-white/60 uppercase tracking-wider">
+        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
           Saturation
         </span>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setSatMode(satMode === "endpoint" ? "target" : "endpoint")}
-            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${satMode === "target" ? "text-white/80" : "text-white/30"}`}
+            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
             title={satMode === "endpoint" ? "Slider controls endpoint saturation" : "Slider controls target (L50) saturation"}
           >
             {satMode === "target" ? <Crosshair size={14} weight="fill" /> : <ArrowsOutLineHorizontal size={14} />}
             <span className="ml-0.5">{satMode}</span>
           </button>
-          <span className="text-[13px] font-mono text-white/90 tabular-nums">
+          <span className="text-[13px] font-mono text-text-primary tabular-nums">
             {Math.round(saturation * 100)}%
           </span>
         </div>
@@ -38,10 +38,9 @@ export function SaturationSlider() {
         onValueChange={([v]) => setSaturation(v)}
       >
         <Slider.Track
-          className="relative grow rounded-full h-[6px] overflow-hidden"
-          style={{ backgroundColor: "rgba(255 255 255 / 0.08)" }}
+          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
         >
-          <Slider.Range className="absolute h-full rounded-full bg-white/20" />
+          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
         </Slider.Track>
         <Slider.Thumb
           className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"

@@ -3,7 +3,32 @@
 @theme {
   --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
-  --color-accent: hsl(0 0% 100%);
+
+  /* Text */
+  --color-text-primary: hsl(0 0% 91%);
+  --color-text-secondary: hsl(0 0% 72%);
+  --color-text-tertiary: hsl(0 0% 60%);
+  --color-text-muted: hsl(0 0% 50%);
+  --color-text-subtle: hsl(0 0% 44%);
+  --color-text-faint: hsl(0 0% 32%);
+
+  /* Surfaces */
+  --color-surface-base: hsl(0 0% 6%);
+  --color-surface-raised: hsl(0 0% 8%);
+  --color-surface-overlay: hsl(0 0% 10%);
+  --color-surface-hover: hsl(0 0% 12%);
+  --color-surface-active: hsl(0 0% 15%);
+  --color-surface-active-hover: hsl(0 0% 20%);
+
+  /* Borders */
+  --color-border-default: hsl(0 0% 12%);
+  --color-border-elevated: hsl(0 0% 15%);
+
+  /* Strokes (SVG) */
+  --color-stroke-grid: hsl(0 0% 12%);
+  --color-stroke-axis: hsl(0 0% 17%);
+  --color-stroke-secondary: hsl(0 0% 44%);
+  --color-stroke-primary: hsl(0 0% 72%);
 }
 
 @layer base {

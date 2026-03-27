@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Popover from "@radix-ui/react-popover";
 import { AnimatePresence, motion } from "framer-motion";
 import chroma from "chroma-js";
-import { Info } from "@phosphor-icons/react";
+import { Info, X } from "@phosphor-icons/react";
 import { getSaturation } from "../lib/palette";
 
 const DEFAULT_HUE = 220;
@@ -210,7 +210,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
-        <div className="rounded overflow-hidden border border-white/[0.06]">
+        <div className="rounded overflow-hidden border border-border-default">
           <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto block">
             {cells.map((c, i) => (
               <rect key={i} x={c.x} y={c.y} width={cellSize + 0.5} height={cellSize + 0.5} fill={c.color} />
@@ -360,7 +360,7 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
     <VisualPanel label="S(L)">
       <svg
         viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
-        className="w-full h-auto block rounded border border-white/[0.06] bg-white/[0.02]"
+        className="w-full h-auto block rounded border border-border-default bg-surface-raised"
       >
         {SAT_GRID_LINES.map((s) => (
           <line
@@ -396,7 +396,7 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
         <path
           d={curvePath}
           fill="none"
-          stroke="rgba(255,255,255,0.7)"
+          stroke="var(--color-stroke-primary)"
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -427,7 +427,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
     <VisualPanel label="Saturation">
       <svg
         viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
-        className="w-full h-auto block rounded border border-white/[0.06] overflow-hidden"
+        className="w-full h-auto block rounded border border-border-default overflow-hidden"
       >
         {pickerCells.map((c, i) => (
           <rect
@@ -457,15 +457,15 @@ function RotatedPicker({ pickerCells, curvePath }: {
 
 function Formula() {
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-2.5 font-mono text-[11px] text-white/45 flex items-center justify-between gap-4 flex-wrap">
+    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 font-mono text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
       <div>
-        <span className="text-white/60">S</span>(L) = 1 + ((L - 50)
-        <sup>2</sup> / <span className="text-white/60">p</span> - 50
-        <sup>2</sup> / <span className="text-white/60">p</span>) / 100
+        <span className="text-text-tertiary">S</span>(L) = 1 + ((L - 50)
+        <sup>2</sup> / <span className="text-text-tertiary">p</span> - 50
+        <sup>2</sup> / <span className="text-text-tertiary">p</span>) / 100
       </div>
-      <div className="text-[10px] text-white/25">
+      <div className="text-[10px] text-text-faint">
         L = lightness &middot;{" "}
-        <span className="text-white/40">p</span> = adjustment
+        <span className="text-text-subtle">p</span> = adjustment
       </div>
     </div>
   );
@@ -479,24 +479,24 @@ function SolutionSection({ hue }: { hue: number }) {
   const { curveData, curvePath, fillPath, pickerCells } = useCurvePickerData(hue);
 
   return (
-    <div className="mt-2 pt-8 border-t border-white/[0.06]">
+    <div className="mt-2 pt-8 border-t border-border-default">
       <div className="grid grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
         {/* Row 1: explanation text | animated picker */}
         <div>
-          <p className="text-[13px] font-semibold text-white/70 mb-3">The solution</p>
-          <p className="text-[13px] leading-relaxed text-white/45 mb-3">
+          <p className="text-[13px] font-semibold text-text-secondary mb-3">The solution</p>
+          <p className="text-[13px] leading-relaxed text-text-muted mb-3">
             In a color picker, the boundary between neutral and
             chromatic is not a straight line. It follows a curve:
             colours at the extremes of lightness need more
             saturation to register as tinted, while midtones
             need less.
-            <sup className="text-[9px] text-white/25 ml-0.5">1</sup>
+            <sup className="text-[9px] text-text-faint ml-0.5">1</sup>
           </p>
-          <p className="text-[13px] leading-relaxed text-white/45">
+          <p className="text-[13px] leading-relaxed text-text-muted">
             This boundary is approximately parabolic. It can be
             expressed as a formula that takes a lightness value
             and returns a saturation multiplier.
-            <sup className="text-[9px] text-white/25 ml-0.5">2</sup>
+            <sup className="text-[9px] text-text-faint ml-0.5">2</sup>
           </p>
         </div>
         <ColorPickerPlane hue={hue} />
@@ -511,7 +511,7 @@ function SolutionSection({ hue }: { hue: number }) {
         <RotatedPicker pickerCells={pickerCells} curvePath={curvePath} />
 
         {/* Caption spanning both columns */}
-        <p className="col-span-2 text-[11px] text-white/25 text-center">
+        <p className="col-span-2 text-[11px] text-text-faint text-center">
           The formula&rsquo;s curve (left) traces the perceptual boundary visible in the color field (right).
         </p>
       </div>
@@ -575,7 +575,7 @@ function HuePicker({
             key={p.hue}
             onClick={() => onChange(p.hue)}
             title={`${p.label} (${p.hue}°)`}
-            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(0_0%_10%)]"
+            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
             style={{
               backgroundColor: `hsl(${p.hue} 100% 50%)`,
               boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(0 0% 80%)" : "none",
@@ -587,7 +587,7 @@ function HuePicker({
         <button
           onClick={onReset}
           title={`Reset to ${DEFAULT_HUE}°`}
-          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[hsl(0_0%_10%)]"
+          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(0_0%_60%)]">
@@ -664,10 +664,11 @@ export function AboutButton() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-colors cursor-pointer"
+          className="flex items-center gap-1 rounded-lg px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
           aria-label="About this tool"
         >
-          <Info size={18} />
+          <Info size={14} />
+          <span className="text-[11px] hidden md:inline">What is this?</span>
         </button>
       </Dialog.Trigger>
       <AnimatePresence>
@@ -688,18 +689,18 @@ export function AboutButton() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-6 rounded-2xl bg-[hsl(0_0%_6%)] border border-white/[0.08] shadow-2xl max-h-[85vh] overflow-y-auto"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-6 rounded-2xl bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
               >
                 <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-8">
                   {/* Title + intro — span both columns */}
                   <div className="col-span-2">
-                    <Dialog.Title className="text-lg font-semibold text-white/90 mb-2">
+                    <Dialog.Title className="text-lg font-semibold text-text-primary mb-2">
                       How it works
                     </Dialog.Title>
                     <Dialog.Description className="sr-only">
                       Explanation of the parabolic saturation curve used to generate perceptually balanced monochromatic palettes
                     </Dialog.Description>
-                    <p className="text-[13px] leading-relaxed text-white/50">
+                    <p className="text-[13px] leading-relaxed text-text-muted">
                       Monochromatic palettes need saturation that varies with
                       lightness. A fixed saturation value produces even chroma in
                       the midrange but loses it at the extremes — or vice versa.
@@ -752,7 +753,7 @@ export function AboutButton() {
                           side="right"
                           sideOffset={12}
                           align="center"
-                          className="w-56 p-3 rounded-lg bg-[hsl(0_0%_10%)] border border-white/[0.08] shadow-xl z-[60]"
+                          className="w-56 p-3 rounded-lg bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
                         >
                           <HuePicker
                             hue={hue}
@@ -775,10 +776,10 @@ export function AboutButton() {
                   {/* 0% sat */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-white/70">Achromatic Baseline</p>
+                      <p className="text-[13px] font-semibold text-text-secondary">Achromatic Baseline</p>
                       <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: 0%</span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-white/45">
+                    <p className="text-[13px] leading-relaxed text-text-muted">
                       Unsaturated grayscale. Functional, but lacks character or brand identity.
                     </p>
                   </div>
@@ -787,10 +788,10 @@ export function AboutButton() {
                   {/* 20% sat */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-white/70">Fixed low saturation</p>
+                      <p className="text-[13px] font-semibold text-text-secondary">Fixed low saturation</p>
                       <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-white/45">
+                    <p className="text-[13px] leading-relaxed text-text-muted">
                       Desired neutral midtones, but dark and light ends become effectively desaturated.
                     </p>
                   </div>
@@ -799,10 +800,10 @@ export function AboutButton() {
                   {/* 40% sat */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-white/70">Fixed high saturation</p>
+                      <p className="text-[13px] font-semibold text-text-secondary">Fixed high saturation</p>
                       <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-white/45">
+                    <p className="text-[13px] leading-relaxed text-text-muted">
                       Raising it to recover the extremes pushes the midrange
                       to be oversaturated.
                     </p>
@@ -817,7 +818,7 @@ export function AboutButton() {
                   {/* Boundary strip */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-white/70">Perceptual boundary</p>
+                      <p className="text-[13px] font-semibold text-text-secondary">Perceptual boundary</p>
                       <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
                         {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
@@ -827,7 +828,7 @@ export function AboutButton() {
                         {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
                       </span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-white/45">
+                    <p className="text-[13px] leading-relaxed text-text-muted">
                       Sampling saturation along the curve produces even
                       perceived chroma, but is too saturated for neutrals.
                     </p>
@@ -837,7 +838,7 @@ export function AboutButton() {
                   {/* Final result strip */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-white/70">Adjusted curve</p>
+                      <p className="text-[13px] font-semibold text-text-secondary">Adjusted curve</p>
                       <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
                         {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
@@ -847,7 +848,7 @@ export function AboutButton() {
                         {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
                       </span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-white/45">
+                    <p className="text-[13px] leading-relaxed text-text-muted">
                       Reducing the base saturation scales the whole curve
                       down. The formula preserves the ratio between
                       midtones and extremes at any base value.
@@ -856,28 +857,28 @@ export function AboutButton() {
                   <Strip colors={strips.curved} mark={markCurved} />
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-white/[0.06] text-[11px] text-white/30 grid gap-1.5">
+                <div className="mt-8 pt-4 border-t border-border-default text-[11px] text-text-faint grid gap-1.5">
                   <p>
-                    <sup className="text-[9px] text-white/25 mr-1">1</sup>
+                    <sup className="text-[9px] text-text-faint mr-1">1</sup>
                     Concept from{" "}
                     <a
                       href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/50 hover:text-white/70 underline underline-offset-2 transition-colors"
+                      className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
                     >
                       The secret to creating neutral color palettes
                     </a>
                     {" "}by Pablo Figueiredo.
                   </p>
                   <p>
-                    <sup className="text-[9px] text-white/25 mr-1">2</sup>
+                    <sup className="text-[9px] text-text-faint mr-1">2</sup>
                     Formula adapted from{" "}
                     <a
                       href="https://www.desmos.com/calculator/02ufrfsuzy"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/50 hover:text-white/70 underline underline-offset-2 transition-colors"
+                      className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
                     >
                       Desmos visualization
                     </a>
@@ -888,22 +889,10 @@ export function AboutButton() {
                 <Dialog.Close asChild>
                   <button
                     type="button"
-                    className="absolute top-4 right-4 text-white/40 hover:text-white/70 transition-colors cursor-pointer"
+                    className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
                     aria-label="Close"
                   >
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 15 15"
-                      fill="none"
-                    >
-                      <path
-                        d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-                        fill="currentColor"
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    <X size={16} />
                   </button>
                 </Dialog.Close>
               </motion.div>

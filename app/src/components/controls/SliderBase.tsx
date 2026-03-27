@@ -27,10 +27,10 @@ export function SliderBase({
   return (
     <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[13px] font-medium text-white/60 uppercase tracking-wider">
+        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
           {label}
         </span>
-        <span className="text-[13px] font-mono text-white/90 tabular-nums">
+        <span className="text-[13px] font-mono text-text-primary tabular-nums">
           {displayValue}
         </span>
       </div>
@@ -43,13 +43,10 @@ export function SliderBase({
         onValueChange={([v]) => onValueChange(v)}
       >
         <Slider.Track
-          className="relative grow rounded-full h-[6px] overflow-hidden"
-          style={{
-            backgroundColor: "rgba(255 255 255 / 0.08)",
-            ...trackStyle,
-          }}
+          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+          style={trackStyle}
         >
-          <Slider.Range className="absolute h-full rounded-full bg-white/20" />
+          <Slider.Range className={`absolute h-full rounded-full ${trackStyle ? "" : "bg-surface-active-hover"}`} />
         </Slider.Track>
         <Slider.Thumb
           className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"

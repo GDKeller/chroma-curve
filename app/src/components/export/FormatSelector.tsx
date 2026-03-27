@@ -27,8 +27,8 @@ const spaces: { value: ColorSpace; label: string }[] = [
 ];
 
 const btnBase =
-  "flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-white/50 transition-colors hover:text-white/70 cursor-pointer";
-const btnActive = "bg-white/10 text-white";
+  "flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
+const btnActive = "bg-surface-active text-white";
 
 export function FormatSelector({
   format,
@@ -39,13 +39,13 @@ export function FormatSelector({
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <span className="text-[11px] font-mono text-white/30 uppercase tracking-wider mb-1 block">
+        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
           Format
         </span>
         <div
           role="radiogroup"
           aria-label="Export format"
-          className="flex gap-1 p-1 rounded-lg bg-white/[0.04]"
+          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
         >
           {formats.map((f) => (
             <button
@@ -61,13 +61,13 @@ export function FormatSelector({
         </div>
       </div>
       <div>
-        <span className="text-[11px] font-mono text-white/30 uppercase tracking-wider mb-1 block">
+        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
           Color Space
         </span>
         <div
           role="radiogroup"
           aria-label="Color space"
-          className="flex gap-1 p-1 rounded-lg bg-white/[0.04]"
+          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
         >
           {spaces.map((s) => (
             <button

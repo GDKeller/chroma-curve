@@ -1,24 +1,20 @@
-import { useMemo, useState } from "react";
-import chroma from "chroma-js";
+import { useMemo } from "react";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
-import { ToggleSwitch } from "../controls/ToggleSwitch";
 import type { ColorEntry } from "../../types/palette";
 import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
 interface SaturationCurveProps {
   entries: ColorEntry[];
+  showDots: boolean;
 }
 
-
-export function SaturationCurve({ entries }: SaturationCurveProps) {
-  const [showDots, setShowDots] = useState(true);
-  const hue = usePaletteStore((s) => s.hue);
+export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
   const satMode = usePaletteStore((s) => s.satMode);
 
-  const { curvePath, yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors } = useMemo(() => {
+  const { curvePath, yMin, yMax, effectiveDots, gridLines, gridTop } = useMemo(() => {
     // Sample the curve at every integer lightness
     const points: { x: number; y: number }[] = [];
     for (let l = 0; l <= 100; l++) {
@@ -27,7 +23,9 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
 
     const allY = points.map((p) => p.y);
     const yMin = Math.min(...allY, 0);
-    const yMax = Math.max(...allY) * 1.1;
+    const rawMax = Math.max(...allY);
+    // Snap to next 0.25 step so the chart fills the plot area cleanly
+    const yMax = Math.ceil(rawMax / 0.25) * 0.25;
 
     // Build SVG path for the multiplier curve
     const pathParts = points.map((p, i) => {
@@ -63,26 +61,16 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         label: v.toFixed(2),
       }));
 
-    // Comparison strips: unadjusted (flat sat) vs adjusted (curve-modulated)
-    const unadjustedColors = entries.map((e) =>
-      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
-    );
-    const adjustedColors = entries.map((e) => e.hex);
+    const gridTop = gridLines.length > 0 ? Math.min(...gridLines.map((g) => g.y)) : PAD.top;
 
-    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors };
-  }, [sMod, saturation, satMode, hue, entries]);
+    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, gridTop };
+  }, [sMod, saturation, satMode, entries]);
 
   // Vertical grid lines at lightness landmarks
   const xGridValues = [0, 25, 50, 75, 100];
 
   return (
-    <div className="mx-4 rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
-        <h3 className="text-[13px] font-semibold text-white/70 tracking-wide">
-          Saturation Adjustment
-        </h3>
-        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
-      </div>
+    <div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto"
@@ -98,14 +86,14 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
               y1={g.y}
               x2={W - PAD.right}
               y2={g.y}
-              stroke="rgba(255,255,255,0.06)"
+              stroke="var(--color-stroke-grid)"
               strokeWidth={1}
             />
             <text
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-[13px] fill-white/30 font-mono"
+              className="text-[13px] fill-text-faint font-mono"
             >
               {g.label}
             </text>
@@ -117,17 +105,17 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           <g key={l}>
             <line
               x1={toSvgX(l)}
-              y1={PAD.top}
+              y1={gridTop}
               x2={toSvgX(l)}
               y2={H - PAD.bottom}
-              stroke="rgba(255,255,255,0.06)"
+              stroke="var(--color-stroke-grid)"
               strokeWidth={1}
             />
             <text
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-[13px] fill-white/30 font-mono"
+              className="text-[13px] fill-text-faint font-mono"
             >
               {l}
             </text>
@@ -139,7 +127,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           x={PAD.left + PLOT_W / 2}
           y={H - 4}
           textAnchor="middle"
-          className="text-[10px] fill-white/30 font-sans"
+          className="text-[10px] fill-text-faint font-sans"
         >
           Lightness
         </text>
@@ -147,7 +135,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           x={12}
           y={PAD.top + PLOT_H / 2}
           textAnchor="middle"
-          className="text-[10px] fill-white/30 font-sans"
+          className="text-[10px] fill-text-faint font-sans"
           transform={`rotate(-90, 12, ${PAD.top + PLOT_H / 2})`}
         >
           Multiplier
@@ -159,7 +147,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           y1={toSvgY(1, yMin, yMax)}
           x2={W - PAD.right}
           y2={toSvgY(1, yMin, yMax)}
-          stroke="rgba(255,255,255,0.12)"
+          stroke="var(--color-stroke-axis)"
           strokeWidth={1}
           strokeDasharray="4 3"
         />
@@ -168,7 +156,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         <path
           d={curvePath}
           fill="none"
-          stroke="rgba(255,255,255,0.7)"
+          stroke="var(--color-stroke-primary)"
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -182,36 +170,12 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
             cy={d.cy}
             r={3}
             fill={d.hex}
-            stroke="rgba(255,255,255,0.4)"
+            stroke="var(--color-stroke-secondary)"
             strokeWidth={1}
           />
         ))}
       </svg>
 
-      {/* Comparison strips */}
-      <details className="px-4 pb-3">
-        <summary className="text-[11px] font-mono text-white/30 cursor-pointer select-none py-2 hover:text-white/50 transition-colors">
-          Compare
-        </summary>
-        <div className="space-y-2 pt-1">
-          <div>
-            <span className="text-[10px] font-mono text-white/30 block mb-1">Unadjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
-              {unadjustedColors.map((c, i) => (
-                <div key={i} style={{ backgroundColor: c }} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <span className="text-[10px] font-mono text-white/30 block mb-1">Adjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
-              {adjustedColors.map((c, i) => (
-                <div key={i} style={{ backgroundColor: c }} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </details>
     </div>
   );
 }
