@@ -8,25 +8,18 @@ const hueTrackStyle: React.CSSProperties = {
 
 export function HueSlider() {
   const hue = usePaletteStore((s) => s.hue);
-  const saturation = usePaletteStore((s) => s.saturation);
   const setHue = usePaletteStore((s) => s.setHue);
 
   return (
-    <div className="flex items-end gap-2 flex-1 min-w-[200px]">
-      <SliderBase
-        label="Hue"
-        value={hue}
-        min={0}
-        max={360}
-        step={1}
-        onValueChange={setHue}
-        trackStyle={hueTrackStyle}
-        formatValue={(v) => `${v}°`}
-      />
-      <div
-        className="w-5 h-5 rounded-full shrink-0 mb-[2px] border border-border-elevated"
-        style={{ backgroundColor: `hsl(${hue}, ${saturation * 100}%, 50%)` }}
-      />
-    </div>
+    <SliderBase
+      label="Hue"
+      value={hue}
+      min={0}
+      max={360}
+      step={1}
+      onValueChange={setHue}
+      trackStyle={hueTrackStyle}
+      formatValue={(v) => `${v}°`}
+    />
   );
 }
