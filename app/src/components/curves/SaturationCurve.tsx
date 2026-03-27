@@ -1,24 +1,20 @@
-import { useMemo, useState } from "react";
-import chroma from "chroma-js";
+import { useMemo } from "react";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
-import { ToggleSwitch } from "../controls/ToggleSwitch";
 import type { ColorEntry } from "../../types/palette";
 import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
 interface SaturationCurveProps {
   entries: ColorEntry[];
+  showDots: boolean;
 }
 
-
-export function SaturationCurve({ entries }: SaturationCurveProps) {
-  const [showDots, setShowDots] = useState(true);
-  const hue = usePaletteStore((s) => s.hue);
+export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
   const satMode = usePaletteStore((s) => s.satMode);
 
-  const { curvePath, yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors } = useMemo(() => {
+  const { curvePath, yMin, yMax, effectiveDots, gridLines, gridTop } = useMemo(() => {
     // Sample the curve at every integer lightness
     const points: { x: number; y: number }[] = [];
     for (let l = 0; l <= 100; l++) {
@@ -27,7 +23,9 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
 
     const allY = points.map((p) => p.y);
     const yMin = Math.min(...allY, 0);
-    const yMax = Math.max(...allY) * 1.1;
+    const rawMax = Math.max(...allY);
+    // Snap to next 0.25 step so the chart fills the plot area cleanly
+    const yMax = Math.ceil(rawMax / 0.25) * 0.25;
 
     // Build SVG path for the multiplier curve
     const pathParts = points.map((p, i) => {
@@ -63,26 +61,16 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         label: v.toFixed(2),
       }));
 
-    // Comparison strips: unadjusted (flat sat) vs adjusted (curve-modulated)
-    const unadjustedColors = entries.map((e) =>
-      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
-    );
-    const adjustedColors = entries.map((e) => e.hex);
+    const gridTop = gridLines.length > 0 ? Math.min(...gridLines.map((g) => g.y)) : PAD.top;
 
-    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, unadjustedColors, adjustedColors };
-  }, [sMod, saturation, satMode, hue, entries]);
+    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, gridTop };
+  }, [sMod, saturation, satMode, entries]);
 
   // Vertical grid lines at lightness landmarks
   const xGridValues = [0, 25, 50, 75, 100];
 
   return (
-    <div className="mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-border-default flex items-center justify-between">
-        <h3 className="text-[11px] font-medium text-text-tertiary uppercase tracking-wider">
-          Saturation Adjustment
-        </h3>
-        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
-      </div>
+    <div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto"
@@ -117,7 +105,7 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
           <g key={l}>
             <line
               x1={toSvgX(l)}
-              y1={PAD.top}
+              y1={gridTop}
               x2={toSvgX(l)}
               y2={H - PAD.bottom}
               stroke="var(--color-stroke-grid)"
@@ -188,30 +176,6 @@ export function SaturationCurve({ entries }: SaturationCurveProps) {
         ))}
       </svg>
 
-      {/* Comparison strips */}
-      <details className="px-4 pb-3">
-        <summary className="text-[11px] font-mono text-text-faint cursor-pointer select-none py-2 hover:text-text-muted transition-colors">
-          Compare
-        </summary>
-        <div className="space-y-2 pt-1">
-          <div>
-            <span className="text-[10px] font-mono text-text-faint block mb-1">Unadjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
-              {unadjustedColors.map((c, i) => (
-                <div key={i} style={{ backgroundColor: c }} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <span className="text-[10px] font-mono text-text-faint block mb-1">Adjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
-              {adjustedColors.map((c, i) => (
-                <div key={i} style={{ backgroundColor: c }} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </details>
     </div>
   );
 }

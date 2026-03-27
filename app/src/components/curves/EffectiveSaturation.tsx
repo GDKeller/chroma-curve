@@ -1,16 +1,15 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getSaturation } from "../../lib/palette";
 import { usePaletteStore } from "../../store/paletteStore";
-import { ToggleSwitch } from "../controls/ToggleSwitch";
 import type { ColorEntry } from "../../types/palette";
 import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
 interface EffectiveSaturationProps {
   entries: ColorEntry[];
+  showDots: boolean;
 }
 
-export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
-  const [showDots, setShowDots] = useState(true);
+export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationProps) {
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
   const satMode = usePaletteStore((s) => s.satMode);
@@ -62,13 +61,7 @@ export function EffectiveSaturation({ entries }: EffectiveSaturationProps) {
   const xGridValues = [0, 25, 50, 75, 100];
 
   return (
-    <div className="mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-border-default flex items-center justify-between">
-        <h3 className="text-[11px] font-medium text-text-tertiary uppercase tracking-wider">
-          Computed Saturation
-        </h3>
-        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
-      </div>
+    <div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto"

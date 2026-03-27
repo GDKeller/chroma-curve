@@ -76,7 +76,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   }, [entries, swatchCount, layout, reversed]);
 
   return (
-    <div>
+    <div className="flex flex-col">
       <div className="flex justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
         <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
           <label className="flex items-center gap-1 cursor-pointer">
@@ -117,7 +117,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
         </div>
       </div>
       <div
-        className={`grid ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
         style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
       >
         {displayEntries.map((entry) => (
