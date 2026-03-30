@@ -27,7 +27,7 @@ const spaces: { value: ColorSpace; label: string }[] = [
 ];
 
 const btnBase =
-  "flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
+  "flex-1 px-3 py-1.5 text-base font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
 const btnActive = "bg-surface-active text-white";
 
 export function FormatSelector({
@@ -39,7 +39,7 @@ export function FormatSelector({
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+        <span className="text-sm font-mono text-text-faint uppercase tracking-wider mb-1 block">
           Format
         </span>
         <div
@@ -61,7 +61,7 @@ export function FormatSelector({
         </div>
       </div>
       <div>
-        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+        <span className="text-sm font-mono text-text-faint uppercase tracking-wider mb-1 block">
           Color Space
         </span>
         <div

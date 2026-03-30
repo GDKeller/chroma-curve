@@ -480,7 +480,7 @@ function SolutionSection({ hue }: { hue: number }) {
 
   return (
     <div className="mt-2 pt-8 border-t border-border-default">
-      <div className="grid grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
         {/* Row 1: explanation text | animated picker */}
         <div>
           <p className="text-[13px] font-semibold text-text-secondary mb-3">The solution</p>
@@ -502,7 +502,7 @@ function SolutionSection({ hue }: { hue: number }) {
         <ColorPickerPlane hue={hue} />
 
         {/* Row 2: formula spanning both columns */}
-        <div className="col-span-2">
+        <div className="sm:col-span-2">
           <Formula />
         </div>
 
@@ -511,7 +511,7 @@ function SolutionSection({ hue }: { hue: number }) {
         <RotatedPicker pickerCells={pickerCells} curvePath={curvePath} />
 
         {/* Caption spanning both columns */}
-        <p className="col-span-2 text-[11px] text-text-faint text-center">
+        <p className="sm:col-span-2 text-[11px] text-text-faint text-center">
           The formula&rsquo;s curve (left) traces the perceptual boundary visible in the color field (right).
         </p>
       </div>
@@ -668,7 +668,7 @@ export function AboutButton() {
           aria-label="About this tool"
         >
           <Info size={14} />
-          <span className="text-[11px] hidden md:inline">What is this?</span>
+          <span className="text-[11px] inline">What is this?</span>
         </button>
       </Dialog.Trigger>
       <AnimatePresence>
@@ -689,11 +689,11 @@ export function AboutButton() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-6 rounded-2xl bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-4 sm:p-6 rounded-2xl bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
               >
-                <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.4fr] gap-x-6 gap-y-6 sm:gap-y-8">
                   {/* Title + intro — span both columns */}
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Dialog.Title className="text-lg font-semibold text-text-primary mb-2">
                       How it works
                     </Dialog.Title>
@@ -708,7 +708,7 @@ export function AboutButton() {
                   </div>
 
                   {/* Hue indicator — swatch aligned with L=50, labels flanking it */}
-                  <div className="col-start-2">
+                  <div className="sm:col-start-2">
                     <Popover.Root>
                       <div className="relative">
                         <div className="grid" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
@@ -768,7 +768,7 @@ export function AboutButton() {
                   </div>
 
                   {/* Lightness header — right column only */}
-                  <div className="col-start-2">
+                  <div className="sm:col-start-2">
                     <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
                     <LightnessHeader />
                   </div>
@@ -811,7 +811,7 @@ export function AboutButton() {
                   <Strip colors={strips.forExtremes} mark={markForExtremes} />
 
                   {/* The solution — spans both columns, uses its own 1fr 1fr subgrid */}
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <SolutionSection hue={hue} />
                   </div>
 
