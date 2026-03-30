@@ -3090,6 +3090,12 @@ On `fix/responsive`. What needs fixing?
 
 _**User (2026-03-30 07:25:49Z)**_
 
+<command-message>impeccable:adapt</command-message>
+<command-name>/impeccable:adapt</command-name>
+<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
+
+_**User (2026-03-30 07:25:49Z)**_
+
 Base directory for this skill: /Users/grant/.claude/plugins/marketplaces/impeccable/.claude/skills/adapt
 
 Adapt existing designs to work effectively across different contexts - different screen sizes, devices, platforms, or use cases.
@@ -3289,12 +3295,6 @@ ARGUMENTS: on mobile the options above the swatch grid get pushed out of view [I
 _**User (2026-03-30 07:25:49Z)**_
 
 [Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/1.png]
-
-_**User (2026-03-30 07:25:49Z)**_
-
-<command-message>impeccable:adapt</command-message>
-<command-name>/impeccable:adapt</command-name>
-<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
 
 ---
 
@@ -8763,3 +8763,442 @@ ab4cb01 feat(controls): add interactive target swatch with hue/sat color picker
 Based on the above changes, create a single git commit.
 
 You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:41:06Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Stage and commit responsive layout and text size changes
+
+```bash
+git add app/src/App.tsx app/src/components/About.tsx app/src/components/Header.tsx app/src/components/controls/ControlBar.tsx app/src/components/controls/LightnessRange.tsx app/src/components/controls/SaturationSlider.tsx app/src/components/controls/SliderBase.tsx app/src/components/controls/TargetSwatch.tsx app/src/components/controls/ToggleSwitch.tsx app/src/components/curves/ChartTabs.tsx app/src/components/export/ExportPreview.tsx app/src/components/export/FormatSelector.tsx app/src/components/palette/ColorSwatch.tsx app/src/components/palette/PaletteGrid.tsx app/src/index.css .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md && git commit -m "$(cat <<'EOF'
+fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens
+EOF
+)"
+```
+
+```text
+[fix/responsive d1aa80e] fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens
+ 16 files changed, 5804 insertions(+), 49 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:41:10Z)**_
+
+Committed `d1aa80e`: `fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens`
+
+---
+
+_**User (2026-03-30 09:45:20Z)**_
+
+i set "saturation curve" to 1rem in the devtools. why is 1rem so massive under desktop size?
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:45:30Z)**_
+
+
+
+Because the theme overrides change `text-sm` to `0.75rem` (12px), but the chart heading "SATURATION CURVE" uses `text-xs` which is now `0.6875rem` (11px). If you manually set it to `1rem` in devtools, that's 16px — the browser's default root font size.
+
+But your actual question is probably: why does `1rem` look so much bigger than you'd expect? At desktop, the other text around it is all `0.6875rem` or `0.75rem`, so `1rem` (16px) looks huge in comparison. The UI was designed with text well below the browser default.
+
+Are you wanting to bump the chart heading size, or were you testing whether rem scaling works for responsive?
+
+---
+
+_**User (2026-03-30 09:46:25Z)**_
+
+no what i mean is - I've worked on frontends with rem at 16px and it wasnt huge like this. shouldnt 16px be kind of a normal body text size?
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:46:33Z)**_
+
+
+
+Yeah 16px is standard body text. It looks huge here because this UI has no body text — everything is control labels and data at 11-12px. So `1rem` isn't actually big, it just looks big relative to everything else in the interface.
+
+The design is intentionally information-dense with small type (per the CLAUDE.md design spec — "small type sizes, information-dense without feeling cluttered"). There's nothing wrong with the rem value, it's just that the whole UI sits well below typical body text size.
+
+---
+
+_**User (2026-03-30 09:48:04Z)**_
+
+hmmmm i guess. well then let's just change the root font size on smaller screens. we dont need to fight the bottom end of the utility classes theyre all relative, so just shift the whole text size scale down. text-base just needs to stay 1rem (i think? maybe not.... ?)
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:48:13Z)**_
+
+_**Agent (claude-opus-4-6 2026-03-30 09:48:14Z)**_
+
+You don't need to anchor `text-base` at `1rem` — the whole point is that everything scales together. Just drop the root font-size on small screens and every rem value shrinks proportionally.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:48:15Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/index.css`
+
+```text
+1	@import "tailwindcss";
+2	
+3	@theme {
+4	  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+5	  --font-mono: "Geist Mono", ui-monospace, monospace;
+6	
+7	  /* Type scale overrides */
+8	  --text-xs: 0.6875rem;  /* 11px — toggles, secondary controls */
+9	  --text-sm: 0.75rem;    /* 12px — slider labels, values */
+10	  --text-2xs: 0.5rem;    /* 8px — swatch data values */
+11	
+12	  /* Text */
+13	  --color-text-primary: hsl(0 0% 91%);
+14	  --color-text-secondary: hsl(0 0% 72%);
+15	  --color-text-tertiary: hsl(0 0% 60%);
+16	  --color-text-muted: hsl(0 0% 50%);
+17	  --color-text-subtle: hsl(0 0% 44%);
+18	  --color-text-faint: hsl(0 0% 32%);
+19	
+20	  /* Surfaces */
+21	  --color-surface-base: hsl(0 0% 6%);
+22	  --color-surface-raised: hsl(0 0% 8%);
+23	  --color-surface-overlay: hsl(0 0% 10%);
+24	  --color-surface-hover: hsl(0 0% 12%);
+25	  --color-surface-active: hsl(0 0% 15%);
+26	  --color-surface-active-hover: hsl(0 0% 20%);
+27	
+28	  /* Borders */
+29	  --color-border-default: hsl(0 0% 12%);
+30	  --color-border-elevated: hsl(0 0% 15%);
+31	
+32	  /* Strokes (SVG) */
+33	  --color-stroke-grid: hsl(0 0% 12%);
+34	  --color-stroke-axis: hsl(0 0% 17%);
+35	  --color-stroke-secondary: hsl(0 0% 44%);
+36	  --color-stroke-primary: hsl(0 0% 72%);
+37	}
+38	
+39	@layer base {
+40	  *,
+41	  *::before,
+42	  *::after {
+43	    box-sizing: border-box;
+44	  }
+45	
+46	  body {
+47	    margin: 0;
+48	    -webkit-font-smoothing: antialiased;
+49	    -moz-osx-font-smoothing: grayscale;
+50	  }
+51	}
+52	
+53	@media (prefers-reduced-motion: reduce) {
+54	  *,
+55	  *::before,
+56	  *::after {
+57	    animation-duration: 0.01ms !important;
+58	    animation-iteration-count: 1 !important;
+59	    transition-duration: 0.01ms !important;
+60	    scroll-behavior: auto !important;
+61	  }
+62	}
+63
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:48:22Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:48:27Z)**_
+
+That's it. 14px on mobile, 15px on tablet, 16px on desktop. Every rem value in the app scales down proportionally — no class changes needed anywhere.
+
+---
+
+_**User (2026-03-30 09:48:51Z)**_
+
+yeah that's what i meant - that we shouldn't make text-base anything other than 1rem
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:48:57Z)**_
+
+
+
+Right. `text-base` stays `1rem`, and `1rem` just means something different at each breakpoint. The scale stays intact.
+
+---
+
+_**User (2026-03-30 09:50:30Z)**_
+
+<command-message>commit-commands:commit</command-message>
+<command-name>/commit-commands:commit</command-name>
+
+_**User (2026-03-30 09:50:30Z)**_
+
+## Context
+
+- Current git status: On branch fix/responsive
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+	modified:   app/src/index.css
+
+no changes added to commit (use "git add" and/or "git commit -a")
+- Current git diff (staged and unstaged changes): diff --git a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+index 0e0e7e4..b140b95 100644
+--- a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
++++ b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+@@ -8763,3 +8763,178 @@ ab4cb01 feat(controls): add interactive target swatch with hue/sat color picker
+ Based on the above changes, create a single git commit.
+ 
+ You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
++
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 09:41:06Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Stage and commit responsive layout and text size changes
++
++```bash
++git add app/src/App.tsx app/src/components/About.tsx app/src/components/Header.tsx app/src/components/controls/ControlBar.tsx app/src/components/controls/LightnessRange.tsx app/src/components/controls/SaturationSlider.tsx app/src/components/controls/SliderBase.tsx app/src/components/controls/TargetSwatch.tsx app/src/components/controls/ToggleSwitch.tsx app/src/components/curves/ChartTabs.tsx app/src/components/export/ExportPreview.tsx app/src/components/export/FormatSelector.tsx app/src/components/palette/ColorSwatch.tsx app/src/components/palette/PaletteGrid.tsx app/src/index.css .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md && git commit -m "$(cat <<'EOF'
++fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens
++EOF
++)"
++```
++
++```text
++[fix/responsive d1aa80e] fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens
++ 16 files changed, 5804 insertions(+), 49 deletions(-)
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:41:10Z)**_
++
++Committed `d1aa80e`: `fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens`
++
++---
++
++_**User (2026-03-30 09:45:20Z)**_
++
++i set "saturation curve" to 1rem in the devtools. why is 1rem so massive under desktop size?
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 09:45:30Z)**_
++
++
++
++Because the theme overrides change `text-sm` to `0.75rem` (12px), but the chart heading "SATURATION CURVE" uses `text-xs` which is now `0.6875rem` (11px). If you manually set it to `1rem` in devtools, that's 16px — the browser's default root font size.
++
++But your actual question is probably: why does `1rem` look so much bigger than you'd expect? At desktop, the other text around it is all `0.6875rem` or `0.75rem`, so `1rem` (16px) looks huge in comparison. The UI was designed with text well below the browser default.
++
++Are you wanting to bump the chart heading size, or were you testing whether rem scaling works for responsive?
++
++---
++
++_**User (2026-03-30 09:46:25Z)**_
++
++no what i mean is - I've worked on frontends with rem at 16px and it wasnt huge like this. shouldnt 16px be kind of a normal body text size?
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 09:46:33Z)**_
++
++
++
++Yeah 16px is standard body text. It looks huge here because this UI has no body text — everything is control labels and data at 11-12px. So `1rem` isn't actually big, it just looks big relative to everything else in the interface.
++
++The design is intentionally information-dense with small type (per the CLAUDE.md design spec — "small type sizes, information-dense without feeling cluttered"). There's nothing wrong with the rem value, it's just that the whole UI sits well below typical body text size.
++
++---
++
++_**User (2026-03-30 09:48:04Z)**_
++
++hmmmm i guess. well then let's just change the root font size on smaller screens. we dont need to fight the bottom end of the utility classes theyre all relative, so just shift the whole text size scale down. text-base just needs to stay 1rem (i think? maybe not.... ?)
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 09:48:13Z)**_
++
++_**Agent (claude-opus-4-6 2026-03-30 09:48:14Z)**_
++
++You don't need to anchor `text-base` at `1rem` — the whole point is that everything scales together. Just drop the root font-size on small screens and every rem value shrinks proportionally.
++
++_**Agent (claude-opus-4-6 2026-03-30 09:48:15Z)**_
++
++<tool-use data-tool-type="read" data-tool-name="Read"><details>
++<summary>Tool use: **Read**</summary>
++ `./app/src/index.css`
++
++```text
++1	@import "tailwindcss";
++2	
++3	@theme {
++4	  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
++5	  --font-mono: "Geist Mono", ui-monospace, monospace;
++6	
++7	  /* Type scale overrides */
++8	  --text-xs: 0.6875rem;  /* 11px — toggles, secondary controls */
++9	  --text-sm: 0.75rem;    /* 12px — slider labels, values */
++10	  --text-2xs: 0.5rem;    /* 8px — swatch data values */
++11	
++12	  /* Text */
++13	  --color-text-primary: hsl(0 0% 91%);
++14	  --color-text-secondary: hsl(0 0% 72%);
++15	  --color-text-tertiary: hsl(0 0% 60%);
++16	  --color-text-muted: hsl(0 0% 50%);
++17	  --color-text-subtle: hsl(0 0% 44%);
++18	  --color-text-faint: hsl(0 0% 32%);
++19	
++20	  /* Surfaces */
++21	  --color-surface-base: hsl(0 0% 6%);
++22	  --color-surface-raised: hsl(0 0% 8%);
++23	  --color-surface-overlay: hsl(0 0% 10%);
++24	  --color-surface-hover: hsl(0 0% 12%);
++25	  --color-surface-active: hsl(0 0% 15%);
++26	  --color-surface-active-hover: hsl(0 0% 20%);
++27	
++28	  /* Borders */
++29	  --color-border-default: hsl(0 0% 12%);
++30	  --color-border-elevated: hsl(0 0% 15%);
++31	
++32	  /* Strokes (SVG) */
++33	  --color-stroke-grid: hsl(0 0% 12%);
++34	  --color-stroke-axis: hsl(0 0% 17%);
++35	  --color-stroke-secondary: hsl(0 0% 44%);
++36	  --color-stroke-primary: hsl(0 0% 72%);
++37	}
++38	
++39	@layer base {
++40	  *,
++41	  *::before,
++42	  *::after {
++43	    box-sizing: border-box;
++44	  }
++45	
++46	  body {
++47	    margin: 0;
++48	    -webkit-font-smoothing: antialiased;
++49	    -moz-osx-font-smoothing: grayscale;
++50	  }
++51	}
++52	
++53	@media (prefers-reduced-motion: reduce) {
++54	  *,
++55	  *::before,
++56	  *::after {
++57	    animation-duration: 0.01ms !important;
++58	    animation-iteration-count: 1 !important;
++59	    transition-duration: 0.01ms !important;
++60	    scroll-behavior: auto !important;
++61	  }
++62	}
++63
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:48:22Z)**_
++
++<tool-use data-tool-type="write" data-tool-name="Edit"><details>
++<summary>Tool use: **Edit**</summary>
++
++```text
++The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:48:27Z)**_
++
++That's it. 14px on mobile, 15px on tablet, 16px on desktop. Every rem value in the app scales down proportionally — no class changes needed anywhere.
++
++---
++
++_**User (2026-03-30 09:48:51Z)**_
++
++yeah that's what i meant - that we shouldn't make text-base anything other than 1rem
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 09:48:57Z)**_
++
++
++
++Right. `text-base` stays `1rem`, and `1rem` just means something different at each breakpoint. The scale stays intact.
+diff --git a/app/src/index.css b/app/src/index.css
+index 9c8c25d..0928d29 100644
+--- a/app/src/index.css
++++ b/app/src/index.css
+@@ -43,6 +43,22 @@
+     box-sizing: border-box;
+   }
+ 
++  html {
++    font-size: 14px;
++  }
++
++  @media (min-width: 640px) {
++    html {
++      font-size: 15px;
++    }
++  }
++
++  @media (min-width: 1024px) {
++    html {
++      font-size: 16px;
++    }
++  }
++
+   body {
+     margin: 0;
+     -webkit-font-smoothing: antialiased;
+- Current branch: fix/responsive
+- Recent commits: d1aa80e fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens
+dc86228 fix(responsive): stack controls and fix grid overflow on mobile
+30c96dc chore: add README, remove .serena and Vite boilerplate README, update .gitignore
+04af23f feat(deploy): add Cloudflare Pages config for chromacurve.grantkeller.dev
+2b5cfbd docs(board): add planning epics, notes, and session history
+743da23 merge: ui/design-polish into main
+e705760 chore(board): archive 19 completed tasks (TASK-0001 through TASK-0019)
+cbdfc64 chore: remove legacy codepen files, add attribution resources and preserve Desmos formula
+ab4cb01 feat(controls): add interactive target swatch with hue/sat color picker
+70a8479 feat(charts): combine charts into tabbed panel, fix layout balance
+
+## Your task
+
+Based on the above changes, create a single git commit.
+
+You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:50:37Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Stage and commit root font-size scaling
+
+```bash
+git add app/src/index.css .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md && git commit -m "$(cat <<'EOF'
+style(type): scale root font-size down on mobile/tablet for proportional rem sizing
+EOF
+)"
+```
+</details></tool-use>
