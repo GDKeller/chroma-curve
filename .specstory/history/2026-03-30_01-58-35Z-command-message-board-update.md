@@ -3090,12 +3090,6 @@ On `fix/responsive`. What needs fixing?
 
 _**User (2026-03-30 07:25:49Z)**_
 
-<command-message>impeccable:adapt</command-message>
-<command-name>/impeccable:adapt</command-name>
-<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
-
-_**User (2026-03-30 07:25:49Z)**_
-
 Base directory for this skill: /Users/grant/.claude/plugins/marketplaces/impeccable/.claude/skills/adapt
 
 Adapt existing designs to work effectively across different contexts - different screen sizes, devices, platforms, or use cases.
@@ -3295,6 +3289,12 @@ ARGUMENTS: on mobile the options above the swatch grid get pushed out of view [I
 _**User (2026-03-30 07:25:49Z)**_
 
 [Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/1.png]
+
+_**User (2026-03-30 07:25:49Z)**_
+
+<command-message>impeccable:adapt</command-message>
+<command-name>/impeccable:adapt</command-name>
+<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
 
 ---
 
@@ -10163,6 +10163,698 @@ dc86228 fix(responsive): stack controls and fix grid overflow on mobile
 743da23 merge: ui/design-polish into main
 e705760 chore(board): archive 19 completed tasks (TASK-0001 through TASK-0019)
 cbdfc64 chore: remove legacy codepen files, add attribution resources and preserve Desmos formula
+
+## Your task
+
+Based on the above changes, create a single git commit.
+
+You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 10:44:46Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit type scale overrides with 16px root
+
+```bash
+git add app/src/index.css app/src/components/Header.tsx .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md && git commit -m "$(cat <<'EOF'
+style(type): override Tailwind text scale for instrument UI, restore 16px root font-size
+EOF
+)"
+```
+
+```text
+[fix/responsive e8d899d] style(type): override Tailwind text scale for instrument UI, restore 16px root font-size
+ 3 files changed, 994 insertions(+), 17 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:44:50Z)**_
+
+Committed `e8d899d`: `style(type): override Tailwind text scale for instrument UI, restore 16px root font-size`
+
+---
+
+_**User (2026-03-30 10:59:31Z)**_
+
+is md: breakpoint 768?
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 10:59:36Z)**_
+
+
+
+Yes. Tailwind's default breakpoints: `sm` 640px, `md` 768px, `lg` 1024px, `xl` 1280px, `2xl` 1536px.
+
+---
+
+_**User (2026-03-30 11:17:49Z)**_
+
+at the md size when the charts are in the control bar, hide the "compare" the "saturation curve" title and "steps"
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 11:17:54Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/ChartTabs.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import * as Tabs from "@radix-ui/react-tabs";
+3	import chroma from "chroma-js";
+4	import { SaturationCurve } from "./SaturationCurve";
+5	import { EffectiveSaturation } from "./EffectiveSaturation";
+6	import { ToggleSwitch } from "../controls/ToggleSwitch";
+7	import { usePaletteStore } from "../../store/paletteStore";
+8	import type { ColorEntry } from "../../types/palette";
+9	
+10	interface ChartTabsProps {
+11	  entries: ColorEntry[];
+12	}
+13	
+14	export function ChartTabs({ entries }: ChartTabsProps) {
+15	  const [showDots, setShowDots] = useState(true);
+16	  const hue = usePaletteStore((s) => s.hue);
+17	  const saturation = usePaletteStore((s) => s.saturation);
+18	
+19	  const { unadjustedColors, adjustedColors } = useMemo(() => ({
+20	    unadjustedColors: entries.map((e) =>
+21	      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
+22	    ),
+23	    adjustedColors: entries.map((e) => e.hex),
+24	  }), [entries, hue, saturation]);
+25	
+26	  return (
+27	    <div className="mx-4 md:mx-0 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+28	      <div className="px-4 py-2.5 flex items-center justify-between">
+29	        <h3 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
+30	          Saturation Curve
+31	        </h3>
+32	        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+33	      </div>
+34	      <Tabs.Root defaultValue="adjustment">
+35	        <Tabs.List className="flex border-y border-border-default">
+36	          <Tabs.Trigger
+37	            value="adjustment"
+38	            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+39	          >
+40	            Adjustment
+41	          </Tabs.Trigger>
+42	          <Tabs.Trigger
+43	            value="computed"
+44	            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+45	          >
+46	            Computed
+47	          </Tabs.Trigger>
+48	        </Tabs.List>
+49	        <Tabs.Content value="adjustment">
+50	          <SaturationCurve entries={entries} showDots={showDots} />
+51	        </Tabs.Content>
+52	        <Tabs.Content value="computed">
+53	          <EffectiveSaturation entries={entries} showDots={showDots} />
+54	        </Tabs.Content>
+55	      </Tabs.Root>
+56	      <details className="px-4 pb-3">
+57	        <summary className="text-sm font-mono text-text-subtle cursor-pointer select-none py-2 hover:text-text-muted transition-colors">
+58	          Compare
+59	        </summary>
+60	        <div className="space-y-2 pt-1">
+61	          <div>
+62	            <span className="text-sm font-mono text-text-faint block mb-1">Unadjusted</span>
+63	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+64	              {unadjustedColors.map((c, i) => (
+65	                <div key={i} style={{ backgroundColor: c }} />
+66	              ))}
+67	            </div>
+68	          </div>
+69	          <div>
+70	            <span className="text-sm font-mono text-text-faint block mb-1">Adjusted</span>
+71	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+72	              {adjustedColors.map((c, i) => (
+73	                <div key={i} style={{ backgroundColor: c }} />
+74	              ))}
+75	            </div>
+76	          </div>
+77	        </div>
+78	      </details>
+79	    </div>
+80	  );
+81	}
+82
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:18:01Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:18:09Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:18:26Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.42s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:18:31Z)**_
+
+Done. The title/steps row and compare section hide at `md` (when chart is in the ControlBar) and reappear at `lg` (when it's back in the content sidebar).
+
+---
+
+_**User (2026-03-30 11:26:14Z)**_
+
+put "steps" below the graph on the same "row" as the "compare" label but on the right
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 11:26:23Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:26:28Z)**_
+
+Hmm, that's getting messy with two ToggleSwitches. Let me rethink — you want "Compare" on the left and "steps" on the right, same row, below the graph at all sizes.
+
+_**Agent (claude-opus-4-6 2026-03-30 11:26:29Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/ChartTabs.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import * as Tabs from "@radix-ui/react-tabs";
+3	import chroma from "chroma-js";
+4	import { SaturationCurve } from "./SaturationCurve";
+5	import { EffectiveSaturation } from "./EffectiveSaturation";
+6	import { ToggleSwitch } from "../controls/ToggleSwitch";
+7	import { usePaletteStore } from "../../store/paletteStore";
+8	import type { ColorEntry } from "../../types/palette";
+9	
+10	interface ChartTabsProps {
+11	  entries: ColorEntry[];
+12	}
+13	
+14	export function ChartTabs({ entries }: ChartTabsProps) {
+15	  const [showDots, setShowDots] = useState(true);
+16	  const hue = usePaletteStore((s) => s.hue);
+17	  const saturation = usePaletteStore((s) => s.saturation);
+18	
+19	  const { unadjustedColors, adjustedColors } = useMemo(() => ({
+20	    unadjustedColors: entries.map((e) =>
+21	      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
+22	    ),
+23	    adjustedColors: entries.map((e) => e.hex),
+24	  }), [entries, hue, saturation]);
+25	
+26	  return (
+27	    <div className="mx-4 md:mx-0 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+28	      <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
+29	        <h3 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
+30	          Saturation Curve
+31	        </h3>
+32	        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+33	      </div>
+34	      <Tabs.Root defaultValue="adjustment">
+35	        <Tabs.List className="flex border-y border-border-default">
+36	          <Tabs.Trigger
+37	            value="adjustment"
+38	            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+39	          >
+40	            Adjustment
+41	          </Tabs.Trigger>
+42	          <Tabs.Trigger
+43	            value="computed"
+44	            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+45	          >
+46	            Computed
+47	          </Tabs.Trigger>
+48	        </Tabs.List>
+49	        <Tabs.Content value="adjustment">
+50	          <SaturationCurve entries={entries} showDots={showDots} />
+51	        </Tabs.Content>
+52	        <Tabs.Content value="computed">
+53	          <EffectiveSaturation entries={entries} showDots={showDots} />
+54	        </Tabs.Content>
+55	      </Tabs.Root>
+56	      <div className="hidden md:flex lg:hidden px-4 py-2 justify-end">
+57	        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+58	      </div>
+59	      <details className="px-4 pb-3 md:hidden lg:block">
+60	        <summary className="text-sm font-mono text-text-subtle cursor-pointer select-none py-2 hover:text-text-muted transition-colors flex items-center justify-between">
+61	          <span>Compare</span>
+62	          <span className="hidden lg:block" onClick={(e) => e.stopPropagation()}>
+63	            <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+64	          </span>
+65	        </summary>
+66	        <div className="space-y-2 pt-1">
+67	          <div>
+68	            <span className="text-sm font-mono text-text-faint block mb-1">Unadjusted</span>
+69	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+70	              {unadjustedColors.map((c, i) => (
+71	                <div key={i} style={{ backgroundColor: c }} />
+72	              ))}
+73	            </div>
+74	          </div>
+75	          <div>
+76	            <span className="text-sm font-mono text-text-faint block mb-1">Adjusted</span>
+77	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+78	              {adjustedColors.map((c, i) => (
+79	                <div key={i} style={{ backgroundColor: c }} />
+80	              ))}
+81	            </div>
+82	          </div>
+83	        </div>
+84	      </details>
+85	    </div>
+86	  );
+87	}
+88
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:26:33Z)**_
+
+Let me clean this up. Remove the duplicate ToggleSwitches and put steps on the Compare row at all sizes:
+
+_**Agent (claude-opus-4-6 2026-03-30 11:26:42Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Write"><details>
+<summary>Tool use: **Write**</summary>
+
+```tsx
+import { useMemo, useState } from "react";
+import * as Tabs from "@radix-ui/react-tabs";
+import chroma from "chroma-js";
+import { SaturationCurve } from "./SaturationCurve";
+import { EffectiveSaturation } from "./EffectiveSaturation";
+import { ToggleSwitch } from "../controls/ToggleSwitch";
+import { usePaletteStore } from "../../store/paletteStore";
+import type { ColorEntry } from "../../types/palette";
+
+interface ChartTabsProps {
+  entries: ColorEntry[];
+}
+
+export function ChartTabs({ entries }: ChartTabsProps) {
+  const [showDots, setShowDots] = useState(true);
+  const hue = usePaletteStore((s) => s.hue);
+  const saturation = usePaletteStore((s) => s.saturation);
+
+  const { unadjustedColors, adjustedColors } = useMemo(() => ({
+    unadjustedColors: entries.map((e) =>
+      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
+    ),
+    adjustedColors: entries.map((e) => e.hex),
+  }), [entries, hue, saturation]);
+
+  return (
+    <div className="mx-4 md:mx-0 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+      <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
+        <h3 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
+          Saturation Curve
+        </h3>
+      </div>
+      <Tabs.Root defaultValue="adjustment">
+        <Tabs.List className="flex border-y border-border-default">
+          <Tabs.Trigger
+            value="adjustment"
+            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+          >
+            Adjustment
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            value="computed"
+            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+          >
+            Computed
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="adjustment">
+          <SaturationCurve entries={entries} showDots={showDots} />
+        </Tabs.Content>
+        <Tabs.Content value="computed">
+          <EffectiveSaturation entries={entries} showDots={showDots} />
+        </Tabs.Content>
+      </Tabs.Root>
+      <div className="px-4 py-2 flex items-center justify-between">
+        <details className="md:hidden lg:block">
+          <summary className="text-sm font-mono text-text-subtle cursor-pointer select-none hover:text-text-muted transition-colors">
+            Compare
+          </summary>
+          <div className="space-y-2 pt-2">
+            <div>
+              <span className="text-sm font-mono text-text-faint block mb-1">Unadjusted</span>
+              <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+                {unadjustedColors.map((c, i) => (
+                  <div key={i} style={{ backgroundColor: c }} />
+                ))}
+              </div>
+            </div>
+            <div>
+              <span className="text-sm font-mono text-text-faint block mb-1">Adjusted</span>
+              <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+                {adjustedColors.map((c, i) => (
+                  <div key={i} style={{ backgroundColor: c }} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </details>
+        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+      </div>
+    </div>
+  );
+}
+
+```
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:26:55Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.26s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:27:01Z)**_
+
+Now there's one ToggleSwitch for "steps", always visible, sitting on the right side of a row below the graph. "Compare" sits on the left of that same row (hidden at `md`, visible on mobile and `lg`+). At `md` when Compare is hidden, steps just floats right via `justify-between`.
+
+---
+
+_**User (2026-03-30 11:58:51Z)**_
+
+[Image #9] [Image #10] when "compare" is open steps should stay in the same place, and the strips should be full width
+
+_**User (2026-03-30 11:58:51Z)**_
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/9.png]
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/10.png]
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 11:58:58Z)**_
+
+
+
+The issue is the `details` and `ToggleSwitch` are siblings in a flex row, so when `details` opens it pushes the strips into the same row as steps. I need to separate the summary/steps row from the details content.
+
+_**Agent (claude-opus-4-6 2026-03-30 11:59:07Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Write"><details>
+<summary>Tool use: **Write**</summary>
+
+```tsx
+import { useMemo, useState } from "react";
+import * as Tabs from "@radix-ui/react-tabs";
+import chroma from "chroma-js";
+import { SaturationCurve } from "./SaturationCurve";
+import { EffectiveSaturation } from "./EffectiveSaturation";
+import { ToggleSwitch } from "../controls/ToggleSwitch";
+import { usePaletteStore } from "../../store/paletteStore";
+import type { ColorEntry } from "../../types/palette";
+
+interface ChartTabsProps {
+  entries: ColorEntry[];
+}
+
+export function ChartTabs({ entries }: ChartTabsProps) {
+  const [showDots, setShowDots] = useState(true);
+  const [showCompare, setShowCompare] = useState(false);
+  const hue = usePaletteStore((s) => s.hue);
+  const saturation = usePaletteStore((s) => s.saturation);
+
+  const { unadjustedColors, adjustedColors } = useMemo(() => ({
+    unadjustedColors: entries.map((e) =>
+      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
+    ),
+    adjustedColors: entries.map((e) => e.hex),
+  }), [entries, hue, saturation]);
+
+  return (
+    <div className="mx-4 md:mx-0 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+      <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
+        <h3 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
+          Saturation Curve
+        </h3>
+      </div>
+      <Tabs.Root defaultValue="adjustment">
+        <Tabs.List className="flex border-y border-border-default">
+          <Tabs.Trigger
+            value="adjustment"
+            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+          >
+            Adjustment
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            value="computed"
+            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+          >
+            Computed
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="adjustment">
+          <SaturationCurve entries={entries} showDots={showDots} />
+        </Tabs.Content>
+        <Tabs.Content value="computed">
+          <EffectiveSaturation entries={entries} showDots={showDots} />
+        </Tabs.Content>
+      </Tabs.Root>
+      <div className="px-4 py-2 flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => setShowCompare(!showCompare)}
+          className="text-sm font-mono text-text-subtle cursor-pointer select-none hover:text-text-muted transition-colors md:hidden lg:block"
+        >
+          {showCompare ? "▾" : "▸"} Compare
+        </button>
+        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+      </div>
+      {showCompare && (
+        <div className="px-4 pb-3 space-y-2 md:hidden lg:block">
+          <div>
+            <span className="text-sm font-mono text-text-faint block mb-1">Unadjusted</span>
+            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+              {unadjustedColors.map((c, i) => (
+                <div key={i} style={{ backgroundColor: c }} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <span className="text-sm font-mono text-text-faint block mb-1">Adjusted</span>
+            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+              {adjustedColors.map((c, i) => (
+                <div key={i} style={{ backgroundColor: c }} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+```
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:59:19Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.93s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 11:59:24Z)**_
+
+Replaced `<details>` with controlled state. Now "Compare" and "steps" are always on a fixed row, and the compare strips render as a separate block below — full width, independent of the toggle position.
+
+---
+
+_**User (2026-03-30 12:37:58Z)**_
+
+i made some changes. review
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 12:38:03Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/ChartTabs.tsx`
+
+```text
+File unchanged since last read. The content from the earlier Read tool_result in this conversation is still current — refer to that instead of re-reading.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 12:38:12Z)**_
+
+Looking at the changes from the system reminder:
+
+1. **Line 28**: `rounded-xl` → `rounded-xs` — tighter border radius
+2. **Lines 38, 44**: Tab triggers get responsive sizing: `text-sm md:text-2xs lg:text-sm`, smaller padding at `md`, tracking goes to `normal` at `md` — good, shrinks tabs when chart is in the controlbar
+3. **Line 56**: The compare/steps row gets `md:hidden md:justify-end lg:justify-between lg:block` — but `md:hidden` will hide the entire row at `md`, including the steps toggle. Was that intentional? If you want steps visible at `md` but not compare, the row should be `md:flex` not `md:hidden`, with just the compare button staying `md:hidden lg:block`.
+
+That last one looks like a bug — steps disappears at tablet size.
+
+---
+
+_**User (2026-03-30 12:42:56Z)**_
+
+3 i did that on purpose, the graph is really tall at that size and it just wasnt working
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 12:43:01Z)**_
+
+
+
+Got it, makes sense. The rest looks good — the responsive tab sizing is a nice touch for the compact controlbar layout.
+
+---
+
+_**User (2026-03-30 12:43:41Z)**_
+
+<command-message>commit-commands:commit</command-message>
+<command-name>/commit-commands:commit</command-name>
+
+_**User (2026-03-30 12:43:41Z)**_
+
+## Context
+
+- Current git status: On branch fix/responsive
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+	modified:   app/src/components/About.tsx
+	modified:   app/src/components/Header.tsx
+	modified:   app/src/components/controls/ControlBar.tsx
+	modified:   app/src/components/controls/ToggleSwitch.tsx
+	modified:   app/src/components/curves/ChartTabs.tsx
+
+no changes added to commit (use "git add" and/or "git commit -a")
+- Current git diff (staged and unstaged changes): <persisted-output>
+Output too large (32KB). Full output saved to: /Users/grant/.claude/projects/-Users-grant-code-chroma-curve/271ae6ef-226b-4086-b1cf-6748e211ed71/tool-results/b0d7in1ni.txt
+
+Preview (first 2KB):
+diff --git a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+index a6f0071..ccc7e2f 100644
+--- a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
++++ b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+@@ -3090,12 +3090,6 @@ On `fix/responsive`. What needs fixing?
+ 
+ _**User (2026-03-30 07:25:49Z)**_
+ 
+-<command-message>impeccable:adapt</command-message>
+-<command-name>/impeccable:adapt</command-name>
+-<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
+-
+-_**User (2026-03-30 07:25:49Z)**_
+-
+ Base directory for this skill: /Users/grant/.claude/plugins/marketplaces/impeccable/.claude/skills/adapt
+ 
+ Adapt existing designs to work effectively across different contexts - different screen sizes, devices, platforms, or use cases.
+@@ -3296,6 +3290,12 @@ _**User (2026-03-30 07:25:49Z)**_
+ 
+ [Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/1.png]
+ 
++_**User (2026-03-30 07:25:49Z)**_
++
++<command-message>impeccable:adapt</command-message>
++<command-name>/impeccable:adapt</command-name>
++<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
++
+ ---
+ 
+ _**Agent (claude-opus-4-6 2026-03-30 07:25:54Z)**_
+@@ -10169,3 +10169,606 @@ cbdfc64 chore: remove legacy codepen files, add attribution resources and preser
+ Based on the above changes, create a single git commit.
+ 
+ You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
++
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 10:44:46Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
+...
+</persisted-output>
+- Current branch: fix/responsive
+- Recent commits: e8d899d style(type): override Tailwind text scale for instrument UI, restore 16px root font-size
+f0755c1 refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size
+6dd5c6e style(type): scale root font-size down on mobile/tablet for proportional rem sizing
+d1aa80e fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens
+dc86228 fix(responsive): stack controls and fix grid overflow on mobile
+30c96dc chore: add README, remove .serena and Vite boilerplate README, update .gitignore
+04af23f feat(deploy): add Cloudflare Pages config for chromacurve.grantkeller.dev
+2b5cfbd docs(board): add planning epics, notes, and session history
+743da23 merge: ui/design-polish into main
+e705760 chore(board): archive 19 completed tasks (TASK-0001 through TASK-0019)
 
 ## Your task
 
