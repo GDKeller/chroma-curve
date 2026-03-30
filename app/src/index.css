@@ -4,8 +4,13 @@
   --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
 
-  /* text-2xs for swatch data values */
-  --text-2xs: 0.625rem;
+  /* Type scale — tighter for instrument UI */
+  --text-2xs: 0.5rem;     /* 8px */
+  --text-xs: 0.625rem;    /* 10px */
+  --text-sm: 0.75rem;     /* 12px */
+  --text-base: 0.8125rem; /* 13px */
+  --text-lg: 0.9375rem;   /* 15px */
+  --text-xl: 1.0625rem;   /* 17px */
 
   /* Text */
   --color-text-primary: hsl(0 0% 91%);
@@ -42,19 +47,7 @@
   }
 
   html {
-    font-size: 11px;
-  }
-
-  @media (min-width: 640px) {
-    html {
-      font-size: 12px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    html {
-      font-size: 13px;
-    }
+    font-size: 16px;
   }
 
   body {
