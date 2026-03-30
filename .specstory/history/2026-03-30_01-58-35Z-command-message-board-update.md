@@ -9201,4 +9201,971 @@ style(type): scale root font-size down on mobile/tablet for proportional rem siz
 EOF
 )"
 ```
+
+```text
+[fix/responsive 6dd5c6e] style(type): scale root font-size down on mobile/tablet for proportional rem sizing
+ 2 files changed, 461 insertions(+), 6 deletions(-)
+```
 </details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:50:43Z)**_
+
+Committed `6dd5c6e`: `style(type): scale root font-size down on mobile/tablet for proportional rem sizing`
+
+---
+
+_**User (2026-03-30 09:58:05Z)**_
+
+the text sizes are still almost exclusively using text-xs and text-sm. lower the root font size so the scale lowers, so there's a more even distribution across avialable text size classes
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:10Z)**_
+
+
+
+The issue is that the theme overrides redefined `text-xs` and `text-sm` to smaller values (11px, 12px), which makes them cluster together. If we drop the root font-size lower and use Tailwind's default scale instead, we get better spread.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:12Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/index.css`
+
+```text
+1	@import "tailwindcss";
+2	
+3	@theme {
+4	  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+5	  --font-mono: "Geist Mono", ui-monospace, monospace;
+6	
+7	  /* Type scale overrides */
+8	  --text-xs: 0.6875rem;  /* 11px — toggles, secondary controls */
+9	  --text-sm: 0.75rem;    /* 12px — slider labels, values */
+10	  --text-2xs: 0.5rem;    /* 8px — swatch data values */
+11	
+12	  /* Text */
+13	  --color-text-primary: hsl(0 0% 91%);
+14	  --color-text-secondary: hsl(0 0% 72%);
+15	  --color-text-tertiary: hsl(0 0% 60%);
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:20Z)**_
+
+Remove the overrides, drop the root font-size so Tailwind's defaults land where we need them, and redistribute the classes.
+
+Tailwind defaults at 13px root:
+- `text-xs` = 0.75rem = **9.75px**
+- `text-sm` = 0.875rem = **11.4px**  
+- `text-base` = 1rem = **13px**
+- `text-lg` = 1.125rem = **14.6px**
+
+At 13px root: `text-sm` (~11px) handles toggles/secondary, `text-base` (~13px) handles slider labels, `text-xs` (~10px) handles tiny data. That's a much better spread.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:21Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:25Z)**_
+
+Now update the root font-sizes:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:28Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:33Z)**_
+
+Now update the components. Current `text-xs` (toggles/secondary) should become `text-sm`, current `text-sm` (labels/values) should become `text-base`:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:35Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Find files to update
+
+`cd /Users/grant/code/chroma-curve/app/src && grep -rl "text-sm\|text-xs" --include="*.tsx" components/controls/ components/palette/ components/curves/ components/export/ components/Header.tsx | sort`
+
+```text
+components/Header.tsx
+components/controls//LightnessRange.tsx
+components/controls//SaturationSlider.tsx
+components/controls//SliderBase.tsx
+components/controls//TargetSwatch.tsx
+components/controls//ToggleSwitch.tsx
+components/curves//ChartTabs.tsx
+components/export//ExportDialog.tsx
+components/export//ExportPreview.tsx
+components/export//FormatSelector.tsx
+components/palette//ColorSwatch.tsx
+components/palette//PaletteGrid.tsx
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:58:40Z)**_
+
+I need to be careful — `text-sm` → `text-base` and `text-xs` → `text-sm`, but I can't do a blind replace since the order matters (replacing `text-sm` first would collide). Let me use a placeholder:
+
+_**Agent (claude-opus-4-6 2026-03-30 10:06:38Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Shift text-sm to text-base, text-xs to text-sm
+
+`cd /Users/grant/code/chroma-curve/app/src && for f in components/controls/LightnessRange.tsx components/controls/SaturationSlider.tsx components/controls/SliderBase.tsx components/controls/TargetSwatch.tsx components/controls/ToggleSwitch.tsx components/curves/ChartTabs.tsx components/export/FormatSelector.tsx components/export/ExportPreview.tsx components/palette/ColorSwatch.tsx components/palette/PaletteGrid.tsx components/Header.tsx; do sed -i '' 's/text-sm/text-__BASE__/g; s/text-xs/text-sm/g; s/text-__BASE__/text-base/g' "$f"; done`
+
+```text
+(Bash completed with no output)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:06:43Z)**_
+
+Let me check I didn't accidentally hit the export dialog button styles that already used `text-xs` correctly:
+
+_**Agent (claude-opus-4-6 2026-03-30 10:06:45Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components` pattern `text-(base|sm|xs|2xs|lg)`
+
+```text
+app/src/components/export/FormatSelector.tsx:30:  "flex-1 px-3 py-1.5 text-base font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
+app/src/components/export/FormatSelector.tsx:42:        <span className="text-sm font-mono text-text-faint uppercase tracking-wider mb-1 block">
+app/src/components/export/FormatSelector.tsx:64:        <span className="text-sm font-mono text-text-faint uppercase tracking-wider mb-1 block">
+app/src/components/palette/ColorSwatch.tsx:26:          <span className="text-sm font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
+app/src/components/palette/ColorSwatch.tsx:27:          <span className="text-2xs font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
+app/src/components/curves/ChartTabs.tsx:29:        <h3 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
+app/src/components/curves/ChartTabs.tsx:38:            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+app/src/components/curves/ChartTabs.tsx:44:            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+app/src/components/curves/ChartTabs.tsx:57:        <summary className="text-sm font-mono text-text-subtle cursor-pointer select-none py-2 hover:text-text-muted transition-colors">
+app/src/components/curves/ChartTabs.tsx:62:            <span className="text-sm font-mono text-text-faint block mb-1">Unadjusted</span>
+app/src/components/curves/ChartTabs.tsx:70:            <span className="text-sm font-mono text-text-faint block mb-1">Adjusted</span>
+app/src/components/palette/PaletteGrid.tsx:83:            <span className="text-sm font-mono text-text-tertiary">swatches</span>
+app/src/components/palette/PaletteGrid.tsx:87:              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+app/src/components/palette/PaletteGrid.tsx:100:            <span className="text-sm font-mono text-text-tertiary">layout</span>
+app/src/components/palette/PaletteGrid.tsx:104:              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+app/src/components/export/ExportPreview.tsx:13:      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base font-mono leading-relaxed text-text-primary">
+app/src/components/export/ExportPreview.tsx:21:          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+app/src/components/export/ExportPreview.tsx:29:          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+app/src/components/export/ExportDialog.tsx:26:          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
+app/src/components/export/ExportDialog.tsx:52:                <Dialog.Title className="text-lg font-semibold text-text-primary mb-4">
+app/src/components/controls/SaturationSlider.tsx:14:        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider shrink-0">
+app/src/components/controls/SaturationSlider.tsx:21:            className={`flex items-center text-sm font-mono cursor-pointer transition-colors shrink-0 ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
+app/src/components/controls/SaturationSlider.tsx:27:          <span className="text-base font-mono text-text-primary tabular-nums">
+app/src/components/controls/TargetSwatch.tsx:157:          <div className="flex justify-between mt-2 text-sm font-mono text-text-subtle">
+app/src/components/controls/ToggleSwitch.tsx:13:      <span id={id} className="text-sm font-mono text-text-tertiary">
+app/src/components/Header.tsx:9:        <h1 className="text-base sm:text-xl font-semibold mr-4 text-text-primary tracking-tight">
+app/src/components/Header.tsx:12:        <p className="text-sm text-text-subtle hidden sm:block max-w-40 leading-tight">
+app/src/components/Header.tsx:18:        <span className="text-sm text-text-subtle flex items-center gap-1 hidden md:flex">
+app/src/components/controls/SliderBase.tsx:30:        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider">
+app/src/components/controls/SliderBase.tsx:33:        <span className="text-base font-mono text-text-primary tabular-nums">
+app/src/components/controls/LightnessRange.tsx:46:        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider">
+app/src/components/controls/LightnessRange.tsx:53:            className={`flex items-center text-sm font-mono cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
+app/src/components/controls/LightnessRange.tsx:59:          <span className="text-base font-mono text-text-primary tabular-nums inline-flex">
+app/src/components/About.tsx:697:                    <Dialog.Title className="text-lg font-semibold text-text-primary mb-2">
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:06:50Z)**_
+
+Good distribution: `text-2xs`, `text-sm`, `text-base`, `text-lg`. The format selector button `text-base` might be a touch large now, but let's see.
+
+_**Agent (claude-opus-4-6 2026-03-30 10:06:57Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.85s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:07:04Z)**_
+
+Here's the new setup:
+
+**Root font-size**: 12px → 13px → 14px (mobile → tablet → desktop)
+
+**Scale at desktop (14px root)**:
+- `text-2xs` = 0.625rem = 8.75px (swatch data)
+- `text-sm` = 0.875rem = 12.25px (toggles, mode buttons, secondary)
+- `text-base` = 1rem = 14px (slider labels, values)
+- `text-lg` = 1.125rem = 15.75px (dialog titles)
+
+No custom overrides on `text-xs` or `text-sm` anymore — just Tailwind defaults + a shifted root.
+
+---
+
+_**User (2026-03-30 10:25:57Z)**_
+
+yea that looks great now. I do still see some custom text- sizes (text-[9px] text-[10px] etc). I see that the largest text visually is text-base (text-lg is used twice but is not visually larger than text-base). so you've got even more room to shift the root font size down. are there any usability/accessibility issues of moving the root font size down further? its what is needed
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 10:26:06Z)**_
+
+
+
+The main accessibility concern is minimum readable size. WCAG doesn't specify a minimum font-size, but the general guideline is nothing below ~10px for body text on screen. At a 12px root on mobile, `text-sm` (0.875rem) resolves to 10.5px, which is fine. If we drop to say 11px root, `text-sm` becomes 9.625px — getting tight but still legible for a data-dense tool UI (not reading text).
+
+The real constraint is touch targets, not text size — and those are set in px/fixed units already.
+
+Let me also clean up those remaining hardcoded sizes first, then drop the root.
+
+_**Agent (claude-opus-4-6 2026-03-30 10:26:07Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components` pattern `text-\[\d+px\]`
+
+```text
+app/src/components/curves/SaturationCurve.tsx:96:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/SaturationCurve.tsx:118:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/SaturationCurve.tsx:130:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/SaturationCurve.tsx:138:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/EffectiveSaturation.tsx:87:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/EffectiveSaturation.tsx:109:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/EffectiveSaturation.tsx:121:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/EffectiveSaturation.tsx:129:          className="text-[10px] fill-text-faint font-sans"
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:26:13Z)**_
+
+Those are all SVG `<text>` elements inside fixed viewBox SVGs — they render at the viewBox coordinate space, not the document. Changing them to rem would have no effect since the SVG scales independently. Those are correct to keep hardcoded.
+
+Now drop the root:
+
+_**Agent (claude-opus-4-6 2026-03-30 10:26:15Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:26:23Z)**_
+
+At 13px desktop root:
+- `text-2xs` = 0.625rem = 8.1px
+- `text-xs` = 0.75rem = 9.75px (available if needed)
+- `text-sm` = 0.875rem = 11.4px
+- `text-base` = 1rem = 13px
+- `text-lg` = 1.125rem = 14.6px
+- `text-xl` = 1.25rem = 16.25px
+
+That gives you real range across the scale. Check it and let me know if it needs to go lower or if this lands right.
+
+---
+
+_**User (2026-03-30 10:28:18Z)**_
+
+yeah the text all looks pretty good. commit
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 10:28:29Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.21s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:28:36Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit type scale refactor
+
+```bash
+git add app/src/index.css app/src/components/controls/SliderBase.tsx app/src/components/controls/SaturationSlider.tsx app/src/components/controls/LightnessRange.tsx app/src/components/controls/ToggleSwitch.tsx app/src/components/controls/TargetSwatch.tsx app/src/components/palette/ColorSwatch.tsx app/src/components/palette/PaletteGrid.tsx app/src/components/curves/ChartTabs.tsx app/src/components/export/FormatSelector.tsx app/src/components/export/ExportPreview.tsx app/src/components/Header.tsx && git commit -m "$(cat <<'EOF'
+refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size
+EOF
+)"
+```
+
+```text
+[fix/responsive f0755c1] refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size
+ 12 files changed, 34 insertions(+), 36 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:28:41Z)**_
+
+Committed `f0755c1`: `refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size`
+
+---
+
+_**User (2026-03-30 10:33:29Z)**_
+
+are the tailwind container sizes (max-w-lg) derived from the root font size? (probably from rem?). because they all got smaller
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 10:33:36Z)**_
+
+
+
+Yes, Tailwind's `max-w-*` values are all in `rem`. So `max-w-5xl` (64rem) went from 1024px at 16px root to 832px at 13px root. Same for `max-w-3xl`, `max-w-lg`, etc.
+
+If you want the layout widths to stay fixed regardless of root font-size, you'd need to override the specific ones you use with px values. Which containers are you seeing shrunk?
+
+---
+
+_**User (2026-03-30 10:34:56Z)**_
+
+or what we could do is return the root font size to 16px and just lower the values of all the text classes as needed.... i know we just went through this whole thing of reducing root font size but this is an example of a drawback. hmmm but the point of rem is for things to be derived from that size....
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 10:35:04Z)**_
+
+
+
+Yeah it's a tradeoff. The rem system is doing exactly what it's supposed to — scaling everything proportionally. The issue is you want text to scale but containers to stay fixed.
+
+The cleanest fix is probably just overriding the few container widths you actually use to px values. That way you keep the rem-based text scaling (which is working well) but layout containers don't shrink. It's like 2-3 overrides in the theme.
+
+What containers are affected? I'm guessing `max-w-5xl` on the ControlBar and `max-w-3xl` on the About dialog?
+
+---
+
+_**User (2026-03-30 10:36:07Z)**_
+
+its not 2-3 overrides if in the future I start using other container sizes
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 10:36:12Z)**_
+
+
+
+Fair point. Let's just override the text sizes and keep root at 16px. That way containers, spacing, and everything else behave normally, and you only control the type scale.
+
+_**Agent (claude-opus-4-6 2026-03-30 10:36:15Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:36:20Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:36:32Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.20s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 10:36:38Z)**_
+
+Root stays at 16px. Type scale is compressed via theme overrides:
+
+| Class | Size |
+|-------|------|
+| `text-2xs` | 8px |
+| `text-xs` | 10px |
+| `text-sm` | 12px |
+| `text-base` | 13px |
+| `text-lg` | 15px |
+| `text-xl` | 17px |
+
+Containers, spacing, and everything else use standard rem. Check it.
+
+---
+
+_**User (2026-03-30 10:44:38Z)**_
+
+<command-message>commit-commands:commit</command-message>
+<command-name>/commit-commands:commit</command-name>
+
+_**User (2026-03-30 10:44:38Z)**_
+
+## Context
+
+- Current git status: On branch fix/responsive
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+	modified:   app/src/components/Header.tsx
+	modified:   app/src/index.css
+
+no changes added to commit (use "git add" and/or "git commit -a")
+- Current git diff (staged and unstaged changes): diff --git a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+index 7d3f3d1..c438c9e 100644
+--- a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
++++ b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+@@ -3090,12 +3090,6 @@ On `fix/responsive`. What needs fixing?
+ 
+ _**User (2026-03-30 07:25:49Z)**_
+ 
+-<command-message>impeccable:adapt</command-message>
+-<command-name>/impeccable:adapt</command-name>
+-<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
+-
+-_**User (2026-03-30 07:25:49Z)**_
+-
+ Base directory for this skill: /Users/grant/.claude/plugins/marketplaces/impeccable/.claude/skills/adapt
+ 
+ Adapt existing designs to work effectively across different contexts - different screen sizes, devices, platforms, or use cases.
+@@ -3296,6 +3290,12 @@ _**User (2026-03-30 07:25:49Z)**_
+ 
+ [Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/1.png]
+ 
++_**User (2026-03-30 07:25:49Z)**_
++
++<command-message>impeccable:adapt</command-message>
++<command-name>/impeccable:adapt</command-name>
++<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
++
+ ---
+ 
+ _**Agent (claude-opus-4-6 2026-03-30 07:25:54Z)**_
+@@ -9201,4 +9201,422 @@ style(type): scale root font-size down on mobile/tablet for proportional rem siz
+ EOF
+ )"
+ ```
++
++```text
++[fix/responsive 6dd5c6e] style(type): scale root font-size down on mobile/tablet for proportional rem sizing
++ 2 files changed, 461 insertions(+), 6 deletions(-)
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:50:43Z)**_
++
++Committed `6dd5c6e`: `style(type): scale root font-size down on mobile/tablet for proportional rem sizing`
++
++---
++
++_**User (2026-03-30 09:58:05Z)**_
++
++the text sizes are still almost exclusively using text-xs and text-sm. lower the root font size so the scale lowers, so there's a more even distribution across avialable text size classes
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:10Z)**_
++
++
++
++The issue is that the theme overrides redefined `text-xs` and `text-sm` to smaller values (11px, 12px), which makes them cluster together. If we drop the root font-size lower and use Tailwind's default scale instead, we get better spread.
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:12Z)**_
++
++<tool-use data-tool-type="read" data-tool-name="Read"><details>
++<summary>Tool use: **Read**</summary>
++ `./app/src/index.css`
++
++```text
++1	@import "tailwindcss";
++2	
++3	@theme {
++4	  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
++5	  --font-mono: "Geist Mono", ui-monospace, monospace;
++6	
++7	  /* Type scale overrides */
++8	  --text-xs: 0.6875rem;  /* 11px — toggles, secondary controls */
++9	  --text-sm: 0.75rem;    /* 12px — slider labels, values */
++10	  --text-2xs: 0.5rem;    /* 8px — swatch data values */
++11	
++12	  /* Text */
++13	  --color-text-primary: hsl(0 0% 91%);
++14	  --color-text-secondary: hsl(0 0% 72%);
++15	  --color-text-tertiary: hsl(0 0% 60%);
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:20Z)**_
++
++Remove the overrides, drop the root font-size so Tailwind's defaults land where we need them, and redistribute the classes.
++
++Tailwind defaults at 13px root:
++- `text-xs` = 0.75rem = **9.75px**
++- `text-sm` = 0.875rem = **11.4px**  
++- `text-base` = 1rem = **13px**
++- `text-lg` = 1.125rem = **14.6px**
++
++At 13px root: `text-sm` (~11px) handles toggles/secondary, `text-base` (~13px) handles slider labels, `text-xs` (~10px) handles tiny data. That's a much better spread.
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:21Z)**_
++
++<tool-use data-tool-type="write" data-tool-name="Edit"><details>
++<summary>Tool use: **Edit**</summary>
++
++```text
++The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:25Z)**_
++
++Now update the root font-sizes:
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:28Z)**_
++
++<tool-use data-tool-type="write" data-tool-name="Edit"><details>
++<summary>Tool use: **Edit**</summary>
++
++```text
++The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:33Z)**_
++
++Now update the components. Current `text-xs` (toggles/secondary) should become `text-sm`, current `text-sm` (labels/values) should become `text-base`:
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:35Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Find files to update
++
++`cd /Users/grant/code/chroma-curve/app/src && grep -rl "text-sm\|text-xs" --include="*.tsx" components/controls/ components/palette/ components/curves/ components/export/ components/Header.tsx | sort`
++
++```text
++components/Header.tsx
++components/controls//LightnessRange.tsx
++components/controls//SaturationSlider.tsx
++components/controls//SliderBase.tsx
++components/controls//TargetSwatch.tsx
++components/controls//ToggleSwitch.tsx
++components/curves//ChartTabs.tsx
++components/export//ExportDialog.tsx
++components/export//ExportPreview.tsx
++components/export//FormatSelector.tsx
++components/palette//ColorSwatch.tsx
++components/palette//PaletteGrid.tsx
++```
+ </details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 09:58:40Z)**_
++
++I need to be careful — `text-sm` → `text-base` and `text-xs` → `text-sm`, but I can't do a blind replace since the order matters (replacing `text-sm` first would collide). Let me use a placeholder:
++
++_**Agent (claude-opus-4-6 2026-03-30 10:06:38Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Shift text-sm to text-base, text-xs to text-sm
++
++`cd /Users/grant/code/chroma-curve/app/src && for f in components/controls/LightnessRange.tsx components/controls/SaturationSlider.tsx components/controls/SliderBase.tsx components/controls/TargetSwatch.tsx components/controls/ToggleSwitch.tsx components/curves/ChartTabs.tsx components/export/FormatSelector.tsx components/export/ExportPreview.tsx components/palette/ColorSwatch.tsx components/palette/PaletteGrid.tsx components/Header.tsx; do sed -i '' 's/text-sm/text-__BASE__/g; s/text-xs/text-sm/g; s/text-__BASE__/text-base/g' "$f"; done`
++
++```text
++(Bash completed with no output)
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:06:43Z)**_
++
++Let me check I didn't accidentally hit the export dialog button styles that already used `text-xs` correctly:
++
++_**Agent (claude-opus-4-6 2026-03-30 10:06:45Z)**_
++
++<tool-use data-tool-type="search" data-tool-name="Grep"><details>
++<summary>Tool use: **Grep**</summary>
++ path `./app/src/components` pattern `text-(base|sm|xs|2xs|lg)`
++
++```text
++app/src/components/export/FormatSelector.tsx:30:  "flex-1 px-3 py-1.5 text-base font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
++app/src/components/export/FormatSelector.tsx:42:        <span className="text-sm font-mono text-text-faint uppercase tracking-wider mb-1 block">
++app/src/components/export/FormatSelector.tsx:64:        <span className="text-sm font-mono text-text-faint uppercase tracking-wider mb-1 block">
++app/src/components/palette/ColorSwatch.tsx:26:          <span className="text-sm font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
++app/src/components/palette/ColorSwatch.tsx:27:          <span className="text-2xs font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
++app/src/components/curves/ChartTabs.tsx:29:        <h3 className="text-sm font-medium text-text-tertiary uppercase tracking-wider">
++app/src/components/curves/ChartTabs.tsx:38:            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
++app/src/components/curves/ChartTabs.tsx:44:            className="flex-1 px-4 py-2 text-sm font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
++app/src/components/curves/ChartTabs.tsx:57:        <summary className="text-sm font-mono text-text-subtle cursor-pointer select-none py-2 hover:text-text-muted transition-colors">
++app/src/components/curves/ChartTabs.tsx:62:            <span className="text-sm font-mono text-text-faint block mb-1">Unadjusted</span>
++app/src/components/curves/ChartTabs.tsx:70:            <span className="text-sm font-mono text-text-faint block mb-1">Adjusted</span>
++app/src/components/palette/PaletteGrid.tsx:83:            <span className="text-sm font-mono text-text-tertiary">swatches</span>
++app/src/components/palette/PaletteGrid.tsx:87:              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
++app/src/components/palette/PaletteGrid.tsx:100:            <span className="text-sm font-mono text-text-tertiary">layout</span>
++app/src/components/palette/PaletteGrid.tsx:104:              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
++app/src/components/export/ExportPreview.tsx:13:      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base font-mono leading-relaxed text-text-primary">
++app/src/components/export/ExportPreview.tsx:21:          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
++app/src/components/export/ExportPreview.tsx:29:          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
++app/src/components/export/ExportDialog.tsx:26:          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
++app/src/components/export/ExportDialog.tsx:52:                <Dialog.Title className="text-lg font-semibold text-text-primary mb-4">
++app/src/components/controls/SaturationSlider.tsx:14:        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider shrink-0">
++app/src/components/controls/SaturationSlider.tsx:21:            className={`flex items-center text-sm font-mono cursor-pointer transition-colors shrink-0 ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
++app/src/components/controls/SaturationSlider.tsx:27:          <span className="text-base font-mono text-text-primary tabular-nums">
++app/src/components/controls/TargetSwatch.tsx:157:          <div className="flex justify-between mt-2 text-sm font-mono text-text-subtle">
++app/src/components/controls/ToggleSwitch.tsx:13:      <span id={id} className="text-sm font-mono text-text-tertiary">
++app/src/components/Header.tsx:9:        <h1 className="text-base sm:text-xl font-semibold mr-4 text-text-primary tracking-tight">
++app/src/components/Header.tsx:12:        <p className="text-sm text-text-subtle hidden sm:block max-w-40 leading-tight">
++app/src/components/Header.tsx:18:        <span className="text-sm text-text-subtle flex items-center gap-1 hidden md:flex">
++app/src/components/controls/SliderBase.tsx:30:        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider">
++app/src/components/controls/SliderBase.tsx:33:        <span className="text-base font-mono text-text-primary tabular-nums">
++app/src/components/controls/LightnessRange.tsx:46:        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider">
++app/src/components/controls/LightnessRange.tsx:53:            className={`flex items-center text-sm font-mono cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
++app/src/components/controls/LightnessRange.tsx:59:          <span className="text-base font-mono text-text-primary tabular-nums inline-flex">
++app/src/components/About.tsx:697:                    <Dialog.Title className="text-lg font-semibold text-text-primary mb-2">
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:06:50Z)**_
++
++Good distribution: `text-2xs`, `text-sm`, `text-base`, `text-lg`. The format selector button `text-base` might be a touch large now, but let's see.
++
++_**Agent (claude-opus-4-6 2026-03-30 10:06:57Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Verify build
++
++`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
++
++```text
++- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
++- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
++✓ built in 2.85s
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:07:04Z)**_
++
++Here's the new setup:
++
++**Root font-size**: 12px → 13px → 14px (mobile → tablet → desktop)
++
++**Scale at desktop (14px root)**:
++- `text-2xs` = 0.625rem = 8.75px (swatch data)
++- `text-sm` = 0.875rem = 12.25px (toggles, mode buttons, secondary)
++- `text-base` = 1rem = 14px (slider labels, values)
++- `text-lg` = 1.125rem = 15.75px (dialog titles)
++
++No custom overrides on `text-xs` or `text-sm` anymore — just Tailwind defaults + a shifted root.
++
++---
++
++_**User (2026-03-30 10:25:57Z)**_
++
++yea that looks great now. I do still see some custom text- sizes (text-[9px] text-[10px] etc). I see that the largest text visually is text-base (text-lg is used twice but is not visually larger than text-base). so you've got even more room to shift the root font size down. are there any usability/accessibility issues of moving the root font size down further? its what is needed
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 10:26:06Z)**_
++
++
++
++The main accessibility concern is minimum readable size. WCAG doesn't specify a minimum font-size, but the general guideline is nothing below ~10px for body text on screen. At a 12px root on mobile, `text-sm` (0.875rem) resolves to 10.5px, which is fine. If we drop to say 11px root, `text-sm` becomes 9.625px — getting tight but still legible for a data-dense tool UI (not reading text).
++
++The real constraint is touch targets, not text size — and those are set in px/fixed units already.
++
++Let me also clean up those remaining hardcoded sizes first, then drop the root.
++
++_**Agent (claude-opus-4-6 2026-03-30 10:26:07Z)**_
++
++<tool-use data-tool-type="search" data-tool-name="Grep"><details>
++<summary>Tool use: **Grep**</summary>
++ path `./app/src/components` pattern `text-\[\d+px\]`
++
++```text
++app/src/components/curves/SaturationCurve.tsx:96:              className="text-[13px] fill-text-faint font-mono"
++app/src/components/curves/SaturationCurve.tsx:118:              className="text-[13px] fill-text-faint font-mono"
++app/src/components/curves/SaturationCurve.tsx:130:          className="text-[10px] fill-text-faint font-sans"
++app/src/components/curves/SaturationCurve.tsx:138:          className="text-[10px] fill-text-faint font-sans"
++app/src/components/curves/EffectiveSaturation.tsx:87:              className="text-[13px] fill-text-faint font-mono"
++app/src/components/curves/EffectiveSaturation.tsx:109:              className="text-[13px] fill-text-faint font-mono"
++app/src/components/curves/EffectiveSaturation.tsx:121:          className="text-[10px] fill-text-faint font-sans"
++app/src/components/curves/EffectiveSaturation.tsx:129:          className="text-[10px] fill-text-faint font-sans"
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:26:13Z)**_
++
++Those are all SVG `<text>` elements inside fixed viewBox SVGs — they render at the viewBox coordinate space, not the document. Changing them to rem would have no effect since the SVG scales independently. Those are correct to keep hardcoded.
++
++Now drop the root:
++
++_**Agent (claude-opus-4-6 2026-03-30 10:26:15Z)**_
++
++<tool-use data-tool-type="write" data-tool-name="Edit"><details>
++<summary>Tool use: **Edit**</summary>
++
++```text
++The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:26:23Z)**_
++
++At 13px desktop root:
++- `text-2xs` = 0.625rem = 8.1px
++- `text-xs` = 0.75rem = 9.75px (available if needed)
++- `text-sm` = 0.875rem = 11.4px
++- `text-base` = 1rem = 13px
++- `text-lg` = 1.125rem = 14.6px
++- `text-xl` = 1.25rem = 16.25px
++
++That gives you real range across the scale. Check it and let me know if it needs to go lower or if this lands right.
++
++---
++
++_**User (2026-03-30 10:28:18Z)**_
++
++yeah the text all looks pretty good. commit
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 10:28:29Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Verify build
++
++`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
++
++```text
++- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
++- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
++✓ built in 3.21s
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:28:36Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Commit type scale refactor
++
++```bash
++git add app/src/index.css app/src/components/controls/SliderBase.tsx app/src/components/controls/SaturationSlider.tsx app/src/components/controls/LightnessRange.tsx app/src/components/controls/ToggleSwitch.tsx app/src/components/controls/TargetSwatch.tsx app/src/components/palette/ColorSwatch.tsx app/src/components/palette/PaletteGrid.tsx app/src/components/curves/ChartTabs.tsx app/src/components/export/FormatSelector.tsx app/src/components/export/ExportPreview.tsx app/src/components/Header.tsx && git commit -m "$(cat <<'EOF'
++refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size
++EOF
++)"
++```
++
++```text
++[fix/responsive f0755c1] refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size
++ 12 files changed, 34 insertions(+), 36 deletions(-)
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:28:41Z)**_
++
++Committed `f0755c1`: `refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size`
++
++---
++
++_**User (2026-03-30 10:33:29Z)**_
++
++are the tailwind container sizes (max-w-lg) derived from the root font size? (probably from rem?). because they all got smaller
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 10:33:36Z)**_
++
++
++
++Yes, Tailwind's `max-w-*` values are all in `rem`. So `max-w-5xl` (64rem) went from 1024px at 16px root to 832px at 13px root. Same for `max-w-3xl`, `max-w-lg`, etc.
++
++If you want the layout widths to stay fixed regardless of root font-size, you'd need to override the specific ones you use with px values. Which containers are you seeing shrunk?
++
++---
++
++_**User (2026-03-30 10:34:56Z)**_
++
++or what we could do is return the root font size to 16px and just lower the values of all the text classes as needed.... i know we just went through this whole thing of reducing root font size but this is an example of a drawback. hmmm but the point of rem is for things to be derived from that size....
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 10:35:04Z)**_
++
++
++
++Yeah it's a tradeoff. The rem system is doing exactly what it's supposed to — scaling everything proportionally. The issue is you want text to scale but containers to stay fixed.
++
++The cleanest fix is probably just overriding the few container widths you actually use to px values. That way you keep the rem-based text scaling (which is working well) but layout containers don't shrink. It's like 2-3 overrides in the theme.
++
++What containers are affected? I'm guessing `max-w-5xl` on the ControlBar and `max-w-3xl` on the About dialog?
++
++---
++
++_**User (2026-03-30 10:36:07Z)**_
++
++its not 2-3 overrides if in the future I start using other container sizes
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 10:36:12Z)**_
++
++
++
++Fair point. Let's just override the text sizes and keep root at 16px. That way containers, spacing, and everything else behave normally, and you only control the type scale.
++
++_**Agent (claude-opus-4-6 2026-03-30 10:36:15Z)**_
++
++<tool-use data-tool-type="write" data-tool-name="Edit"><details>
++<summary>Tool use: **Edit**</summary>
++
++```text
++The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:36:20Z)**_
++
++<tool-use data-tool-type="write" data-tool-name="Edit"><details>
++<summary>Tool use: **Edit**</summary>
++
++```text
++The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:36:32Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Verify build
++
++`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
++
++```text
++- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
++- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
++✓ built in 3.20s
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 10:36:38Z)**_
++
++Root stays at 16px. Type scale is compressed via theme overrides:
++
++| Class | Size |
++|-------|------|
++| `text-2xs` | 8px |
++| `text-xs` | 10px |
++| `text-sm` | 12px |
++| `text-base` | 13px |
++| `text-lg` | 15px |
++| `text-xl` | 17px |
++
++Containers, spacing, and everything else use standard rem. Check it.
+diff --git a/app/src/components/Header.tsx b/app/src/components/Header.tsx
+index 3b7c3b0..2523b02 100644
+--- a/app/src/components/Header.tsx
++++ b/app/src/components/Header.tsx
+@@ -6,10 +6,10 @@ export function Header() {
+   return (
+     <header className="flex items-center justify-between px-6 py-3">
+       <div className="flex items-center gap-2">
+-        <h1 className="text-base sm:text-xl font-semibold mr-4 text-text-primary tracking-tight">
++        <h1 className="text-base sm:text-xl font-semibold sm:mr-4 text-text-primary tracking-tight">
+           Chroma Curve
+         </h1>
+-        <p className="text-sm text-text-subtle hidden sm:block max-w-40 leading-tight">
++        <p className="text-sm text-text-subtle hidden sm:block max-w-48 leading-tight">
+           Parabolic saturation correction for monochromatic color palettes
+         </p>
+         <AboutButton />
+diff --git a/app/src/index.css b/app/src/index.css
+index 8158b33..3eb0978 100644
+--- a/app/src/index.css
++++ b/app/src/index.css
+@@ -4,8 +4,13 @@
+   --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+   --font-mono: "Geist Mono", ui-monospace, monospace;
+ 
+-  /* text-2xs for swatch data values */
+-  --text-2xs: 0.625rem;
++  /* Type scale — tighter for instrument UI */
++  --text-2xs: 0.5rem;     /* 8px */
++  --text-xs: 0.625rem;    /* 10px */
++  --text-sm: 0.75rem;     /* 12px */
++  --text-base: 0.8125rem; /* 13px */
++  --text-lg: 0.9375rem;   /* 15px */
++  --text-xl: 1.0625rem;   /* 17px */
+ 
+   /* Text */
+   --color-text-primary: hsl(0 0% 91%);
+@@ -42,19 +47,7 @@
+   }
+ 
+   html {
+-    font-size: 11px;
+-  }
+-
+-  @media (min-width: 640px) {
+-    html {
+-      font-size: 12px;
+-    }
+-  }
+-
+-  @media (min-width: 1024px) {
+-    html {
+-      font-size: 13px;
+-    }
++    font-size: 16px;
+   }
+ 
+   body {
+- Current branch: fix/responsive
+- Recent commits: f0755c1 refactor(type): remove custom text-size overrides, use default Tailwind scale with lower root font-size
+6dd5c6e style(type): scale root font-size down on mobile/tablet for proportional rem sizing
+d1aa80e fix(responsive): adaptive layout for mobile/tablet, replace hardcoded text sizes with theme tokens
+dc86228 fix(responsive): stack controls and fix grid overflow on mobile
+30c96dc chore: add README, remove .serena and Vite boilerplate README, update .gitignore
+04af23f feat(deploy): add Cloudflare Pages config for chromacurve.grantkeller.dev
+2b5cfbd docs(board): add planning epics, notes, and session history
+743da23 merge: ui/design-polish into main
+e705760 chore(board): archive 19 completed tasks (TASK-0001 through TASK-0019)
+cbdfc64 chore: remove legacy codepen files, add attribution resources and preserve Desmos formula
+
+## Your task
+
+Based on the above changes, create a single git commit.
+
+You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
