@@ -77,7 +77,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+      <div className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
         <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
           <label className="flex items-center gap-1 cursor-pointer">
             <span className="text-[11px] font-mono text-text-tertiary">swatches</span>
@@ -118,7 +118,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
       </div>
       <div
         className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
-        style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+        style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
       >
         {displayEntries.map((entry) => (
           <ColorSwatch
