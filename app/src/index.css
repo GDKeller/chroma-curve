@@ -4,10 +4,8 @@
   --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
 
-  /* Type scale overrides */
-  --text-xs: 0.6875rem;  /* 11px — toggles, secondary controls */
-  --text-sm: 0.75rem;    /* 12px — slider labels, values */
-  --text-2xs: 0.5rem;    /* 8px — swatch data values */
+  /* text-2xs for swatch data values */
+  --text-2xs: 0.625rem;
 
   /* Text */
   --color-text-primary: hsl(0 0% 91%);
@@ -44,18 +42,18 @@
   }
 
   html {
-    font-size: 14px;
+    font-size: 11px;
   }
 
   @media (min-width: 640px) {
     html {
-      font-size: 15px;
+      font-size: 12px;
     }
   }
 
   @media (min-width: 1024px) {
     html {
-      font-size: 16px;
+      font-size: 13px;
     }
   }
 

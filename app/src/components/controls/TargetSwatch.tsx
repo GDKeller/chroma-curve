@@ -154,7 +154,7 @@ export function TargetSwatch() {
             style={{ width: PICKER_SIZE, height: PICKER_SIZE }}
             onMouseDown={handleMouseDown}
           />
-          <div className="flex justify-between mt-2 text-xs font-mono text-text-subtle">
+          <div className="flex justify-between mt-2 text-sm font-mono text-text-subtle">
             <span>Hue {hue}°</span>
             <span>Sat {Math.round(saturation * 100)}%</span>
           </div>
