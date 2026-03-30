@@ -39,7 +39,7 @@ export function FormatSelector({
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+        <span className="text-xs font-mono text-text-faint uppercase tracking-wider mb-1 block">
           Format
         </span>
         <div
@@ -61,7 +61,7 @@ export function FormatSelector({
         </div>
       </div>
       <div>
-        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+        <span className="text-xs font-mono text-text-faint uppercase tracking-wider mb-1 block">
           Color Space
         </span>
         <div

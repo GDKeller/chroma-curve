@@ -17,7 +17,9 @@ export default function App() {
         <PaletteStrip entries={entries} />
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mx-0 lg:items-stretch">
           <PaletteGrid entries={entries} />
-          <ChartTabs entries={entries} />
+          <div className="md:hidden lg:block">
+            <ChartTabs entries={entries} />
+          </div>
         </div>
       </div>
     </AppShell>
