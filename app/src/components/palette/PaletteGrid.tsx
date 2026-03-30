@@ -80,11 +80,11 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
       <div className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
         <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
           <label className="flex items-center gap-1 cursor-pointer">
-            <span className="text-[11px] font-mono text-text-tertiary">swatches</span>
+            <span className="text-xs font-mono text-text-tertiary">swatches</span>
             <select
               value={swatchCount}
               onChange={(e) => setSwatchCount(Number(e.target.value))}
-              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+              className="text-xs font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
             >
               {STEP_OPTIONS.map((n) => (
                 <option key={n} value={n} className="bg-surface-overlay">
@@ -97,11 +97,11 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
             </select>
           </label>
           <label className="flex items-center gap-1 cursor-pointer">
-            <span className="text-[11px] font-mono text-text-tertiary">layout</span>
+            <span className="text-xs font-mono text-text-tertiary">layout</span>
             <select
               value={layout}
               onChange={(e) => setLayout(e.target.value as Layout)}
-              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+              className="text-xs font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
             >
               <option value="row" className="bg-surface-overlay">row</option>
               <option value="column" className="bg-surface-overlay">column</option>

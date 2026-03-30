@@ -3031,7 +3031,7 @@ You have the capability to call multiple tools in a single response. Stage and c
 
 ---
 
-_**Agent (claude-opus-4-6 2026-03-30 07:23:25Z)**_
+_**Agent (claude-opus-4-6 2026-03-30 07:23:26Z)**_
 
 <tool-use data-tool-type="shell" data-tool-name="Bash"><details>
 <summary>Tool use: **Bash**</summary>
@@ -3043,4 +3043,5723 @@ chore: add README, remove .serena and Vite boilerplate README, update .gitignore
 EOF
 )"
 ```
+
+```text
+[main 30c96dc] chore: add README, remove .serena and Vite boilerplate README, update .gitignore
+ 10 files changed, 1677 insertions(+), 361 deletions(-)
+ delete mode 100644 .serena/.gitignore
+ delete mode 100644 .serena/memories/project_overview.md
+ delete mode 100644 .serena/memories/style_and_conventions.md
+ delete mode 100644 .serena/memories/suggested_commands.md
+ delete mode 100644 .serena/memories/task_completion_checklist.md
+ delete mode 100644 .serena/project.yml
+ delete mode 100644 app/README.md
+```
 </details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:23:29Z)**_
+
+Committed `30c96dc`: `chore: add README, remove .serena and Vite boilerplate README, update .gitignore`
+
+---
+
+_**User (2026-03-30 07:23:57Z)**_
+
+cut a branch for reponsive fixes
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 07:24:01Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Create responsive fixes branch
+
+`git checkout -b fix/responsive`
+
+```text
+Switched to a new branch 'fix/responsive'
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:24:04Z)**_
+
+On `fix/responsive`. What needs fixing?
+
+---
+
+_**User (2026-03-30 07:25:49Z)**_
+
+Base directory for this skill: /Users/grant/.claude/plugins/marketplaces/impeccable/.claude/skills/adapt
+
+Adapt existing designs to work effectively across different contexts - different screen sizes, devices, platforms, or use cases.
+
+## MANDATORY PREPARATION
+
+Invoke /frontend-design — it contains design principles, anti-patterns, and the **Context Gathering Protocol**. Follow the protocol before proceeding — if no design context exists yet, you MUST run /teach-impeccable first. Additionally gather: target platforms/devices and usage contexts.
+
+---
+
+## Assess Adaptation Challenge
+
+Understand what needs adaptation and why:
+
+1. **Identify the source context**:
+   - What was it designed for originally? (Desktop web? Mobile app?)
+   - What assumptions were made? (Large screen? Mouse input? Fast connection?)
+   - What works well in current context?
+
+2. **Understand target context**:
+   - **Device**: Mobile, tablet, desktop, TV, watch, print?
+   - **Input method**: Touch, mouse, keyboard, voice, gamepad?
+   - **Screen constraints**: Size, resolution, orientation?
+   - **Connection**: Fast wifi, slow 3G, offline?
+   - **Usage context**: On-the-go vs desk, quick glance vs focused reading?
+   - **User expectations**: What do users expect on this platform?
+
+3. **Identify adaptation challenges**:
+   - What won't fit? (Content, navigation, features)
+   - What won't work? (Hover states on touch, tiny touch targets)
+   - What's inappropriate? (Desktop patterns on mobile, mobile patterns on desktop)
+
+**CRITICAL**: Adaptation is not just scaling - it's rethinking the experience for the new context.
+
+## Plan Adaptation Strategy
+
+Create context-appropriate strategy:
+
+### Mobile Adaptation (Desktop → Mobile)
+
+**Layout Strategy**:
+- Single column instead of multi-column
+- Vertical stacking instead of side-by-side
+- Full-width components instead of fixed widths
+- Bottom navigation instead of top/side navigation
+
+**Interaction Strategy**:
+- Touch targets 44x44px minimum (not hover-dependent)
+- Swipe gestures where appropriate (lists, carousels)
+- Bottom sheets instead of dropdowns
+- Thumbs-first design (controls within thumb reach)
+- Larger tap areas with more spacing
+
+**Content Strategy**:
+- Progressive disclosure (don't show everything at once)
+- Prioritize primary content (secondary content in tabs/accordions)
+- Shorter text (more concise)
+- Larger text (16px minimum)
+
+**Navigation Strategy**:
+- Hamburger menu or bottom navigation
+- Reduce navigation complexity
+- Sticky headers for context
+- Back button in navigation flow
+
+### Tablet Adaptation (Hybrid Approach)
+
+**Layout Strategy**:
+- Two-column layouts (not single or three-column)
+- Side panels for secondary content
+- Master-detail views (list + detail)
+- Adaptive based on orientation (portrait vs landscape)
+
+**Interaction Strategy**:
+- Support both touch and pointer
+- Touch targets 44x44px but allow denser layouts than phone
+- Side navigation drawers
+- Multi-column forms where appropriate
+
+### Desktop Adaptation (Mobile → Desktop)
+
+**Layout Strategy**:
+- Multi-column layouts (use horizontal space)
+- Side navigation always visible
+- Multiple information panels simultaneously
+- Fixed widths with max-width constraints (don't stretch to 4K)
+
+**Interaction Strategy**:
+- Hover states for additional information
+- Keyboard shortcuts
+- Right-click context menus
+- Drag and drop where helpful
+- Multi-select with Shift/Cmd
+
+**Content Strategy**:
+- Show more information upfront (less progressive disclosure)
+- Data tables with many columns
+- Richer visualizations
+- More detailed descriptions
+
+### Print Adaptation (Screen → Print)
+
+**Layout Strategy**:
+- Page breaks at logical points
+- Remove navigation, footer, interactive elements
+- Black and white (or limited color)
+- Proper margins for binding
+
+**Content Strategy**:
+- Expand shortened content (show full URLs, hidden sections)
+- Add page numbers, headers, footers
+- Include metadata (print date, page title)
+- Convert charts to print-friendly versions
+
+### Email Adaptation (Web → Email)
+
+**Layout Strategy**:
+- Narrow width (600px max)
+- Single column only
+- Inline CSS (no external stylesheets)
+- Table-based layouts (for email client compatibility)
+
+**Interaction Strategy**:
+- Large, obvious CTAs (buttons not text links)
+- No hover states (not reliable)
+- Deep links to web app for complex interactions
+
+## Implement Adaptations
+
+Apply changes systematically:
+
+### Responsive Breakpoints
+
+Choose appropriate breakpoints:
+- Mobile: 320px-767px
+- Tablet: 768px-1023px
+- Desktop: 1024px+
+- Or content-driven breakpoints (where design breaks)
+
+### Layout Adaptation Techniques
+
+- **CSS Grid/Flexbox**: Reflow layouts automatically
+- **Container Queries**: Adapt based on container, not viewport
+- **`clamp()`**: Fluid sizing between min and max
+- **Media queries**: Different styles for different contexts
+- **Display properties**: Show/hide elements per context
+
+### Touch Adaptation
+
+- Increase touch target sizes (44x44px minimum)
+- Add more spacing between interactive elements
+- Remove hover-dependent interactions
+- Add touch feedback (ripples, highlights)
+- Consider thumb zones (easier to reach bottom than top)
+
+### Content Adaptation
+
+- Use `display: none` sparingly (still downloads)
+- Progressive enhancement (core content first, enhancements on larger screens)
+- Lazy loading for off-screen content
+- Responsive images (`srcset`, `picture` element)
+
+### Navigation Adaptation
+
+- Transform complex nav to hamburger/drawer on mobile
+- Bottom nav bar for mobile apps
+- Persistent side navigation on desktop
+- Breadcrumbs on smaller screens for context
+
+**IMPORTANT**: Test on real devices, not just browser DevTools. Device emulation is helpful but not perfect.
+
+**NEVER**:
+- Hide core functionality on mobile (if it matters, make it work)
+- Assume desktop = powerful device (consider accessibility, older machines)
+- Use different information architecture across contexts (confusing)
+- Break user expectations for platform (mobile users expect mobile patterns)
+- Forget landscape orientation on mobile/tablet
+- Use generic breakpoints blindly (use content-driven breakpoints)
+- Ignore touch on desktop (many desktop devices have touch)
+
+## Verify Adaptations
+
+Test thoroughly across contexts:
+
+- **Real devices**: Test on actual phones, tablets, desktops
+- **Different orientations**: Portrait and landscape
+- **Different browsers**: Safari, Chrome, Firefox, Edge
+- **Different OS**: iOS, Android, Windows, macOS
+- **Different input methods**: Touch, mouse, keyboard
+- **Edge cases**: Very small screens (320px), very large screens (4K)
+- **Slow connections**: Test on throttled network
+
+Remember: You're a cross-platform design expert. Make experiences that feel native to each context while maintaining brand and functionality consistency. Adapt intentionally, test thoroughly.
+
+ARGUMENTS: on mobile the options above the swatch grid get pushed out of view [Image #1]
+
+_**User (2026-03-30 07:25:49Z)**_
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/1.png]
+
+_**User (2026-03-30 07:25:49Z)**_
+
+<command-message>impeccable:adapt</command-message>
+<command-name>/impeccable:adapt</command-name>
+<command-args>on mobile the options above the swatch grid get pushed out of view [Image #1]</command-args>
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 07:25:54Z)**_
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:01Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="Agent"><details>
+<summary>Tool use: **Agent**</summary>
+Explore responsive layout components
+
+```text
+Perfect! Now I have a complete picture. Let me provide you with a comprehensive layout structure report.
+
+## Layout Structure Analysis for Responsive Fixes
+
+Based on my thorough exploration of the codebase, here's the complete layout structure and responsive handling:
+
+### 1. **Main App Shell** (`/Users/grant/code/chroma-curve/app/src/components/AppShell.tsx`)
+- Simple wrapper component providing base styling
+- Full viewport height with dark background (`min-h-screen bg-surface-base`)
+- Responsive font sizing through Tailwind's default system
+
+### 2. **Header Component** (`/Users/grant/code/chroma-curve/app/src/components/Header.tsx`)
+- Uses `flex items-center justify-between px-6 py-3` for layout
+- **Responsive breakpoints:**
+  - Subtitle: `hidden sm:block` (hidden on mobile, shows at small screens)
+  - Keyboard hint: `hidden md:flex` (hidden on mobile/tablet, shows on medium screens+)
+- Title: "Chroma Curve" with monochromatic description
+- Right side has export dialog and keyboard hint
+
+### 3. **Control Bar Component** (`/Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx`)
+- **Structure:** `sticky top-0 z-50` navigation bar with blur effect
+- Uses `flex flex-wrap gap-6` for responsive wrapping
+- **Responsive elements:** Has a divider (`hidden lg:block`) that only shows on large screens
+- Controls (sliders): HueSlider, TargetSwatch, SaturationSlider, AdjustmentSlider, LightnessRange
+- Stretches to `max-w-5xl mx-auto` with padding `px-6 py-4`
+- Has backdrop blur and semi-transparent background: `bg-surface-raised/85 backdrop-blur-xl`
+
+### 4. **Palette Grid Component** (`/Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx`)
+- **Toolbar/Control Area:**
+  - First div: `flex justify-end items-center gap-1 px-4 lg:pr-0 mb-3`
+  - Contains swatch count selector and layout dropdown in one box
+  - Contains reverse/labels/borders toggles in another box
+  - Responsive padding: `px-4` on mobile, `lg:pr-0` on large screens
+
+- **Grid Container:**
+  - `grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr`
+  - Responsive margins: `ml-4 mr-4` on mobile, `lg:mr-0` on large screens
+  - Dynamic columns via inline style: `gridTemplateColumns: repeat(${cols}, 1fr)`
+  - Gap options: `gap-px bg-surface-overlay` when borders enabled, `gap-0` otherwise
+
+- **Layout Options:** row, column, vertical, horizontal
+- **Step Options:** 8, 9, 10, 12, 16, 20, 24, 48, or all colors
+
+### 5. **Palette Strip Component** (`/Users/grant/code/chroma-curve/app/src/components/palette/PaletteStrip.tsx`)
+- Horizontal color strip preview
+- `h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4`
+- Fixed height with auto-column layout
+- Responsive margin: `mx-4` padding
+
+### 6. **Color Swatch Component** (`/Users/grant/code/chroma-curve/app/src/components/palette/ColorSwatch.tsx`)
+- Minimum heights: `min-h-[120px]` (standard) or `min-h-[240px]` (tall for row layout)
+- Responsive padding: `px-2 py-1.5`
+- Flex column layout with gap
+
+### 7. **Chart Tabs Component** (`/Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx`)
+- `mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4`
+- Responsive margin: `mx-4` on all screens, `lg:mr-4` on large screens
+- Contains tabs for "Adjustment" and "Computed" saturation curves
+
+### 8. **Main App Layout** (`/Users/grant/code/chroma-curve/app/src/App.tsx`)
+- **Root structure:**
+  ```
+  AppShell > Header > ControlBar > [content]
+  ```
+- **Content grid:**
+  - `grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mx-0`
+  - **Mobile:** Single column layout (PaletteStrip, PaletteGrid, ChartTabs stacked)
+  - **Large screens (lg):** Two-column layout with sidebar (340px fixed width for charts)
+  - `lg:items-stretch` ensures sidebar stretches to fill height on large screens
+  - Gap of 4 units between grid items
+  - Margin: `mx-0` on mobile for full width, `lg:items-stretch` for proper alignment
+
+### 9. **CSS & Tailwind Configuration** (`/Users/grant/code/chroma-curve/app/src/index.css`)
+- Using Tailwind CSS 4.2 (via `@tailwindcss/vite`)
+- Custom theme with design tokens (colors for text, surfaces, borders, strokes)
+- Prefers-reduced-motion support for accessibility
+- No explicit media queries in the CSS; all responsive behavior done via Tailwind classes
+
+### **Existing Responsive Breakpoints Used:**
+- `sm:` - Small screens (used in Header for subtitle)
+- `md:` - Medium screens (used in Header for keyboard hint, About component)
+- `lg:` - Large screens (most common for two-column layout, chart sidebar, padding adjustments)
+
+### **Key Responsive Issues to Address:**
+1. **PaletteGrid padding:** Asymmetric on mobile (`ml-4 mr-4`) vs desktop (`lg:mr-0`)
+2. **ControlBar divider:** Completely hidden on mobile - all controls wrap without visual break
+3. **Header compression:** Limited responsive scaling of text sizes
+4. **Chart sidebar:** Fixed 340px width may not work on small tablets
+5. **Toolbar stacking:** Swatch/layout controls and toggle controls may wrap awkwardly on small screens
+6. **Touch targets:** Small text sizes and controls (11px, 10px) may be hard to tap on mobile
+
+All styling is done through **Tailwind CSS classes** with no custom CSS media queries currently in place. The Vite + Tailwind setup uses `@tailwindcss/vite` plugin for on-the-fly compilation.
+```
+</details></tool-use>
+
+_**Agent - sidechain (2026-03-30 07:25:58Z)**_
+
+I need to understand the layout structure for responsive fixes. Find and read:
+
+1. The main app shell / layout component (AppShell or similar)
+2. The control bar / toolbar component that sits above the swatch grid (the one with count selector, layout dropdown, reverse/labels/borders toggles)
+3. The palette grid/strip component
+4. The header component
+5. Any existing responsive/mobile breakpoint styles in index.css or tailwind config
+
+Focus on the layout structure and any existing responsive handling. Read full file contents for the toolbar and layout components.
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:01Z)**_
+
+I'll help you find and understand the layout structure for responsive fixes. Let me start by exploring the codebase to locate these components.
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:01Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Glob"><details>
+<summary>Tool use: **Glob**</summary>
+ pattern `**/*.tsx`
+
+```text
+app/node_modules/@radix-ui/react-use-effect-event/src/use-effect-event.tsx
+app/src/main.tsx
+app/src/components/palette/PaletteStrip.tsx
+app/src/components/controls/AdjustmentSlider.tsx
+app/src/components/palette/CopyFeedback.tsx
+app/src/App.tsx
+app/src/components/About.tsx
+app/src/components/AppShell.tsx
+app/src/components/Header.tsx
+app/src/components/controls/ControlBar.tsx
+app/src/components/controls/HueSlider.tsx
+app/src/components/controls/LightnessRange.tsx
+app/src/components/controls/SaturationSlider.tsx
+app/src/components/controls/SliderBase.tsx
+app/src/components/controls/TargetSwatch.tsx
+app/src/components/controls/ToggleSwitch.tsx
+app/src/components/curves/ChartTabs.tsx
+app/src/components/curves/EffectiveSaturation.tsx
+app/src/components/curves/SaturationCurve.tsx
+app/src/components/export/ExportDialog.tsx
+app/src/components/export/ExportPreview.tsx
+app/src/components/export/FormatSelector.tsx
+app/src/components/palette/ColorSwatch.tsx
+app/src/components/palette/PaletteGrid.tsx
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:01Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Glob"><details>
+<summary>Tool use: **Glob**</summary>
+ pattern `**/*.jsx`
+
+```text
+No files found
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:01Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Glob"><details>
+<summary>Tool use: **Glob**</summary>
+ pattern `**/*.css`
+
+```text
+app/node_modules/tailwindcss/index.css
+app/node_modules/tailwindcss/preflight.css
+app/node_modules/tailwindcss/theme.css
+app/node_modules/tailwindcss/utilities.css
+app/node_modules/@fontsource/geist-mono/100.css
+app/node_modules/@fontsource/geist-mono/200.css
+app/node_modules/@fontsource/geist-mono/300.css
+app/node_modules/@fontsource/geist-mono/400.css
+app/node_modules/@fontsource/geist-mono/500.css
+app/node_modules/@fontsource/geist-mono/600.css
+app/node_modules/@fontsource/geist-mono/700.css
+app/node_modules/@fontsource/geist-mono/800.css
+app/node_modules/@fontsource/geist-mono/900.css
+app/node_modules/@fontsource/geist-mono/cyrillic-100.css
+app/node_modules/@fontsource/geist-mono/cyrillic-200.css
+app/node_modules/@fontsource/geist-mono/cyrillic-300.css
+app/node_modules/@fontsource/geist-mono/cyrillic-400.css
+app/node_modules/@fontsource/geist-mono/cyrillic-500.css
+app/node_modules/@fontsource/geist-mono/cyrillic-600.css
+app/node_modules/@fontsource/geist-mono/cyrillic-700.css
+app/node_modules/@fontsource/geist-mono/cyrillic-800.css
+app/node_modules/@fontsource/geist-mono/cyrillic-900.css
+app/node_modules/@fontsource/geist-mono/cyrillic.css
+app/node_modules/@fontsource/geist-mono/index.css
+app/node_modules/@fontsource/geist-mono/latin-100.css
+app/node_modules/@fontsource/geist-mono/latin-200.css
+app/node_modules/@fontsource/geist-mono/latin-300.css
+app/node_modules/@fontsource/geist-mono/latin-400.css
+app/node_modules/@fontsource/geist-mono/latin-500.css
+app/node_modules/@fontsource/geist-mono/latin-600.css
+app/node_modules/@fontsource/geist-mono/latin-700.css
+app/node_modules/@fontsource/geist-mono/latin-800.css
+app/node_modules/@fontsource/geist-mono/latin-900.css
+app/node_modules/@fontsource/geist-mono/latin-ext-100.css
+app/node_modules/@fontsource/geist-mono/latin-ext-200.css
+app/node_modules/@fontsource/geist-mono/latin-ext-300.css
+app/node_modules/@fontsource/geist-mono/latin-ext-400.css
+app/node_modules/@fontsource/geist-mono/latin-ext-500.css
+app/node_modules/@fontsource/geist-mono/latin-ext-600.css
+app/node_modules/@fontsource/geist-mono/latin-ext-700.css
+app/node_modules/@fontsource/geist-mono/latin-ext-800.css
+app/node_modules/@fontsource/geist-mono/latin-ext-900.css
+app/node_modules/@fontsource/geist-mono/latin-ext.css
+app/node_modules/@fontsource/geist-mono/latin.css
+app/node_modules/@fontsource/geist-sans/100.css
+app/node_modules/@fontsource/geist-sans/200.css
+app/node_modules/@fontsource/geist-sans/300.css
+app/node_modules/@fontsource/geist-sans/400.css
+app/node_modules/@fontsource/geist-sans/600.css
+app/node_modules/@fontsource/geist-sans/500.css
+app/node_modules/@fontsource/geist-sans/700.css
+app/node_modules/@fontsource/geist-sans/800.css
+app/node_modules/@fontsource/geist-sans/900.css
+app/node_modules/@fontsource/geist-sans/index.css
+app/node_modules/@fontsource/geist-sans/latin-100.css
+app/node_modules/@fontsource/geist-sans/latin-200.css
+app/node_modules/@fontsource/geist-sans/latin-300.css
+app/node_modules/@fontsource/geist-sans/latin-400.css
+app/node_modules/@fontsource/geist-sans/latin-500.css
+app/node_modules/@fontsource/geist-sans/latin-600.css
+app/node_modules/@fontsource/geist-sans/latin-700.css
+app/node_modules/@fontsource/geist-sans/latin-800.css
+app/node_modules/@fontsource/geist-sans/latin-900.css
+app/node_modules/@fontsource/geist-sans/latin.css
+app/src/index.css
+node_modules/@speed-highlight/core/dist/themes/atom-dark.css
+node_modules/youch/build/public/error_cause/style.css
+node_modules/@speed-highlight/core/dist/themes/dark.css
+node_modules/youch/build/public/error_info/style.css
+node_modules/@speed-highlight/core/dist/themes/default.css
+node_modules/youch/build/public/error_stack_source/style.css
+node_modules/miniflare/dist/local-explorer-ui/assets/index-NOd-MJVl.css
+node_modules/@speed-highlight/core/dist/themes/github-dark.css
+node_modules/youch/build/public/error_stack/style.css
+node_modules/@speed-highlight/core/dist/themes/github-dim.css
+node_modules/youch/build/public/header/style.css
+node_modules/@speed-highlight/core/dist/themes/github-light.css
+node_modules/@speed-highlight/core/dist/themes/visual-studio-dark.css
+node_modules/youch/build/public/layout/style.css
+app/dist/assets/index-CimPE30-.css
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:02Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`find /Users/grant/code/chroma-curve -type f -name "*.json" | grep -E "(tailwind|package)" | head -20`
+
+```text
+/Users/grant/code/chroma-curve/app/node_modules/tinyglobby/package.json
+/Users/grant/code/chroma-curve/app/node_modules/callsites/package.json
+/Users/grant/code/chroma-curve/app/node_modules/tapable/package.json
+/Users/grant/code/chroma-curve/app/node_modules/use-callback-ref/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/v4-mini/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/locales/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/mini/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/v4/locales/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/v4/core/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/v4/mini/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/v4/classic/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/v4/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/package.json
+/Users/grant/code/chroma-curve/app/node_modules/zod/v3/package.json
+/Users/grant/code/chroma-curve/app/node_modules/jsesc/package.json
+/Users/grant/code/chroma-curve/app/node_modules/@types/babel__template/package.json
+/Users/grant/code/chroma-curve/app/node_modules/@types/react-dom/package.json
+/Users/grant/code/chroma-curve/app/node_modules/@types/babel__generator/package.json
+/Users/grant/code/chroma-curve/app/node_modules/@types/babel__traverse/package.json
+/Users/grant/code/chroma-curve/app/node_modules/@types/chroma-js/package.json
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:03Z)**_
+
+Now let me read the key layout components and configuration files:
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:04Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/AppShell.tsx`
+
+```text
+1	interface AppShellProps {
+2	  children: React.ReactNode;
+3	}
+4	
+5	export function AppShell({ children }: AppShellProps) {
+6	  return (
+7	    <main className="min-h-screen bg-surface-base text-white font-sans">
+8	      {children}
+9	    </main>
+10	  );
+11	}
+12
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:04Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+1	import { HueSlider } from "./HueSlider";
+2	import { TargetSwatch } from "./TargetSwatch";
+3	import { SaturationSlider } from "./SaturationSlider";
+4	import { AdjustmentSlider } from "./AdjustmentSlider";
+5	import { LightnessRange } from "./LightnessRange";
+6	
+7	export function ControlBar() {
+8	  return (
+9	    <nav aria-label="Palette controls" className="sticky top-0 z-50 px-6 py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl">
+10	      <div className="flex flex-wrap gap-6 max-w-5xl mx-auto">
+11	        <HueSlider />
+12	        <TargetSwatch />
+13	        <SaturationSlider />
+14	        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+15	        <AdjustmentSlider />
+16	        <LightnessRange />
+17	      </div>
+18	    </nav>
+19	  );
+20	}
+21
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:04Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/PaletteGrid.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import { ColorSwatch } from "./ColorSwatch";
+3	import { ToggleSwitch } from "../controls/ToggleSwitch";
+4	import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+5	import type { ColorEntry } from "../../types/palette";
+6	
+7	interface PaletteGridProps {
+8	  entries: ColorEntry[];
+9	}
+10	
+11	const STEP_OPTIONS = [8, 9, 10, 12, 16, 20, 24, 48];
+12	
+13	type Layout = "row" | "column" | "vertical" | "horizontal";
+14	
+15	function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
+16	  if (count >= entries.length) return entries;
+17	  const step = (entries.length - 1) / (count - 1);
+18	  return Array.from({ length: count }, (_, i) =>
+19	    entries[Math.round(i * step)],
+20	  );
+21	}
+22	
+23	// Find the column count that produces no orphans and the most square-ish grid
+24	function bestCols(total: number): number {
+25	  const target = Math.round(Math.sqrt(total));
+26	  // Search outward from the square root for a clean divisor
+27	  for (let d = 0; d <= target; d++) {
+28	    if ((target + d) > 0 && total % (target + d) === 0) return target + d;
+29	    if ((target - d) > 0 && total % (target - d) === 0) return target - d;
+30	  }
+31	  return target;
+32	}
+33	
+34	// Reorder row-major entries into column-major order for CSS grid rendering
+35	function toColumnMajor(entries: ColorEntry[], cols: number): ColorEntry[] {
+36	  const rows = Math.ceil(entries.length / cols);
+37	  const reordered: ColorEntry[] = [];
+38	  for (let r = 0; r < rows; r++) {
+39	    for (let c = 0; c < cols; c++) {
+40	      const idx = c * rows + r;
+41	      if (idx < entries.length) reordered.push(entries[idx]);
+42	    }
+43	  }
+44	  return reordered;
+45	}
+46	
+47	export function PaletteGrid({ entries }: PaletteGridProps) {
+48	  const { copiedLabel, copy } = useCopyToClipboard();
+49	  const [showBorders, setShowBorders] = useState(false);
+50	  const [showLabels, setShowLabels] = useState(true);
+51	  const [reversed, setReversed] = useState(false);
+52	  const [swatchCount, setSwatchCount] = useState<number>(STEP_OPTIONS[0]);
+53	  const [layout, setLayout] = useState<Layout>("row");
+54	
+55	  const { displayEntries, cols } = useMemo(() => {
+56	    const sampled = sampleEntries(entries, swatchCount);
+57	
+58	    // Default order for all layouts is dark→light (reverse the light→dark entries)
+59	    const ordered = reversed ? sampled : sampled.slice().reverse();
+60	
+61	    if (layout === "row") {
+62	      return { displayEntries: ordered, cols: ordered.length };
+63	    }
+64	
+65	    if (layout === "column") {
+66	      return { displayEntries: ordered, cols: 1 };
+67	    }
+68	
+69	    const cols = bestCols(ordered.length);
+70	
+71	    if (layout === "vertical") {
+72	      return { displayEntries: ordered, cols };
+73	    }
+74	    // horizontal: lightness flows left→right via column-major reorder
+75	    return { displayEntries: toColumnMajor(ordered, cols), cols };
+76	  }, [entries, swatchCount, layout, reversed]);
+77	
+78	  return (
+79	    <div className="flex flex-col">
+80	      <div className="flex justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+81	        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
+82	          <label className="flex items-center gap-1 cursor-pointer">
+83	            <span className="text-[11px] font-mono text-text-tertiary">swatches</span>
+84	            <select
+85	              value={swatchCount}
+86	              onChange={(e) => setSwatchCount(Number(e.target.value))}
+87	              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+88	            >
+89	              {STEP_OPTIONS.map((n) => (
+90	                <option key={n} value={n} className="bg-surface-overlay">
+91	                  {n}
+92	                </option>
+93	              ))}
+94	              <option value={entries.length} className="bg-surface-overlay">
+95	                all ({entries.length})
+96	              </option>
+97	            </select>
+98	          </label>
+99	          <label className="flex items-center gap-1 cursor-pointer">
+100	            <span className="text-[11px] font-mono text-text-tertiary">layout</span>
+101	            <select
+102	              value={layout}
+103	              onChange={(e) => setLayout(e.target.value as Layout)}
+104	              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+105	            >
+106	              <option value="row" className="bg-surface-overlay">row</option>
+107	              <option value="column" className="bg-surface-overlay">column</option>
+108	              <option value="vertical" className="bg-surface-overlay">vertical</option>
+109	              <option value="horizontal" className="bg-surface-overlay">horizontal</option>
+110	            </select>
+111	          </label>
+112	        </div>
+113	        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
+114	          <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
+115	          <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
+116	          <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
+117	        </div>
+118	      </div>
+119	      <div
+120	        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+121	        style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+122	      >
+123	        {displayEntries.map((entry) => (
+124	          <ColorSwatch
+125	            key={entry.label}
+126	            entry={entry}
+127	            isCopied={copiedLabel === entry.label}
+128	            onCopy={copy}
+129	            showLabels={showLabels}
+130	            tall={layout === "row"}
+131	          />
+132	        ))}
+133	      </div>
+134	    </div>
+135	  );
+136	}
+137
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:05Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/Header.tsx`
+
+```text
+1	import { Copy } from "@phosphor-icons/react";
+2	import { ExportDialog } from "./export/ExportDialog";
+3	import { AboutButton } from "./About";
+4	
+5	export function Header() {
+6	  return (
+7	    <header className="flex items-center justify-between px-6 py-3">
+8	      <div className="flex items-center gap-2">
+9	        <h1 className="text-xl font-semibold mr-4 text-text-primary tracking-tight">
+10	          Chroma Curve
+11	        </h1>
+12	        <p className="text-[10px] text-text-subtle hidden sm:block max-w-40 leading-tight">
+13	          Parabolic saturation correction for monochromatic color palettes
+14	        </p>
+15	        <AboutButton />
+16	      </div>
+17	      <div className="flex items-center gap-3">
+18	        <span className="text-[11px] text-text-subtle flex items-center gap-1 hidden md:flex">
+19	          <Copy size={12} />
+20	          Click swatch to copy
+21	        </span>
+22	        <ExportDialog />
+23	      </div>
+24	    </header>
+25	  );
+26	}
+27
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:05Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/index.css`
+
+```text
+1	@import "tailwindcss";
+2	
+3	@theme {
+4	  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+5	  --font-mono: "Geist Mono", ui-monospace, monospace;
+6	
+7	  /* Text */
+8	  --color-text-primary: hsl(0 0% 91%);
+9	  --color-text-secondary: hsl(0 0% 72%);
+10	  --color-text-tertiary: hsl(0 0% 60%);
+11	  --color-text-muted: hsl(0 0% 50%);
+12	  --color-text-subtle: hsl(0 0% 44%);
+13	  --color-text-faint: hsl(0 0% 32%);
+14	
+15	  /* Surfaces */
+16	  --color-surface-base: hsl(0 0% 6%);
+17	  --color-surface-raised: hsl(0 0% 8%);
+18	  --color-surface-overlay: hsl(0 0% 10%);
+19	  --color-surface-hover: hsl(0 0% 12%);
+20	  --color-surface-active: hsl(0 0% 15%);
+21	  --color-surface-active-hover: hsl(0 0% 20%);
+22	
+23	  /* Borders */
+24	  --color-border-default: hsl(0 0% 12%);
+25	  --color-border-elevated: hsl(0 0% 15%);
+26	
+27	  /* Strokes (SVG) */
+28	  --color-stroke-grid: hsl(0 0% 12%);
+29	  --color-stroke-axis: hsl(0 0% 17%);
+30	  --color-stroke-secondary: hsl(0 0% 44%);
+31	  --color-stroke-primary: hsl(0 0% 72%);
+32	}
+33	
+34	@layer base {
+35	  *,
+36	  *::before,
+37	  *::after {
+38	    box-sizing: border-box;
+39	  }
+40	
+41	  body {
+42	    margin: 0;
+43	    -webkit-font-smoothing: antialiased;
+44	    -moz-osx-font-smoothing: grayscale;
+45	  }
+46	}
+47	
+48	@media (prefers-reduced-motion: reduce) {
+49	  *,
+50	  *::before,
+51	  *::after {
+52	    animation-duration: 0.01ms !important;
+53	    animation-iteration-count: 1 !important;
+54	    transition-duration: 0.01ms !important;
+55	    scroll-behavior: auto !important;
+56	  }
+57	}
+58
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:07Z)**_
+
+Now let me check for the tailwind config and look at the App.tsx to see how these components are assembled:
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:07Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`find /Users/grant/code/chroma-curve -name "tailwind.config.*" -type f`
+
+```text
+(Bash completed with no output)
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:07Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/App.tsx`
+
+```text
+1	import { AppShell } from "./components/AppShell";
+2	import { Header } from "./components/Header";
+3	import { ControlBar } from "./components/controls/ControlBar";
+4	import { PaletteStrip } from "./components/palette/PaletteStrip";
+5	import { PaletteGrid } from "./components/palette/PaletteGrid";
+6	import { ChartTabs } from "./components/curves/ChartTabs";
+7	import { usePalette } from "./hooks/usePalette";
+8	
+9	export default function App() {
+10	  const entries = usePalette();
+11	
+12	  return (
+13	    <AppShell>
+14	      <Header />
+15	      <ControlBar />
+16	      <div className="flex flex-col gap-4 py-4">
+17	        <PaletteStrip entries={entries} />
+18	        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mx-0 lg:items-stretch">
+19	          <PaletteGrid entries={entries} />
+20	          <ChartTabs entries={entries} />
+21	        </div>
+22	      </div>
+23	    </AppShell>
+24	  );
+25	}
+26
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:08Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`find /Users/grant/code/chroma-curve/app -name "*.config.*" -type f | grep -v node_modules | head -20`
+
+```text
+/Users/grant/code/chroma-curve/app/eslint.config.js
+/Users/grant/code/chroma-curve/app/vite.config.ts
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:10Z)**_
+
+Let me check the Vite config and look for the PaletteStrip component:
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:10Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/vite.config.ts`
+
+```text
+1	import { defineConfig } from "vite";
+2	import react from "@vitejs/plugin-react";
+3	import tailwindcss from "@tailwindcss/vite";
+4	
+5	export default defineConfig({
+6	  plugins: [react(), tailwindcss()],
+7	});
+8
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:10Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/PaletteStrip.tsx`
+
+```text
+1	import { useMemo } from "react";
+2	import type { ColorEntry } from "../../types/palette";
+3	
+4	interface PaletteStripProps {
+5	  entries: ColorEntry[];
+6	}
+7	
+8	export function PaletteStrip({ entries }: PaletteStripProps) {
+9	  const reversed = useMemo(() => [...entries].reverse(), [entries]);
+10	
+11	  return (
+12	    <div aria-hidden="true" className="h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
+13	      {reversed.map((entry) => (
+14	        <div
+15	          key={entry.label}
+16	          className="min-w-0"
+17	          style={{ backgroundColor: entry.hex }}
+18	          title={entry.label}
+19	        />
+20	      ))}
+21	    </div>
+22	  );
+23	}
+24
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:34Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`find . -name "tailwind.config.*" -o -name "postcss.config.*" 2>/dev/null | grep -v node_modules | head -10`
+
+```text
+(Bash completed with no output)
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:36Z)**_
+
+Let me look at some additional components to understand the responsive behavior better, including the color swatch and other elements:
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:36Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/ColorSwatch.tsx`
+
+```text
+1	import { getContrastColor } from "../../lib/colors";
+2	import { CopyFeedback } from "./CopyFeedback";
+3	import type { ColorEntry } from "../../types/palette";
+4	
+5	interface ColorSwatchProps {
+6	  entry: ColorEntry;
+7	  isCopied: boolean;
+8	  onCopy: (text: string, label: string) => void;
+9	  showLabels?: boolean;
+10	  tall?: boolean;
+11	}
+12	
+13	export function ColorSwatch({ entry, isCopied, onCopy, showLabels = true, tall = false }: ColorSwatchProps) {
+14	  const textColor = getContrastColor(entry.hex);
+15	
+16	  return (
+17	    <button
+18	      type="button"
+19	      className={`relative flex flex-col justify-start gap-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-base group px-2 py-1.5 ${tall ? "min-h-[240px]" : "min-h-[120px]"}`}
+20	      style={{ backgroundColor: entry.hex, color: textColor }}
+21	      onClick={() => onCopy(`hsl(${entry.hslString})`, entry.label)}
+22	      title={`${entry.label} — hsl(${entry.hslString})`}
+23	    >
+24	      {showLabels && (
+25	        <>
+26	          <span className="text-[11px] font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
+27	          <span className="text-[8px] font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
+28	            hsl({entry.hslString})
+29	          </span>
+30	        </>
+31	      )}
+32	      <CopyFeedback visible={isCopied} />
+33	    </button>
+34	  );
+35	}
+36
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:37Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ToggleSwitch.tsx`
+
+```text
+1	import { useId } from "react";
+2	
+3	interface ToggleSwitchProps {
+4	  label: string;
+5	  checked: boolean;
+6	  onChange: (checked: boolean) => void;
+7	}
+8	
+9	export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
+10	  const id = useId();
+11	  return (
+12	    <label className="flex items-center gap-1 cursor-pointer">
+13	      <span id={id} className="text-[11px] font-mono text-text-tertiary">
+14	        {label}
+15	      </span>
+16	      <button
+17	        type="button"
+18	        role="switch"
+19	        aria-checked={checked}
+20	        aria-labelledby={id}
+21	        onClick={() => onChange(!checked)}
+22	        className="relative w-7 h-4 rounded-full transition-colors min-w-[28px]"
+23	        style={{
+24	          backgroundColor: checked
+25	            ? "var(--color-surface-active-hover)"
+26	            : "var(--color-surface-hover)",
+27	        }}
+28	      >
+29	        <span
+30	          className="absolute top-0.5 left-0.5 w-3 h-3 rounded-full bg-text-secondary transition-transform"
+31	          style={{
+32	            transform: checked ? "translateX(12px)" : "translateX(0)",
+33	          }}
+34	        />
+35	      </button>
+36	    </label>
+37	  );
+38	}
+39
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:37Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`grep -r "sm:\|md:\|lg:\|xl:" /Users/grant/code/chroma-curve/app/src --include="*.tsx" --include="*.jsx" | head -30`
+
+```text
+/Users/grant/code/chroma-curve/app/src/App.tsx:        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mx-0 lg:items-stretch">
+/Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx:        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+/Users/grant/code/chroma-curve/app/src/components/Header.tsx:        <p className="text-[10px] text-text-subtle hidden sm:block max-w-40 leading-tight">
+/Users/grant/code/chroma-curve/app/src/components/Header.tsx:        <span className="text-[11px] text-text-subtle flex items-center gap-1 hidden md:flex">
+/Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx:      <div className="flex justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+/Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx:        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+/Users/grant/code/chroma-curve/app/src/components/About.tsx:          <span className="text-[11px] hidden md:inline">What is this?</span>
+/Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx:    <div className="mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:39Z)**_
+
+Let me check the ChartTabs component and get more details about any other responsive implementations:
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:39Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/ChartTabs.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import * as Tabs from "@radix-ui/react-tabs";
+3	import chroma from "chroma-js";
+4	import { SaturationCurve } from "./SaturationCurve";
+5	import { EffectiveSaturation } from "./EffectiveSaturation";
+6	import { ToggleSwitch } from "../controls/ToggleSwitch";
+7	import { usePaletteStore } from "../../store/paletteStore";
+8	import type { ColorEntry } from "../../types/palette";
+9	
+10	interface ChartTabsProps {
+11	  entries: ColorEntry[];
+12	}
+13	
+14	export function ChartTabs({ entries }: ChartTabsProps) {
+15	  const [showDots, setShowDots] = useState(true);
+16	  const hue = usePaletteStore((s) => s.hue);
+17	  const saturation = usePaletteStore((s) => s.saturation);
+18	
+19	  const { unadjustedColors, adjustedColors } = useMemo(() => ({
+20	    unadjustedColors: entries.map((e) =>
+21	      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
+22	    ),
+23	    adjustedColors: entries.map((e) => e.hex),
+24	  }), [entries, hue, saturation]);
+25	
+26	  return (
+27	    <div className="mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+28	      <div className="px-4 py-2.5 flex items-center justify-between">
+29	        <h3 className="text-[11px] font-medium text-text-tertiary uppercase tracking-wider">
+30	          Saturation Curve
+31	        </h3>
+32	        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+33	      </div>
+34	      <Tabs.Root defaultValue="adjustment">
+35	        <Tabs.List className="flex border-y border-border-default">
+36	          <Tabs.Trigger
+37	            value="adjustment"
+38	            className="flex-1 px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+39	          >
+40	            Adjustment
+41	          </Tabs.Trigger>
+42	          <Tabs.Trigger
+43	            value="computed"
+44	            className="flex-1 px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+45	          >
+46	            Computed
+47	          </Tabs.Trigger>
+48	        </Tabs.List>
+49	        <Tabs.Content value="adjustment">
+50	          <SaturationCurve entries={entries} showDots={showDots} />
+51	        </Tabs.Content>
+52	        <Tabs.Content value="computed">
+53	          <EffectiveSaturation entries={entries} showDots={showDots} />
+54	        </Tabs.Content>
+55	      </Tabs.Root>
+56	      <details className="px-4 pb-3">
+57	        <summary className="text-[11px] font-mono text-text-subtle cursor-pointer select-none py-2 hover:text-text-muted transition-colors">
+58	          Compare
+59	        </summary>
+60	        <div className="space-y-2 pt-1">
+61	          <div>
+62	            <span className="text-[10px] font-mono text-text-faint block mb-1">Unadjusted</span>
+63	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+64	              {unadjustedColors.map((c, i) => (
+65	                <div key={i} style={{ backgroundColor: c }} />
+66	              ))}
+67	            </div>
+68	          </div>
+69	          <div>
+70	            <span className="text-[10px] font-mono text-text-faint block mb-1">Adjusted</span>
+71	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+72	              {adjustedColors.map((c, i) => (
+73	                <div key={i} style={{ backgroundColor: c }} />
+74	              ))}
+75	            </div>
+76	          </div>
+77	        </div>
+78	      </details>
+79	    </div>
+80	  );
+81	}
+82
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:39Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`grep -r "@media\|min-width\|max-width" /Users/grant/code/chroma-curve/app/src --include="*.tsx" --include="*.css" --include="*.jsx"`
+
+```text
+/Users/grant/code/chroma-curve/app/src/index.css:@media (prefers-reduced-motion: reduce) {
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:41Z)**_
+
+Perfect! Let me check the main.tsx to see the entry point, and also look at the package.json to understand the Tailwind setup:
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:41Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/main.tsx`
+
+```text
+1	import { StrictMode } from "react";
+2	import { createRoot } from "react-dom/client";
+3	import "@fontsource/geist-sans/400.css";
+4	import "@fontsource/geist-sans/500.css";
+5	import "@fontsource/geist-sans/600.css";
+6	import "@fontsource/geist-mono/400.css";
+7	import "./index.css";
+8	import { MotionConfig } from "framer-motion";
+9	import App from "./App";
+10	
+11	createRoot(document.getElementById("root")!).render(
+12	  <StrictMode>
+13	    <MotionConfig reducedMotion="user">
+14	      <App />
+15	    </MotionConfig>
+16	  </StrictMode>,
+17	);
+18
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:42Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`head -100 /Users/grant/code/chroma-curve/app/package.json | grep -A 50 "devDependencies\|dependencies"`
+
+```text
+  "dependencies": {
+    "@fontsource/geist-mono": "^5.2.7",
+    "@fontsource/geist-sans": "^5.2.5",
+    "@phosphor-icons/react": "^2.1.10",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-slider": "^1.3.6",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@tailwindcss/vite": "^4.2.1",
+    "chroma-js": "^3.2.0",
+    "framer-motion": "^12.36.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.1",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/chroma-js": "^3.1.2",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.3.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.56.1",
+    "vite": "^7.0.0"
+  }
+}
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:44Z)**_
+
+Excellent! Now let me create a comprehensive summary by checking if there's a specific CSS file or any other layout considerations:
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:26:44Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+
+`find app/src -type f \( -name "*.tsx" -o -name "*.css" \) ! -path "*/node_modules/*" | sort`
+
+```text
+app/src/App.tsx
+app/src/components/About.tsx
+app/src/components/AppShell.tsx
+app/src/components/Header.tsx
+app/src/components/controls/AdjustmentSlider.tsx
+app/src/components/controls/ControlBar.tsx
+app/src/components/controls/HueSlider.tsx
+app/src/components/controls/LightnessRange.tsx
+app/src/components/controls/SaturationSlider.tsx
+app/src/components/controls/SliderBase.tsx
+app/src/components/controls/TargetSwatch.tsx
+app/src/components/controls/ToggleSwitch.tsx
+app/src/components/curves/ChartTabs.tsx
+app/src/components/curves/EffectiveSaturation.tsx
+app/src/components/curves/SaturationCurve.tsx
+app/src/components/export/ExportDialog.tsx
+app/src/components/export/ExportPreview.tsx
+app/src/components/export/FormatSelector.tsx
+app/src/components/palette/ColorSwatch.tsx
+app/src/components/palette/CopyFeedback.tsx
+app/src/components/palette/PaletteGrid.tsx
+app/src/components/palette/PaletteStrip.tsx
+app/src/index.css
+app/src/main.tsx
+```
+</details></tool-use>
+
+_**Agent - sidechain (claude-haiku-4-5-20251001 2026-03-30 07:27:01Z)**_
+
+Perfect! Now I have a complete picture. Let me provide you with a comprehensive layout structure report.
+
+## Layout Structure Analysis for Responsive Fixes
+
+Based on my thorough exploration of the codebase, here's the complete layout structure and responsive handling:
+
+### 1. **Main App Shell** (`/Users/grant/code/chroma-curve/app/src/components/AppShell.tsx`)
+- Simple wrapper component providing base styling
+- Full viewport height with dark background (`min-h-screen bg-surface-base`)
+- Responsive font sizing through Tailwind's default system
+
+### 2. **Header Component** (`/Users/grant/code/chroma-curve/app/src/components/Header.tsx`)
+- Uses `flex items-center justify-between px-6 py-3` for layout
+- **Responsive breakpoints:**
+  - Subtitle: `hidden sm:block` (hidden on mobile, shows at small screens)
+  - Keyboard hint: `hidden md:flex` (hidden on mobile/tablet, shows on medium screens+)
+- Title: "Chroma Curve" with monochromatic description
+- Right side has export dialog and keyboard hint
+
+### 3. **Control Bar Component** (`/Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx`)
+- **Structure:** `sticky top-0 z-50` navigation bar with blur effect
+- Uses `flex flex-wrap gap-6` for responsive wrapping
+- **Responsive elements:** Has a divider (`hidden lg:block`) that only shows on large screens
+- Controls (sliders): HueSlider, TargetSwatch, SaturationSlider, AdjustmentSlider, LightnessRange
+- Stretches to `max-w-5xl mx-auto` with padding `px-6 py-4`
+- Has backdrop blur and semi-transparent background: `bg-surface-raised/85 backdrop-blur-xl`
+
+### 4. **Palette Grid Component** (`/Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx`)
+- **Toolbar/Control Area:**
+  - First div: `flex justify-end items-center gap-1 px-4 lg:pr-0 mb-3`
+  - Contains swatch count selector and layout dropdown in one box
+  - Contains reverse/labels/borders toggles in another box
+  - Responsive padding: `px-4` on mobile, `lg:pr-0` on large screens
+
+- **Grid Container:**
+  - `grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr`
+  - Responsive margins: `ml-4 mr-4` on mobile, `lg:mr-0` on large screens
+  - Dynamic columns via inline style: `gridTemplateColumns: repeat(${cols}, 1fr)`
+  - Gap options: `gap-px bg-surface-overlay` when borders enabled, `gap-0` otherwise
+
+- **Layout Options:** row, column, vertical, horizontal
+- **Step Options:** 8, 9, 10, 12, 16, 20, 24, 48, or all colors
+
+### 5. **Palette Strip Component** (`/Users/grant/code/chroma-curve/app/src/components/palette/PaletteStrip.tsx`)
+- Horizontal color strip preview
+- `h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4`
+- Fixed height with auto-column layout
+- Responsive margin: `mx-4` padding
+
+### 6. **Color Swatch Component** (`/Users/grant/code/chroma-curve/app/src/components/palette/ColorSwatch.tsx`)
+- Minimum heights: `min-h-[120px]` (standard) or `min-h-[240px]` (tall for row layout)
+- Responsive padding: `px-2 py-1.5`
+- Flex column layout with gap
+
+### 7. **Chart Tabs Component** (`/Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx`)
+- `mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4`
+- Responsive margin: `mx-4` on all screens, `lg:mr-4` on large screens
+- Contains tabs for "Adjustment" and "Computed" saturation curves
+
+### 8. **Main App Layout** (`/Users/grant/code/chroma-curve/app/src/App.tsx`)
+- **Root structure:**
+  ```
+  AppShell > Header > ControlBar > [content]
+  ```
+- **Content grid:**
+  - `grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mx-0`
+  - **Mobile:** Single column layout (PaletteStrip, PaletteGrid, ChartTabs stacked)
+  - **Large screens (lg):** Two-column layout with sidebar (340px fixed width for charts)
+  - `lg:items-stretch` ensures sidebar stretches to fill height on large screens
+  - Gap of 4 units between grid items
+  - Margin: `mx-0` on mobile for full width, `lg:items-stretch` for proper alignment
+
+### 9. **CSS & Tailwind Configuration** (`/Users/grant/code/chroma-curve/app/src/index.css`)
+- Using Tailwind CSS 4.2 (via `@tailwindcss/vite`)
+- Custom theme with design tokens (colors for text, surfaces, borders, strokes)
+- Prefers-reduced-motion support for accessibility
+- No explicit media queries in the CSS; all responsive behavior done via Tailwind classes
+
+### **Existing Responsive Breakpoints Used:**
+- `sm:` - Small screens (used in Header for subtitle)
+- `md:` - Medium screens (used in Header for keyboard hint, About component)
+- `lg:` - Large screens (most common for two-column layout, chart sidebar, padding adjustments)
+
+### **Key Responsive Issues to Address:**
+1. **PaletteGrid padding:** Asymmetric on mobile (`ml-4 mr-4`) vs desktop (`lg:mr-0`)
+2. **ControlBar divider:** Completely hidden on mobile - all controls wrap without visual break
+3. **Header compression:** Limited responsive scaling of text sizes
+4. **Chart sidebar:** Fixed 340px width may not work on small tablets
+5. **Toolbar stacking:** Swatch/layout controls and toggle controls may wrap awkwardly on small screens
+6. **Touch targets:** Small text sizes and controls (11px, 10px) may be hard to tap on mobile
+
+All styling is done through **Tailwind CSS classes** with no custom CSS media queries currently in place. The Vite + Tailwind setup uses `@tailwindcss/vite` plugin for on-the-fly compilation.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:05Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/PaletteGrid.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import { ColorSwatch } from "./ColorSwatch";
+3	import { ToggleSwitch } from "../controls/ToggleSwitch";
+4	import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+5	import type { ColorEntry } from "../../types/palette";
+6	
+7	interface PaletteGridProps {
+8	  entries: ColorEntry[];
+9	}
+10	
+11	const STEP_OPTIONS = [8, 9, 10, 12, 16, 20, 24, 48];
+12	
+13	type Layout = "row" | "column" | "vertical" | "horizontal";
+14	
+15	function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
+16	  if (count >= entries.length) return entries;
+17	  const step = (entries.length - 1) / (count - 1);
+18	  return Array.from({ length: count }, (_, i) =>
+19	    entries[Math.round(i * step)],
+20	  );
+21	}
+22	
+23	// Find the column count that produces no orphans and the most square-ish grid
+24	function bestCols(total: number): number {
+25	  const target = Math.round(Math.sqrt(total));
+26	  // Search outward from the square root for a clean divisor
+27	  for (let d = 0; d <= target; d++) {
+28	    if ((target + d) > 0 && total % (target + d) === 0) return target + d;
+29	    if ((target - d) > 0 && total % (target - d) === 0) return target - d;
+30	  }
+31	  return target;
+32	}
+33	
+34	// Reorder row-major entries into column-major order for CSS grid rendering
+35	function toColumnMajor(entries: ColorEntry[], cols: number): ColorEntry[] {
+36	  const rows = Math.ceil(entries.length / cols);
+37	  const reordered: ColorEntry[] = [];
+38	  for (let r = 0; r < rows; r++) {
+39	    for (let c = 0; c < cols; c++) {
+40	      const idx = c * rows + r;
+41	      if (idx < entries.length) reordered.push(entries[idx]);
+42	    }
+43	  }
+44	  return reordered;
+45	}
+46	
+47	export function PaletteGrid({ entries }: PaletteGridProps) {
+48	  const { copiedLabel, copy } = useCopyToClipboard();
+49	  const [showBorders, setShowBorders] = useState(false);
+50	  const [showLabels, setShowLabels] = useState(true);
+51	  const [reversed, setReversed] = useState(false);
+52	  const [swatchCount, setSwatchCount] = useState<number>(STEP_OPTIONS[0]);
+53	  const [layout, setLayout] = useState<Layout>("row");
+54	
+55	  const { displayEntries, cols } = useMemo(() => {
+56	    const sampled = sampleEntries(entries, swatchCount);
+57	
+58	    // Default order for all layouts is dark→light (reverse the light→dark entries)
+59	    const ordered = reversed ? sampled : sampled.slice().reverse();
+60	
+61	    if (layout === "row") {
+62	      return { displayEntries: ordered, cols: ordered.length };
+63	    }
+64	
+65	    if (layout === "column") {
+66	      return { displayEntries: ordered, cols: 1 };
+67	    }
+68	
+69	    const cols = bestCols(ordered.length);
+70	
+71	    if (layout === "vertical") {
+72	      return { displayEntries: ordered, cols };
+73	    }
+74	    // horizontal: lightness flows left→right via column-major reorder
+75	    return { displayEntries: toColumnMajor(ordered, cols), cols };
+76	  }, [entries, swatchCount, layout, reversed]);
+77	
+78	  return (
+79	    <div className="flex flex-col">
+80	      <div className="flex justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+81	        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
+82	          <label className="flex items-center gap-1 cursor-pointer">
+83	            <span className="text-[11px] font-mono text-text-tertiary">swatches</span>
+84	            <select
+85	              value={swatchCount}
+86	              onChange={(e) => setSwatchCount(Number(e.target.value))}
+87	              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+88	            >
+89	              {STEP_OPTIONS.map((n) => (
+90	                <option key={n} value={n} className="bg-surface-overlay">
+91	                  {n}
+92	                </option>
+93	              ))}
+94	              <option value={entries.length} className="bg-surface-overlay">
+95	                all ({entries.length})
+96	              </option>
+97	            </select>
+98	          </label>
+99	          <label className="flex items-center gap-1 cursor-pointer">
+100	            <span className="text-[11px] font-mono text-text-tertiary">layout</span>
+101	            <select
+102	              value={layout}
+103	              onChange={(e) => setLayout(e.target.value as Layout)}
+104	              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+105	            >
+106	              <option value="row" className="bg-surface-overlay">row</option>
+107	              <option value="column" className="bg-surface-overlay">column</option>
+108	              <option value="vertical" className="bg-surface-overlay">vertical</option>
+109	              <option value="horizontal" className="bg-surface-overlay">horizontal</option>
+110	            </select>
+111	          </label>
+112	        </div>
+113	        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
+114	          <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
+115	          <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
+116	          <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
+117	        </div>
+118	      </div>
+119	      <div
+120	        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+121	        style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+122	      >
+123	        {displayEntries.map((entry) => (
+124	          <ColorSwatch
+125	            key={entry.label}
+126	            entry={entry}
+127	            isCopied={copiedLabel === entry.label}
+128	            onCopy={copy}
+129	            showLabels={showLabels}
+130	            tall={layout === "row"}
+131	          />
+132	        ))}
+133	      </div>
+134	    </div>
+135	  );
+136	}
+137
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:05Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/App.tsx`
+
+```text
+1	import { AppShell } from "./components/AppShell";
+2	import { Header } from "./components/Header";
+3	import { ControlBar } from "./components/controls/ControlBar";
+4	import { PaletteStrip } from "./components/palette/PaletteStrip";
+5	import { PaletteGrid } from "./components/palette/PaletteGrid";
+6	import { ChartTabs } from "./components/curves/ChartTabs";
+7	import { usePalette } from "./hooks/usePalette";
+8	
+9	export default function App() {
+10	  const entries = usePalette();
+11	
+12	  return (
+13	    <AppShell>
+14	      <Header />
+15	      <ControlBar />
+16	      <div className="flex flex-col gap-4 py-4">
+17	        <PaletteStrip entries={entries} />
+18	        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mx-0 lg:items-stretch">
+19	          <PaletteGrid entries={entries} />
+20	          <ChartTabs entries={entries} />
+21	        </div>
+22	      </div>
+23	    </AppShell>
+24	  );
+25	}
+26
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:08Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+1	import { HueSlider } from "./HueSlider";
+2	import { TargetSwatch } from "./TargetSwatch";
+3	import { SaturationSlider } from "./SaturationSlider";
+4	import { AdjustmentSlider } from "./AdjustmentSlider";
+5	import { LightnessRange } from "./LightnessRange";
+6	
+7	export function ControlBar() {
+8	  return (
+9	    <nav aria-label="Palette controls" className="sticky top-0 z-50 px-6 py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl">
+10	      <div className="flex flex-wrap gap-6 max-w-5xl mx-auto">
+11	        <HueSlider />
+12	        <TargetSwatch />
+13	        <SaturationSlider />
+14	        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+15	        <AdjustmentSlider />
+16	        <LightnessRange />
+17	      </div>
+18	    </nav>
+19	  );
+20	}
+21
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:13Z)**_
+
+Looking at the screenshot, the toolbar with swatches/layout/reverse/labels/borders controls is visible but the issue is that on mobile the entire page is quite long with controls taking up significant space. Let me check what's specifically being pushed out of view.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:14Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ToggleSwitch.tsx`
+
+```text
+1	import { useId } from "react";
+2	
+3	interface ToggleSwitchProps {
+4	  label: string;
+5	  checked: boolean;
+6	  onChange: (checked: boolean) => void;
+7	}
+8	
+9	export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
+10	  const id = useId();
+11	  return (
+12	    <label className="flex items-center gap-1 cursor-pointer">
+13	      <span id={id} className="text-[11px] font-mono text-text-tertiary">
+14	        {label}
+15	      </span>
+16	      <button
+17	        type="button"
+18	        role="switch"
+19	        aria-checked={checked}
+20	        aria-labelledby={id}
+21	        onClick={() => onChange(!checked)}
+22	        className="relative w-7 h-4 rounded-full transition-colors min-w-[28px]"
+23	        style={{
+24	          backgroundColor: checked
+25	            ? "var(--color-surface-active-hover)"
+26	            : "var(--color-surface-hover)",
+27	        }}
+28	      >
+29	        <span
+30	          className="absolute top-0.5 left-0.5 w-3 h-3 rounded-full bg-text-secondary transition-transform"
+31	          style={{
+32	            transform: checked ? "translateX(12px)" : "translateX(0)",
+33	          }}
+34	        />
+35	      </button>
+36	    </label>
+37	  );
+38	}
+39
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:14Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/Header.tsx`
+
+```text
+1	import { Copy } from "@phosphor-icons/react";
+2	import { ExportDialog } from "./export/ExportDialog";
+3	import { AboutButton } from "./About";
+4	
+5	export function Header() {
+6	  return (
+7	    <header className="flex items-center justify-between px-6 py-3">
+8	      <div className="flex items-center gap-2">
+9	        <h1 className="text-xl font-semibold mr-4 text-text-primary tracking-tight">
+10	          Chroma Curve
+11	        </h1>
+12	        <p className="text-[10px] text-text-subtle hidden sm:block max-w-40 leading-tight">
+13	          Parabolic saturation correction for monochromatic color palettes
+14	        </p>
+15	        <AboutButton />
+16	      </div>
+17	      <div className="flex items-center gap-3">
+18	        <span className="text-[11px] text-text-subtle flex items-center gap-1 hidden md:flex">
+19	          <Copy size={12} />
+20	          Click swatch to copy
+21	        </span>
+22	        <ExportDialog />
+23	      </div>
+24	    </header>
+25	  );
+26	}
+27
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:19Z)**_
+
+Now I can see the full picture. Looking at the screenshot, the toolbar row with "8 / layout row / reverse / labels / borders" is visible but on mobile the whole page is very tall. The real issue is the palette grid toolbar doesn't wrap well on narrow screens, and on mobile the controls + strip + toolbar + grid + charts stack into a very long page.
+
+Let me make the toolbar wrap properly on mobile and tighten the overall mobile layout.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:28Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:32Z)**_
+
+Now let me also tighten the ControlBar on mobile. The sticky control bar with 6 gap and wrapping sliders takes a lot of vertical space on small screens.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:33Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/HueSlider.tsx`
+
+```text
+1	import { usePaletteStore } from "../../store/paletteStore";
+2	import { SliderBase } from "./SliderBase";
+3	
+4	const hueTrackStyle: React.CSSProperties = {
+5	  background:
+6	    "linear-gradient(to right, hsl(0,80%,55%), hsl(60,80%,55%), hsl(120,80%,55%), hsl(180,80%,55%), hsl(240,80%,55%), hsl(300,80%,55%), hsl(360,80%,55%))",
+7	};
+8	
+9	export function HueSlider() {
+10	  const hue = usePaletteStore((s) => s.hue);
+11	  const setHue = usePaletteStore((s) => s.setHue);
+12	
+13	  return (
+14	    <SliderBase
+15	      label="Hue"
+16	      value={hue}
+17	      min={0}
+18	      max={360}
+19	      step={1}
+20	      onValueChange={setHue}
+21	      trackStyle={hueTrackStyle}
+22	      formatValue={(v) => `${v}°`}
+23	    />
+24	  );
+25	}
+26
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:33Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/SaturationSlider.tsx`
+
+```text
+1	import * as Slider from "@radix-ui/react-slider";
+2	import { Crosshair, ArrowsOutLineHorizontal } from "@phosphor-icons/react";
+3	import { usePaletteStore } from "../../store/paletteStore";
+4	
+5	export function SaturationSlider() {
+6	  const saturation = usePaletteStore((s) => s.saturation);
+7	  const setSaturation = usePaletteStore((s) => s.setSaturation);
+8	  const satMode = usePaletteStore((s) => s.satMode);
+9	  const setSatMode = usePaletteStore((s) => s.setSatMode);
+10	
+11	  return (
+12	    <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
+13	      <div className="flex items-center justify-between px-1">
+14	        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+15	          Saturation
+16	        </span>
+17	        <div className="flex items-center gap-2">
+18	          <button
+19	            type="button"
+20	            onClick={() => setSatMode(satMode === "endpoint" ? "target" : "endpoint")}
+21	            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
+22	            title={satMode === "endpoint" ? "Slider controls endpoint saturation" : "Slider controls target (L50) saturation"}
+23	          >
+24	            {satMode === "target" ? <Crosshair size={14} weight="fill" /> : <ArrowsOutLineHorizontal size={14} />}
+25	            <span className="ml-0.5">{satMode}</span>
+26	          </button>
+27	          <span className="text-[13px] font-mono text-text-primary tabular-nums">
+28	            {Math.round(saturation * 100)}%
+29	          </span>
+30	        </div>
+31	      </div>
+32	      <Slider.Root
+33	        className="relative flex items-center select-none touch-none h-5 cursor-pointer"
+34	        value={[saturation]}
+35	        min={0}
+36	        max={1}
+37	        step={0.01}
+38	        onValueChange={([v]) => setSaturation(v)}
+39	      >
+40	        <Slider.Track
+41	          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+42	        >
+43	          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+44	        </Slider.Track>
+45	        <Slider.Thumb
+46	          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+47	          aria-label="Saturation"
+48	        />
+49	      </Slider.Root>
+50	    </div>
+51	  );
+52	}
+53
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:34Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/AdjustmentSlider.tsx`
+
+```text
+1	import { usePaletteStore } from "../../store/paletteStore";
+2	import { SliderBase } from "./SliderBase";
+3	
+4	// Display: 0% = no curve (sMod=0), -1% to -100% = increasing curve strength.
+5	// Slider is linear in this percentage; we convert to/from sMod internally.
+6	function pctToSMod(pct: number): number {
+7	  if (pct === 0) return 0;
+8	  return 2500 / -pct;
+9	}
+10	
+11	function sModToPct(sMod: number): number {
+12	  if (sMod === 0) return 0;
+13	  return Math.round(-2500 / sMod);
+14	}
+15	
+16	export function AdjustmentSlider() {
+17	  const sMod = usePaletteStore((s) => s.sMod);
+18	  const setSMod = usePaletteStore((s) => s.setSMod);
+19	
+20	  return (
+21	    <SliderBase
+22	      label="Adjustment"
+23	      value={sModToPct(sMod)}
+24	      min={-100}
+25	      max={0}
+26	      step={1}
+27	      onValueChange={(v) => setSMod(pctToSMod(v))}
+28	      formatValue={(v) => `${v}%`}
+29	    />
+30	  );
+31	}
+32
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:34Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/LightnessRange.tsx`
+
+```text
+1	import { useRef, useState } from "react";
+2	import * as Slider from "@radix-ui/react-slider";
+3	import { Lock, LockOpen } from "@phosphor-icons/react";
+4	import { usePaletteStore } from "../../store/paletteStore";
+5	
+6	export function LightnessRange() {
+7	  const lMin = usePaletteStore((s) => s.lMin);
+8	  const lMax = usePaletteStore((s) => s.lMax);
+9	  const setLRange = usePaletteStore((s) => s.setLRange);
+10	  const [locked, setLocked] = useState(false);
+11	  const prevRef = useRef({ lMin, lMax });
+12	
+13	  function handleChange([newMin, newMax]: number[]) {
+14	    if (!locked) {
+15	      prevRef.current = { lMin: newMin, lMax: newMax };
+16	      setLRange(newMin, newMax);
+17	      return;
+18	    }
+19	
+20	    const minDelta = newMin - prevRef.current.lMin;
+21	    const maxDelta = newMax - prevRef.current.lMax;
+22	
+23	    let finalMin: number;
+24	    let finalMax: number;
+25	
+26	    if (minDelta !== 0) {
+27	      // Min thumb moved right → max thumb moves left by same amount
+28	      finalMin = newMin;
+29	      finalMax = Math.max(prevRef.current.lMax - minDelta, finalMin + 1);
+30	    } else {
+31	      // Max thumb moved left → min thumb moves right by same amount
+32	      finalMax = newMax;
+33	      finalMin = Math.min(prevRef.current.lMin - maxDelta, finalMax - 1);
+34	    }
+35	
+36	    finalMin = Math.max(0, finalMin);
+37	    finalMax = Math.min(100, finalMax);
+38	
+39	    prevRef.current = { lMin: finalMin, lMax: finalMax };
+40	    setLRange(finalMin, finalMax);
+41	  }
+42	
+43	  return (
+44	    <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
+45	      <div className="flex items-center justify-between px-1">
+46	        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+47	          Range
+48	        </span>
+49	        <div className="flex items-center gap-2">
+50	          <button
+51	            type="button"
+52	            onClick={() => setLocked(!locked)}
+53	            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
+54	            title={locked ? "Unlock range" : "Lock range span"}
+55	          >
+56	            {locked ? <Lock size={14} weight="fill" /> : <LockOpen size={14} />}
+57	            <span className="ml-0.5">{locked ? "locked" : "lock"}</span>
+58	          </button>
+59	          <span className="text-[13px] font-mono text-text-primary tabular-nums inline-flex">
+60	            <span className="w-[2ch] text-right">{lMin}</span>
+61	            <span>–</span>
+62	            <span className="w-[3ch]">{lMax}</span>
+63	          </span>
+64	        </div>
+65	      </div>
+66	      <Slider.Root
+67	        className="relative flex items-center select-none touch-none h-5 cursor-pointer"
+68	        value={[lMin, lMax]}
+69	        min={0}
+70	        max={100}
+71	        step={1}
+72	        minStepsBetweenThumbs={1}
+73	        onValueChange={handleChange}
+74	      >
+75	        <Slider.Track
+76	          className="relative grow rounded-full h-[6px] overflow-hidden"
+77	          style={{
+78	            background: "linear-gradient(to right, hsl(0 0% 0%), hsl(0 0% 100%))",
+79	          }}
+80	        >
+81	          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+82	        </Slider.Track>
+83	        <Slider.Thumb
+84	          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+85	          aria-label="Minimum lightness"
+86	        />
+87	        <Slider.Thumb
+88	          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+89	          aria-label="Maximum lightness"
+90	        />
+91	      </Slider.Root>
+92	    </div>
+93	  );
+94	}
+95
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:39Z)**_
+
+Now I have the full picture. The ControlBar uses `gap-6` and `px-6 py-4` which is spacious on mobile. The sliders have `min-w-[200px]` which forces wrapping. Let me tighten the mobile spacing.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:42Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:46Z)**_
+
+Now reduce the min-width on sliders for mobile so they don't force as much wrapping:
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:46Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/SliderBase.tsx`
+
+```text
+1	import type { CSSProperties } from "react";
+2	import * as Slider from "@radix-ui/react-slider";
+3	
+4	interface SliderBaseProps {
+5	  label: string;
+6	  value: number;
+7	  min: number;
+8	  max: number;
+9	  step: number;
+10	  onValueChange: (value: number) => void;
+11	  trackStyle?: CSSProperties;
+12	  formatValue?: (value: number) => string;
+13	}
+14	
+15	export function SliderBase({
+16	  label,
+17	  value,
+18	  min,
+19	  max,
+20	  step,
+21	  onValueChange,
+22	  trackStyle,
+23	  formatValue,
+24	}: SliderBaseProps) {
+25	  const displayValue = formatValue ? formatValue(value) : String(value);
+26	
+27	  return (
+28	    <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
+29	      <div className="flex items-center justify-between px-1">
+30	        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+31	          {label}
+32	        </span>
+33	        <span className="text-[13px] font-mono text-text-primary tabular-nums">
+34	          {displayValue}
+35	        </span>
+36	      </div>
+37	      <Slider.Root
+38	        className="relative flex items-center select-none touch-none h-5 cursor-pointer"
+39	        value={[value]}
+40	        min={min}
+41	        max={max}
+42	        step={step}
+43	        onValueChange={([v]) => onValueChange(v)}
+44	      >
+45	        <Slider.Track
+46	          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+47	          style={trackStyle}
+48	        >
+49	          <Slider.Range className={`absolute h-full rounded-full ${trackStyle ? "" : "bg-surface-active-hover"}`} />
+50	        </Slider.Track>
+51	        <Slider.Thumb
+52	          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+53	          aria-label={label}
+54	        />
+55	      </Slider.Root>
+56	    </div>
+57	  );
+58	}
+59
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:51Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SliderBase.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:55Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SaturationSlider.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:27:59Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/LightnessRange.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:28:02Z)**_
+
+Now let me build to make sure everything compiles:
+
+_**Agent (claude-opus-4-6 2026-03-30 07:28:11Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -10`
+
+```text
+dist/assets/geist-sans-latin-500-normal-CN2lyvyL.woff        40.52 kB
+dist/assets/geist-sans-latin-600-normal-CA1yjETN.woff        41.20 kB
+dist/assets/index-ChOc2Uag.css                               27.96 kB │ gzip:   6.17 kB
+dist/assets/index-CPEBGvNN.js                               510.43 kB │ gzip: 165.40 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.37s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:28:19Z)**_
+
+Builds clean. Here's what I changed:
+
+- **PaletteGrid toolbar**: Added `flex-wrap` so the selectors and toggles wrap to a second line on narrow screens instead of overflowing
+- **ControlBar**: Tightened padding (`px-4 py-3` on mobile, `px-6 py-4` at `sm:`) and gap (`gap-4` on mobile, `gap-6` at `sm:`) to reclaim vertical space
+- **All sliders**: Reduced `min-w` from `200px` to `140px` on mobile so more controls can fit per row before wrapping
+
+Want to check it on device before I do anything else?
+
+---
+
+_**User (2026-03-30 07:54:52Z)**_
+
+[Image #3]
+
+_**User (2026-03-30 07:54:52Z)**_
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/3.png]
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:00Z)**_
+
+
+
+Good, the toolbar wraps now. Two visible issues:
+
+1. **Saturation label gets clipped** ("endpoint 50%" is cut off on the right)
+2. **Swatch grid overflows** horizontally, cutting off the last 2-3 swatches with a visible scrollbar
+
+The grid issue is because `row` layout forces all 8 swatches into a single row with `gridTemplateColumns: repeat(8, 1fr)`. On mobile, 8 columns in a constrained width means each swatch gets too narrow or overflows.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:01Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/PaletteGrid.tsx`
+
+```text
+55	  const { displayEntries, cols } = useMemo(() => {
+56	    const sampled = sampleEntries(entries, swatchCount);
+57	
+58	    // Default order for all layouts is dark→light (reverse the light→dark entries)
+59	    const ordered = reversed ? sampled : sampled.slice().reverse();
+60	
+61	    if (layout === "row") {
+62	      return { displayEntries: ordered, cols: ordered.length };
+63	    }
+64	
+65	    if (layout === "column") {
+66	      return { displayEntries: ordered, cols: 1 };
+67	    }
+68	
+69	    const cols = bestCols(ordered.length);
+70	
+71	    if (layout === "vertical") {
+72	      return { displayEntries: ordered, cols };
+73	    }
+74	    // horizontal: lightness flows left→right via column-major reorder
+75	    return { displayEntries: toColumnMajor(ordered, cols), cols };
+76	  }, [entries, swatchCount, layout, reversed]);
+77	
+78	  return (
+79	    <div className="flex flex-col">
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:06Z)**_
+
+The grid needs `overflow-hidden` to be respected, and the row layout needs a mobile-aware column count. Let me also fix the saturation clipping.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:07Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/SaturationSlider.tsx`
+
+```text
+11	  return (
+12	    <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] sm:min-w-[200px]">
+13	      <div className="flex items-center justify-between px-1">
+14	        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+15	          Saturation
+16	        </span>
+17	        <div className="flex items-center gap-2">
+18	          <button
+19	            type="button"
+20	            onClick={() => setSatMode(satMode === "endpoint" ? "target" : "endpoint")}
+21	            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
+22	            title={satMode === "endpoint" ? "Slider controls endpoint saturation" : "Slider controls target (L50) saturation"}
+23	          >
+24	            {satMode === "target" ? <Crosshair size={14} weight="fill" /> : <ArrowsOutLineHorizontal size={14} />}
+25	            <span className="ml-0.5">{satMode}</span>
+26	          </button>
+27	          <span className="text-[13px] font-mono text-text-primary tabular-nums">
+28	            {Math.round(saturation * 100)}%
+29	          </span>
+30	        </div>
+31	      </div>
+32	      <Slider.Root
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:13Z)**_
+
+The saturation label "SATURATION" plus the mode button plus the value are fighting for space at 140px. The label is `tracking-wider` and uppercase which takes more room. Let me truncate the mode label on small screens and fix the grid overflow.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:14Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SaturationSlider.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:21Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SaturationSlider.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:25Z)**_
+
+Now fix the grid overflow. On mobile, `row` layout should cap at a reasonable column count instead of forcing all swatches into one row:
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:28Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:34Z)**_
+
+The key fix: `minmax(0, 1fr)` instead of just `1fr` prevents columns from overflowing their container. With plain `1fr`, the minimum size defaults to `auto` (content width), which on mobile can push columns past the grid boundary.
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:40Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -5`
+
+```text
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.68s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 07:55:44Z)**_
+
+Builds clean. Check it again on the iPhone SE emulator. The grid should now fit within bounds, and the saturation label row should stop clipping.
+
+---
+
+_**User (2026-03-30 08:10:38Z)**_
+
+ah i see whats happening. the label for the saturation slider is too long and going off screen to the right. we prob need to stack the hue and sat sliders on the smallest size
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 08:10:44Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+1	import { HueSlider } from "./HueSlider";
+2	import { TargetSwatch } from "./TargetSwatch";
+3	import { SaturationSlider } from "./SaturationSlider";
+4	import { AdjustmentSlider } from "./AdjustmentSlider";
+5	import { LightnessRange } from "./LightnessRange";
+6	
+7	export function ControlBar() {
+8	  return (
+9	    <nav aria-label="Palette controls" className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl">
+10	      <div className="flex flex-wrap gap-4 sm:gap-6 max-w-5xl mx-auto">
+11	        <HueSlider />
+12	        <TargetSwatch />
+13	        <SaturationSlider />
+14	        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+15	        <AdjustmentSlider />
+16	        <LightnessRange />
+17	      </div>
+18	    </nav>
+19	  );
+20	}
+21
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:10:49Z)**_
+
+Right now Hue, TargetSwatch, and Saturation all sit in the same flex row and fight for space. On small screens, Hue and Saturation should each take full width and stack, with the TargetSwatch sitting inline with Hue.
+
+_**Agent (claude-opus-4-6 2026-03-30 08:10:52Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:10:56Z)**_
+
+Now make Saturation take full width on mobile too so it doesn't share a row with the cramped Hue:
+
+_**Agent (claude-opus-4-6 2026-03-30 08:10:58Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SaturationSlider.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:11:09Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -5`
+
+```text
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.09s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:11:14Z)**_
+
+The approach: on mobile (`< sm`), the Hue slider and TargetSwatch share one full-width row, and the Saturation slider drops to its own full-width row below. At `sm` and up, `sm:contents` dissolves the wrapper so everything flows as before.
+
+Check it on the emulator again.
+
+---
+
+_**User (2026-03-30 08:18:38Z)**_
+
+yeah that works. commit
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 08:18:44Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit responsive fixes
+
+```bash
+git add app/src/components/controls/ControlBar.tsx app/src/components/controls/SaturationSlider.tsx app/src/components/controls/SliderBase.tsx app/src/components/controls/LightnessRange.tsx app/src/components/palette/PaletteGrid.tsx && git commit -m "$(cat <<'EOF'
+fix(responsive): stack controls and fix grid overflow on mobile
+EOF
+)"
+```
+
+```text
+[fix/responsive dc86228] fix(responsive): stack controls and fix grid overflow on mobile
+ 5 files changed, 14 insertions(+), 12 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:18:47Z)**_
+
+Committed `dc86228`: `fix(responsive): stack controls and fix grid overflow on mobile`
+
+---
+
+_**User (2026-03-30 08:20:58Z)**_
+
+on small screens lower the size of the title. the "how it works" modal content needs to stack on small screens. on tablet size, put "hue" and "sat" on a row, and "adjustment" and "range" on a second row". Then put the graphs to the right of all those controls.
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:02Z)**_
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:02Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+File content (11377 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:03Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+1	import { HueSlider } from "./HueSlider";
+2	import { TargetSwatch } from "./TargetSwatch";
+3	import { SaturationSlider } from "./SaturationSlider";
+4	import { AdjustmentSlider } from "./AdjustmentSlider";
+5	import { LightnessRange } from "./LightnessRange";
+6	
+7	export function ControlBar() {
+8	  return (
+9	    <nav aria-label="Palette controls" className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl">
+10	      <div className="flex flex-wrap gap-4 sm:gap-6 max-w-5xl mx-auto">
+11	        <div className="flex gap-4 sm:gap-6 sm:contents w-full sm:w-auto">
+12	          <HueSlider />
+13	          <TargetSwatch />
+14	        </div>
+15	        <SaturationSlider />
+16	        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+17	        <AdjustmentSlider />
+18	        <LightnessRange />
+19	      </div>
+20	    </nav>
+21	  );
+22	}
+23
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:03Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/App.tsx`
+
+```text
+File unchanged since last read. The content from the earlier Read tool_result in this conversation is still current — refer to that instead of re-reading.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:07Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+1	import { useCallback, useMemo, useRef, useState } from "react";
+2	import * as Dialog from "@radix-ui/react-dialog";
+3	import * as Popover from "@radix-ui/react-popover";
+4	import { AnimatePresence, motion } from "framer-motion";
+5	import chroma from "chroma-js";
+6	import { Info, X } from "@phosphor-icons/react";
+7	import { getSaturation } from "../lib/palette";
+8	
+9	const DEFAULT_HUE = 220;
+10	const REF_SMOD = 40;
+11	const STRIP_STEPS = 9;
+12	
+13	// Saturation tuned for the midrange — extremes lose chroma
+14	const SAT_FOR_MID = 0.20;
+15	// Saturation tuned for the extremes — midtones are over-saturated
+16	const SAT_FOR_EXTREMES = 0.40;
+17	// Curve-modulated: base sat that produces balanced results
+18	const SAT_CURVED = 0.35;
+19	
+20	// Swatch classification for 9 steps (indices 0-8)
+21	// "low" = not intense enough, "ok" = desired, "high" = too intense
+22	type SwatchMark = "low" | "ok" | "high" | null;
+23	
+24	// 20% strip: extremes not intense, center too intense, transition zones correct
+25	const markForMid = (i: number): SwatchMark => {
+26	  if (i <= 1 || i >= 7) return "low";
+27	  if (i === 4) return "high";
+28	  return "ok";
+29	};
+30	
+31	// 40% strip: extremes correct, midtones too intense
+32	const markForExtremes = (i: number): SwatchMark => {
+33	  if (i <= 1 || i >= 7) return "ok";
+34	  return "high";
+35	};
+36	
+37	// Curved: all correct
+38	const markCurved = (): SwatchMark => "ok";
+39	
+40	// Lightness step labels
+41	const LIGHTNESS_LABELS = Array.from({ length: STRIP_STEPS }, (_, i) =>
+42	  Math.round(5 + i * (90 / (STRIP_STEPS - 1)))
+43	);
+44	
+45	// Scale factor so parabola edges reach 50% sat (perceptual boundary)
+46	const BOUNDARY_SCALE = 0.5 / getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint");
+47	
+48	function buildStrips(hue: number) {
+49	  const zero: string[] = [];
+50	  const forMid: string[] = [];
+51	  const forExtremes: string[] = [];
+52	  const boundary: string[] = [];
+53	  const curved: string[] = [];
+54	  for (let i = 0; i < STRIP_STEPS; i++) {
+55	    const lInt = 5 + i * (90 / (STRIP_STEPS - 1)); // L5 through L95
+56	    const l = lInt / 100;
+57	    zero.push(chroma.hsl(hue, 0, l).hex());
+58	    forMid.push(chroma.hsl(hue, SAT_FOR_MID, l).hex());
+59	    forExtremes.push(chroma.hsl(hue, SAT_FOR_EXTREMES, l).hex());
+60	    boundary.push(
+61	      chroma
+62	        .hsl(hue, BOUNDARY_SCALE * getSaturation(lInt, REF_SMOD, "endpoint"), l)
+63	        .hex(),
+64	    );
+65	    curved.push(
+66	      chroma
+67	        .hsl(hue, SAT_CURVED * getSaturation(lInt, REF_SMOD, "endpoint"), l)
+68	        .hex(),
+69	    );
+70	  }
+71	  return { zero, forMid, forExtremes, boundary, curved };
+72	}
+73	
+74	interface StripProps {
+75	  colors: string[];
+76	  label?: string;
+77	  mark?: (index: number) => SwatchMark;
+78	}
+79	
+80	function Strip({ colors, label, mark }: StripProps) {
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:11Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+80	function Strip({ colors, label, mark }: StripProps) {
+81	  return (
+82	    <div>
+83	      {label && (
+84	        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
+85	      )}
+86	      <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+87	        {colors.map((c) => (
+88	          <div key={c} className="h-12" style={{ backgroundColor: c }} />
+89	        ))}
+90	      </div>
+91	      {mark && (
+92	        <div className="grid mt-1" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+93	          {colors.map((_, i) => {
+94	            const m = mark(i);
+95	            const text =
+96	              m === "ok" ? "ok" : m === "high" ? "hi" : m === "low" ? "lo" : null;
+97	            return (
+98	              <div key={`mark-${i}`} className="text-center leading-1.5">
+99	                {text && (
+100	                  <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(0_0%_65%)]" : "text-[hsl(0_0%_40%)]"}`}>
+101	                    {text}
+102	                  </span>
+103	                )}
+104	              </div>
+105	            );
+106	          })}
+107	        </div>
+108	      )}
+109	    </div>
+110	  );
+111	}
+112	
+113	function LightnessHeader() {
+114	  return (
+115	    <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
+116	      {LIGHTNESS_LABELS.map((l) => (
+117	        <div key={l} className="text-center text-[9px] font-mono text-[hsl(0_0%_60%)]">
+118	          {l}
+119	        </div>
+120	      ))}
+121	    </div>
+122	  );
+123	}
+124	
+125	// ---------------------------------------------------------------------------
+126	// Color picker plane — saturation (x) vs lightness (y) with parabolic curve
+127	// ---------------------------------------------------------------------------
+128	
+129	function ColorPickerPlane({ hue }: { hue: number }) {
+130	  const size = 200;
+131	  const res = 40; // grid resolution
+132	  const cellSize = size / res;
+133	
+134	  const edgeMultiplier = getSaturation(0, REF_SMOD, "endpoint");
+135	  const boundaryScale = 0.5 / edgeMultiplier; // normalize so edges = 50%
+136	
+137	  // Build pixel grid
+138	  const cells = useMemo(() => {
+139	    const result: { x: number; y: number; color: string }[] = [];
+140	    for (let row = 0; row < res; row++) {
+141	      for (let col = 0; col < res; col++) {
+142	        const sat = col / (res - 1); // 0→1 left to right
+143	        const light = 1 - row / (res - 1); // 1→0 top to bottom
+144	        result.push({
+145	          x: col * cellSize,
+146	          y: row * cellSize,
+147	          color: chroma.hsl(hue, sat, light).hex(),
+148	        });
+149	      }
+150	    }
+151	    return result;
+152	  }, [hue, cellSize]);
+153	
+154	  // Parabolic curve: perceptual boundary scaled so edges reach ~50%
+155	  // Path goes top (l=100) to bottom (l=0) so it draws top→bottom
+156	  const curvePoints = useMemo(() => {
+157	    const points: string[] = [];
+158	    for (let l = 100; l >= 0; l -= 2) {
+159	      const multiplier = getSaturation(l, REF_SMOD, "endpoint");
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:15Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+160	      const sat = boundaryScale * multiplier;
+161	      const px = sat * size;
+162	      const py = (1 - l / 100) * size;
+163	      points.push(`${l === 100 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
+164	    }
+165	    return points;
+166	  }, [boundaryScale]);
+167	
+168	  // Boundary cells: for each row, find the column on the curve
+169	  // Timeline (12s cycle):
+170	  //   0-2s   bare picker
+171	  //   2-4s   line draws top→bottom
+172	  //   4-5s   line holds
+173	  //   5-6s   line fades out
+174	  //   6-8s   swatches highlight sequentially top→bottom
+175	  //   8-9s   swatches hold
+176	  //   9-10s  swatches fade
+177	  //   10-12s bare picker
+178	  const pause = 1;
+179	  const drawDur = 2;
+180	  const lineHold = 2;
+181	  const lineFade = 1;
+182	  const swatchStart = pause + drawDur + lineHold + lineFade; // 6s
+183	  const swatchDraw = 2;
+184	  const swatchHold = 2;
+185	  const swatchFade = 1;
+186	  const cycle = 12;
+187	
+188	  const boundaryCells = useMemo(() => {
+189	    const result: { x: number; y: number; stagger: number }[] = [];
+190	    for (let row = 0; row < res; row++) {
+191	      const light = 1 - row / (res - 1);
+192	      const lInt = Math.round(light * 100);
+193	      const multiplier = getSaturation(lInt, REF_SMOD, "endpoint");
+194	      const sat = boundaryScale * multiplier;
+195	      const col = Math.round(sat * (res - 1));
+196	      if (col >= 0 && col < res) {
+197	        result.push({
+198	          x: col * cellSize,
+199	          y: row * cellSize,
+200	          stagger: (row / res) * swatchDraw, // offset within the swatch phase
+201	        });
+202	      }
+203	    }
+204	    return result;
+205	  }, [boundaryScale, cellSize]);
+206	
+207	  return (
+208	    <div className="flex gap-1.5">
+209	      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+210	        Lightness
+211	      </span>
+212	      <div className="flex flex-col gap-1.5 w-full min-w-0">
+213	        <div className="rounded overflow-hidden border border-border-default">
+214	          <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto block">
+215	            {cells.map((c, i) => (
+216	              <rect key={i} x={c.x} y={c.y} width={cellSize + 0.5} height={cellSize + 0.5} fill={c.color} />
+217	            ))}
+218	            {/* Clip mask for line: wipes top→bottom in, then top→bottom out */}
+219	            <defs>
+220	              <clipPath id="lineReveal">
+221	                <motion.rect
+222	                  x={0}
+223	                  width={size}
+224	                  initial={{ y: 0, height: 0 }}
+225	                  animate={{
+226	                    y:      [0, 0, 0,    0,    size],
+227	                    height: [0, 0, size,  size, 0],
+228	                  }}
+229	                  transition={{
+230	                    duration: cycle,
+231	                    times: [
+232	                      0,
+233	                      pause / cycle,                                       // 2s: start draw
+234	                      (pause + drawDur) / cycle,                           // 4s: fully revealed
+235	                      (pause + drawDur + lineHold) / cycle,                // 5s: start exit
+236	                      (pause + drawDur + lineHold + lineFade) / cycle,     // 6s: fully hidden
+237	                    ],
+238	                    ease: "easeInOut",
+239	                    repeat: Infinity,
+240	                  }}
+241	                />
+242	              </clipPath>
+243	            </defs>
+244	            {/* Dashed curve line */}
+245	            <path
+246	              d={curvePoints.join("")}
+247	              fill="none"
+248	              stroke="white"
+249	              strokeWidth={1.5}
+250	              strokeDasharray="4 3"
+251	              opacity={0.6}
+252	              clipPath="url(#lineReveal)"
+253	            />
+254	            {/* Outline swatches: appear sequentially, then disappear sequentially */}
+255	            {boundaryCells.map((cell, i) => {
+256	              const onTime = (swatchStart + cell.stagger) / cycle;
+257	              const onEnd = Math.min(onTime + 0.01, 1);
+258	              const offStart = (swatchStart + swatchDraw + swatchHold + cell.stagger * (swatchFade / swatchDraw)) / cycle;
+259	              const offEnd = Math.min(offStart + 0.01, 1);
+260	              return (
+261	                <motion.rect
+262	                  key={`b-${i}`}
+263	                  x={cell.x}
+264	                  y={cell.y}
+265	                  width={cellSize}
+266	                  height={cellSize}
+267	                  fill="none"
+268	                  stroke="white"
+269	                  strokeWidth={0.5}
+270	                  initial={{ opacity: 0 }}
+271	                  animate={{
+272	                    opacity: [0, 0, 0.35, 0.35, 0, 0],
+273	                  }}
+274	                  transition={{
+275	                    duration: cycle,
+276	                    times: [0, onTime, onEnd, offStart, offEnd, 1],
+277	                    ease: "linear",
+278	                    repeat: Infinity,
+279	                  }}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:19Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+280	                />
+281	              );
+282	            })}
+283	          </svg>
+284	        </div>
+285	        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] text-center">
+286	          Saturation
+287	        </span>
+288	      </div>
+289	    </div>
+290	  );
+291	}
+292	
+293	// ---------------------------------------------------------------------------
+294	// Curve graph + rotated picker alignment (square, side-by-side)
+295	// ---------------------------------------------------------------------------
+296	
+297	function VisualPanel({ children, label }: { children: React.ReactNode; label: string }) {
+298	  return (
+299	    <div className="flex gap-1.5">
+300	      <span
+301	        className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center shrink-0"
+302	        style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+303	      >
+304	        {label}
+305	      </span>
+306	      <div className="w-full">{children}</div>
+307	    </div>
+308	  );
+309	}
+310	
+311	const CURVE_SIZE = 200;
+312	const CURVE_RES = 40;
+313	const CURVE_CELL = CURVE_SIZE / CURVE_RES;
+314	const SAT_GRID_LINES = [0.1, 0.2, 0.3, 0.4, 0.5];
+315	const CURVE_EDGE_MULT = getSaturation(0, REF_SMOD, "endpoint");
+316	const CURVE_BSCALE = 0.5 / CURVE_EDGE_MULT;
+317	
+318	function curveToX(l: number) { return (l / 100) * CURVE_SIZE; }
+319	function curveToY(sat: number) { return (1 - sat) * CURVE_SIZE; }
+320	
+321	function useCurvePickerData(hue: number) {
+322	  return useMemo(() => {
+323	    const curveData: { l: number; sat: number }[] = [];
+324	    for (let l = 0; l <= 100; l += 2) {
+325	      curveData.push({ l, sat: CURVE_BSCALE * getSaturation(l, REF_SMOD, "endpoint") });
+326	    }
+327	
+328	    const curvePath = curveData
+329	      .map(
+330	        (p, i) =>
+331	          `${i === 0 ? "M" : "L"}${curveToX(p.l).toFixed(1)},${curveToY(p.sat).toFixed(1)}`,
+332	      )
+333	      .join("");
+334	
+335	    const fillPath = `${curvePath} L${CURVE_SIZE},${CURVE_SIZE} L0,${CURVE_SIZE} Z`;
+336	
+337	    const pickerCells: { x: number; y: number; color: string }[] = [];
+338	    for (let row = 0; row < CURVE_RES; row++) {
+339	      for (let col = 0; col < CURVE_RES; col++) {
+340	        const light = col / (CURVE_RES - 1);
+341	        const sat = 1 - row / (CURVE_RES - 1);
+342	        pickerCells.push({
+343	          x: col * CURVE_CELL,
+344	          y: row * CURVE_CELL,
+345	          color: chroma.hsl(hue, sat, light).hex(),
+346	        });
+347	      }
+348	    }
+349	
+350	    return { curveData, curvePath, fillPath, pickerCells };
+351	  }, [hue]);
+352	}
+353	
+354	function CurveGraph({ curvePath, fillPath, curveData }: {
+355	  curvePath: string;
+356	  fillPath: string;
+357	  curveData: { l: number; sat: number }[];
+358	}) {
+359	  return (
+360	    <VisualPanel label="S(L)">
+361	      <svg
+362	        viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
+363	        className="w-full h-auto block rounded border border-border-default bg-surface-raised"
+364	      >
+365	        {SAT_GRID_LINES.map((s) => (
+366	          <line
+367	            key={`h-${s}`}
+368	            x1={0}
+369	            y1={curveToY(s)}
+370	            x2={CURVE_SIZE}
+371	            y2={curveToY(s)}
+372	            stroke="white"
+373	            strokeOpacity={0.04}
+374	            strokeWidth={0.5}
+375	          />
+376	        ))}
+377	        {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((l) => (
+378	          <line
+379	            key={`v-${l}`}
+380	            x1={curveToX(l)}
+381	            y1={0}
+382	            x2={curveToX(l)}
+383	            y2={CURVE_SIZE}
+384	            stroke="white"
+385	            strokeOpacity={0.04}
+386	            strokeWidth={0.5}
+387	          />
+388	        ))}
+389	        <path d={fillPath} fill="url(#alignFill)" />
+390	        <defs>
+391	          <linearGradient id="alignFill" x1="0" y1="0" x2="0" y2="1">
+392	            <stop offset="0%" stopColor="white" stopOpacity={0.1} />
+393	            <stop offset="100%" stopColor="white" stopOpacity={0.01} />
+394	          </linearGradient>
+395	        </defs>
+396	        <path
+397	          d={curvePath}
+398	          fill="none"
+399	          stroke="var(--color-stroke-primary)"
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:23Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+400	          strokeWidth={2}
+401	          strokeLinecap="round"
+402	          strokeLinejoin="round"
+403	        />
+404	        <text
+405	          x={curveToX(50)}
+406	          y={curveToY(curveData[25].sat) + 12}
+407	          textAnchor="middle"
+408	          className="text-[8px] fill-[hsl(0_0%_50%)] font-mono"
+409	        >
+410	          min
+411	        </text>
+412	      </svg>
+413	      <div className="flex justify-between mt-1">
+414	        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">0</span>
+415	        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">L</span>
+416	        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">100</span>
+417	      </div>
+418	    </VisualPanel>
+419	  );
+420	}
+421	
+422	function RotatedPicker({ pickerCells, curvePath }: {
+423	  pickerCells: { x: number; y: number; color: string }[];
+424	  curvePath: string;
+425	}) {
+426	  return (
+427	    <VisualPanel label="Saturation">
+428	      <svg
+429	        viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
+430	        className="w-full h-auto block rounded border border-border-default overflow-hidden"
+431	      >
+432	        {pickerCells.map((c, i) => (
+433	          <rect
+434	            key={i}
+435	            x={c.x}
+436	            y={c.y}
+437	            width={CURVE_CELL + 0.5}
+438	            height={CURVE_CELL + 0.5}
+439	            fill={c.color}
+440	          />
+441	        ))}
+442	        <path
+443	          d={curvePath}
+444	          fill="none"
+445	          stroke="white"
+446	          strokeWidth={1.5}
+447	          strokeDasharray="4 3"
+448	          opacity={0.5}
+449	        />
+450	      </svg>
+451	      <div className="mt-1 text-center">
+452	        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Lightness</span>
+453	      </div>
+454	    </VisualPanel>
+455	  );
+456	}
+457	
+458	function Formula() {
+459	  return (
+460	    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 font-mono text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+461	      <div>
+462	        <span className="text-text-tertiary">S</span>(L) = 1 + ((L - 50)
+463	        <sup>2</sup> / <span className="text-text-tertiary">p</span> - 50
+464	        <sup>2</sup> / <span className="text-text-tertiary">p</span>) / 100
+465	      </div>
+466	      <div className="text-[10px] text-text-faint">
+467	        L = lightness &middot;{" "}
+468	        <span className="text-text-subtle">p</span> = adjustment
+469	      </div>
+470	    </div>
+471	  );
+472	}
+473	
+474	// ---------------------------------------------------------------------------
+475	// Solution section — single CSS grid so all 3 visuals share one column width
+476	// ---------------------------------------------------------------------------
+477	
+478	function SolutionSection({ hue }: { hue: number }) {
+479	  const { curveData, curvePath, fillPath, pickerCells } = useCurvePickerData(hue);
+480	
+481	  return (
+482	    <div className="mt-2 pt-8 border-t border-border-default">
+483	      <div className="grid grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
+484	        {/* Row 1: explanation text | animated picker */}
+485	        <div>
+486	          <p className="text-[13px] font-semibold text-text-secondary mb-3">The solution</p>
+487	          <p className="text-[13px] leading-relaxed text-text-muted mb-3">
+488	            In a color picker, the boundary between neutral and
+489	            chromatic is not a straight line. It follows a curve:
+490	            colours at the extremes of lightness need more
+491	            saturation to register as tinted, while midtones
+492	            need less.
+493	            <sup className="text-[9px] text-text-faint ml-0.5">1</sup>
+494	          </p>
+495	          <p className="text-[13px] leading-relaxed text-text-muted">
+496	            This boundary is approximately parabolic. It can be
+497	            expressed as a formula that takes a lightness value
+498	            and returns a saturation multiplier.
+499	            <sup className="text-[9px] text-text-faint ml-0.5">2</sup>
+500	          </p>
+501	        </div>
+502	        <ColorPickerPlane hue={hue} />
+503	
+504	        {/* Row 2: formula spanning both columns */}
+505	        <div className="col-span-2">
+506	          <Formula />
+507	        </div>
+508	
+509	        {/* Row 3: curve graph | rotated picker */}
+510	        <CurveGraph curvePath={curvePath} fillPath={fillPath} curveData={curveData} />
+511	        <RotatedPicker pickerCells={pickerCells} curvePath={curvePath} />
+512	
+513	        {/* Caption spanning both columns */}
+514	        <p className="col-span-2 text-[11px] text-text-faint text-center">
+515	          The formula&rsquo;s curve (left) traces the perceptual boundary visible in the color field (right).
+516	        </p>
+517	      </div>
+518	    </div>
+519	  );
+520	}
+521	
+522	// ---------------------------------------------------------------------------
+523	// Hue picker — horizontal gradient bar for selecting hue angle
+524	// ---------------------------------------------------------------------------
+525	
+526	const HUE_PRESETS: { label: string; hue: number }[] = [
+527	  { label: "Red", hue: 0 },
+528	  { label: "Orange", hue: 30 },
+529	  { label: "Gold", hue: 45 },
+530	  { label: "Green", hue: 150 },
+531	  { label: "Teal", hue: 180 },
+532	  { label: "Blue", hue: 220 },
+533	  { label: "Indigo", hue: 245 },
+534	  { label: "Purple", hue: 280 },
+535	  { label: "Rose", hue: 340 },
+536	];
+537	
+538	function HuePicker({
+539	  hue,
+540	  onChange,
+541	  onReset,
+542	  isDefault,
+543	}: {
+544	  hue: number;
+545	  onChange: (h: number) => void;
+546	  onReset: () => void;
+547	  isDefault: boolean;
+548	}) {
+549	  const barRef = useRef<HTMLDivElement>(null);
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:27Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+550	
+551	  const hueFromPointer = useCallback((clientX: number) => {
+552	    const bar = barRef.current;
+553	    if (!bar) return;
+554	    const rect = bar.getBoundingClientRect();
+555	    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+556	    onChange(Math.round(ratio * 360));
+557	  }, [onChange]);
+558	
+559	  const onPointerDown = useCallback((e: React.PointerEvent) => {
+560	    e.currentTarget.setPointerCapture(e.pointerId);
+561	    hueFromPointer(e.clientX);
+562	  }, [hueFromPointer]);
+563	
+564	  const onPointerMove = useCallback((e: React.PointerEvent) => {
+565	    if (e.buttons === 0) return;
+566	    hueFromPointer(e.clientX);
+567	  }, [hueFromPointer]);
+568	
+569	  return (
+570	    <div className="space-y-2">
+571	      {/* Presets + reset */}
+572	      <div className="flex items-center gap-1.5">
+573	        {HUE_PRESETS.map((p) => (
+574	          <button
+575	            key={p.hue}
+576	            onClick={() => onChange(p.hue)}
+577	            title={`${p.label} (${p.hue}°)`}
+578	            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+579	            style={{
+580	              backgroundColor: `hsl(${p.hue} 100% 50%)`,
+581	              boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(0 0% 80%)" : "none",
+582	            }}
+583	          />
+584	        ))}
+585	
+586	        {/* Reset */}
+587	        <button
+588	          onClick={onReset}
+589	          title={`Reset to ${DEFAULT_HUE}°`}
+590	          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+591	          style={{ opacity: isDefault ? 0.25 : 0.7 }}
+592	        >
+593	          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(0_0%_60%)]">
+594	            <path
+595	              d="M2 2v3h3M10 10V7H7"
+596	              stroke="currentColor"
+597	              strokeWidth="1.2"
+598	              strokeLinecap="round"
+599	              strokeLinejoin="round"
+600	            />
+601	            <path
+602	              d="M9.5 4.5A4 4 0 0 0 3.17 2.83L2 4M2.5 7.5A4 4 0 0 0 8.83 9.17L10 8"
+603	              stroke="currentColor"
+604	              strokeWidth="1.2"
+605	              strokeLinecap="round"
+606	              strokeLinejoin="round"
+607	            />
+608	          </svg>
+609	        </button>
+610	      </div>
+611	
+612	      {/* Gradient bar */}
+613	      <div
+614	        ref={barRef}
+615	        role="slider"
+616	        tabIndex={0}
+617	        aria-valuemin={0}
+618	        aria-valuemax={360}
+619	        aria-valuenow={hue}
+620	        aria-label="Reference hue angle"
+621	        className="h-6 rounded-sm cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+622	        style={{
+623	          background: "linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))",
+624	        }}
+625	        onPointerDown={onPointerDown}
+626	        onPointerMove={onPointerMove}
+627	        onKeyDown={(e) => {
+628	          const step = e.shiftKey ? 10 : 1;
+629	          let next: number | null = null;
+630	          if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+631	            next = (hue + step) % 360;
+632	          } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+633	            next = (hue - step + 360) % 360;
+634	          }
+635	          if (next !== null) {
+636	            e.preventDefault();
+637	            onChange(next);
+638	          }
+639	        }}
+640	      >
+641	        <div
+642	          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
+643	          style={{
+644	            left: `${(hue / 360) * 100}%`,
+645	            backgroundColor: `hsl(${hue} 100% 50%)`,
+646	          }}
+647	        />
+648	      </div>
+649	    </div>
+650	  );
+651	}
+652	
+653	// ---------------------------------------------------------------------------
+654	// Exported components
+655	// ---------------------------------------------------------------------------
+656	
+657	export function AboutButton() {
+658	  const [open, setOpen] = useState(false);
+659	  const [hue, setHue] = useState(DEFAULT_HUE);
+660	  const strips = useMemo(() => buildStrips(hue), [hue]);
+661	
+662	  return (
+663	    <Dialog.Root open={open} onOpenChange={setOpen}>
+664	      <Dialog.Trigger asChild>
+665	        <button
+666	          type="button"
+667	          className="flex items-center gap-1 rounded-lg px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+668	          aria-label="About this tool"
+669	        >
+670	          <Info size={14} />
+671	          <span className="text-[11px] hidden md:inline">What is this?</span>
+672	        </button>
+673	      </Dialog.Trigger>
+674	      <AnimatePresence>
+675	        {open && (
+676	          <Dialog.Portal forceMount>
+677	            <Dialog.Overlay asChild>
+678	              <motion.div
+679	                initial={{ opacity: 0 }}
+680	                animate={{ opacity: 1 }}
+681	                exit={{ opacity: 0 }}
+682	                transition={{ duration: 0.15 }}
+683	                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+684	              />
+685	            </Dialog.Overlay>
+686	            <Dialog.Content asChild>
+687	              <motion.div
+688	                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+689	                animate={{ opacity: 1, scale: 1, y: 0 }}
+690	                exit={{ opacity: 0, scale: 0.96, y: 8 }}
+691	                transition={{ duration: 0.2 }}
+692	                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-6 rounded-2xl bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
+693	              >
+694	                <div className="grid grid-cols-[1fr_1.4fr] gap-x-6 gap-y-8">
+695	                  {/* Title + intro — span both columns */}
+696	                  <div className="col-span-2">
+697	                    <Dialog.Title className="text-lg font-semibold text-text-primary mb-2">
+698	                      How it works
+699	                    </Dialog.Title>
+700	                    <Dialog.Description className="sr-only">
+701	                      Explanation of the parabolic saturation curve used to generate perceptually balanced monochromatic palettes
+702	                    </Dialog.Description>
+703	                    <p className="text-[13px] leading-relaxed text-text-muted">
+704	                      Monochromatic palettes need saturation that varies with
+705	                      lightness. A fixed saturation value produces even chroma in
+706	                      the midrange but loses it at the extremes — or vice versa.
+707	                    </p>
+708	                  </div>
+709	
+710	                  {/* Hue indicator — swatch aligned with L=50, labels flanking it */}
+711	                  <div className="col-start-2">
+712	                    <Popover.Root>
+713	                      <div className="relative">
+714	                        <div className="grid" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
+715	                          {Array.from({ length: STRIP_STEPS }, (_, i) => (
+716	                            <div key={i} className="h-12">
+717	                              {i === 4 && (
+718	                                <Popover.Trigger asChild>
+719	                                  <button
+720	                                    aria-label="Change reference hue"
+721	                                    className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+722	                                    style={{ backgroundColor: `hsl(${hue} 100% 50%)` }}
+723	                                  />
+724	                                </Popover.Trigger>
+725	                              )}
+726	                            </div>
+727	                          ))}
+728	                        </div>
+729	                        {/* Helper text, right-aligned to swatch left edge */}
+730	                        <div
+731	                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight text-right"
+732	                          style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
+733	                        >
+734	                          Reference hue for<br />examples below
+735	                        </div>
+736	                        {/* Values stacked vertically, left-aligned to swatch right edge */}
+737	                        <div
+738	                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight"
+739	                          style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
+740	                        >
+741	                          <div className="grid grid-cols-[auto_1fr] gap-x-1">
+742	                            <span className="text-[13px]">H:</span>
+743	                            <span className="text-[13px]">{hue}°</span>
+744	                            <span className="text-[hsl(0_0%_35%)]">S:</span>
+745	                            <span className="text-[hsl(0_0%_35%)]">100%</span>
+746	                            <span className="text-[hsl(0_0%_35%)]">L:</span>
+747	                            <span className="text-[hsl(0_0%_35%)]">50%</span>
+748	                          </div>
+749	                        </div>
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:31Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+750	                      </div>
+751	                      <Popover.Portal>
+752	                        <Popover.Content
+753	                          side="right"
+754	                          sideOffset={12}
+755	                          align="center"
+756	                          className="w-56 p-3 rounded-lg bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+757	                        >
+758	                          <HuePicker
+759	                            hue={hue}
+760	                            onChange={setHue}
+761	                            onReset={() => setHue(DEFAULT_HUE)}
+762	                            isDefault={hue === DEFAULT_HUE}
+763	                          />
+764	                          <Popover.Arrow className="fill-[hsl(0_0%_10%)]" />
+765	                        </Popover.Content>
+766	                      </Popover.Portal>
+767	                    </Popover.Root>
+768	                  </div>
+769	
+770	                  {/* Lightness header — right column only */}
+771	                  <div className="col-start-2">
+772	                    <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
+773	                    <LightnessHeader />
+774	                  </div>
+775	
+776	                  {/* 0% sat */}
+777	                  <div>
+778	                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+779	                      <p className="text-[13px] font-semibold text-text-secondary">Achromatic Baseline</p>
+780	                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: 0%</span>
+781	                    </div>
+782	                    <p className="text-[13px] leading-relaxed text-text-muted">
+783	                      Unsaturated grayscale. Functional, but lacks character or brand identity.
+784	                    </p>
+785	                  </div>
+786	                  <Strip colors={strips.zero} />
+787	
+788	                  {/* 20% sat */}
+789	                  <div>
+790	                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+791	                      <p className="text-[13px] font-semibold text-text-secondary">Fixed low saturation</p>
+792	                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+793	                    </div>
+794	                    <p className="text-[13px] leading-relaxed text-text-muted">
+795	                      Desired neutral midtones, but dark and light ends become effectively desaturated.
+796	                    </p>
+797	                  </div>
+798	                  <Strip colors={strips.forMid} mark={markForMid} />
+799	
+800	                  {/* 40% sat */}
+801	                  <div>
+802	                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+803	                      <p className="text-[13px] font-semibold text-text-secondary">Fixed high saturation</p>
+804	                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+805	                    </div>
+806	                    <p className="text-[13px] leading-relaxed text-text-muted">
+807	                      Raising it to recover the extremes pushes the midrange
+808	                      to be oversaturated.
+809	                    </p>
+810	                  </div>
+811	                  <Strip colors={strips.forExtremes} mark={markForExtremes} />
+812	
+813	                  {/* The solution — spans both columns, uses its own 1fr 1fr subgrid */}
+814	                  <div className="col-span-2">
+815	                    <SolutionSection hue={hue} />
+816	                  </div>
+817	
+818	                  {/* Boundary strip */}
+819	                  <div>
+820	                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+821	                      <p className="text-[13px] font-semibold text-text-secondary">Perceptual boundary</p>
+822	                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
+823	                        {"Saturation: "}
+824	                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
+825	                        {"/"}
+826	                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
+827	                        {"/"}
+828	                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
+829	                      </span>
+830	                    </div>
+831	                    <p className="text-[13px] leading-relaxed text-text-muted">
+832	                      Sampling saturation along the curve produces even
+833	                      perceived chroma, but is too saturated for neutrals.
+834	                    </p>
+835	                  </div>
+836	                  <Strip colors={strips.boundary} mark={markCurved} />
+837	
+838	                  {/* Final result strip */}
+839	                  <div>
+840	                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+841	                      <p className="text-[13px] font-semibold text-text-secondary">Adjusted curve</p>
+842	                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
+843	                        {"Saturation: "}
+844	                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
+845	                        {"/"}
+846	                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
+847	                        {"/"}
+848	                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
+849	                      </span>
+850	                    </div>
+851	                    <p className="text-[13px] leading-relaxed text-text-muted">
+852	                      Reducing the base saturation scales the whole curve
+853	                      down. The formula preserves the ratio between
+854	                      midtones and extremes at any base value.
+855	                    </p>
+856	                  </div>
+857	                  <Strip colors={strips.curved} mark={markCurved} />
+858	                </div>
+859	
+860	                <div className="mt-8 pt-4 border-t border-border-default text-[11px] text-text-faint grid gap-1.5">
+861	                  <p>
+862	                    <sup className="text-[9px] text-text-faint mr-1">1</sup>
+863	                    Concept from{" "}
+864	                    <a
+865	                      href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
+866	                      target="_blank"
+867	                      rel="noopener noreferrer"
+868	                      className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
+869	                    >
+870	                      The secret to creating neutral color palettes
+871	                    </a>
+872	                    {" "}by Pablo Figueiredo.
+873	                  </p>
+874	                  <p>
+875	                    <sup className="text-[9px] text-text-faint mr-1">2</sup>
+876	                    Formula adapted from{" "}
+877	                    <a
+878	                      href="https://www.desmos.com/calculator/02ufrfsuzy"
+879	                      target="_blank"
+880	                      rel="noopener noreferrer"
+881	                      className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
+882	                    >
+883	                      Desmos visualization
+884	                    </a>
+885	                    {" "}by Grant Kiely.
+886	                  </p>
+887	                </div>
+888	
+889	                <Dialog.Close asChild>
+890	                  <button
+891	                    type="button"
+892	                    className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
+893	                    aria-label="Close"
+894	                  >
+895	                    <X size={16} />
+896	                  </button>
+897	                </Dialog.Close>
+898	              </motion.div>
+899	            </Dialog.Content>
+900	          </Dialog.Portal>
+901	        )}
+902	      </AnimatePresence>
+903	    </Dialog.Root>
+904	  );
+905	}
+906	
+907
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:37Z)**_
+
+Now I have the full picture. Three changes needed:
+
+1. **Header title**: smaller on mobile
+2. **About dialog**: `grid-cols-[1fr_1.4fr]` needs to stack to single column on small screens
+3. **ControlBar + App layout**: on tablet (`md`), pair hue/sat and adjustment/range into two rows, with charts to the right
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:39Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/Header.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:43Z)**_
+
+Now the About dialog. The main grid at line 694 uses `grid-cols-[1fr_1.4fr]`. On mobile it should be single column, and the right-column-only items need their `col-start-2` removed.
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:46Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:52Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:56Z)**_
+
+Now fix the `col-span-2` and `col-start-2` references so they only apply at `sm`:
+
+_**Agent (claude-opus-4-6 2026-03-30 08:21:57Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:02Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:06Z)**_
+
+Now replace all `col-span-2` with responsive versions:
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:07Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:13Z)**_
+
+Now the SolutionSection's inner grid also needs the same treatment:
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:14Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:24Z)**_
+
+Now for the tablet layout. The user wants: on `md`, hue+sat on row 1, adjustment+range on row 2, charts to the right of all controls. This means the ControlBar should no longer be a separate sticky bar at tablet size. Instead, the controls and charts should share a horizontal layout in the main content area.
+
+Actually, re-reading the request: they want the ControlBar itself to have a specific layout at tablet. Hue+Sat on one row, Adjustment+Range on the second row, and charts to the right. The charts are currently in the main content area, not the ControlBar. Let me think about this differently.
+
+The simplest approach: at `md` breakpoint, make the App layout put controls and charts side by side, with the ControlBar using a 2-row grid for the sliders.
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:25Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/TargetSwatch.tsx`
+
+```text
+1	import { useCallback, useEffect, useRef } from "react";
+2	import * as Popover from "@radix-ui/react-popover";
+3	import { usePaletteStore } from "../../store/paletteStore";
+4	
+5	const PICKER_SIZE = 200;
+6	
+7	export function TargetSwatch() {
+8	  const hue = usePaletteStore((s) => s.hue);
+9	  const saturation = usePaletteStore((s) => s.saturation);
+10	  const setHue = usePaletteStore((s) => s.setHue);
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:29Z)**_
+
+Let me restructure the ControlBar for the tablet layout. The idea: at `md`, use a CSS grid with two columns for the slider pairs, and the TargetSwatch sits with hue.
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:36Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:41Z)**_
+
+Now update App.tsx so the charts sit beside the controls at `md`:
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:41Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/App.tsx`
+
+```text
+File unchanged since last read. The content from the earlier Read tool_result in this conversation is still current — refer to that instead of re-reading.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:47Z)**_
+
+The current App layout:
+```
+Header
+ControlBar (sticky)
+  PaletteStrip
+  grid: [PaletteGrid | ChartTabs (at lg)]
+```
+
+At `md`, the charts should sit to the right of the ControlBar. But the ControlBar is sticky and separate from the content grid. The cleanest approach is to move the two-column grid breakpoint from `lg` down to `md`:
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:49Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/App.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:54Z)**_
+
+Now update ChartTabs and PaletteGrid margins to use `md` instead of `lg`:
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:54Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/ChartTabs.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import * as Tabs from "@radix-ui/react-tabs";
+3	import chroma from "chroma-js";
+4	import { SaturationCurve } from "./SaturationCurve";
+5	import { EffectiveSaturation } from "./EffectiveSaturation";
+6	import { ToggleSwitch } from "../controls/ToggleSwitch";
+7	import { usePaletteStore } from "../../store/paletteStore";
+8	import type { ColorEntry } from "../../types/palette";
+9	
+10	interface ChartTabsProps {
+11	  entries: ColorEntry[];
+12	}
+13	
+14	export function ChartTabs({ entries }: ChartTabsProps) {
+15	  const [showDots, setShowDots] = useState(true);
+16	  const hue = usePaletteStore((s) => s.hue);
+17	  const saturation = usePaletteStore((s) => s.saturation);
+18	
+19	  const { unadjustedColors, adjustedColors } = useMemo(() => ({
+20	    unadjustedColors: entries.map((e) =>
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:22:59Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `lg:mr`
+
+```text
+app/src/components/curves/ChartTabs.tsx:27:    <div className="mx-4 rounded-xl border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+app/src/components/palette/PaletteGrid.tsx:120:        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:23:03Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `lg:pr-0`
+
+```text
+app/src/components/palette/PaletteGrid.tsx:80:      <div className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:23:09Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:23:14Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:23:20Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:23:39Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -5`
+
+```text
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.95s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:23:47Z)**_
+
+Builds clean. Here's the summary:
+
+1. **Title**: `text-base` on mobile, `text-xl` at `sm`+
+2. **About dialog**: single-column grid on mobile, two-column at `sm`+. All `col-span-2` and `col-start-2` gated behind `sm:`. Tighter padding on mobile.
+3. **ControlBar at tablet (`md`)**: 2-column CSS grid so hue+swatch and saturation land on row 1, adjustment and range on row 2. Reverts to flex wrapping at `lg`.
+4. **Charts sidebar**: kicks in at `md` instead of `lg`, so on tablet the charts sit to the right of the palette grid.
+
+Check it on your devices and let me know how it looks.
+
+---
+
+_**User (2026-03-30 08:53:49Z)**_
+
+i just bought chromacurve.style and chromacurve.app are you able to add those to cloudflare for me?
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 08:54:10Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Add both custom domains to Pages project
+
+```bash
+ACCOUNT_ID="[REDACTED]" && TOKEN="[REDACTED]" && curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/pages/projects/chroma-curve/domains" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"chromacurve.style"}' && echo "" && curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/pages/projects/chroma-curve/domains" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"chromacurve.app"}'
+```
+
+```text
+{"success":false,"errors":[{"code":10000,"message":"Authentication error"}],"messages":[],"result":null}
+
+{"success":false,"errors":[{"code":10000,"message":"Authentication error"}],"messages":[],"result":null}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:54:14Z)**_
+
+Token expired. You'll need to re-auth wrangler:
+
+```
+! npx wrangler login
+```
+
+Once you're logged in again I'll retry adding both domains.
+
+---
+
+_**User (2026-03-30 08:54:55Z)**_
+
+ok go ahead
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 08:55:54Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `/Users/grant/Library/Preferences/.wrangler/config/default.toml`
+
+```text
+1	oauth_token = "[REDACTED]"
+2	expiration_time = "2026-03-30T09:54:32.777Z"
+3	refresh_token = "6EkQAhNJU0vmmM2xOZGtt69yXi1v5sy4whNCJC9Zsso.4hGJ-1qTUYVfxFz5omUT6JeGUf4Eh59RwE_hwRZqsSU"
+4	scopes = [ "account:read", "user:read", "workers:write", "workers_kv:write", "workers_routes:write", "workers_scripts:write", "workers_tail:read", "d1:write", "pages:write", "zone:read", "ssl_certs:write", "ai:write", "ai-search:write", "ai-search:run", "queues:write", "pipelines:write", "secrets_store:write", "containers:write", "cloudchamber:write", "connectivity:admin", "offline_access" ]
+5
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:57:34Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Add chromacurve.style domain
+
+```bash
+ACCOUNT_ID="[REDACTED]" && TOKEN="[REDACTED]" && curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/pages/projects/chroma-curve/domains" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"chromacurve.style"}'
+```
+
+```text
+{
+  "result": {
+    "id": "0441fdf2-93ca-4dd0-a1f7-d37b00dd2ba0",
+    "domain_id": "0441fdf2-93ca-4dd0-a1f7-d37b00dd2ba0",
+    "name": "chromacurve.style",
+    "status": "initializing",
+    "verification_data": {
+      "status": "pending"
+    },
+    "validation_data": {
+      "status": "initializing",
+      "method": "http"
+    },
+    "certificate_authority": "google",
+    "created_on": "2026-03-30T08:57:34.680314Z"
+  },
+  "success": true,
+  "errors": [],
+  "messages": []
+}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:57:40Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Add chromacurve.app domain
+
+```bash
+ACCOUNT_ID="[REDACTED]" && TOKEN="[REDACTED]" && curl -s -X POST "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/pages/projects/chroma-curve/domains" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"chromacurve.app"}'
+```
+
+```text
+{
+  "result": {
+    "id": "0963d67e-f142-44b8-b90e-ba3ee23dff33",
+    "domain_id": "0963d67e-f142-44b8-b90e-ba3ee23dff33",
+    "name": "chromacurve.app",
+    "status": "initializing",
+    "verification_data": {
+      "status": "pending"
+    },
+    "validation_data": {
+      "status": "initializing",
+      "method": "http"
+    },
+    "certificate_authority": "google",
+    "created_on": "2026-03-30T08:57:40.451388Z"
+  },
+  "success": true,
+  "errors": [],
+  "messages": []
+}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 08:57:48Z)**_
+
+Both domains are registered with the Pages project. Since these are apex domains (not subdomains of a Cloudflare-managed zone), you'll need to point their DNS to Cloudflare Pages. Wherever you bought them, set the DNS nameservers to Cloudflare, or add CNAME records:
+
+| Domain | Type | Name | Target |
+|--------|------|------|--------|
+| chromacurve.style | CNAME | `@` | `chroma-curve.pages.dev` |
+| chromacurve.app | CNAME | `@` | `chroma-curve.pages.dev` |
+
+If the registrar doesn't support CNAME at the apex, you can transfer DNS to Cloudflare (add the zones in the dashboard) and it'll handle it automatically. Once DNS is pointed, SSL will provision in a minute or two.
+
+---
+
+_**User (2026-03-30 08:59:20Z)**_
+
+ummm what cloudflare account did you just add those to
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 08:59:25Z)**_
+
+Your account — `Grant@kellerdigital.com's Account` (the one wrangler is authenticated with). That's where the `chroma-curve` Pages project lives.
+
+Were the domains purchased under a different Cloudflare account?
+
+---
+
+_**User (2026-03-30 09:00:10Z)**_
+
+i dont see them in the domains list
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:00:15Z)**_
+
+
+
+They wouldn't show up in the **Domains** list — they were added as custom domains on the **Pages project** specifically. Check:
+
+**Workers & Pages → chroma-curve → Custom domains**
+
+That's where `chromacurve.style` and `chromacurve.app` should appear alongside `chromacurve.grantkeller.dev`.
+
+---
+
+_**User (2026-03-30 09:01:10Z)**_
+
+oh i see, i need to onboard them here in cloudflare. i'm going to point the NS to CF
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:01:16Z)**_
+
+
+
+Makes sense. Once the nameservers are updated and Cloudflare shows the zones as active, the Pages custom domains should pick up automatically and provision SSL. Nameserver propagation can take anywhere from a few minutes to a couple hours depending on the registrar.
+
+Let me know when they're active and I can verify the domain status.
+
+---
+
+_**User (2026-03-30 09:02:43Z)**_
+
+when adding the CNAME I get a warning: This hostname is not covered by a certificate. View options to resolve.
+
+CNAME records normally can not be on the zone apex. We use CNAME flattening to make it possible. Learn more.
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:02:50Z)**_
+
+
+
+That's normal for both. The certificate warning resolves itself once Cloudflare provisions the SSL cert, which happens automatically after the CNAME is in place. It's a chicken-and-egg situation — the cert can't be issued until the DNS points to Pages, but the dashboard warns you there's no cert yet.
+
+The CNAME flattening note is just informational — Cloudflare handles apex CNAMEs automatically. No action needed there.
+
+Give it a few minutes after saving the records and the certs should provision.
+
+---
+
+_**User (2026-03-30 09:04:02Z)**_
+
+ah ok
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:04:05Z)**_
+
+
+
+Let me know once they're resolving and I'll update the README with the new primary URL.
+
+---
+
+_**User (2026-03-30 09:07:17Z)**_
+
+[Image #5] this is happening at 749px width. adjustment needs to be on the next row with range
+
+_**User (2026-03-30 09:07:17Z)**_
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/5.png]
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:07:28Z)**_
+
+749px is just below `md` (768px), so it's still using the flex-wrap layout. The issue is Adjustment fits on the first row but Range gets pushed down alone. I need to force Adjustment and Range to stay together.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:07:29Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+1	import { HueSlider } from "./HueSlider";
+2	import { TargetSwatch } from "./TargetSwatch";
+3	import { SaturationSlider } from "./SaturationSlider";
+4	import { AdjustmentSlider } from "./AdjustmentSlider";
+5	import { LightnessRange } from "./LightnessRange";
+6	
+7	export function ControlBar() {
+8	  return (
+9	    <nav aria-label="Palette controls" className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl">
+10	      <div className="flex flex-wrap gap-4 sm:gap-6 max-w-5xl mx-auto md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-4 lg:flex lg:flex-wrap">
+11	        <div className="flex gap-4 sm:gap-6 sm:contents md:flex md:gap-6 w-full sm:w-auto md:w-auto">
+12	          <HueSlider />
+13	          <TargetSwatch />
+14	        </div>
+15	        <SaturationSlider />
+16	        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+17	        <AdjustmentSlider />
+18	        <LightnessRange />
+19	      </div>
+20	    </nav>
+21	  );
+22	}
+23
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:07:39Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:07:58Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.21s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:08:04Z)**_
+
+Now Adjustment and Range are wrapped in a div that keeps them together on small screens (`w-full` forces them as a pair to the next line) but dissolves via `sm:contents` at wider sizes. Check 749px again.
+
+---
+
+_**User (2026-03-30 09:08:45Z)**_
+
+on tablet size, the saturation curve graph needs to be in the same row as the controls, on the right[Image #6]
+
+_**User (2026-03-30 09:08:45Z)**_
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/6.png]
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:08:50Z)**_
+
+
+
+That's a bigger structural change — the chart needs to move from the content area into the ControlBar at `md`. I'll pull ChartTabs into the ControlBar layout at tablet size.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:08:50Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/App.tsx`
+
+```text
+1	import { AppShell } from "./components/AppShell";
+2	import { Header } from "./components/Header";
+3	import { ControlBar } from "./components/controls/ControlBar";
+4	import { PaletteStrip } from "./components/palette/PaletteStrip";
+5	import { PaletteGrid } from "./components/palette/PaletteGrid";
+6	import { ChartTabs } from "./components/curves/ChartTabs";
+7	import { usePalette } from "./hooks/usePalette";
+8	
+9	export default function App() {
+10	  const entries = usePalette();
+11	
+12	  return (
+13	    <AppShell>
+14	      <Header />
+15	      <ControlBar />
+16	      <div className="flex flex-col gap-4 py-4">
+17	        <PaletteStrip entries={entries} />
+18	        <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] gap-4 mx-0 md:items-stretch">
+19	          <PaletteGrid entries={entries} />
+20	          <ChartTabs entries={entries} />
+21	        </div>
+22	      </div>
+23	    </AppShell>
+24	  );
+25	}
+26
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:08:56Z)**_
+
+The approach: pass ChartTabs into ControlBar as a child at `md`. At `md`, the ControlBar becomes a grid with controls on the left and chart on the right. At `lg`+, the chart stays in the main content area (current behavior). I'll render ChartTabs in both places but use responsive visibility to show only the correct one.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:02Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/App.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:05Z)**_
+
+Now update ControlBar to accept and display the chart:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:13Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:17Z)**_
+
+Now update ChartTabs and PaletteGrid margins back to `lg` since the `md` sidebar is now in the ControlBar:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:19Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:27Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:33Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:44Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.33s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:09:50Z)**_
+
+Here's how it works now:
+
+- **Mobile/small**: Controls stack vertically, chart below palette (single column)
+- **Tablet (`md` to `lg`)**: Controls on the left in a 2-row grid, chart sits to the right in the sticky ControlBar. Chart is hidden from the content area.
+- **Desktop (`lg`+)**: Controls in a single flex row, chart returns to the content area sidebar next to the palette grid.
+
+Check it at ~774px.
+
+---
+
+_**User (2026-03-30 09:10:21Z)**_
+
+make the graph half that size at that window size
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:10:27Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:10:41Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.06s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:10:45Z)**_
+
+Capped the chart to 170px wide at tablet size, pushed to the right. Check it.
+
+---
+
+_**User (2026-03-30 09:13:49Z)**_
+
+the controls need to be in this layout [Image #7] from 640px to 1024px
+
+_**User (2026-03-30 09:13:49Z)**_
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/7.png]
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:13:55Z)**_
+
+
+
+So: 2-column grid from `sm` (640px) to `lg` (1024px). Row 1: Hue+Swatch | Saturation. Row 2: Adjustment | Range. The `sm:contents` on the wrapper divs is breaking the grid because it dissolves the grouping. Let me fix that.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:14:02Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:14:09Z)**_
+
+Now the Adjustment and Range sliders need their mobile wrapper removed since the grid handles grouping now. But on mobile (below `sm`), they still need to stack. The grid won't apply below `sm`, so they'll just be block-level children. Let me also make sure the spacing works on mobile without the wrapper:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:14:10Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+1	import type { ReactNode } from "react";
+2	import { HueSlider } from "./HueSlider";
+3	import { TargetSwatch } from "./TargetSwatch";
+4	import { SaturationSlider } from "./SaturationSlider";
+5	import { AdjustmentSlider } from "./AdjustmentSlider";
+6	import { LightnessRange } from "./LightnessRange";
+7	
+8	interface ControlBarProps {
+9	  chart?: ReactNode;
+10	}
+11	
+12	export function ControlBar({ chart }: ControlBarProps) {
+13	  return (
+14	    <nav aria-label="Palette controls" className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl">
+15	      <div className="max-w-5xl mx-auto sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 md:grid-cols-[1fr_1fr_170px] md:items-start lg:flex lg:flex-wrap lg:gap-6">
+16	        {/* Mobile: full-width row for hue+swatch. sm+: grid cell. lg: flex items */}
+17	        <div className="flex gap-4 mb-4 sm:mb-0 sm:gap-6">
+18	          <HueSlider />
+19	          <TargetSwatch />
+20	        </div>
+21	        <SaturationSlider />
+22	        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+23	        <AdjustmentSlider />
+24	        <LightnessRange />
+25	        {chart && (
+26	          <div className="hidden md:block lg:hidden md:row-span-2">
+27	            {chart}
+28	          </div>
+29	        )}
+30	      </div>
+31	    </nav>
+32	  );
+33	}
+34
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:14:15Z)**_
+
+On mobile (below `sm`), the children are just stacked block elements but there's no gap. Let me add a flex column for mobile:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:14:19Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:14:31Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.69s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:14:37Z)**_
+
+Layout breakdown:
+
+- **< 640px**: flex column, each control full-width, stacked vertically
+- **640–1023px (`sm` to `lg`)**: 2-column grid. Row 1: Hue+Swatch | Saturation. Row 2: Adjustment | Range. At `md`+ (768px), chart appears in a 3rd column spanning both rows.
+- **1024px+ (`lg`)**: single flex row with all controls inline, chart moves to content sidebar
+
+Check at 640–774px range.
+
+---
+
+_**User (2026-03-30 09:16:07Z)**_
+
+lol [Image #8]
+
+_**User (2026-03-30 09:16:07Z)**_
+
+[Image: source: /Users/grant/.claude/image-cache/271ae6ef-226b-4086-b1cf-6748e211ed71/8.png]
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:17Z)**_
+
+
+
+Yeah, the chart is spanning the full second column instead of being constrained, and at 910px (above `md`) it's showing the 3-column layout but the Adjustment slider is overflowing. The chart column is too wide and the grid isn't placing items correctly.
+
+The issue: at `sm` (640px+), the grid kicks in with 2 columns. At `md` (768px+), it switches to 3 columns with a 170px chart column. But the Hue+Swatch wrapper is a single grid child occupying one cell, so the grid is: [Hue+Swatch] [Saturation] [Adjustment-overflows]. The chart needs to be placed explicitly.
+
+Let me simplify this with explicit grid placement:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:23Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:29Z)**_
+
+Wait, that's getting messy. Let me take a cleaner approach — keep ControlBar simple and wrap it with the chart at the App level:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:29Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+1	import type { ReactNode } from "react";
+2	import { HueSlider } from "./HueSlider";
+3	import { TargetSwatch } from "./TargetSwatch";
+4	import { SaturationSlider } from "./SaturationSlider";
+5	import { AdjustmentSlider } from "./AdjustmentSlider";
+6	import { LightnessRange } from "./LightnessRange";
+7	
+8	interface ControlBarProps {
+9	  chart?: ReactNode;
+10	}
+11	
+12	export function ControlBar({ chart }: ControlBarProps) {
+13	  return (
+14	    <nav aria-label="Palette controls" className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl">
+15	      <div className="flex flex-col gap-4 max-w-5xl mx-auto sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 lg:flex lg:flex-row lg:flex-wrap lg:gap-6">
+16	        <div className="flex gap-4 sm:gap-6">
+17	          <HueSlider />
+18	          <TargetSwatch />
+19	        </div>
+20	        <SaturationSlider />
+21	        <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+22	        <AdjustmentSlider />
+23	        <LightnessRange />
+24	      </div>
+25	    </nav>
+26	  );
+27	}
+28	
+29	export function ControlSection({ chart, children }: { chart?: ReactNode; children: ReactNode }) {
+30	  return (
+31	    <div className="sticky top-0 z-50 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl md:grid md:grid-cols-[1fr_200px] md:items-start lg:block">
+32	      {children}
+33	      {chart && (
+34	        <div className="hidden md:block lg:hidden px-4 py-3 sm:px-6 sm:py-4">
+35	          {chart}
+36	        </div>
+37	      )}
+38	    </div>
+39	    </nav>
+40	  );
+41	}
+42
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:34Z)**_
+
+There's broken JSX from the partial edit. Let me rewrite this cleanly:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:39Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Write"><details>
+<summary>Tool use: **Write**</summary>
+
+```tsx
+import type { ReactNode } from "react";
+import { HueSlider } from "./HueSlider";
+import { TargetSwatch } from "./TargetSwatch";
+import { SaturationSlider } from "./SaturationSlider";
+import { AdjustmentSlider } from "./AdjustmentSlider";
+import { LightnessRange } from "./LightnessRange";
+
+interface ControlBarProps {
+  chart?: ReactNode;
+}
+
+export function ControlBar({ chart }: ControlBarProps) {
+  return (
+    <nav
+      aria-label="Palette controls"
+      className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl"
+    >
+      <div className="max-w-5xl mx-auto md:grid md:grid-cols-[1fr_200px] md:gap-x-6 md:items-start lg:block">
+        <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 lg:flex lg:flex-row lg:flex-wrap lg:gap-6">
+          <div className="flex gap-4 sm:gap-6">
+            <HueSlider />
+            <TargetSwatch />
+          </div>
+          <SaturationSlider />
+          <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+          <AdjustmentSlider />
+          <LightnessRange />
+        </div>
+        {chart && (
+          <div className="hidden md:block lg:hidden">
+            {chart}
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+}
+
+```
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:51Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.76s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:16:59Z)**_
+
+The structure now:
+
+- Outer div: at `md`, a 2-column grid (`[1fr_200px]`). At `lg`, reverts to block.
+- Left cell: the controls in their own 2-col grid (`sm`) or flex column (mobile) or single flex row (`lg`).
+- Right cell: the chart, only visible at `md` to `lg`.
+
+Check at 910px and 774px.
+
+---
+
+_**User (2026-03-30 09:19:00Z)**_
+
+ok the layout from 640 and up is good. under that that charts completely disappear
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:19:05Z)**_
+
+
+
+On mobile (below `sm`/640px), the chart is hidden in the ControlBar (`hidden md:block`) and also hidden in the content area (`hidden lg:block`). Need to show it in the content area on mobile too.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:19:06Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/App.tsx`
+
+```text
+1	import { AppShell } from "./components/AppShell";
+2	import { Header } from "./components/Header";
+3	import { ControlBar } from "./components/controls/ControlBar";
+4	import { PaletteStrip } from "./components/palette/PaletteStrip";
+5	import { PaletteGrid } from "./components/palette/PaletteGrid";
+6	import { ChartTabs } from "./components/curves/ChartTabs";
+7	import { usePalette } from "./hooks/usePalette";
+8	
+9	export default function App() {
+10	  const entries = usePalette();
+11	
+12	  return (
+13	    <AppShell>
+14	      <Header />
+15	      <ControlBar chart={<ChartTabs entries={entries} />} />
+16	      <div className="flex flex-col gap-4 py-4">
+17	        <PaletteStrip entries={entries} />
+18	        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mx-0 lg:items-stretch">
+19	          <PaletteGrid entries={entries} />
+20	          <div className="hidden lg:block">
+21	            <ChartTabs entries={entries} />
+22	          </div>
+23	        </div>
+24	      </div>
+25	    </AppShell>
+26	  );
+27	}
+28
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:19:12Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/App.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:19:18Z)**_
+
+Now the chart shows on mobile (below `md`), hides at `md` to `lg` (where it's in the ControlBar), and shows again at `lg`+ in the sidebar.
+
+---
+
+_**User (2026-03-30 09:25:49Z)**_
+
+what is this ReactNode for the chart in ControlBar? why not just import the component?
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:25:54Z)**_
+
+
+
+You're right, that's overengineered. The ControlBar already knows about the palette store, no reason to pass the chart as a prop.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:25:55Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/ControlBar.tsx`
+
+```text
+File unchanged since last read. The content from the earlier Read tool_result in this conversation is still current — refer to that instead of re-reading.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:25:59Z)**_
+
+But ChartTabs needs `entries` which comes from `usePalette()` in App. Let me check if ControlBar can just call the hook directly.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:26:00Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `export function ChartTabs`
+
+```text
+app/src/components/curves/ChartTabs.tsx:14:export function ChartTabs({ entries }: ChartTabsProps) {
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:26:05Z)**_
+
+ChartTabs takes `entries` as a prop. I can have ControlBar call `usePalette()` itself:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:26:09Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Write"><details>
+<summary>Tool use: **Write**</summary>
+
+```tsx
+import { HueSlider } from "./HueSlider";
+import { TargetSwatch } from "./TargetSwatch";
+import { SaturationSlider } from "./SaturationSlider";
+import { AdjustmentSlider } from "./AdjustmentSlider";
+import { LightnessRange } from "./LightnessRange";
+import { ChartTabs } from "../curves/ChartTabs";
+import { usePalette } from "../../hooks/usePalette";
+
+export function ControlBar() {
+  const entries = usePalette();
+
+  return (
+    <nav
+      aria-label="Palette controls"
+      className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl"
+    >
+      <div className="max-w-5xl mx-auto md:grid md:grid-cols-[1fr_16rem] md:gap-x-4 md:items-start lg:block">
+        <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 lg:flex lg:flex-row lg:flex-wrap lg:gap-6">
+          <div className="flex gap-4 sm:gap-6">
+            <HueSlider />
+            <TargetSwatch />
+          </div>
+          <SaturationSlider />
+          <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+          <AdjustmentSlider />
+          <LightnessRange />
+        </div>
+        <div className="hidden md:block lg:hidden">
+          <ChartTabs entries={entries} />
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+```
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ControlBar.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:26:12Z)**_
+
+Now clean up App.tsx:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:26:14Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/App.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:26:24Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.67s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:26:28Z)**_
+
+Cleaner. `usePalette()` is already memoized via Zustand so calling it in both App and ControlBar doesn't duplicate work.
+
+---
+
+_**User (2026-03-30 09:31:51Z)**_
+
+where are the text sizes getting inherited from in the sliders?
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:31:56Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/SliderBase.tsx`
+
+```text
+1	import type { CSSProperties } from "react";
+2	import * as Slider from "@radix-ui/react-slider";
+3	
+4	interface SliderBaseProps {
+5	  label: string;
+6	  value: number;
+7	  min: number;
+8	  max: number;
+9	  step: number;
+10	  onValueChange: (value: number) => void;
+11	  trackStyle?: CSSProperties;
+12	  formatValue?: (value: number) => string;
+13	}
+14	
+15	export function SliderBase({
+16	  label,
+17	  value,
+18	  min,
+19	  max,
+20	  step,
+21	  onValueChange,
+22	  trackStyle,
+23	  formatValue,
+24	}: SliderBaseProps) {
+25	  const displayValue = formatValue ? formatValue(value) : String(value);
+26	
+27	  return (
+28	    <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] sm:min-w-[200px]">
+29	      <div className="flex items-center justify-between px-1">
+30	        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+31	          {label}
+32	        </span>
+33	        <span className="text-[13px] font-mono text-text-primary tabular-nums">
+34	          {displayValue}
+35	        </span>
+36	      </div>
+37	      <Slider.Root
+38	        className="relative flex items-center select-none touch-none h-5 cursor-pointer"
+39	        value={[value]}
+40	        min={min}
+41	        max={max}
+42	        step={step}
+43	        onValueChange={([v]) => onValueChange(v)}
+44	      >
+45	        <Slider.Track
+46	          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+47	          style={trackStyle}
+48	        >
+49	          <Slider.Range className={`absolute h-full rounded-full ${trackStyle ? "" : "bg-surface-active-hover"}`} />
+50	        </Slider.Track>
+51	        <Slider.Thumb
+52	          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+53	          aria-label={label}
+54	        />
+55	      </Slider.Root>
+56	    </div>
+57	  );
+58	}
+59
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:32:02Z)**_
+
+They're hardcoded at `text-[13px]` in each component:
+
+- **SliderBase** (lines 30, 33): `text-[13px]` for both the label and value
+- **SaturationSlider**: same `text-[13px]` for the label, mode button at `text-[11px]`, value at `text-[13px]`
+- **LightnessRange**: same pattern
+
+Nothing inherited — all explicit arbitrary sizes. Are you looking to make them responsive?
+
+---
+
+_**User (2026-03-30 09:34:18Z)**_
+
+LOL ok they're hardcoded everywhere smh. we need them to get smaller as the screen gets smaller, and we should not be hard-coding text sizes at all unless its a super specific case
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:24Z)**_
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:25Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components/controls` pattern `text-\[\d+px\]`
+
+```text
+app/src/components/controls/SaturationSlider.tsx:14:        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider shrink-0">
+app/src/components/controls/SaturationSlider.tsx:21:            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors shrink-0 ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
+app/src/components/controls/SaturationSlider.tsx:27:          <span className="text-[13px] font-mono text-text-primary tabular-nums">
+app/src/components/controls/ToggleSwitch.tsx:13:      <span id={id} className="text-[11px] font-mono text-text-tertiary">
+app/src/components/controls/SliderBase.tsx:30:        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+app/src/components/controls/SliderBase.tsx:33:        <span className="text-[13px] font-mono text-text-primary tabular-nums">
+app/src/components/controls/LightnessRange.tsx:46:        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+app/src/components/controls/LightnessRange.tsx:53:            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
+app/src/components/controls/LightnessRange.tsx:59:          <span className="text-[13px] font-mono text-text-primary tabular-nums inline-flex">
+app/src/components/controls/TargetSwatch.tsx:157:          <div className="flex justify-between mt-2 text-[10px] font-mono text-text-subtle">
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:26Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components/palette` pattern `text-\[\d+px\]`
+
+```text
+app/src/components/palette/ColorSwatch.tsx:26:          <span className="text-[11px] font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
+app/src/components/palette/ColorSwatch.tsx:27:          <span className="text-[8px] font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
+app/src/components/palette/PaletteGrid.tsx:83:            <span className="text-[11px] font-mono text-text-tertiary">swatches</span>
+app/src/components/palette/PaletteGrid.tsx:87:              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+app/src/components/palette/PaletteGrid.tsx:100:            <span className="text-[11px] font-mono text-text-tertiary">layout</span>
+app/src/components/palette/PaletteGrid.tsx:104:              className="text-[11px] font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:26Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components/Header.tsx` pattern `text-\[\d+px\]`
+
+```text
+12:        <p className="text-[10px] text-text-subtle hidden sm:block max-w-40 leading-tight">
+18:        <span className="text-[11px] text-text-subtle flex items-center gap-1 hidden md:flex">
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:28Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components/curves` pattern `text-\[\d+px\]`
+
+```text
+app/src/components/curves/SaturationCurve.tsx:96:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/SaturationCurve.tsx:118:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/SaturationCurve.tsx:130:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/SaturationCurve.tsx:138:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/EffectiveSaturation.tsx:87:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/EffectiveSaturation.tsx:109:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/EffectiveSaturation.tsx:121:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/EffectiveSaturation.tsx:129:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/ChartTabs.tsx:29:        <h3 className="text-[11px] font-medium text-text-tertiary uppercase tracking-wider">
+app/src/components/curves/ChartTabs.tsx:38:            className="flex-1 px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+app/src/components/curves/ChartTabs.tsx:44:            className="flex-1 px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+app/src/components/curves/ChartTabs.tsx:57:        <summary className="text-[11px] font-mono text-text-subtle cursor-pointer select-none py-2 hover:text-text-muted transition-colors">
+app/src/components/curves/ChartTabs.tsx:62:            <span className="text-[10px] font-mono text-text-faint block mb-1">Unadjusted</span>
+app/src/components/curves/ChartTabs.tsx:70:            <span className="text-[10px] font-mono text-text-faint block mb-1">Adjusted</span>
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:34Z)**_
+
+Here's the mapping I see. The sizes used are `8px`, `10px`, `11px`, and `13px`. Tailwind's scale:
+
+- `text-[8px]` → keep as-is (swatch HSL values, genuinely tiny data)
+- `text-[10px]` → `text-2xs` (we'll need a custom size, or use `text-[0.625rem]`) — actually Tailwind 4 doesn't have `2xs`. Let me check what's available.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:35Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/index.css`
+
+```text
+1	@import "tailwindcss";
+2	
+3	@theme {
+4	  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+5	  --font-mono: "Geist Mono", ui-monospace, monospace;
+6	
+7	  /* Text */
+8	  --color-text-primary: hsl(0 0% 91%);
+9	  --color-text-secondary: hsl(0 0% 72%);
+10	  --color-text-tertiary: hsl(0 0% 60%);
+11	  --color-text-muted: hsl(0 0% 50%);
+12	  --color-text-subtle: hsl(0 0% 44%);
+13	  --color-text-faint: hsl(0 0% 32%);
+14	
+15	  /* Surfaces */
+16	  --color-surface-base: hsl(0 0% 6%);
+17	  --color-surface-raised: hsl(0 0% 8%);
+18	  --color-surface-overlay: hsl(0 0% 10%);
+19	  --color-surface-hover: hsl(0 0% 12%);
+20	  --color-surface-active: hsl(0 0% 15%);
+21	  --color-surface-active-hover: hsl(0 0% 20%);
+22	
+23	  /* Borders */
+24	  --color-border-default: hsl(0 0% 12%);
+25	  --color-border-elevated: hsl(0 0% 15%);
+26	
+27	  /* Strokes (SVG) */
+28	  --color-stroke-grid: hsl(0 0% 12%);
+29	  --color-stroke-axis: hsl(0 0% 17%);
+30	  --color-stroke-secondary: hsl(0 0% 44%);
+31	  --color-stroke-primary: hsl(0 0% 72%);
+32	}
+33	
+34	@layer base {
+35	  *,
+36	  *::before,
+37	  *::after {
+38	    box-sizing: border-box;
+39	  }
+40	
+41	  body {
+42	    margin: 0;
+43	    -webkit-font-smoothing: antialiased;
+44	    -moz-osx-font-smoothing: grayscale;
+45	  }
+46	}
+47	
+48	@media (prefers-reduced-motion: reduce) {
+49	  *,
+50	  *::before,
+51	  *::after {
+52	    animation-duration: 0.01ms !important;
+53	    animation-iteration-count: 1 !important;
+54	    transition-duration: 0.01ms !important;
+55	    scroll-behavior: auto !important;
+56	  }
+57	}
+58
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:43Z)**_
+
+Tailwind 4's default scale goes `text-xs` (0.75rem/12px), `text-sm` (0.875rem/14px), `text-base` (1rem/16px). The design uses sizes between and below those. I'll define semantic text size tokens in the theme so they can scale responsively, and replace all the hardcoded values.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:47Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:53Z)**_
+
+Now replace all the hardcoded sizes. The mapping:
+- `text-[13px]` (labels, values) → `text-control-label` / `text-control-value` (12px, scales with rem)
+- `text-[11px]` (toggles, mode buttons, tab labels) → `text-control-aux` (11px)
+- `text-[10px]` (axis labels, tiny captions) → `text-control-aux` (close enough, these are secondary)
+- `text-[8px]` (swatch data) → `text-data-tiny` (8px)
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:54Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SliderBase.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:34:59Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SaturationSlider.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:00Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/SaturationSlider.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:07Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/LightnessRange.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:08Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/LightnessRange.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:15Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/ToggleSwitch.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:23Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/TargetSwatch.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:29Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:42Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+<tool_use_error>File has not been read yet. Read it first before writing to it.</tool_use_error>
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:42Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+<tool_use_error>File has not been read yet. Read it first before writing to it.</tool_use_error>
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:46Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/ColorSwatch.tsx`
+
+```text
+1	import { getContrastColor } from "../../lib/colors";
+2	import { CopyFeedback } from "./CopyFeedback";
+3	import type { ColorEntry } from "../../types/palette";
+4	
+5	interface ColorSwatchProps {
+6	  entry: ColorEntry;
+7	  isCopied: boolean;
+8	  onCopy: (text: string, label: string) => void;
+9	  showLabels?: boolean;
+10	  tall?: boolean;
+11	}
+12	
+13	export function ColorSwatch({ entry, isCopied, onCopy, showLabels = true, tall = false }: ColorSwatchProps) {
+14	  const textColor = getContrastColor(entry.hex);
+15	
+16	  return (
+17	    <button
+18	      type="button"
+19	      className={`relative flex flex-col justify-start gap-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-base group px-2 py-1.5 ${tall ? "min-h-[240px]" : "min-h-[120px]"}`}
+20	      style={{ backgroundColor: entry.hex, color: textColor }}
+21	      onClick={() => onCopy(`hsl(${entry.hslString})`, entry.label)}
+22	      title={`${entry.label} — hsl(${entry.hslString})`}
+23	    >
+24	      {showLabels && (
+25	        <>
+26	          <span className="text-[11px] font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
+27	          <span className="text-[8px] font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
+28	            hsl({entry.hslString})
+29	          </span>
+30	        </>
+31	      )}
+32	      <CopyFeedback visible={isCopied} />
+33	    </button>
+34	  );
+35	}
+36
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:52Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/ColorSwatch.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:52Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/ColorSwatch.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:35:59Z)**_
+
+Now the Header:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:00Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/Header.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:01Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/Header.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:07Z)**_
+
+Now the chart components:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:08Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/ChartTabs.tsx`
+
+```text
+File unchanged since last read. The content from the earlier Read tool_result in this conversation is still current — refer to that instead of re-reading.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:14Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:15Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:23Z)**_
+
+The SVG chart text sizes are a special case (they use `fill-` not `text-` color and render inside SVGs), but let me still swap them:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:24Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/SaturationCurve.tsx`
+
+```text
+90	              strokeWidth={1}
+91	            />
+92	            <text
+93	              x={PAD.left - 8}
+94	              y={g.y + 3}
+95	              textAnchor="end"
+96	              className="text-[13px] fill-text-faint font-mono"
+97	            >
+98	              {g.label}
+99	            </text>
+100	          </g>
+101	        ))}
+102	
+103	        {/* Grid lines - vertical */}
+104	        {xGridValues.map((l) => (
+105	          <g key={l}>
+106	            <line
+107	              x1={toSvgX(l)}
+108	              y1={gridTop}
+109	              x2={toSvgX(l)}
+110	              y2={H - PAD.bottom}
+111	              stroke="var(--color-stroke-grid)"
+112	              strokeWidth={1}
+113	            />
+114	            <text
+115	              x={toSvgX(l)}
+116	              y={H - PAD.bottom + 16}
+117	              textAnchor="middle"
+118	              className="text-[13px] fill-text-faint font-mono"
+119	            >
+120	              {l}
+121	            </text>
+122	          </g>
+123	        ))}
+124	
+125	        {/* Axis labels */}
+126	        <text
+127	          x={PAD.left + PLOT_W / 2}
+128	          y={H - 4}
+129	          textAnchor="middle"
+130	          className="text-[10px] fill-text-faint font-sans"
+131	        >
+132	          Lightness
+133	        </text>
+134	        <text
+135	          x={12}
+136	          y={PAD.top + PLOT_H / 2}
+137	          textAnchor="middle"
+138	          className="text-[10px] fill-text-faint font-sans"
+139	          transform={`rotate(-90, 12, ${PAD.top + PLOT_H / 2})`}
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:32Z)**_
+
+SVG text sizes with `text-[Xpx]` are a bit different — they set the font-size on SVG `<text>` elements rendered at fixed viewBox dimensions. These are actually appropriate to keep hardcoded since the SVG viewBox doesn't change with viewport. I'll leave those alone.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:40Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -5`
+
+```text
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.56s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:47Z)**_
+
+Now verify there aren't stray hardcoded sizes left outside SVGs and the About dialog (which is its own thing):
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:48Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components` pattern `text-\[\d+px\]`
+
+```text
+app/src/components/curves/SaturationCurve.tsx:96:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/SaturationCurve.tsx:118:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/SaturationCurve.tsx:130:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/SaturationCurve.tsx:138:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/EffectiveSaturation.tsx:87:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/EffectiveSaturation.tsx:109:              className="text-[13px] fill-text-faint font-mono"
+app/src/components/curves/EffectiveSaturation.tsx:121:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/curves/EffectiveSaturation.tsx:129:          className="text-[10px] fill-text-faint font-sans"
+app/src/components/export/FormatSelector.tsx:42:        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+app/src/components/export/FormatSelector.tsx:64:        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+app/src/components/export/ExportPreview.tsx:13:      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-[13px] font-mono leading-relaxed text-text-primary">
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:53Z)**_
+
+SVG text (correct to leave hardcoded) and the export dialog. Let me fix the export ones too:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:53Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/export/FormatSelector.tsx`
+
+```text
+1	import type { ExportFormat, ColorSpace } from "../../types/palette";
+2	
+3	interface FormatSelectorProps {
+4	  format: ExportFormat;
+5	  onFormatChange: (format: ExportFormat) => void;
+6	  space: ColorSpace;
+7	  onSpaceChange: (space: ColorSpace) => void;
+8	}
+9	
+10	const formats: { value: ExportFormat; label: string }[] = [
+11	  { value: "css", label: "CSS" },
+12	  { value: "tw4", label: "TW v4" },
+13	  { value: "tw3", label: "TW v3" },
+14	  { value: "scss", label: "SCSS" },
+15	  { value: "js", label: "JS/TS" },
+16	  { value: "json", label: "JSON" },
+17	  { value: "gpl", label: "GPL" },
+18	  { value: "text", label: "Text" },
+19	];
+20	
+21	const spaces: { value: ColorSpace; label: string }[] = [
+22	  { value: "hsl", label: "HSL" },
+23	  { value: "hex", label: "HEX" },
+24	  { value: "rgb", label: "RGB" },
+25	  { value: "hcl", label: "HCL" },
+26	  { value: "oklch", label: "OKLCH" },
+27	];
+28	
+29	const btnBase =
+30	  "flex-1 px-3 py-1.5 text-sm font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
+31	const btnActive = "bg-surface-active text-white";
+32	
+33	export function FormatSelector({
+34	  format,
+35	  onFormatChange,
+36	  space,
+37	  onSpaceChange,
+38	}: FormatSelectorProps) {
+39	  return (
+40	    <div className="flex flex-col gap-3">
+41	      <div>
+42	        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+43	          Format
+44	        </span>
+45	        <div
+46	          role="radiogroup"
+47	          aria-label="Export format"
+48	          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
+49	        >
+50	          {formats.map((f) => (
+51	            <button
+52	              key={f.value}
+53	              role="radio"
+54	              aria-checked={format === f.value}
+55	              className={`${btnBase} ${format === f.value ? btnActive : ""}`}
+56	              onClick={() => onFormatChange(f.value)}
+57	            >
+58	              {f.label}
+59	            </button>
+60	          ))}
+61	        </div>
+62	      </div>
+63	      <div>
+64	        <span className="text-[11px] font-mono text-text-faint uppercase tracking-wider mb-1 block">
+65	          Color Space
+66	        </span>
+67	        <div
+68	          role="radiogroup"
+69	          aria-label="Color space"
+70	          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
+71	        >
+72	          {spaces.map((s) => (
+73	            <button
+74	              key={s.value}
+75	              role="radio"
+76	              aria-checked={space === s.value}
+77	              className={`${btnBase} ${space === s.value ? btnActive : ""}`}
+78	              onClick={() => onSpaceChange(s.value)}
+79	            >
+80	              {s.label}
+81	            </button>
+82	          ))}
+83	        </div>
+84	      </div>
+85	    </div>
+86	  );
+87	}
+88
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:36:58Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/FormatSelector.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:37:03Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/export/ExportPreview.tsx`
+
+```text
+1	import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+2	
+3	interface ExportPreviewProps {
+4	  code: string;
+5	  onDownload: () => void;
+6	}
+7	
+8	export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
+9	  const { copiedLabel, copy } = useCopyToClipboard();
+10	
+11	  return (
+12	    <div className="relative">
+13	      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-[13px] font-mono leading-relaxed text-text-primary">
+14	        {code}
+15	      </pre>
+16	      <div className="absolute top-3 right-3 flex gap-2">
+17	        <button
+18	          type="button"
+19	          onClick={onDownload}
+20	          aria-label="Download palette file"
+21	          className="px-3 py-1 text-xs font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+22	        >
+23	          Download
+24	        </button>
+25	        <button
+26	          type="button"
+27	          onClick={() => copy(code, "export")}
+28	          aria-label="Copy palette code"
+29	          className="px-3 py-1 text-xs font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+30	        >
+31	          {copiedLabel === "export" ? "Copied!" : "Copy"}
+32	        </button>
+33	      </div>
+34	    </div>
+35	  );
+36	}
+37
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:37:14Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportPreview.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:37:28Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.31s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:37:40Z)**_
+
+Builds clean. Here's what changed:
+
+**New theme tokens** in `index.css`:
+- `--text-control-label: 0.75rem` (12px) — slider labels, headings, values
+- `--text-control-value: 0.75rem` (12px) — readouts
+- `--text-control-aux: 0.6875rem` (11px) — toggles, mode buttons, secondary text
+- `--text-data-tiny: 0.5rem` (8px) — swatch HSL values
+
+**Replaced all `text-[Xpx]`** across controls, palette, header, charts, and export components with the token classes. Left SVG `<text>` elements hardcoded since they render in a fixed viewBox. Left the About dialog alone (separate concern).
+
+Since these are `rem`-based now, they'll scale with the root font size. To make them smaller on mobile you can adjust the root `font-size` or add responsive overrides to the tokens.
+
+---
+
+_**User (2026-03-30 09:38:24Z)**_
+
+why not just change the values of the tailwind font size classes to make them fit what we need?
+
+---
+
+_**Agent (claude-opus-4-6 2026-03-30 09:38:29Z)**_
+
+
+
+You're right, that's simpler. Just override Tailwind's built-in `text-xs`, `text-sm`, etc. in the theme instead of inventing custom token names.
+
+_**Agent (claude-opus-4-6 2026-03-30 09:38:33Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/index.css has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:38:40Z)**_
+
+Now replace all the custom token names with standard Tailwind classes:
+
+_**Agent (claude-opus-4-6 2026-03-30 09:38:42Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Find files with custom tokens
+
+`cd /Users/grant/code/chroma-curve/app/src && grep -rl "text-control-label\|text-control-value\|text-control-aux\|text-data-tiny" --include="*.tsx" | sort`
+
+```text
+./components/Header.tsx
+./components/controls/LightnessRange.tsx
+./components/controls/SaturationSlider.tsx
+./components/controls/SliderBase.tsx
+./components/controls/TargetSwatch.tsx
+./components/controls/ToggleSwitch.tsx
+./components/curves/ChartTabs.tsx
+./components/export/ExportPreview.tsx
+./components/export/FormatSelector.tsx
+./components/palette/ColorSwatch.tsx
+./components/palette/PaletteGrid.tsx
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:38:46Z)**_
+
+Mapping: `text-control-label` / `text-control-value` → `text-sm`, `text-control-aux` → `text-xs`, `text-data-tiny` → `text-2xs`
+
+_**Agent (claude-opus-4-6 2026-03-30 09:39:06Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Replace custom tokens with Tailwind classes
+
+`cd /Users/grant/code/chroma-curve/app/src && for f in $(grep -rl "text-control-label\|text-control-value\|text-control-aux\|text-data-tiny" --include="*.tsx"); do sed -i '' 's/text-control-label/text-sm/g; s/text-control-value/text-sm/g; s/text-control-aux/text-xs/g; s/text-data-tiny/text-2xs/g' "$f"; done`
+
+```text
+(Bash completed with no output)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:39:18Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Verify build
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.79s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-03-30 09:39:25Z)**_
+
+Done. Now the whole UI uses standard Tailwind classes (`text-xs`, `text-sm`, `text-2xs`) with the values tuned in the theme:
+
+- `text-2xs` → 0.5rem (8px) — swatch data
+- `text-xs` → 0.6875rem (11px) — toggles, secondary controls
+- `text-sm` → 0.75rem (12px) — slider labels, values
+
+No more hardcoded pixel sizes outside of SVG viewBox text. And since they're rem-based, you can scale everything down on mobile by just adjusting the root font-size if needed.
+
+---
+
+_**User (2026-03-30 09:40:56Z)**_
+
+<command-message>commit-commands:commit</command-message>
+<command-name>/commit-commands:commit</command-name>
+
+_**User (2026-03-30 09:40:56Z)**_
+
+## Context
+
+- Current git status: On branch fix/responsive
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+	modified:   app/src/App.tsx
+	modified:   app/src/components/About.tsx
+	modified:   app/src/components/Header.tsx
+	modified:   app/src/components/controls/ControlBar.tsx
+	modified:   app/src/components/controls/LightnessRange.tsx
+	modified:   app/src/components/controls/SaturationSlider.tsx
+	modified:   app/src/components/controls/SliderBase.tsx
+	modified:   app/src/components/controls/TargetSwatch.tsx
+	modified:   app/src/components/controls/ToggleSwitch.tsx
+	modified:   app/src/components/curves/ChartTabs.tsx
+	modified:   app/src/components/export/ExportPreview.tsx
+	modified:   app/src/components/export/FormatSelector.tsx
+	modified:   app/src/components/palette/ColorSwatch.tsx
+	modified:   app/src/components/palette/PaletteGrid.tsx
+	modified:   app/src/index.css
+
+no changes added to commit (use "git add" and/or "git commit -a")
+- Current git diff (staged and unstaged changes): <persisted-output>
+Output too large (237.7KB). Full output saved to: /Users/grant/.claude/projects/-Users-grant-code-chroma-curve/271ae6ef-226b-4086-b1cf-6748e211ed71/tool-results/bd7jin2px.txt
+
+Preview (first 2KB):
+diff --git a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+index 0463542..5eddb19 100644
+--- a/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
++++ b/.specstory/history/2026-03-30_01-58-35Z-command-message-board-update.md
+@@ -3031,7 +3031,7 @@ You have the capability to call multiple tools in a single response. Stage and c
+ 
+ ---
+ 
+-_**Agent (claude-opus-4-6 2026-03-30 07:23:25Z)**_
++_**Agent (claude-opus-4-6 2026-03-30 07:23:26Z)**_
+ 
+ <tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+ <summary>Tool use: **Bash**</summary>
+@@ -3043,4 +3043,5608 @@ chore: add README, remove .serena and Vite boilerplate README, update .gitignore
+ EOF
+ )"
+ ```
++
++```text
++[main 30c96dc] chore: add README, remove .serena and Vite boilerplate README, update .gitignore
++ 10 files changed, 1677 insertions(+), 361 deletions(-)
++ delete mode 100644 .serena/.gitignore
++ delete mode 100644 .serena/memories/project_overview.md
++ delete mode 100644 .serena/memories/style_and_conventions.md
++ delete mode 100644 .serena/memories/suggested_commands.md
++ delete mode 100644 .serena/memories/task_completion_checklist.md
++ delete mode 100644 .serena/project.yml
++ delete mode 100644 app/README.md
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 07:23:29Z)**_
++
++Committed `30c96dc`: `chore: add README, remove .serena and Vite boilerplate README, update .gitignore`
++
++---
++
++_**User (2026-03-30 07:23:57Z)**_
++
++cut a branch for reponsive fixes
++
++---
++
++_**Agent (claude-opus-4-6 2026-03-30 07:24:01Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Create responsive fixes branch
++
++`git checkout -b fix/responsive`
++
++```text
++Switched to a new branch 'fix/responsive'
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-03-30 07:24:04Z)**_
++
+...
+</persisted-output>
+- Current branch: fix/responsive
+- Recent commits: dc86228 fix(responsive): stack controls and fix grid overflow on mobile
+30c96dc chore: add README, remove .serena and Vite boilerplate README, update .gitignore
+04af23f feat(deploy): add Cloudflare Pages config for chromacurve.grantkeller.dev
+2b5cfbd docs(board): add planning epics, notes, and session history
+743da23 merge: ui/design-polish into main
+e705760 chore(board): archive 19 completed tasks (TASK-0001 through TASK-0019)
+cbdfc64 chore: remove legacy codepen files, add attribution resources and preserve Desmos formula
+ab4cb01 feat(controls): add interactive target swatch with hue/sat color picker
+70a8479 feat(charts): combine charts into tabbed panel, fix layout balance
+0863031 style(controls): add vertical divider between color and curve control groups
+
+## Your task
+
+Based on the above changes, create a single git commit.
+
+You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
