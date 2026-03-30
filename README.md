@@ -1,6 +1,6 @@
 # Chroma Curve
 
-[chromacurve.grantkeller.dev](https://chromacurve.grantkeller.dev)
+[chromacurve.style](https://chromacurve.style)
 
 Monochromatic color palette generator with an adjustable parabolic saturation curve.
 
