@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "deploy": "cd app && npm run build && cd .. && wrangler pages deploy",
+    "preview": "cd app && npm run build && cd .. && wrangler pages dev"
+  },
+  "devDependencies": {
+    "wrangler": "^4.78.0"
+  }
+}
