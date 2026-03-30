@@ -23,8 +23,8 @@ export function ColorSwatch({ entry, isCopied, onCopy, showLabels = true, tall =
     >
       {showLabels && (
         <>
-          <span className="text-[11px] font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
-          <span className="text-[8px] font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
+          <span className="text-sm font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
+          <span className="text-2xs font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
             hsl({entry.hslString})
           </span>
         </>

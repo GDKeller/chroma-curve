@@ -6,3 +6,4 @@ env
 .cache/
 .screenshots/
 .playwright-mcp/
+.serena/

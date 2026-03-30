@@ -25,12 +25,12 @@ export function SliderBase({
   const displayValue = formatValue ? formatValue(value) : String(value);
 
   return (
-    <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
+    <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider">
           {label}
         </span>
-        <span className="text-[13px] font-mono text-text-primary tabular-nums">
+        <span className="text-base font-mono text-text-primary tabular-nums">
           {displayValue}
         </span>
       </div>
