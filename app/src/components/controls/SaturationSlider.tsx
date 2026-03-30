@@ -9,16 +9,16 @@ export function SaturationSlider() {
   const setSatMode = usePaletteStore((s) => s.setSatMode);
 
   return (
-    <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
+    <div className="flex flex-col gap-1.5 flex-1 w-full sm:w-auto sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider">
+        <span className="text-[13px] font-medium text-text-tertiary uppercase tracking-wider shrink-0">
           Saturation
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           <button
             type="button"
             onClick={() => setSatMode(satMode === "endpoint" ? "target" : "endpoint")}
-            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
+            className={`flex items-center text-[11px] font-mono cursor-pointer transition-colors shrink-0 ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
             title={satMode === "endpoint" ? "Slider controls endpoint saturation" : "Slider controls target (L50) saturation"}
           >
             {satMode === "target" ? <Crosshair size={14} weight="fill" /> : <ArrowsOutLineHorizontal size={14} />}
