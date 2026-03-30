@@ -668,7 +668,7 @@ export function AboutButton() {
           aria-label="About this tool"
         >
           <Info size={14} />
-          <span className="text-[11px] hidden md:inline">What is this?</span>
+          <span className="text-[11px] inline">What is this?</span>
         </button>
       </Dialog.Trigger>
       <AnimatePresence>
