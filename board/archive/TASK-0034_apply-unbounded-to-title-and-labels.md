@@ -1,6 +1,6 @@
 ---
 type: task
-status: backlog
+status: done
 priority: 2
 parent: NOTE-0016
 blocked_by: TASK-0033

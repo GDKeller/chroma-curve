@@ -1,6 +1,6 @@
 ---
 type: task
-status: backlog
+status: done
 priority: 2
 parent: NOTE-0016
 created: 2026-03-31
