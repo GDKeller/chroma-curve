@@ -28,9 +28,9 @@ export function ChartTabs({ entries }: ChartTabsProps) {
   return (
     <div className="mx-4 md:mx-0 rounded-xs border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
       <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
-        <h3 className="text-sm font-semibold text-center w-full uppercase text-text-tertiary tracking-wider">
+        <h2 className="text-sm font-semibold text-center w-full uppercase text-text-tertiary tracking-wider">
           Saturation Curve
-        </h3>
+        </h2>
       </div>
       <Tabs.Root defaultValue="adjustment">
         <Tabs.List className="flex border-y border-border-default">
@@ -47,10 +47,12 @@ export function ChartTabs({ entries }: ChartTabsProps) {
             Computed
           </Tabs.Trigger>
         </Tabs.List>
-        <Tabs.Content value="adjustment">
+        <Tabs.Content value="adjustment" forceMount className="data-[state=inactive]:hidden">
+          <h3 className="sr-only">Adjustment <span>multiplier</span></h3>
           <SaturationCurve entries={entries} showDots={showDots} />
         </Tabs.Content>
-        <Tabs.Content value="computed">
+        <Tabs.Content value="computed" forceMount className="data-[state=inactive]:hidden">
+          <h3 className="sr-only">Computed <span>values</span></h3>
           <EffectiveSaturation entries={entries} showDots={showDots} />
         </Tabs.Content>
       </Tabs.Root>

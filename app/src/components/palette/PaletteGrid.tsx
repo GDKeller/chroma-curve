@@ -94,8 +94,9 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   }, [entries, swatchCount, layout, reversed]);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+    <section aria-labelledby="palette-heading" className="flex flex-col">
+      <h2 id="palette-heading" className="sr-only">Color palette</h2>
+      <div role="group" aria-label="Palette display options" className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
         <InlineSelect
           label="swatches"
           value={String(swatchCount)}
@@ -127,6 +128,6 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }
