@@ -9,7 +9,7 @@ interface PaletteGridProps {
   entries: ColorEntry[];
 }
 
-const STEP_OPTIONS = [8, 9, 10, 12, 16, 20, 24, 48];
+const STEP_OPTIONS = [3, 4, 5, 8, 9, 10, 12, 16, 20, 24, 48];
 
 type Layout = "row" | "column" | "vertical" | "horizontal";
 
