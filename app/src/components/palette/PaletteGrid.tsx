@@ -23,13 +23,14 @@ function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
 
 // Find the column count that produces no orphans and the most square-ish grid
 function bestCols(total: number): number {
+  if (total <= 1) return 1;
   const target = Math.round(Math.sqrt(total));
-  // Search outward from the square root for a clean divisor
+  // Search outward from the square root for a clean divisor (min 2 cols)
   for (let d = 0; d <= target; d++) {
-    if ((target + d) > 0 && total % (target + d) === 0) return target + d;
-    if ((target - d) > 0 && total % (target - d) === 0) return target - d;
+    if ((target + d) >= 2 && total % (target + d) === 0) return target + d;
+    if ((target - d) >= 2 && total % (target - d) === 0) return target - d;
   }
-  return target;
+  return total;
 }
 
 // Reorder row-major entries into column-major order for CSS grid rendering
