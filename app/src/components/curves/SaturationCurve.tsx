@@ -93,7 +93,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-[13px] fill-text-faint font-mono"
+              className="text-[13px] fill-text-faint"
             >
               {g.label}
             </text>
@@ -115,7 +115,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-[13px] fill-text-faint font-mono"
+              className="text-[13px] fill-text-faint"
             >
               {l}
             </text>

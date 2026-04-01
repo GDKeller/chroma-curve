@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-sans: "recursive-sans-linear-static", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "unbounded", ui-sans-serif, system-ui, sans-serif;
 
   /* Type scale — tighter for instrument UI */
   --text-2xs: 0.5rem;     /* 8px */

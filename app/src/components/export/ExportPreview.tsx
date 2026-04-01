@@ -10,7 +10,7 @@ export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
 
   return (
     <div className="relative">
-      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base font-mono leading-relaxed text-text-primary">
+      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base leading-relaxed text-text-primary">
         {code}
       </pre>
       <div className="absolute top-3 right-3 flex gap-2">

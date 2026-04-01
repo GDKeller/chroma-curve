@@ -30,7 +30,7 @@ export function SliderBase({
         <span className="text-base font-medium text-text-tertiary uppercase tracking-wider">
           {label}
         </span>
-        <span className="text-base font-mono text-text-primary tabular-nums">
+        <span className="text-base text-text-primary tabular-nums">
           {displayValue}
         </span>
       </div>

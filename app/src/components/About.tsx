@@ -81,7 +81,7 @@ function Strip({ colors, label, mark }: StripProps) {
   return (
     <div>
       {label && (
-        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
+        <span className="text-[9px] uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
       )}
       <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c) => (
@@ -97,7 +97,7 @@ function Strip({ colors, label, mark }: StripProps) {
             return (
               <div key={`mark-${i}`} className="text-center leading-1.5">
                 {text && (
-                  <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(0_0%_65%)]" : "text-[hsl(0_0%_40%)]"}`}>
+                  <span className={`text-[8px] ${m === "ok" ? "text-[hsl(0_0%_65%)]" : "text-[hsl(0_0%_40%)]"}`}>
                     {text}
                   </span>
                 )}
@@ -114,7 +114,7 @@ function LightnessHeader() {
   return (
     <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="text-center text-[9px] font-mono text-[hsl(0_0%_60%)]">
+        <div key={l} className="text-center text-[9px] text-[hsl(0_0%_60%)]">
           {l}
         </div>
       ))}
@@ -206,7 +206,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
 
   return (
     <div className="flex gap-1.5">
-      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+      <span className="text-[10px] text-[hsl(0_0%_60%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
@@ -282,7 +282,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
             })}
           </svg>
         </div>
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] text-center">
+        <span className="text-[10px] text-[hsl(0_0%_60%)] text-center">
           Saturation
         </span>
       </div>
@@ -298,7 +298,7 @@ function VisualPanel({ children, label }: { children: React.ReactNode; label: st
   return (
     <div className="flex gap-1.5">
       <span
-        className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center shrink-0"
+        className="text-[10px] text-[hsl(0_0%_60%)] self-center shrink-0"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
       >
         {label}
@@ -405,15 +405,15 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
           x={curveToX(50)}
           y={curveToY(curveData[25].sat) + 12}
           textAnchor="middle"
-          className="text-[8px] fill-[hsl(0_0%_50%)] font-mono"
+          className="text-[8px] fill-[hsl(0_0%_50%)]"
         >
           min
         </text>
       </svg>
       <div className="flex justify-between mt-1">
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">0</span>
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">L</span>
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">100</span>
+        <span className="text-[10px] text-[hsl(0_0%_60%)]">0</span>
+        <span className="text-[10px] text-[hsl(0_0%_60%)]">L</span>
+        <span className="text-[10px] text-[hsl(0_0%_60%)]">100</span>
       </div>
     </VisualPanel>
   );
@@ -449,7 +449,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
         />
       </svg>
       <div className="mt-1 text-center">
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Lightness</span>
+        <span className="text-[10px] text-[hsl(0_0%_60%)]">Lightness</span>
       </div>
     </VisualPanel>
   );
@@ -457,7 +457,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
 
 function Formula() {
   return (
-    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 font-mono text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
       <div>
         <span className="text-text-tertiary">S</span>(L) = 1 + ((L - 50)
         <sup>2</sup> / <span className="text-text-tertiary">p</span> - 50
@@ -728,14 +728,14 @@ export function AboutButton() {
                         </div>
                         {/* Helper text, right-aligned to swatch left edge */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight text-right"
+                          className="absolute top-1/2 -translate-y-1/2 text-[10px] text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight text-right"
                           style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
                         >
                           Reference hue for<br />examples below
                         </div>
                         {/* Values stacked vertically, left-aligned to swatch right edge */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight"
+                          className="absolute top-1/2 -translate-y-1/2 text-[10px] text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight"
                           style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
                         >
                           <div className="grid grid-cols-[auto_1fr] gap-x-1">
@@ -769,7 +769,7 @@ export function AboutButton() {
 
                   {/* Lightness header — right column only */}
                   <div className="sm:col-start-2">
-                    <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
+                    <span className="text-[10px] text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
                     <LightnessHeader />
                   </div>
 
@@ -777,7 +777,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-text-secondary">Achromatic Baseline</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: 0%</span>
+                      <span className="text-[10px] text-[hsl(0_0%_60%)]">Saturation: 0%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-text-muted">
                       Unsaturated grayscale. Functional, but lacks character or brand identity.
@@ -789,7 +789,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-text-secondary">Fixed low saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+                      <span className="text-[10px] text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-text-muted">
                       Desired neutral midtones, but dark and light ends become effectively desaturated.
@@ -801,7 +801,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-text-secondary">Fixed high saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                      <span className="text-[10px] text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
                     </div>
                     <p className="text-[13px] leading-relaxed text-text-muted">
                       Raising it to recover the extremes pushes the midrange
@@ -819,7 +819,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-text-secondary">Perceptual boundary</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
+                      <span className="text-[10px] text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
                         {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                         {"/"}
@@ -839,7 +839,7 @@ export function AboutButton() {
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                       <p className="text-[13px] font-semibold text-text-secondary">Adjusted curve</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
+                      <span className="text-[10px] text-[hsl(0_0%_60%)]">
                         {"Saturation: "}
                         {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                         {"/"}

@@ -14,7 +14,7 @@ export function InlineSelect<T extends string>({ label, value, onChange, options
   return (
     <Select.Root value={value} onValueChange={onChange}>
       <Select.Trigger asChild>
-        <button type="button" className="group inline-flex items-baseline gap-1 min-h-6 cursor-pointer text-sm font-mono whitespace-nowrap outline-none bg-surface-raised border border-border-default px-3 py-1.5 transition-colors">
+        <button type="button" className="group inline-flex items-baseline gap-1 min-h-6 cursor-pointer text-sm whitespace-nowrap outline-none bg-surface-raised border border-border-default px-3 py-1.5 transition-colors">
           <span className="text-text-tertiary group-hover:text-white group-active:text-white group-data-[state=open]:text-white transition-colors">{label}</span>
           <span className="relative text-text-subtle text-right group-hover:text-white group-active:text-white group-data-[state=open]:text-white transition-colors">
             {/* Invisible sizer for stable width */}
@@ -35,7 +35,7 @@ export function InlineSelect<T extends string>({ label, value, onChange, options
               <Select.Item
                 key={opt.value}
                 value={opt.value}
-                className="flex items-center justify-end px-3 min-h-6 text-sm font-mono text-text-subtle cursor-pointer outline-none data-[highlighted]:bg-surface-hover data-[highlighted]:text-white"
+                className="flex items-center justify-end px-3 min-h-6 text-sm text-text-subtle cursor-pointer outline-none data-[highlighted]:bg-surface-hover data-[highlighted]:text-white"
               >
                 <Select.ItemText>{opt.label}</Select.ItemText>
               </Select.Item>

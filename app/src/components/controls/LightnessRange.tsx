@@ -50,13 +50,13 @@ export function LightnessRange() {
           <button
             type="button"
             onClick={() => setLocked(!locked)}
-            className={`flex items-center text-sm font-mono cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
+            className={`flex items-center text-sm cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
             title={locked ? "Unlock range" : "Lock range span"}
           >
             {locked ? <Lock size={14} weight="fill" /> : <LockOpen size={14} />}
             <span className="ml-0.5">{locked ? "locked" : "lock"}</span>
           </button>
-          <span className="text-base font-mono text-text-primary tabular-nums inline-flex">
+          <span className="text-base text-text-primary tabular-nums inline-flex">
             <span className="w-[2ch] text-right">{lMin}</span>
             <span>–</span>
             <span className="w-[3ch]">{lMax}</span>

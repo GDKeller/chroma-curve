@@ -37,9 +37,9 @@ export function ColorSwatch({ entry, copyFormat, isCopied, onCopy, showLabels = 
       {showLabels && (
         <>
           <span className="text-sm font-semibold mb-4 transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
-          <span className="text-sm font-mono">{entry.hex}</span>
-          <span className="text-2xs font-mono">hsl({entry.hslString})</span>
-          <span className="text-2xs font-mono">{oklch}</span>
+          <span className="text-sm">{entry.hex}</span>
+          <span className="text-2xs">hsl({entry.hslString})</span>
+          <span className="text-2xs">{oklch}</span>
         </>
       )}
       <CopyFeedback visible={isCopied} />
