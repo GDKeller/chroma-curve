@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { ColorSwatch } from "./ColorSwatch";
+import { InlineSelect } from "../controls/InlineSelect";
 import { ToggleSwitch } from "../controls/ToggleSwitch";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import { usePaletteStore } from "../../store/paletteStore";
@@ -12,6 +13,19 @@ interface PaletteGridProps {
 const STEP_OPTIONS = [3, 4, 5, 8, 9, 10, 12, 16, 20, 24, 48];
 
 type Layout = "row" | "column" | "vertical" | "horizontal";
+
+const LAYOUT_OPTIONS: { value: Layout; label: string }[] = [
+  { value: "row", label: "row" },
+  { value: "column", label: "column" },
+  { value: "vertical", label: "vertical" },
+  { value: "horizontal", label: "horizontal" },
+];
+
+const COPY_FORMAT_OPTIONS: { value: CopyFormat; label: string }[] = [
+  { value: "hex", label: "hex" },
+  { value: "hsl", label: "hsl" },
+  { value: "oklch", label: "oklch" },
+];
 
 function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
   if (count >= entries.length) return entries;
@@ -82,57 +96,20 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   return (
     <div className="flex flex-col">
       <div className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
-        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
-          <label className="flex items-center gap-1 cursor-pointer">
-            <span className="text-sm font-mono text-text-tertiary">swatches</span>
-            <select
-              value={swatchCount}
-              onChange={(e) => setSwatchCount(Number(e.target.value))}
-              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
-            >
-              {STEP_OPTIONS.map((n) => (
-                <option key={n} value={n} className="bg-surface-overlay">
-                  {n}
-                </option>
-              ))}
-              <option value={entries.length} className="bg-surface-overlay">
-                all ({entries.length})
-              </option>
-            </select>
-          </label>
-          <label className="flex items-center gap-1 cursor-pointer">
-            <span className="text-sm font-mono text-text-tertiary">layout</span>
-            <select
-              value={layout}
-              onChange={(e) => setLayout(e.target.value as Layout)}
-              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
-            >
-              <option value="row" className="bg-surface-overlay">row</option>
-              <option value="column" className="bg-surface-overlay">column</option>
-              <option value="vertical" className="bg-surface-overlay">vertical</option>
-              <option value="horizontal" className="bg-surface-overlay">horizontal</option>
-            </select>
-          </label>
-        </div>
-        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
-          <label className="flex items-center gap-1 cursor-pointer">
-            <span className="text-sm font-mono text-text-tertiary">copy</span>
-            <select
-              value={copyFormat}
-              onChange={(e) => setCopyFormat(e.target.value as CopyFormat)}
-              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
-            >
-              <option value="hex" className="bg-surface-overlay">hex</option>
-              <option value="hsl" className="bg-surface-overlay">hsl</option>
-              <option value="oklch" className="bg-surface-overlay">oklch</option>
-            </select>
-          </label>
-        </div>
-        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
-          <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
-          <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
-          <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
-        </div>
+        <InlineSelect
+          label="swatches"
+          value={String(swatchCount)}
+          onChange={(v) => setSwatchCount(Number(v))}
+          options={[
+            ...STEP_OPTIONS.map((n) => ({ value: String(n), label: String(n) })),
+            { value: String(entries.length), label: `all (${entries.length})` },
+          ]}
+        />
+        <InlineSelect label="layout" value={layout} onChange={setLayout} options={LAYOUT_OPTIONS} />
+        <InlineSelect label="copy" value={copyFormat} onChange={setCopyFormat} options={COPY_FORMAT_OPTIONS} />
+        <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
+        <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
+        <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
       </div>
       <div
         className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
