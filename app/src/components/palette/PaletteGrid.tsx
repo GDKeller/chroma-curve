@@ -67,7 +67,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   const [showBorders, setShowBorders] = useState(false);
   const [showLabels, setShowLabels] = useState(true);
   const [reversed, setReversed] = useState(false);
-  const [swatchCount, setSwatchCount] = useState<number>(STEP_OPTIONS[0]);
+  const [swatchCount, setSwatchCount] = useState<number>(8);
   const [layout, setLayout] = useState<Layout>("row");
 
   const { displayEntries, cols } = useMemo(() => {
