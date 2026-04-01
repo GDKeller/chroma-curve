@@ -9,7 +9,7 @@ export function Header() {
         <h1 className="text-base sm:text-xl font-display font-bold sm:mr-4 text-text-primary tracking-tight">
           Chroma Curve
         </h1>
-        <p className="text-2xs md:text-xs lg:text-xs text-text-subtle hidden sm:block max-w-32 md:max-w-40 leading-tight">
+        <p className="text-2xs md:text-xs lg:text-xs text-text-subtle hidden sm:block max-w-32 md:max-w-44 leading-tight">
           Parabolic saturation correction for monochromatic color palettes
         </p>
         <AboutButton />

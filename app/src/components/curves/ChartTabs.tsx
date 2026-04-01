@@ -28,7 +28,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
   return (
     <div className="mx-4 md:mx-0 rounded-xs border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
       <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
-        <h3 className="text-sm font-semibold text-text-tertiary uppercase tracking-wider">
+        <h3 className="text-sm font-medium text-center w-full text-text-tertiary uppercase tracking-wider">
           Saturation Curve
         </h3>
       </div>
@@ -36,7 +36,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
         <Tabs.List className="flex border-y border-border-default">
           <Tabs.Trigger
             value="adjustment"
-            className="flex-1 px-4 py-2 md:px-2 md:py-2 lg:px-4 lg:py-2 text-xs font-semibold uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+            className="flex-1 px-4 py-2 md:px-2 md:py-2 lg:px-4 lg:py-2 text-xs font-normal uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
           >
             Adjustment
           </Tabs.Trigger>
