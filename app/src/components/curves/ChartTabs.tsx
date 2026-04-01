@@ -53,7 +53,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
           <EffectiveSaturation entries={entries} showDots={showDots} />
         </Tabs.Content>
       </Tabs.Root>
-      <div className="px-4 py-2 flex items-center justify-between md:hidden md:justify-end lg:justify-between lg:block">
+      <div className="px-4 py-2 flex items-center justify-between md:hidden lg:flex">
         <button
           type="button"
           onClick={() => setShowCompare(!showCompare)}
