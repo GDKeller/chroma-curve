@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { ColorSwatch } from "./ColorSwatch";
 import { ToggleSwitch } from "../controls/ToggleSwitch";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
-import type { ColorEntry } from "../../types/palette";
+import { usePaletteStore } from "../../store/paletteStore";
+import type { ColorEntry, CopyFormat } from "../../types/palette";
 
 interface PaletteGridProps {
   entries: ColorEntry[];
@@ -46,6 +47,8 @@ function toColumnMajor(entries: ColorEntry[], cols: number): ColorEntry[] {
 
 export function PaletteGrid({ entries }: PaletteGridProps) {
   const { copiedLabel, copy } = useCopyToClipboard();
+  const copyFormat = usePaletteStore((s) => s.copyFormat);
+  const setCopyFormat = usePaletteStore((s) => s.setCopyFormat);
   const [showBorders, setShowBorders] = useState(false);
   const [showLabels, setShowLabels] = useState(true);
   const [reversed, setReversed] = useState(false);
@@ -111,6 +114,20 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
           </label>
         </div>
         <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
+          <label className="flex items-center gap-1 cursor-pointer">
+            <span className="text-sm font-mono text-text-tertiary">copy</span>
+            <select
+              value={copyFormat}
+              onChange={(e) => setCopyFormat(e.target.value as CopyFormat)}
+              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
+            >
+              <option value="hex" className="bg-surface-overlay">hex</option>
+              <option value="hsl" className="bg-surface-overlay">hsl</option>
+              <option value="oklch" className="bg-surface-overlay">oklch</option>
+            </select>
+          </label>
+        </div>
+        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
           <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
           <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
           <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
@@ -124,6 +141,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
           <ColorSwatch
             key={entry.label}
             entry={entry}
+            copyFormat={copyFormat}
             isCopied={copiedLabel === entry.label}
             onCopy={copy}
             showLabels={showLabels}
