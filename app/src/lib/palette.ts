@@ -40,7 +40,7 @@ export function generateNeutrals(params: PaletteParams): ColorEntry[] {
       label: `grey-${i}`,
       lightness: i,
       hsl: [h, s, lVal],
-      hslString: `${hRound}deg ${sRound}% ${lRound}%`,
+      hslString: `${hRound} ${sRound}% ${lRound}%`,
       hex: color.hex(),
     });
   }

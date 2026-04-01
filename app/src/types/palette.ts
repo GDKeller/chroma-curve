@@ -20,3 +20,5 @@ export interface ColorEntry {
 export type ExportFormat = "css" | "tw4" | "tw3" | "scss" | "js" | "json" | "gpl" | "text";
 
 export type ColorSpace = "hsl" | "hex" | "rgb" | "hcl" | "oklch";
+
+export type CopyFormat = "hex" | "hsl" | "oklch";
