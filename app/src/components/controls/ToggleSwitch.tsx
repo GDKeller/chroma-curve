@@ -9,7 +9,7 @@ interface ToggleSwitchProps {
 export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
   const id = useId();
   return (
-    <label className="flex items-center gap-1 cursor-pointer bg-surface-raised border border-border-default px-3 py-1.5">
+    <label className="flex items-center gap-1 cursor-pointer select-none bg-surface-raised border border-border-default px-3 py-1.5">
       <span id={id} className="text-sm md:text-xs lg:text-sm font-mono text-text-tertiary">
         {label}
       </span>
