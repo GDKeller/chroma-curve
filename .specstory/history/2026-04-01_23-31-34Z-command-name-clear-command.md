@@ -2326,4 +2326,667 @@ fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
 EOF
 )"
 ```
+
+```text
+[feat/font-replacement dcd7e6e] fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
+ 4 files changed, 2637 insertions(+), 29 deletions(-)
+ create mode 100644 .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
+```
+</details></tool-use>
+
+---
+
+_**User (2026-04-01 23:46:21Z)**_
+
+<command-message>board:update</command-message>
+<command-name>/board:update</command-name>
+
+_**User (2026-04-01 23:46:21Z)**_
+
+Base directory for this skill: /Users/grant/Documents/Projects/BoardPM/plugin/skills/update
+
+# Board Update
+
+Analyze the codebase and git history to automatically reconcile the project board with reality. The system spec is bundled with the plugin at `/Users/grant/Documents/Projects/BoardPM/plugin/spec/board-system-spec.md`.
+
+## Board Data
+
+Pre-loaded active board data:
+
+filepath	type	status	priority	blocked_by	parent	title
+./board/tasks/TASK-0020_add-oklch-conversion-functions.md	task	backlog	1	-	EPIC-0006	TASK-0020: Add OKLCH conversion functions
+./board/tasks/TASK-0021_add-memoized-gamut-boundary-lookup.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0021: Add memoized gamut boundary lookup
+./board/tasks/TASK-0022_add-hue-dependent-chroma-correction.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0022: Add hue-dependent chroma correction
+./board/tasks/TASK-0023_extend-colorentry-with-oklch.md	task	backlog	1	-	EPIC-0006	TASK-0023: Extend ColorEntry type with OKLCH fields
+./board/tasks/TASK-0024_refactor-generateneutrals-to-oklch.md	task	backlog	1	TASK-0020,TASK-0021,TASK-0022,TASK-0023	EPIC-0006	TASK-0024: Refactor generateNeutrals to OKLCH internals
+./board/tasks/TASK-0025_implement-hue-aware-chroma-mapping.md	task	backlog	1	TASK-0021	EPIC-0006	TASK-0025: Implement hue-aware saturation-to-chroma mapping
+./board/tasks/TASK-0026_tune-default-smod-for-oklch.md	task	backlog	2	TASK-0024	EPIC-0006	TASK-0026: Tune default sMod for OKLCH
+./board/tasks/TASK-0027_migrate-saturationcurve-to-chromacorrection.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0027: Migrate SaturationCurve to chromaCorrection
+./board/tasks/TASK-0028_migrate-effectivesaturation-wire-hue.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0028: Migrate EffectiveSaturation and wire hue
+./board/tasks/TASK-0029_update-colorswatch-oklch-output.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0029: Update ColorSwatch for OKLCH output
+./board/tasks/TASK-0030_update-export-native-oklch.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0030: Update export to use native OKLCH values
+./board/tasks/TASK-0031_rewrite-about-dialog-for-oklch.md	task	backlog	3	TASK-0024	EPIC-0008	TASK-0031: Rewrite About dialog educational content for OKLCH
+./board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md	task	done	3	-	NOTE-0025	TASK-0043: Fix dynamic favicon in Chrome and Safari
+./board/planning/EPIC-0006_migrate-palette-hsl-to-oklch.md	epic	planning	-	-	-	EPIC-0006: Migrate palette generation from HSL to OKLCH
+./board/planning/EPIC-0007_update-charts-display-for-oklch.md	epic	planning	-	-	-	EPIC-0007: Update charts and display for OKLCH
+./board/planning/EPIC-0008_rewrite-about-dialog-for-oklch.md	epic	planning	-	-	-	EPIC-0008: Rewrite About dialog for OKLCH
+./board/planning/EPIC-0009_migrate-chromajs-to-culori.md	epic	planning	-	-	-	EPIC-0009: Migrate from chroma.js to culori
+./board/planning/EPIC-0010_interactive-curve-editing.md	epic	planning	-	-	-	EPIC-0010: Interactive curve editing
+./board/planning/EPIC-0011_sidebar-layout.md	epic	planning	-	-	-	EPIC-0011: Collapsible sidebar layout for curve charts
+./board/planning/EPIC-0012_ux-discoverability.md	epic	planning	-	-	-	EPIC-0012: UX discoverability improvements
+./board/planning/NOTE-0002_in-context-contrast-checker.md	note	inbox	-	-	-	In-context contrast checker for palette swatches
+./board/planning/NOTE-0003_colorguesser-competitive-reference.md	note	inbox	-	-	-	ColorGuesser as competitive reference
+./board/planning/NOTE-0004_delta-e94-perceptual-scoring.md	note	inbox	-	-	-	ΔE scoring to back perception claims
+./board/planning/NOTE-0005_adjustable-curve-vertex.md	note	inbox	-	-	-	Adjustable curve vertex (center point)
+./board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md	note	inbox	-	-	-	Chroma Curve — Migration Guide: HSL → OKLCH
+./board/planning/NOTE-0007_named-swatches.md	note	inbox	-	-	-	Named swatches
+./board/planning/NOTE-0008_design-agent-api-and-mcp-integration.md	note	inbox	-	-	-	Design Agent API & MCP Integration
+./board/planning/NOTE-0010_ui-design-polish-backlog.md	note	inbox	-	-	-	UI Design Polish Backlog
+./board/planning/NOTE-0011_impeccable-critique-review.md	note	inbox	-	-	-	Impeccable /critique Review
+./board/planning/NOTE-0012_ux-and-interaction-ideas.md	note	inbox	-	-	-	UX & Interaction Ideas
+./board/planning/NOTE-0013_target-color-input.md	note	inbox	-	-	-	Target color input
+./board/planning/NOTE-0014_mobile-controls-bottom.md	note	inbox	-	-	-	Mobile controls at bottom of screen
+./board/planning/NOTE-0015_explicit-control-values.md	note	inbox	-	-	-	Explicit control value input and stepping
+./board/planning/NOTE-0017_reduce-rounded-corners.md	note	inbox	-	-	-	Reduce or remove rounded corners
+./board/planning/NOTE-0018_improve-swatch-copy-feedback.md	note	inbox	-	-	-	Improve swatch copy feedback
+./board/planning/NOTE-0020_clarify-grid-layout-naming.md	note	inbox	-	-	-	Clarify grid layout option naming
+./board/planning/NOTE-0021_custom-swatch-intervals.md	note	inbox	-	-	-	Custom swatch intervals and movable curve points
+./board/planning/NOTE-0022_random-button.md	note	inbox	-	-	-	Random button
+./board/planning/NOTE-0023_helper-tooltips.md	note	inbox	-	-	-	Helper tooltips on hover
+./board/planning/NOTE-0024_chart-steps-match-swatches.md	note	inbox	-	-	-	Sync chart step dots with swatch count
+./board/reference/REFE-0001_parabolic-saturation-curve-for-neutral-palettes.md	reference		-	-	-	Parabolic Saturation Curve for Monochromatic Palettes
+./board/reference/REFE-0002_color-name-api.md	reference		-	-	-	Color Name API
+
+Archive counts:
+
+filepath	type	status	priority	blocked_by	parent	title
+./board/tasks/TASK-0020_add-oklch-conversion-functions.md	task	backlog	1	-	EPIC-0006	TASK-0020: Add OKLCH conversion functions
+./board/tasks/TASK-0021_add-memoized-gamut-boundary-lookup.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0021: Add memoized gamut boundary lookup
+./board/tasks/TASK-0022_add-hue-dependent-chroma-correction.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0022: Add hue-dependent chroma correction
+./board/tasks/TASK-0023_extend-colorentry-with-oklch.md	task	backlog	1	-	EPIC-0006	TASK-0023: Extend ColorEntry type with OKLCH fields
+./board/tasks/TASK-0024_refactor-generateneutrals-to-oklch.md	task	backlog	1	TASK-0020,TASK-0021,TASK-0022,TASK-0023	EPIC-0006	TASK-0024: Refactor generateNeutrals to OKLCH internals
+./board/tasks/TASK-0025_implement-hue-aware-chroma-mapping.md	task	backlog	1	TASK-0021	EPIC-0006	TASK-0025: Implement hue-aware saturation-to-chroma mapping
+./board/tasks/TASK-0026_tune-default-smod-for-oklch.md	task	backlog	2	TASK-0024	EPIC-0006	TASK-0026: Tune default sMod for OKLCH
+./board/tasks/TASK-0027_migrate-saturationcurve-to-chromacorrection.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0027: Migrate SaturationCurve to chromaCorrection
+./board/tasks/TASK-0028_migrate-effectivesaturation-wire-hue.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0028: Migrate EffectiveSaturation and wire hue
+./board/tasks/TASK-0029_update-colorswatch-oklch-output.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0029: Update ColorSwatch for OKLCH output
+./board/tasks/TASK-0030_update-export-native-oklch.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0030: Update export to use native OKLCH values
+./board/tasks/TASK-0031_rewrite-about-dialog-for-oklch.md	task	backlog	3	TASK-0024	EPIC-0008	TASK-0031: Rewrite About dialog educational content for OKLCH
+./board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md	task	done	3	-	NOTE-0025	TASK-0043: Fix dynamic favicon in Chrome and Safari
+./board/planning/EPIC-0006_migrate-palette-hsl-to-oklch.md	epic	planning	-	-	-	EPIC-0006: Migrate palette generation from HSL to OKLCH
+./board/planning/EPIC-0007_update-charts-display-for-oklch.md	epic	planning	-	-	-	EPIC-0007: Update charts and display for OKLCH
+./board/planning/EPIC-0008_rewrite-about-dialog-for-oklch.md	epic	planning	-	-	-	EPIC-0008: Rewrite About dialog for OKLCH
+./board/planning/EPIC-0009_migrate-chromajs-to-culori.md	epic	planning	-	-	-	EPIC-0009: Migrate from chroma.js to culori
+./board/planning/EPIC-0010_interactive-curve-editing.md	epic	planning	-	-	-	EPIC-0010: Interactive curve editing
+./board/planning/EPIC-0011_sidebar-layout.md	epic	planning	-	-	-	EPIC-0011: Collapsible sidebar layout for curve charts
+./board/planning/EPIC-0012_ux-discoverability.md	epic	planning	-	-	-	EPIC-0012: UX discoverability improvements
+./board/planning/NOTE-0002_in-context-contrast-checker.md	note	inbox	-	-	-	In-context contrast checker for palette swatches
+./board/planning/NOTE-0003_colorguesser-competitive-reference.md	note	inbox	-	-	-	ColorGuesser as competitive reference
+./board/planning/NOTE-0004_delta-e94-perceptual-scoring.md	note	inbox	-	-	-	ΔE scoring to back perception claims
+./board/planning/NOTE-0005_adjustable-curve-vertex.md	note	inbox	-	-	-	Adjustable curve vertex (center point)
+./board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md	note	inbox	-	-	-	Chroma Curve — Migration Guide: HSL → OKLCH
+./board/planning/NOTE-0007_named-swatches.md	note	inbox	-	-	-	Named swatches
+./board/planning/NOTE-0008_design-agent-api-and-mcp-integration.md	note	inbox	-	-	-	Design Agent API & MCP Integration
+./board/planning/NOTE-0010_ui-design-polish-backlog.md	note	inbox	-	-	-	UI Design Polish Backlog
+./board/planning/NOTE-0011_impeccable-critique-review.md	note	inbox	-	-	-	Impeccable /critique Review
+./board/planning/NOTE-0012_ux-and-interaction-ideas.md	note	inbox	-	-	-	UX & Interaction Ideas
+./board/planning/NOTE-0013_target-color-input.md	note	inbox	-	-	-	Target color input
+./board/planning/NOTE-0014_mobile-controls-bottom.md	note	inbox	-	-	-	Mobile controls at bottom of screen
+./board/planning/NOTE-0015_explicit-control-values.md	note	inbox	-	-	-	Explicit control value input and stepping
+./board/planning/NOTE-0017_reduce-rounded-corners.md	note	inbox	-	-	-	Reduce or remove rounded corners
+./board/planning/NOTE-0018_improve-swatch-copy-feedback.md	note	inbox	-	-	-	Improve swatch copy feedback
+./board/planning/NOTE-0020_clarify-grid-layout-naming.md	note	inbox	-	-	-	Clarify grid layout option naming
+./board/planning/NOTE-0021_custom-swatch-intervals.md	note	inbox	-	-	-	Custom swatch intervals and movable curve points
+./board/planning/NOTE-0022_random-button.md	note	inbox	-	-	-	Random button
+./board/planning/NOTE-0023_helper-tooltips.md	note	inbox	-	-	-	Helper tooltips on hover
+./board/planning/NOTE-0024_chart-steps-match-swatches.md	note	inbox	-	-	-	Sync chart step dots with swatch count
+./board/reference/REFE-0001_parabolic-saturation-curve-for-neutral-palettes.md	reference		-	-	-	Parabolic Saturation Curve for Monochromatic Palettes
+./board/reference/REFE-0002_color-name-api.md	reference		-	-	-	Color Name API
+
+# Archive counts (type	count)
+TASK	30
+NOTE	5
+RESO	3
+
+## Steps
+
+### 1. Review Board State
+
+Parse the pre-loaded board data above. Identify:
+- All items with `status: backlog` or `status: current` (candidates for completion)
+- Epics and their child tasks (via `parent` field)
+- Blocked items and their blockers
+- Items with terminal status (`done`, `processed`) that should be archived
+
+### 2. Gather Codebase Context
+
+- Run `git log --oneline` for recent commits (last 30) to understand what work has been done
+- Only Read full file bodies for tasks whose status is `backlog` or `current` AND whose title suggests overlap with recent commits
+- Use the context budget escalation (Glob → Grep → Read with limit → Full read) for any additional lookups
+
+### 3. Detect Completed Work
+
+For each task with `status: backlog` or `status: current`, check if the work described has already been done:
+
+- Look at recent commits for evidence the work was completed
+- Check the codebase for the feature/fix the task describes
+- If the work is done, flag it for status update to `done`
+
+### 4. Detect New Work Needed
+
+Scan for things that should become tasks but aren't tracked yet:
+
+- Check recent commits for TODOs or FIXMEs introduced in code
+- Look at open epics — are there obvious next steps not yet captured as tasks?
+- Check if any `blocked_by` dependencies have been resolved (unblocking tasks)
+
+### 5. Update Epic Progress
+
+For each active epic:
+
+- Check if all child tasks are `done` — if so, flag the epic as `done`
+- Check if any child tasks are `current` — if so, the epic should be `current`
+- Update the task list in the epic body if tasks have been added/removed
+
+### 6. Check for Stale Items
+
+- Tasks marked `current` but with no related commits in the last 30 days
+- Epics in `planning` with no child tasks
+- Resources stuck in `inbox` or `processing`
+
+### 7. Present Changes
+
+Present ALL proposed changes as a single summary before making any edits:
+
+```
+## Board Update Proposal
+
+### Status Changes
+- TASK-0003: backlog -> done (cache-decoded-image: implemented in commit a1b2c3d)
+- EPIC-0001: planning -> current (has active child tasks)
+
+### New Tasks Suggested
+- "Fix FIXME in preprocessing.rs line 42" (found in recent commit)
+
+### Ready to Archive
+- TASK-0003: done
+- NOTE-0002: processed
+
+### Stale Items
+- TASK-0007: marked current but no activity in 45 days
+
+### Unblocked
+- TASK-0005: blocker TASK-0003 is now done
+```
+
+**Avoid redundant invocations** — if this skill was already invoked earlier in the session and the board has not been modified since, reuse the previous board data instead of invoking again.
+
+Ask the user to approve, reject, or cherry-pick which changes to apply. Then execute only the approved changes:
+
+- **Status updates**: Use `/board:board-edit` to update status fields
+- **New tasks**: Invoke `/board:board-add` for each approved new task
+- **Archiving**: Run `bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board <file1> <file2> ...` directly for approved items
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 23:46:24Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Recent commits
+
+`git log --oneline -30`
+
+```text
+dcd7e6e fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
+f10aeb3 chore(board): add TASK-0043 favicon fix, archive NOTE-0025
+fbd62ec chore(specstory): update session history
+0cae415 chore(board): archive font tasks, add NOTE-0025 favicon compat
+6f66cc9 fix(a11y): add heading hierarchy, landmarks, and semantic structure
+127e635 fix(a11y): add aria-label to InlineSelect triggers
+40ba102 style(fonts): swap body font to Space Grotesk, refine label styles
+3fea835 style(fonts): tweak label weights, center saturation curve heading
+7c43e53 feat(fonts): replace Geist with Unbounded and Recursive Sans Linear Static
+dc3b6f8 Merge pull request #3 from GDKeller/feat/swatch-all-formats
+e948b3c fix(palette): default swatch count back to 8, add NOTE-0024
+96ea5d5 chore(board): archive TASK-0042
+3bc0473 chore(board): mark TASK-0042 done, archive TASK-0041 and NOTE-0019
+869592a refactor(controls): migrate toggle thumb transform to Tailwind classes
+b07c86c fix(controls): add pill variant to ToggleSwitch, fix chart steps layout
+98b0756 style(controls): add hover/active/open states for selects and toggles
+98457b7 fix(controls): prevent text selection on toggle switch labels
+ab0c79a refactor(controls): replace native selects with Radix Select, unify toolbar styling
+feb4c9d fix(palette): prevent bestCols from collapsing prime counts to single column
+431614f feat(palette): add 3, 4, 5 swatch count options (TASK-0042)
+949ea92 feat(palette): show hex, HSL, and OKLCH values on swatches with format selector
+2db2980 docs(board): add font tasks (TASK-0033 through TASK-0035)
+3fd25e5 Merge pull request #2 from GDKeller/feat/favicon
+f9d3b84 fix(favicon): remove rounded corners, improve OG image, add generation script
+02f07e5 feat(favicon): add ICO/PNG variants, Apple touch icon, PWA manifest, OG image, and full meta tags
+dbeeb09 docs(board): add favicon spec compliance note and child tasks (TASK-0036 through TASK-0040)
+624fefe feat(favicon): add dynamic SVG favicon with hue-reactive color picker design
+b86e1ef docs(board): add 11 feature/UX notes (NOTE-0013 through NOTE-0023)
+cc89500 Merge pull request #1 from GDKeller/fix/responsive
+aac21cd chore(board): update primary URL to chromacurve.style, archive NOTE-0009 and 3 resources
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:46:33Z)**_
+
+## Board Update Proposal
+
+### Ready to Archive
+- **TASK-0043**: status is `done`, should be archived
+
+### No Other Changes Detected
+- No backlog tasks have been completed by recent commits (the OKLCH migration tasks in EPIC-0006/0007/0008 are untouched)
+- No new blockers resolved — TASK-0020 (the root dependency for most OKLCH tasks) is still backlog
+- No stale `current` items (nothing is marked current)
+- Epics remain in `planning` with their child tasks intact
+- No new TODOs/FIXMEs found in the favicon commit
+
+Want me to archive TASK-0043?
+
+---
+
+_**User (2026-04-01 23:46:42Z)**_
+
+yes
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 23:46:48Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Archive TASK-0043
+
+`bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board ./board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md`
+
+```text
+Archived:
+  TASK-0043_fix-dynamic-favicon-chrome-safari.md
+
+Total: 1 archived, 0 skipped
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:46:51Z)**_
+
+Done. TASK-0043 archived.
+
+---
+
+_**User (2026-04-01 23:47:25Z)**_
+
+<command-message>commit-commands:commit</command-message>
+<command-name>/commit-commands:commit</command-name>
+
+_**User (2026-04-01 23:47:25Z)**_
+
+## Context
+
+- Current git status: On branch feat/font-replacement
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	renamed:    board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md -> board/archive/TASK-0043_fix-dynamic-favicon-chrome-safari.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
+- Current git diff (staged and unstaged changes): diff --git a/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md b/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
+index baede73..51caa42 100644
+--- a/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
++++ b/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
+@@ -2326,4 +2326,292 @@ fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
+ EOF
+ )"
+ ```
++
++```text
++[feat/font-replacement dcd7e6e] fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
++ 4 files changed, 2637 insertions(+), 29 deletions(-)
++ create mode 100644 .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
++```
+ </details></tool-use>
++
++---
++
++_**User (2026-04-01 23:46:21Z)**_
++
++<command-message>board:update</command-message>
++<command-name>/board:update</command-name>
++
++_**User (2026-04-01 23:46:21Z)**_
++
++Base directory for this skill: /Users/grant/Documents/Projects/BoardPM/plugin/skills/update
++
++# Board Update
++
++Analyze the codebase and git history to automatically reconcile the project board with reality. The system spec is bundled with the plugin at `/Users/grant/Documents/Projects/BoardPM/plugin/spec/board-system-spec.md`.
++
++## Board Data
++
++Pre-loaded active board data:
++
++filepath	type	status	priority	blocked_by	parent	title
++./board/tasks/TASK-0020_add-oklch-conversion-functions.md	task	backlog	1	-	EPIC-0006	TASK-0020: Add OKLCH conversion functions
++./board/tasks/TASK-0021_add-memoized-gamut-boundary-lookup.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0021: Add memoized gamut boundary lookup
++./board/tasks/TASK-0022_add-hue-dependent-chroma-correction.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0022: Add hue-dependent chroma correction
++./board/tasks/TASK-0023_extend-colorentry-with-oklch.md	task	backlog	1	-	EPIC-0006	TASK-0023: Extend ColorEntry type with OKLCH fields
++./board/tasks/TASK-0024_refactor-generateneutrals-to-oklch.md	task	backlog	1	TASK-0020,TASK-0021,TASK-0022,TASK-0023	EPIC-0006	TASK-0024: Refactor generateNeutrals to OKLCH internals
++./board/tasks/TASK-0025_implement-hue-aware-chroma-mapping.md	task	backlog	1	TASK-0021	EPIC-0006	TASK-0025: Implement hue-aware saturation-to-chroma mapping
++./board/tasks/TASK-0026_tune-default-smod-for-oklch.md	task	backlog	2	TASK-0024	EPIC-0006	TASK-0026: Tune default sMod for OKLCH
++./board/tasks/TASK-0027_migrate-saturationcurve-to-chromacorrection.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0027: Migrate SaturationCurve to chromaCorrection
++./board/tasks/TASK-0028_migrate-effectivesaturation-wire-hue.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0028: Migrate EffectiveSaturation and wire hue
++./board/tasks/TASK-0029_update-colorswatch-oklch-output.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0029: Update ColorSwatch for OKLCH output
++./board/tasks/TASK-0030_update-export-native-oklch.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0030: Update export to use native OKLCH values
++./board/tasks/TASK-0031_rewrite-about-dialog-for-oklch.md	task	backlog	3	TASK-0024	EPIC-0008	TASK-0031: Rewrite About dialog educational content for OKLCH
++./board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md	task	done	3	-	NOTE-0025	TASK-0043: Fix dynamic favicon in Chrome and Safari
++./board/planning/EPIC-0006_migrate-palette-hsl-to-oklch.md	epic	planning	-	-	-	EPIC-0006: Migrate palette generation from HSL to OKLCH
++./board/planning/EPIC-0007_update-charts-display-for-oklch.md	epic	planning	-	-	-	EPIC-0007: Update charts and display for OKLCH
++./board/planning/EPIC-0008_rewrite-about-dialog-for-oklch.md	epic	planning	-	-	-	EPIC-0008: Rewrite About dialog for OKLCH
++./board/planning/EPIC-0009_migrate-chromajs-to-culori.md	epic	planning	-	-	-	EPIC-0009: Migrate from chroma.js to culori
++./board/planning/EPIC-0010_interactive-curve-editing.md	epic	planning	-	-	-	EPIC-0010: Interactive curve editing
++./board/planning/EPIC-0011_sidebar-layout.md	epic	planning	-	-	-	EPIC-0011: Collapsible sidebar layout for curve charts
++./board/planning/EPIC-0012_ux-discoverability.md	epic	planning	-	-	-	EPIC-0012: UX discoverability improvements
++./board/planning/NOTE-0002_in-context-contrast-checker.md	note	inbox	-	-	-	In-context contrast checker for palette swatches
++./board/planning/NOTE-0003_colorguesser-competitive-reference.md	note	inbox	-	-	-	ColorGuesser as competitive reference
++./board/planning/NOTE-0004_delta-e94-perceptual-scoring.md	note	inbox	-	-	-	ΔE scoring to back perception claims
++./board/planning/NOTE-0005_adjustable-curve-vertex.md	note	inbox	-	-	-	Adjustable curve vertex (center point)
++./board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md	note	inbox	-	-	-	Chroma Curve — Migration Guide: HSL → OKLCH
++./board/planning/NOTE-0007_named-swatches.md	note	inbox	-	-	-	Named swatches
++./board/planning/NOTE-0008_design-agent-api-and-mcp-integration.md	note	inbox	-	-	-	Design Agent API & MCP Integration
++./board/planning/NOTE-0010_ui-design-polish-backlog.md	note	inbox	-	-	-	UI Design Polish Backlog
++./board/planning/NOTE-0011_impeccable-critique-review.md	note	inbox	-	-	-	Impeccable /critique Review
++./board/planning/NOTE-0012_ux-and-interaction-ideas.md	note	inbox	-	-	-	UX & Interaction Ideas
++./board/planning/NOTE-0013_target-color-input.md	note	inbox	-	-	-	Target color input
++./board/planning/NOTE-0014_mobile-controls-bottom.md	note	inbox	-	-	-	Mobile controls at bottom of screen
++./board/planning/NOTE-0015_explicit-control-values.md	note	inbox	-	-	-	Explicit control value input and stepping
++./board/planning/NOTE-0017_reduce-rounded-corners.md	note	inbox	-	-	-	Reduce or remove rounded corners
++./board/planning/NOTE-0018_improve-swatch-copy-feedback.md	note	inbox	-	-	-	Improve swatch copy feedback
++./board/planning/NOTE-0020_clarify-grid-layout-naming.md	note	inbox	-	-	-	Clarify grid layout option naming
++./board/planning/NOTE-0021_custom-swatch-intervals.md	note	inbox	-	-	-	Custom swatch intervals and movable curve points
++./board/planning/NOTE-0022_random-button.md	note	inbox	-	-	-	Random button
++./board/planning/NOTE-0023_helper-tooltips.md	note	inbox	-	-	-	Helper tooltips on hover
++./board/planning/NOTE-0024_chart-steps-match-swatches.md	note	inbox	-	-	-	Sync chart step dots with swatch count
++./board/reference/REFE-0001_parabolic-saturation-curve-for-neutral-palettes.md	reference		-	-	-	Parabolic Saturation Curve for Monochromatic Palettes
++./board/reference/REFE-0002_color-name-api.md	reference		-	-	-	Color Name API
++
++Archive counts:
++
++filepath	type	status	priority	blocked_by	parent	title
++./board/tasks/TASK-0020_add-oklch-conversion-functions.md	task	backlog	1	-	EPIC-0006	TASK-0020: Add OKLCH conversion functions
++./board/tasks/TASK-0021_add-memoized-gamut-boundary-lookup.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0021: Add memoized gamut boundary lookup
++./board/tasks/TASK-0022_add-hue-dependent-chroma-correction.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0022: Add hue-dependent chroma correction
++./board/tasks/TASK-0023_extend-colorentry-with-oklch.md	task	backlog	1	-	EPIC-0006	TASK-0023: Extend ColorEntry type with OKLCH fields
++./board/tasks/TASK-0024_refactor-generateneutrals-to-oklch.md	task	backlog	1	TASK-0020,TASK-0021,TASK-0022,TASK-0023	EPIC-0006	TASK-0024: Refactor generateNeutrals to OKLCH internals
++./board/tasks/TASK-0025_implement-hue-aware-chroma-mapping.md	task	backlog	1	TASK-0021	EPIC-0006	TASK-0025: Implement hue-aware saturation-to-chroma mapping
++./board/tasks/TASK-0026_tune-default-smod-for-oklch.md	task	backlog	2	TASK-0024	EPIC-0006	TASK-0026: Tune default sMod for OKLCH
++./board/tasks/TASK-0027_migrate-saturationcurve-to-chromacorrection.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0027: Migrate SaturationCurve to chromaCorrection
++./board/tasks/TASK-0028_migrate-effectivesaturation-wire-hue.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0028: Migrate EffectiveSaturation and wire hue
++./board/tasks/TASK-0029_update-colorswatch-oklch-output.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0029: Update ColorSwatch for OKLCH output
++./board/tasks/TASK-0030_update-export-native-oklch.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0030: Update export to use native OKLCH values
++./board/tasks/TASK-0031_rewrite-about-dialog-for-oklch.md	task	backlog	3	TASK-0024	EPIC-0008	TASK-0031: Rewrite About dialog educational content for OKLCH
++./board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md	task	done	3	-	NOTE-0025	TASK-0043: Fix dynamic favicon in Chrome and Safari
++./board/planning/EPIC-0006_migrate-palette-hsl-to-oklch.md	epic	planning	-	-	-	EPIC-0006: Migrate palette generation from HSL to OKLCH
++./board/planning/EPIC-0007_update-charts-display-for-oklch.md	epic	planning	-	-	-	EPIC-0007: Update charts and display for OKLCH
++./board/planning/EPIC-0008_rewrite-about-dialog-for-oklch.md	epic	planning	-	-	-	EPIC-0008: Rewrite About dialog for OKLCH
++./board/planning/EPIC-0009_migrate-chromajs-to-culori.md	epic	planning	-	-	-	EPIC-0009: Migrate from chroma.js to culori
++./board/planning/EPIC-0010_interactive-curve-editing.md	epic	planning	-	-	-	EPIC-0010: Interactive curve editing
++./board/planning/EPIC-0011_sidebar-layout.md	epic	planning	-	-	-	EPIC-0011: Collapsible sidebar layout for curve charts
++./board/planning/EPIC-0012_ux-discoverability.md	epic	planning	-	-	-	EPIC-0012: UX discoverability improvements
++./board/planning/NOTE-0002_in-context-contrast-checker.md	note	inbox	-	-	-	In-context contrast checker for palette swatches
++./board/planning/NOTE-0003_colorguesser-competitive-reference.md	note	inbox	-	-	-	ColorGuesser as competitive reference
++./board/planning/NOTE-0004_delta-e94-perceptual-scoring.md	note	inbox	-	-	-	ΔE scoring to back perception claims
++./board/planning/NOTE-0005_adjustable-curve-vertex.md	note	inbox	-	-	-	Adjustable curve vertex (center point)
++./board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md	note	inbox	-	-	-	Chroma Curve — Migration Guide: HSL → OKLCH
++./board/planning/NOTE-0007_named-swatches.md	note	inbox	-	-	-	Named swatches
++./board/planning/NOTE-0008_design-agent-api-and-mcp-integration.md	note	inbox	-	-	-	Design Agent API & MCP Integration
++./board/planning/NOTE-0010_ui-design-polish-backlog.md	note	inbox	-	-	-	UI Design Polish Backlog
++./board/planning/NOTE-0011_impeccable-critique-review.md	note	inbox	-	-	-	Impeccable /critique Review
++./board/planning/NOTE-0012_ux-and-interaction-ideas.md	note	inbox	-	-	-	UX & Interaction Ideas
++./board/planning/NOTE-0013_target-color-input.md	note	inbox	-	-	-	Target color input
++./board/planning/NOTE-0014_mobile-controls-bottom.md	note	inbox	-	-	-	Mobile controls at bottom of screen
++./board/planning/NOTE-0015_explicit-control-values.md	note	inbox	-	-	-	Explicit control value input and stepping
++./board/planning/NOTE-0017_reduce-rounded-corners.md	note	inbox	-	-	-	Reduce or remove rounded corners
++./board/planning/NOTE-0018_improve-swatch-copy-feedback.md	note	inbox	-	-	-	Improve swatch copy feedback
++./board/planning/NOTE-0020_clarify-grid-layout-naming.md	note	inbox	-	-	-	Clarify grid layout option naming
++./board/planning/NOTE-0021_custom-swatch-intervals.md	note	inbox	-	-	-	Custom swatch intervals and movable curve points
++./board/planning/NOTE-0022_random-button.md	note	inbox	-	-	-	Random button
++./board/planning/NOTE-0023_helper-tooltips.md	note	inbox	-	-	-	Helper tooltips on hover
++./board/planning/NOTE-0024_chart-steps-match-swatches.md	note	inbox	-	-	-	Sync chart step dots with swatch count
++./board/reference/REFE-0001_parabolic-saturation-curve-for-neutral-palettes.md	reference		-	-	-	Parabolic Saturation Curve for Monochromatic Palettes
++./board/reference/REFE-0002_color-name-api.md	reference		-	-	-	Color Name API
++
++# Archive counts (type	count)
++TASK	30
++NOTE	5
++RESO	3
++
++## Steps
++
++### 1. Review Board State
++
++Parse the pre-loaded board data above. Identify:
++- All items with `status: backlog` or `status: current` (candidates for completion)
++- Epics and their child tasks (via `parent` field)
++- Blocked items and their blockers
++- Items with terminal status (`done`, `processed`) that should be archived
++
++### 2. Gather Codebase Context
++
++- Run `git log --oneline` for recent commits (last 30) to understand what work has been done
++- Only Read full file bodies for tasks whose status is `backlog` or `current` AND whose title suggests overlap with recent commits
++- Use the context budget escalation (Glob → Grep → Read with limit → Full read) for any additional lookups
++
++### 3. Detect Completed Work
++
++For each task with `status: backlog` or `status: current`, check if the work described has already been done:
++
++- Look at recent commits for evidence the work was completed
++- Check the codebase for the feature/fix the task describes
++- If the work is done, flag it for status update to `done`
++
++### 4. Detect New Work Needed
++
++Scan for things that should become tasks but aren't tracked yet:
++
++- Check recent commits for TODOs or FIXMEs introduced in code
++- Look at open epics — are there obvious next steps not yet captured as tasks?
++- Check if any `blocked_by` dependencies have been resolved (unblocking tasks)
++
++### 5. Update Epic Progress
++
++For each active epic:
++
++- Check if all child tasks are `done` — if so, flag the epic as `done`
++- Check if any child tasks are `current` — if so, the epic should be `current`
++- Update the task list in the epic body if tasks have been added/removed
++
++### 6. Check for Stale Items
++
++- Tasks marked `current` but with no related commits in the last 30 days
++- Epics in `planning` with no child tasks
++- Resources stuck in `inbox` or `processing`
++
++### 7. Present Changes
++
++Present ALL proposed changes as a single summary before making any edits:
++
++```
++## Board Update Proposal
++
++### Status Changes
++- TASK-0003: backlog -> done (cache-decoded-image: implemented in commit a1b2c3d)
++- EPIC-0001: planning -> current (has active child tasks)
++
++### New Tasks Suggested
++- "Fix FIXME in preprocessing.rs line 42" (found in recent commit)
++
++### Ready to Archive
++- TASK-0003: done
++- NOTE-0002: processed
++
++### Stale Items
++- TASK-0007: marked current but no activity in 45 days
++
++### Unblocked
++- TASK-0005: blocker TASK-0003 is now done
++```
++
++**Avoid redundant invocations** — if this skill was already invoked earlier in the session and the board has not been modified since, reuse the previous board data instead of invoking again.
++
++Ask the user to approve, reject, or cherry-pick which changes to apply. Then execute only the approved changes:
++
++- **Status updates**: Use `/board:board-edit` to update status fields
++- **New tasks**: Invoke `/board:board-add` for each approved new task
++- **Archiving**: Run `bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board <file1> <file2> ...` directly for approved items
++
++
++---
++
++_**Agent (claude-opus-4-6 2026-04-01 23:46:24Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Recent commits
++
++`git log --oneline -30`
++
++```text
++dcd7e6e fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
++f10aeb3 chore(board): add TASK-0043 favicon fix, archive NOTE-0025
++fbd62ec chore(specstory): update session history
++0cae415 chore(board): archive font tasks, add NOTE-0025 favicon compat
++6f66cc9 fix(a11y): add heading hierarchy, landmarks, and semantic structure
++127e635 fix(a11y): add aria-label to InlineSelect triggers
++40ba102 style(fonts): swap body font to Space Grotesk, refine label styles
++3fea835 style(fonts): tweak label weights, center saturation curve heading
++7c43e53 feat(fonts): replace Geist with Unbounded and Recursive Sans Linear Static
++dc3b6f8 Merge pull request #3 from GDKeller/feat/swatch-all-formats
++e948b3c fix(palette): default swatch count back to 8, add NOTE-0024
++96ea5d5 chore(board): archive TASK-0042
++3bc0473 chore(board): mark TASK-0042 done, archive TASK-0041 and NOTE-0019
++869592a refactor(controls): migrate toggle thumb transform to Tailwind classes
++b07c86c fix(controls): add pill variant to ToggleSwitch, fix chart steps layout
++98b0756 style(controls): add hover/active/open states for selects and toggles
++98457b7 fix(controls): prevent text selection on toggle switch labels
++ab0c79a refactor(controls): replace native selects with Radix Select, unify toolbar styling
++feb4c9d fix(palette): prevent bestCols from collapsing prime counts to single column
++431614f feat(palette): add 3, 4, 5 swatch count options (TASK-0042)
++949ea92 feat(palette): show hex, HSL, and OKLCH values on swatches with format selector
++2db2980 docs(board): add font tasks (TASK-0033 through TASK-0035)
++3fd25e5 Merge pull request #2 from GDKeller/feat/favicon
++f9d3b84 fix(favicon): remove rounded corners, improve OG image, add generation script
++02f07e5 feat(favicon): add ICO/PNG variants, Apple touch icon, PWA manifest, OG image, and full meta tags
++dbeeb09 docs(board): add favicon spec compliance note and child tasks (TASK-0036 through TASK-0040)
++624fefe feat(favicon): add dynamic SVG favicon with hue-reactive color picker design
++b86e1ef docs(board): add 11 feature/UX notes (NOTE-0013 through NOTE-0023)
++cc89500 Merge pull request #1 from GDKeller/fix/responsive
++aac21cd chore(board): update primary URL to chromacurve.style, archive NOTE-0009 and 3 resources
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-04-01 23:46:33Z)**_
++
++## Board Update Proposal
++
++### Ready to Archive
++- **TASK-0043**: status is `done`, should be archived
++
++### No Other Changes Detected
++- No backlog tasks have been completed by recent commits (the OKLCH migration tasks in EPIC-0006/0007/0008 are untouched)
++- No new blockers resolved — TASK-0020 (the root dependency for most OKLCH tasks) is still backlog
++- No stale `current` items (nothing is marked current)
++- Epics remain in `planning` with their child tasks intact
++- No new TODOs/FIXMEs found in the favicon commit
++
++Want me to archive TASK-0043?
++
++---
++
++_**User (2026-04-01 23:46:42Z)**_
++
++yes
++
++---
++
++_**Agent (claude-opus-4-6 2026-04-01 23:46:48Z)**_
++
++<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
++<summary>Tool use: **Bash**</summary>
++Archive TASK-0043
++
++`bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board ./board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md`
++
++```text
++Archived:
++  TASK-0043_fix-dynamic-favicon-chrome-safari.md
++
++Total: 1 archived, 0 skipped
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-04-01 23:46:51Z)**_
++
++Done. TASK-0043 archived.
+diff --git a/board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md b/board/archive/TASK-0043_fix-dynamic-favicon-chrome-safari.md
+similarity index 100%
+rename from board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md
+rename to board/archive/TASK-0043_fix-dynamic-favicon-chrome-safari.md
+- Current branch: feat/font-replacement
+- Recent commits: dcd7e6e fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
+f10aeb3 chore(board): add TASK-0043 favicon fix, archive NOTE-0025
+fbd62ec chore(specstory): update session history
+0cae415 chore(board): archive font tasks, add NOTE-0025 favicon compat
+6f66cc9 fix(a11y): add heading hierarchy, landmarks, and semantic structure
+127e635 fix(a11y): add aria-label to InlineSelect triggers
+40ba102 style(fonts): swap body font to Space Grotesk, refine label styles
+3fea835 style(fonts): tweak label weights, center saturation curve heading
+7c43e53 feat(fonts): replace Geist with Unbounded and Recursive Sans Linear Static
+dc3b6f8 Merge pull request #3 from GDKeller/feat/swatch-all-formats
+
+## Your task
+
+Based on the above changes, create a single git commit.
+
+You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 23:47:32Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Stage and commit board archive
+
+```bash
+git add board/archive/TASK-0043_fix-dynamic-favicon-chrome-safari.md board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md && git commit -m "$(cat <<'EOF'
+chore(board): archive TASK-0043 favicon fix
+EOF
+)"
+```
+
+```text
+Exit code 128
+fatal: pathspec 'board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md' did not match any files
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:47:35Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Stage and commit board archive
+
+```bash
+git add board/archive/TASK-0043_fix-dynamic-favicon-chrome-safari.md .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md && git commit -m "$(cat <<'EOF'
+chore(board): archive TASK-0043 favicon fix
+EOF
+)"
+```
 </details></tool-use>
