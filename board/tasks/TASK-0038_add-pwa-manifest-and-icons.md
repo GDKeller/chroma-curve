@@ -1,6 +1,6 @@
 ---
 type: task
-status: backlog
+status: done
 priority: 3
 created: 2026-03-31
 parent: TASK-0032
