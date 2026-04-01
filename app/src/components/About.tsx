@@ -689,20 +689,20 @@ export function AboutButton() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-4 sm:p-6 rounded-2xl bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-4 sm:p-6 bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.4fr] gap-x-6 gap-y-6 sm:gap-y-8">
                   {/* Title + intro — span both columns */}
-                  <div className="sm:col-span-2">
-                    <Dialog.Title className="text-lg font-semibold text-text-primary mb-2">
+                  <div className="sm:col-span-2 mb-12">
+                    <Dialog.Title className="text-4xl font-semibold text-text-primary mb-8">
                       How it works
                     </Dialog.Title>
                     <Dialog.Description className="sr-only">
                       Explanation of the parabolic saturation curve used to generate perceptually balanced monochromatic palettes
                     </Dialog.Description>
-                    <p className="text-[13px] leading-relaxed text-text-muted">
+                    <p className="text-[13px] leading-relaxed text-text-muted max-w-md">
                       Monochromatic palettes need saturation that varies with
-                      lightness. A fixed saturation value produces even chroma in
+                      lightness. <br/>A fixed saturation value produces even chroma in
                       the midrange but loses it at the extremes — or vice versa.
                     </p>
                   </div>

@@ -43,7 +43,7 @@ export function LightnessRange() {
   return (
     <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-base font-medium text-text-tertiary uppercase tracking-wider">
+        <span className="text-sm font-semibold text-text-tertiary uppercase tracking-wider">
           Range
         </span>
         <div className="flex items-center gap-2">

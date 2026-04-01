@@ -28,7 +28,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
   return (
     <div className="mx-4 md:mx-0 rounded-xs border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
       <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
-        <h3 className="text-sm font-medium text-center w-full text-text-tertiary uppercase tracking-wider">
+        <h3 className="text-sm font-semibold text-center w-full uppercase text-text-tertiary tracking-wider">
           Saturation Curve
         </h3>
       </div>
@@ -36,13 +36,13 @@ export function ChartTabs({ entries }: ChartTabsProps) {
         <Tabs.List className="flex border-y border-border-default">
           <Tabs.Trigger
             value="adjustment"
-            className="flex-1 px-4 py-2 md:px-2 md:py-2 lg:px-4 lg:py-2 text-xs font-normal uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+            className="flex-1 px-4 py-2 md:px-2 md:py-2 lg:px-4 lg:py-2 text-xs font-medium uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
           >
             Adjustment
           </Tabs.Trigger>
           <Tabs.Trigger
             value="computed"
-            className="flex-1 px-4 py-2 text-xs font-semibold uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+            className="flex-1 px-4 py-2 text-xs font-medium uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
           >
             Computed
           </Tabs.Trigger>
@@ -58,7 +58,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
         <button
           type="button"
           onClick={() => setShowCompare(!showCompare)}
-          className="text-sm text-text-subtle cursor-pointer select-none hover:text-text-muted transition-colors md:hidden lg:inline-flex lg:items-center lg:gap-1"
+          className="text-sm text-text-subtle font-semibold cursor-pointer select-none hover:text-text-muted transition-colors md:hidden lg:inline-flex lg:items-center lg:gap-1"
         >
           <Triangle size={7} weight="fill" className={`transition-transform ${showCompare ? "rotate-180" : "rotate-90"}`} /> Compare
         </button>
@@ -67,7 +67,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
       {showCompare && (
         <div className="px-4 pb-3 space-y-2 md:hidden lg:block">
           <div>
-            <span className="text-sm text-text-faint block mb-1">Unadjusted</span>
+            <span className="text-xs text-text-faint block mb-1">Unadjusted</span>
             <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
               {unadjustedColors.map((c, i) => (
                 <div key={i} style={{ backgroundColor: c }} />
@@ -75,7 +75,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
             </div>
           </div>
           <div>
-            <span className="text-sm text-text-faint block mb-1">Adjusted</span>
+            <span className="text-xs text-text-faint block mb-1">Adjusted</span>
             <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
               {adjustedColors.map((c, i) => (
                 <div key={i} style={{ backgroundColor: c }} />
