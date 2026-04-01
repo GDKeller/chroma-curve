@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { SatMode } from "../types/palette";
+import type { CopyFormat, SatMode } from "../types/palette";
 
 interface PaletteState {
   hue: number;
@@ -8,11 +8,13 @@ interface PaletteState {
   satMode: SatMode;
   lMin: number;
   lMax: number;
+  copyFormat: CopyFormat;
   setHue: (hue: number) => void;
   setSaturation: (saturation: number) => void;
   setSMod: (sMod: number) => void;
   setSatMode: (mode: SatMode) => void;
   setLRange: (min: number, max: number) => void;
+  setCopyFormat: (format: CopyFormat) => void;
 }
 
 export const usePaletteStore = create<PaletteState>((set) => ({
@@ -22,9 +24,11 @@ export const usePaletteStore = create<PaletteState>((set) => ({
   satMode: "endpoint",
   lMin: 0,
   lMax: 100,
+  copyFormat: "hex",
   setHue: (hue) => set({ hue }),
   setSaturation: (saturation) => set({ saturation }),
   setSMod: (sMod) => set({ sMod }),
   setSatMode: (satMode) => set({ satMode }),
   setLRange: (lMin, lMax) => set({ lMin, lMax }),
+  setCopyFormat: (copyFormat) => set({ copyFormat }),
 }));

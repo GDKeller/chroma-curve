@@ -4,13 +4,15 @@ interface ToggleSwitchProps {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  variant?: "default" | "pill";
 }
 
-export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
+export function ToggleSwitch({ label, checked, onChange, variant = "default" }: ToggleSwitchProps) {
   const id = useId();
+  const isPill = variant === "pill";
   return (
-    <label className="flex items-center gap-1 cursor-pointer">
-      <span id={id} className="text-sm md:text-xs lg:text-sm font-mono text-text-tertiary">
+    <label className={`group flex items-center gap-1 cursor-pointer select-none transition-colors ${isPill ? "bg-surface-raised border border-border-default px-3 py-1.5" : ""}`}>
+      <span id={id} className={`text-sm md:text-xs lg:text-sm font-mono group-hover:text-white group-active:text-white transition-colors ${checked ? "text-white" : "text-text-tertiary"}`}>
         {label}
       </span>
       <button
@@ -27,10 +29,7 @@ export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
         }}
       >
         <span
-          className="absolute top-0.5 left-0.5 w-3 h-3 rounded-full bg-text-secondary transition-transform"
-          style={{
-            transform: checked ? "translateX(12px)" : "translateX(0)",
-          }}
+          className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full transition-transform ${checked ? "translate-x-3 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)]" : "translate-x-0 bg-text-secondary"}`}
         />
       </button>
     </label>

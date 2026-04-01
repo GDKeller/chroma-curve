@@ -1,32 +1,45 @@
-import { getContrastColor } from "../../lib/colors";
+import { getContrastColor, toOklchString } from "../../lib/colors";
 import { CopyFeedback } from "./CopyFeedback";
-import type { ColorEntry } from "../../types/palette";
+import type { ColorEntry, CopyFormat } from "../../types/palette";
 
 interface ColorSwatchProps {
   entry: ColorEntry;
+  copyFormat: CopyFormat;
   isCopied: boolean;
   onCopy: (text: string, label: string) => void;
   showLabels?: boolean;
   tall?: boolean;
 }
 
-export function ColorSwatch({ entry, isCopied, onCopy, showLabels = true, tall = false }: ColorSwatchProps) {
+function getCopyValue(entry: ColorEntry, format: CopyFormat): string {
+  switch (format) {
+    case "hex":
+      return entry.hex;
+    case "hsl":
+      return `hsl(${entry.hslString})`;
+    case "oklch":
+      return toOklchString(entry.hex);
+  }
+}
+
+export function ColorSwatch({ entry, copyFormat, isCopied, onCopy, showLabels = true, tall = false }: ColorSwatchProps) {
   const textColor = getContrastColor(entry.hex);
+  const oklch = toOklchString(entry.hex);
 
   return (
     <button
       type="button"
       className={`relative flex flex-col justify-start gap-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-base group px-2 py-1.5 ${tall ? "min-h-[240px]" : "min-h-[120px]"}`}
       style={{ backgroundColor: entry.hex, color: textColor }}
-      onClick={() => onCopy(`hsl(${entry.hslString})`, entry.label)}
-      title={`${entry.label} — hsl(${entry.hslString})`}
+      onClick={() => onCopy(getCopyValue(entry, copyFormat), entry.label)}
+      title={`${entry.label} — click to copy ${copyFormat.toUpperCase()}`}
     >
       {showLabels && (
         <>
-          <span className="text-sm font-semibold transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
-          <span className="text-2xs font-mono opacity-75 transition-transform group-hover:scale-105 origin-left">
-            hsl({entry.hslString})
-          </span>
+          <span className="text-sm font-semibold mb-4 transition-transform group-hover:scale-105 origin-left">{entry.label}</span>
+          <span className="text-sm font-mono">{entry.hex}</span>
+          <span className="text-2xs font-mono">hsl({entry.hslString})</span>
+          <span className="text-2xs font-mono">{oklch}</span>
         </>
       )}
       <CopyFeedback visible={isCopied} />

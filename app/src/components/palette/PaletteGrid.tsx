@@ -1,16 +1,31 @@
 import { useMemo, useState } from "react";
 import { ColorSwatch } from "./ColorSwatch";
+import { InlineSelect } from "../controls/InlineSelect";
 import { ToggleSwitch } from "../controls/ToggleSwitch";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
-import type { ColorEntry } from "../../types/palette";
+import { usePaletteStore } from "../../store/paletteStore";
+import type { ColorEntry, CopyFormat } from "../../types/palette";
 
 interface PaletteGridProps {
   entries: ColorEntry[];
 }
 
-const STEP_OPTIONS = [8, 9, 10, 12, 16, 20, 24, 48];
+const STEP_OPTIONS = [3, 4, 5, 8, 9, 10, 12, 16, 20, 24, 48];
 
 type Layout = "row" | "column" | "vertical" | "horizontal";
+
+const LAYOUT_OPTIONS: { value: Layout; label: string }[] = [
+  { value: "row", label: "row" },
+  { value: "column", label: "column" },
+  { value: "vertical", label: "vertical" },
+  { value: "horizontal", label: "horizontal" },
+];
+
+const COPY_FORMAT_OPTIONS: { value: CopyFormat; label: string }[] = [
+  { value: "hex", label: "hex" },
+  { value: "hsl", label: "hsl" },
+  { value: "oklch", label: "oklch" },
+];
 
 function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
   if (count >= entries.length) return entries;
@@ -22,13 +37,14 @@ function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
 
 // Find the column count that produces no orphans and the most square-ish grid
 function bestCols(total: number): number {
+  if (total <= 1) return 1;
   const target = Math.round(Math.sqrt(total));
-  // Search outward from the square root for a clean divisor
+  // Search outward from the square root for a clean divisor (min 2 cols)
   for (let d = 0; d <= target; d++) {
-    if ((target + d) > 0 && total % (target + d) === 0) return target + d;
-    if ((target - d) > 0 && total % (target - d) === 0) return target - d;
+    if ((target + d) >= 2 && total % (target + d) === 0) return target + d;
+    if ((target - d) >= 2 && total % (target - d) === 0) return target - d;
   }
-  return target;
+  return total;
 }
 
 // Reorder row-major entries into column-major order for CSS grid rendering
@@ -46,10 +62,12 @@ function toColumnMajor(entries: ColorEntry[], cols: number): ColorEntry[] {
 
 export function PaletteGrid({ entries }: PaletteGridProps) {
   const { copiedLabel, copy } = useCopyToClipboard();
+  const copyFormat = usePaletteStore((s) => s.copyFormat);
+  const setCopyFormat = usePaletteStore((s) => s.setCopyFormat);
   const [showBorders, setShowBorders] = useState(false);
   const [showLabels, setShowLabels] = useState(true);
   const [reversed, setReversed] = useState(false);
-  const [swatchCount, setSwatchCount] = useState<number>(STEP_OPTIONS[0]);
+  const [swatchCount, setSwatchCount] = useState<number>(8);
   const [layout, setLayout] = useState<Layout>("row");
 
   const { displayEntries, cols } = useMemo(() => {
@@ -78,43 +96,20 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   return (
     <div className="flex flex-col">
       <div className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
-        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
-          <label className="flex items-center gap-1 cursor-pointer">
-            <span className="text-sm font-mono text-text-tertiary">swatches</span>
-            <select
-              value={swatchCount}
-              onChange={(e) => setSwatchCount(Number(e.target.value))}
-              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
-            >
-              {STEP_OPTIONS.map((n) => (
-                <option key={n} value={n} className="bg-surface-overlay">
-                  {n}
-                </option>
-              ))}
-              <option value={entries.length} className="bg-surface-overlay">
-                all ({entries.length})
-              </option>
-            </select>
-          </label>
-          <label className="flex items-center gap-1 cursor-pointer">
-            <span className="text-sm font-mono text-text-tertiary">layout</span>
-            <select
-              value={layout}
-              onChange={(e) => setLayout(e.target.value as Layout)}
-              className="text-sm font-mono text-text-subtle bg-transparent border-none outline-none cursor-pointer"
-            >
-              <option value="row" className="bg-surface-overlay">row</option>
-              <option value="column" className="bg-surface-overlay">column</option>
-              <option value="vertical" className="bg-surface-overlay">vertical</option>
-              <option value="horizontal" className="bg-surface-overlay">horizontal</option>
-            </select>
-          </label>
-        </div>
-        <div className="flex items-center gap-3 rounded-md bg-surface-raised px-3 py-1.5">
-          <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
-          <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
-          <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
-        </div>
+        <InlineSelect
+          label="swatches"
+          value={String(swatchCount)}
+          onChange={(v) => setSwatchCount(Number(v))}
+          options={[
+            ...STEP_OPTIONS.map((n) => ({ value: String(n), label: String(n) })),
+            { value: String(entries.length), label: `all (${entries.length})` },
+          ]}
+        />
+        <InlineSelect label="layout" value={layout} onChange={setLayout} options={LAYOUT_OPTIONS} />
+        <InlineSelect label="copy" value={copyFormat} onChange={setCopyFormat} options={COPY_FORMAT_OPTIONS} />
+        <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} variant="pill" />
+        <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} variant="pill" />
+        <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} variant="pill" />
       </div>
       <div
         className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
@@ -124,6 +119,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
           <ColorSwatch
             key={entry.label}
             entry={entry}
+            copyFormat={copyFormat}
             isCopied={copiedLabel === entry.label}
             onCopy={copy}
             showLabels={showLabels}
