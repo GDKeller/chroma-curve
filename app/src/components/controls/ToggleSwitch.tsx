@@ -29,10 +29,7 @@ export function ToggleSwitch({ label, checked, onChange, variant = "default" }: 
         }}
       >
         <span
-          className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full transition-transform ${checked ? "bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)]" : "bg-text-secondary"}`}
-          style={{
-            transform: checked ? "translateX(12px)" : "translateX(0)",
-          }}
+          className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full transition-transform ${checked ? "translate-x-3 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)]" : "translate-x-0 bg-text-secondary"}`}
         />
       </button>
     </label>
