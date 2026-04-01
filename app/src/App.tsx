@@ -5,9 +5,11 @@ import { PaletteStrip } from "./components/palette/PaletteStrip";
 import { PaletteGrid } from "./components/palette/PaletteGrid";
 import { ChartTabs } from "./components/curves/ChartTabs";
 import { usePalette } from "./hooks/usePalette";
+import { useDynamicFavicon } from "./hooks/useDynamicFavicon";
 
 export default function App() {
   const entries = usePalette();
+  useDynamicFavicon();
 
   return (
     <AppShell>
