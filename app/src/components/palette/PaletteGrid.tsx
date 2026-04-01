@@ -107,9 +107,9 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
         />
         <InlineSelect label="layout" value={layout} onChange={setLayout} options={LAYOUT_OPTIONS} />
         <InlineSelect label="copy" value={copyFormat} onChange={setCopyFormat} options={COPY_FORMAT_OPTIONS} />
-        <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} />
-        <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} />
-        <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} />
+        <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} variant="pill" />
+        <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} variant="pill" />
+        <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} variant="pill" />
       </div>
       <div
         className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}

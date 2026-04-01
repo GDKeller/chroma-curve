@@ -4,12 +4,14 @@ interface ToggleSwitchProps {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  variant?: "default" | "pill";
 }
 
-export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
+export function ToggleSwitch({ label, checked, onChange, variant = "default" }: ToggleSwitchProps) {
   const id = useId();
+  const isPill = variant === "pill";
   return (
-    <label className="group flex items-center gap-1 cursor-pointer select-none bg-surface-raised border border-border-default px-3 py-1.5 transition-colors">
+    <label className={`group flex items-center gap-1 cursor-pointer select-none transition-colors ${isPill ? "bg-surface-raised border border-border-default px-3 py-1.5" : ""}`}>
       <span id={id} className={`text-sm md:text-xs lg:text-sm font-mono group-hover:text-white group-active:text-white transition-colors ${checked ? "text-white" : "text-text-tertiary"}`}>
         {label}
       </span>
