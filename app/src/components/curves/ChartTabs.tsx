@@ -26,7 +26,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
   }), [entries, hue, saturation]);
 
   return (
-    <div className="mx-4 md:mx-0 rounded-xs border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+    <div className="mx-4 md:mx-0 rounded-none border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
       <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
         <h2 className="text-sm font-semibold text-center w-full uppercase text-text-tertiary tracking-wider">
           Saturation Curve
@@ -70,7 +70,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
         <div className="px-4 pb-3 space-y-2 md:hidden lg:block">
           <div>
             <span className="text-xs text-text-faint block mb-1">Unadjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+            <div className="h-6 rounded-none overflow-hidden grid grid-flow-col auto-cols-fr">
               {unadjustedColors.map((c, i) => (
                 <div key={i} style={{ backgroundColor: c }} />
               ))}
@@ -78,7 +78,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
           </div>
           <div>
             <span className="text-xs text-text-faint block mb-1">Adjusted</span>
-            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+            <div className="h-6 rounded-none overflow-hidden grid grid-flow-col auto-cols-fr">
               {adjustedColors.map((c, i) => (
                 <div key={i} style={{ backgroundColor: c }} />
               ))}

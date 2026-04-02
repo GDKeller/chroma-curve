@@ -113,7 +113,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
         <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} variant="pill" />
       </div>
       <div
-        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-none overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
         style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
       >
         {displayEntries.map((entry) => (

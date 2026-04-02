@@ -144,7 +144,7 @@ export function TargetSwatch() {
       <Popover.Portal>
         <Popover.Content
           sideOffset={8}
-          className="rounded-lg bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
+          className="rounded-none bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
         >
           <canvas
             ref={handleCanvasRef}

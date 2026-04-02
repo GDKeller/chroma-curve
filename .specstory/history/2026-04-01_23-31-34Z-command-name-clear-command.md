@@ -2977,7 +2977,7 @@ fatal: pathspec 'board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md' did
 ```
 </details></tool-use>
 
-_**Agent (claude-opus-4-6 2026-04-01 23:47:35Z)**_
+_**Agent (claude-opus-4-6 2026-04-01 23:47:36Z)**_
 
 <tool-use data-tool-type="shell" data-tool-name="Bash"><details>
 <summary>Tool use: **Bash**</summary>
@@ -2986,6 +2986,1774 @@ Stage and commit board archive
 ```bash
 git add board/archive/TASK-0043_fix-dynamic-favicon-chrome-safari.md .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md && git commit -m "$(cat <<'EOF'
 chore(board): archive TASK-0043 favicon fix
+EOF
+)"
+```
+
+```text
+[feat/font-replacement bc8ceaa] chore(board): archive TASK-0043 favicon fix
+ 2 files changed, 663 insertions(+)
+ rename board/{tasks => archive}/TASK-0043_fix-dynamic-favicon-chrome-safari.md (100%)
+```
+</details></tool-use>
+
+---
+
+_**User (2026-04-01 23:48:43Z)**_
+
+extract TASKs from NOTE-0017, include all details needed
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 23:48:47Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./board/planning/NOTE-0017_reduce-rounded-corners.md`
+
+```text
+1	---
+2	type: note
+3	status: inbox
+4	created: 2026-03-30
+5	---
+6	
+7	# Reduce or remove rounded corners
+8	
+9	The current border-radius values feel too soft for the instrument aesthetic. Audit all rounded corners and reduce or eliminate them for a sharper, more clinical look.
+10
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:48:52Z)**_
+
+Let me see what rounded corners exist in the codebase to inform a well-scoped task.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:48:53Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `rounded-`
+
+```text
+app/src/components/export/ExportDialog.tsx:26:          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
+app/src/components/export/ExportDialog.tsx:50:                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-2xl bg-surface-overlay border border-border-elevated shadow-2xl"
+app/src/components/controls/ToggleSwitch.tsx:24:        className="relative w-7 h-4 rounded-full transition-colors min-w-[28px]"
+app/src/components/controls/ToggleSwitch.tsx:32:          className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full transition-transform ${checked ? "translate-x-3 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)]" : "translate-x-0 bg-text-secondary"}`}
+app/src/components/controls/SaturationSlider.tsx:41:          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+app/src/components/controls/SaturationSlider.tsx:43:          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+app/src/components/controls/SaturationSlider.tsx:46:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+app/src/components/export/ExportPreview.tsx:13:      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base leading-relaxed text-text-primary">
+app/src/components/export/ExportPreview.tsx:21:          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+app/src/components/export/ExportPreview.tsx:29:          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+app/src/components/curves/ChartTabs.tsx:29:    <div className="mx-4 md:mx-0 rounded-xs border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+app/src/components/curves/ChartTabs.tsx:73:            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+app/src/components/curves/ChartTabs.tsx:81:            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+app/src/components/controls/SliderBase.tsx:46:          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+app/src/components/controls/SliderBase.tsx:49:          <Slider.Range className={`absolute h-full rounded-full ${trackStyle ? "" : "bg-surface-active-hover"}`} />
+app/src/components/controls/SliderBase.tsx:52:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+app/src/components/export/FormatSelector.tsx:30:  "flex-1 px-3 py-1.5 text-base font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
+app/src/components/export/FormatSelector.tsx:48:          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
+app/src/components/export/FormatSelector.tsx:70:          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
+app/src/components/About.tsx:86:      <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+app/src/components/About.tsx:460:    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+app/src/components/About.tsx:578:            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+app/src/components/About.tsx:590:          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+app/src/components/About.tsx:621:        className="h-6 rounded-sm cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+app/src/components/About.tsx:642:          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
+app/src/components/About.tsx:667:          className="flex items-center gap-1 rounded-lg px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+app/src/components/About.tsx:721:                                    className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+app/src/components/About.tsx:756:                          className="w-56 p-3 rounded-lg bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+app/src/components/controls/LightnessRange.tsx:76:          className="relative grow rounded-full h-[6px] overflow-hidden"
+app/src/components/controls/LightnessRange.tsx:81:          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+app/src/components/controls/LightnessRange.tsx:84:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+app/src/components/controls/LightnessRange.tsx:88:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+app/src/components/controls/TargetSwatch.tsx:139:          className="w-7 h-7 rounded-full shrink-0 self-end mb-[2px] border-2 border-surface-base cursor-pointer transition-transform hover:scale-110 shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
+app/src/components/controls/TargetSwatch.tsx:147:          className="rounded-lg bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
+app/src/components/palette/PaletteStrip.tsx:12:    <div aria-hidden="true" className="h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
+app/src/components/palette/PaletteGrid.tsx:116:        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+app/src/components/palette/CopyFeedback.tsx:17:          className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-sm pointer-events-none"
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:48:57Z)**_
+
+Good scope picture. This is a single cohesive task — audit and tighten all border-radius values. Let me get the next task ID and create it.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:48:58Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Get next TASK ID
+
+`bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/next-id.sh TASK ./board`
+
+```text
+0044
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:49:14Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Write"><details>
+<summary>Tool use: **Write**</summary>
+
+```md
+---
+type: task
+status: backlog
+priority: 3
+parent: NOTE-0017
+created: 2026-04-01
+---
+
+# TASK-0044: Reduce or remove rounded corners
+
+Audit all `rounded-*` Tailwind classes across the app and reduce or eliminate border-radius to match the instrument aesthetic (sharp, clinical, precise). The current values feel too soft.
+
+## Scope
+
+Components using rounded corners (all in `app/src/components/`):
+
+### Controls
+- **ToggleSwitch** — `rounded-full` on track and thumb (functional — keep for toggle pill shape)
+- **SliderBase** — `rounded-full` on track, range, and thumb (functional — keep for slider shape)
+- **SaturationSlider** — same as SliderBase
+- **LightnessRange** — same as SliderBase
+- **TargetSwatch** — `rounded-full` on swatch circle, `rounded-lg` on popover
+
+### Export
+- **ExportDialog** — `rounded-2xl` on dialog overlay, `rounded-lg` on trigger button
+- **ExportPreview** — `rounded-lg` on code block, `rounded-md` on buttons
+- **FormatSelector** — `rounded-lg` on tab container, `rounded-md` on tab items
+
+### Palette
+- **PaletteStrip** — `rounded-xl` on strip container
+- **PaletteGrid** — `rounded-xl` on grid container
+- **CopyFeedback** — `rounded-sm` on overlay
+
+### Curves
+- **ChartTabs** — `rounded-xs` on container, `rounded-sm` on color strips
+
+### About
+- **About** — `rounded-xl` on info bar, `rounded-lg` on comparison grid/popovers/nav links, `rounded-sm` on swatches/scrubber elements
+
+## Guidelines
+
+- **Keep `rounded-full`** on circular elements (toggle thumbs, slider thumbs/tracks, swatch circles) — these are functionally round
+- **Reduce large radii** (`rounded-2xl`, `rounded-xl`, `rounded-lg`) to `rounded-sm` or `rounded-xs` — or remove entirely
+- **Evaluate `rounded-md`** on buttons — consider `rounded-xs` or `rounded-none`
+- Match the "instrument, not toy" design principle — no consumer-grade rounded-everything
+
+```
+
+```text
+File created successfully at: /Users/grant/code/chroma-curve/board/tasks/TASK-0044_reduce-rounded-corners.md
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:49:17Z)**_
+
+Now update NOTE-0017 to processed and archive it.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:49:18Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/board/planning/NOTE-0017_reduce-rounded-corners.md has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:50:33Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Archive NOTE-0017
+
+`bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board ./board/planning/NOTE-0017_reduce-rounded-corners.md`
+
+```text
+Archived:
+  NOTE-0017_reduce-rounded-corners.md
+
+Total: 1 archived, 0 skipped
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:50:36Z)**_
+
+Created **TASK-0044: Reduce or remove rounded corners** with a full audit of every component using `rounded-*` classes, grouped by area, with guidelines on what to keep (functional circles) vs what to tighten. NOTE-0017 is archived.
+
+Want me to commit?
+
+---
+
+_**User (2026-04-01 23:50:51Z)**_
+
+yes
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 23:50:56Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit board updates
+
+```bash
+git add board/tasks/TASK-0044_reduce-rounded-corners.md board/archive/NOTE-0017_reduce-rounded-corners.md board/planning/NOTE-0017_reduce-rounded-corners.md && git commit -m "$(cat <<'EOF'
+chore(board): add TASK-0044 reduce rounded corners, archive NOTE-0017
+EOF
+)"
+```
+
+```text
+Exit code 128
+fatal: pathspec 'board/planning/NOTE-0017_reduce-rounded-corners.md' did not match any files
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:50:59Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit board updates
+
+```bash
+git add board/tasks/TASK-0044_reduce-rounded-corners.md board/archive/NOTE-0017_reduce-rounded-corners.md && git commit -m "$(cat <<'EOF'
+chore(board): add TASK-0044 reduce rounded corners, archive NOTE-0017
+EOF
+)"
+```
+
+```text
+[feat/font-replacement 781b533] chore(board): add TASK-0044 reduce rounded corners, archive NOTE-0017
+ 2 files changed, 46 insertions(+), 1 deletion(-)
+ rename board/{planning => archive}/NOTE-0017_reduce-rounded-corners.md (93%)
+ create mode 100644 board/tasks/TASK-0044_reduce-rounded-corners.md
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:51:02Z)**_
+
+Committed as `781b533`.
+
+---
+
+_**User (2026-04-01 23:52:13Z)**_
+
+ok take a swing at TASK-0044
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:16Z)**_
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:17Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./board/tasks/TASK-0044_reduce-rounded-corners.md`
+
+```text
+1	---
+2	type: task
+3	status: backlog
+4	priority: 3
+5	parent: NOTE-0017
+6	created: 2026-04-01
+7	---
+8	
+9	# TASK-0044: Reduce or remove rounded corners
+10	
+11	Audit all `rounded-*` Tailwind classes across the app and reduce or eliminate border-radius to match the instrument aesthetic (sharp, clinical, precise). The current values feel too soft.
+12	
+13	## Scope
+14	
+15	Components using rounded corners (all in `app/src/components/`):
+16	
+17	### Controls
+18	- **ToggleSwitch** — `rounded-full` on track and thumb (functional — keep for toggle pill shape)
+19	- **SliderBase** — `rounded-full` on track, range, and thumb (functional — keep for slider shape)
+20	- **SaturationSlider** — same as SliderBase
+21	- **LightnessRange** — same as SliderBase
+22	- **TargetSwatch** — `rounded-full` on swatch circle, `rounded-lg` on popover
+23	
+24	### Export
+25	- **ExportDialog** — `rounded-2xl` on dialog overlay, `rounded-lg` on trigger button
+26	- **ExportPreview** — `rounded-lg` on code block, `rounded-md` on buttons
+27	- **FormatSelector** — `rounded-lg` on tab container, `rounded-md` on tab items
+28	
+29	### Palette
+30	- **PaletteStrip** — `rounded-xl` on strip container
+31	- **PaletteGrid** — `rounded-xl` on grid container
+32	- **CopyFeedback** — `rounded-sm` on overlay
+33	
+34	### Curves
+35	- **ChartTabs** — `rounded-xs` on container, `rounded-sm` on color strips
+36	
+37	### About
+38	- **About** — `rounded-xl` on info bar, `rounded-lg` on comparison grid/popovers/nav links, `rounded-sm` on swatches/scrubber elements
+39	
+40	## Guidelines
+41	
+42	- **Keep `rounded-full`** on circular elements (toggle thumbs, slider thumbs/tracks, swatch circles) — these are functionally round
+43	- **Reduce large radii** (`rounded-2xl`, `rounded-xl`, `rounded-lg`) to `rounded-sm` or `rounded-xs` — or remove entirely
+44	- **Evaluate `rounded-md`** on buttons — consider `rounded-xs` or `rounded-none`
+45	- Match the "instrument, not toy" design principle — no consumer-grade rounded-everything
+46
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:21Z)**_
+
+Let me read all the affected files and make the changes. I'll skip controls with functional `rounded-full` (toggles, sliders, swatch circle).
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:21Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/export/ExportDialog.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import * as Dialog from "@radix-ui/react-dialog";
+3	import { AnimatePresence, motion } from "framer-motion";
+4	import { Export, X } from "@phosphor-icons/react";
+5	import { FormatSelector } from "./FormatSelector";
+6	import { ExportPreview } from "./ExportPreview";
+7	import { formatPalette, downloadPalette } from "../../lib/export";
+8	import { usePalette } from "../../hooks/usePalette";
+9	import type { ExportFormat, ColorSpace } from "../../types/palette";
+10	
+11	export function ExportDialog() {
+12	  const [open, setOpen] = useState(false);
+13	  const [format, setFormat] = useState<ExportFormat>("css");
+14	  const [space, setSpace] = useState<ColorSpace>("hsl");
+15	  const entries = usePalette();
+16	  const code = useMemo(
+17	    () => (open ? formatPalette(entries, format, space) : ""),
+18	    [open, entries, format, space],
+19	  );
+20	
+21	  return (
+22	    <Dialog.Root open={open} onOpenChange={setOpen}>
+23	      <Dialog.Trigger asChild>
+24	        <button
+25	          type="button"
+26	          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
+27	        >
+28	          <Export size={16} />
+29	          Export
+30	        </button>
+31	      </Dialog.Trigger>
+32	      <AnimatePresence>
+33	        {open && (
+34	          <Dialog.Portal forceMount>
+35	            <Dialog.Overlay asChild>
+36	              <motion.div
+37	                initial={{ opacity: 0 }}
+38	                animate={{ opacity: 1 }}
+39	                exit={{ opacity: 0 }}
+40	                transition={{ duration: 0.15 }}
+41	                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+42	              />
+43	            </Dialog.Overlay>
+44	            <Dialog.Content asChild>
+45	              <motion.div
+46	                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+47	                animate={{ opacity: 1, scale: 1, y: 0 }}
+48	                exit={{ opacity: 0, scale: 0.96, y: 8 }}
+49	                transition={{ duration: 0.2 }}
+50	                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-2xl bg-surface-overlay border border-border-elevated shadow-2xl"
+51	              >
+52	                <Dialog.Title className="text-lg font-semibold text-text-primary mb-4">
+53	                  Export Palette
+54	                </Dialog.Title>
+55	                <Dialog.Description className="sr-only">
+56	                  Export your palette in various code formats and color spaces
+57	                </Dialog.Description>
+58	                <div className="flex flex-col gap-4">
+59	                  <FormatSelector
+60	                    format={format}
+61	                    onFormatChange={setFormat}
+62	                    space={space}
+63	                    onSpaceChange={setSpace}
+64	                  />
+65	                  <ExportPreview
+66	                    code={code}
+67	                    onDownload={() => downloadPalette(entries, format, space)}
+68	                  />
+69	                </div>
+70	                <Dialog.Close asChild>
+71	                  <button
+72	                    type="button"
+73	                    className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
+74	                    aria-label="Close"
+75	                  >
+76	                    <X size={16} />
+77	                  </button>
+78	                </Dialog.Close>
+79	              </motion.div>
+80	            </Dialog.Content>
+81	          </Dialog.Portal>
+82	        )}
+83	      </AnimatePresence>
+84	    </Dialog.Root>
+85	  );
+86	}
+87
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:22Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/export/ExportPreview.tsx`
+
+```text
+1	import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+2	
+3	interface ExportPreviewProps {
+4	  code: string;
+5	  onDownload: () => void;
+6	}
+7	
+8	export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
+9	  const { copiedLabel, copy } = useCopyToClipboard();
+10	
+11	  return (
+12	    <div className="relative">
+13	      <pre className="p-4 rounded-lg bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base leading-relaxed text-text-primary">
+14	        {code}
+15	      </pre>
+16	      <div className="absolute top-3 right-3 flex gap-2">
+17	        <button
+18	          type="button"
+19	          onClick={onDownload}
+20	          aria-label="Download palette file"
+21	          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+22	        >
+23	          Download
+24	        </button>
+25	        <button
+26	          type="button"
+27	          onClick={() => copy(code, "export")}
+28	          aria-label="Copy palette code"
+29	          className="px-3 py-1 text-sm font-medium rounded-md bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+30	        >
+31	          {copiedLabel === "export" ? "Copied!" : "Copy"}
+32	        </button>
+33	      </div>
+34	    </div>
+35	  );
+36	}
+37
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:22Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/export/FormatSelector.tsx`
+
+```text
+1	import type { ExportFormat, ColorSpace } from "../../types/palette";
+2	
+3	interface FormatSelectorProps {
+4	  format: ExportFormat;
+5	  onFormatChange: (format: ExportFormat) => void;
+6	  space: ColorSpace;
+7	  onSpaceChange: (space: ColorSpace) => void;
+8	}
+9	
+10	const formats: { value: ExportFormat; label: string }[] = [
+11	  { value: "css", label: "CSS" },
+12	  { value: "tw4", label: "TW v4" },
+13	  { value: "tw3", label: "TW v3" },
+14	  { value: "scss", label: "SCSS" },
+15	  { value: "js", label: "JS/TS" },
+16	  { value: "json", label: "JSON" },
+17	  { value: "gpl", label: "GPL" },
+18	  { value: "text", label: "Text" },
+19	];
+20	
+21	const spaces: { value: ColorSpace; label: string }[] = [
+22	  { value: "hsl", label: "HSL" },
+23	  { value: "hex", label: "HEX" },
+24	  { value: "rgb", label: "RGB" },
+25	  { value: "hcl", label: "HCL" },
+26	  { value: "oklch", label: "OKLCH" },
+27	];
+28	
+29	const btnBase =
+30	  "flex-1 px-3 py-1.5 text-base font-medium rounded-md text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
+31	const btnActive = "bg-surface-active text-white";
+32	
+33	export function FormatSelector({
+34	  format,
+35	  onFormatChange,
+36	  space,
+37	  onSpaceChange,
+38	}: FormatSelectorProps) {
+39	  return (
+40	    <div className="flex flex-col gap-3">
+41	      <div>
+42	        <span className="text-sm text-text-faint uppercase tracking-wider mb-1 block">
+43	          Format
+44	        </span>
+45	        <div
+46	          role="radiogroup"
+47	          aria-label="Export format"
+48	          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
+49	        >
+50	          {formats.map((f) => (
+51	            <button
+52	              key={f.value}
+53	              role="radio"
+54	              aria-checked={format === f.value}
+55	              className={`${btnBase} ${format === f.value ? btnActive : ""}`}
+56	              onClick={() => onFormatChange(f.value)}
+57	            >
+58	              {f.label}
+59	            </button>
+60	          ))}
+61	        </div>
+62	      </div>
+63	      <div>
+64	        <span className="text-sm text-text-faint uppercase tracking-wider mb-1 block">
+65	          Color Space
+66	        </span>
+67	        <div
+68	          role="radiogroup"
+69	          aria-label="Color space"
+70	          className="flex gap-1 p-1 rounded-lg bg-surface-overlay"
+71	        >
+72	          {spaces.map((s) => (
+73	            <button
+74	              key={s.value}
+75	              role="radio"
+76	              aria-checked={space === s.value}
+77	              className={`${btnBase} ${space === s.value ? btnActive : ""}`}
+78	              onClick={() => onSpaceChange(s.value)}
+79	            >
+80	              {s.label}
+81	            </button>
+82	          ))}
+83	        </div>
+84	      </div>
+85	    </div>
+86	  );
+87	}
+88
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:23Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/PaletteStrip.tsx`
+
+```text
+1	import { useMemo } from "react";
+2	import type { ColorEntry } from "../../types/palette";
+3	
+4	interface PaletteStripProps {
+5	  entries: ColorEntry[];
+6	}
+7	
+8	export function PaletteStrip({ entries }: PaletteStripProps) {
+9	  const reversed = useMemo(() => [...entries].reverse(), [entries]);
+10	
+11	  return (
+12	    <div aria-hidden="true" className="h-14 rounded-xl overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
+13	      {reversed.map((entry) => (
+14	        <div
+15	          key={entry.label}
+16	          className="min-w-0"
+17	          style={{ backgroundColor: entry.hex }}
+18	          title={entry.label}
+19	        />
+20	      ))}
+21	    </div>
+22	  );
+23	}
+24
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:23Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/PaletteGrid.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import { ColorSwatch } from "./ColorSwatch";
+3	import { InlineSelect } from "../controls/InlineSelect";
+4	import { ToggleSwitch } from "../controls/ToggleSwitch";
+5	import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+6	import { usePaletteStore } from "../../store/paletteStore";
+7	import type { ColorEntry, CopyFormat } from "../../types/palette";
+8	
+9	interface PaletteGridProps {
+10	  entries: ColorEntry[];
+11	}
+12	
+13	const STEP_OPTIONS = [3, 4, 5, 8, 9, 10, 12, 16, 20, 24, 48];
+14	
+15	type Layout = "row" | "column" | "vertical" | "horizontal";
+16	
+17	const LAYOUT_OPTIONS: { value: Layout; label: string }[] = [
+18	  { value: "row", label: "row" },
+19	  { value: "column", label: "column" },
+20	  { value: "vertical", label: "vertical" },
+21	  { value: "horizontal", label: "horizontal" },
+22	];
+23	
+24	const COPY_FORMAT_OPTIONS: { value: CopyFormat; label: string }[] = [
+25	  { value: "hex", label: "hex" },
+26	  { value: "hsl", label: "hsl" },
+27	  { value: "oklch", label: "oklch" },
+28	];
+29	
+30	function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
+31	  if (count >= entries.length) return entries;
+32	  const step = (entries.length - 1) / (count - 1);
+33	  return Array.from({ length: count }, (_, i) =>
+34	    entries[Math.round(i * step)],
+35	  );
+36	}
+37	
+38	// Find the column count that produces no orphans and the most square-ish grid
+39	function bestCols(total: number): number {
+40	  if (total <= 1) return 1;
+41	  const target = Math.round(Math.sqrt(total));
+42	  // Search outward from the square root for a clean divisor (min 2 cols)
+43	  for (let d = 0; d <= target; d++) {
+44	    if ((target + d) >= 2 && total % (target + d) === 0) return target + d;
+45	    if ((target - d) >= 2 && total % (target - d) === 0) return target - d;
+46	  }
+47	  return total;
+48	}
+49	
+50	// Reorder row-major entries into column-major order for CSS grid rendering
+51	function toColumnMajor(entries: ColorEntry[], cols: number): ColorEntry[] {
+52	  const rows = Math.ceil(entries.length / cols);
+53	  const reordered: ColorEntry[] = [];
+54	  for (let r = 0; r < rows; r++) {
+55	    for (let c = 0; c < cols; c++) {
+56	      const idx = c * rows + r;
+57	      if (idx < entries.length) reordered.push(entries[idx]);
+58	    }
+59	  }
+60	  return reordered;
+61	}
+62	
+63	export function PaletteGrid({ entries }: PaletteGridProps) {
+64	  const { copiedLabel, copy } = useCopyToClipboard();
+65	  const copyFormat = usePaletteStore((s) => s.copyFormat);
+66	  const setCopyFormat = usePaletteStore((s) => s.setCopyFormat);
+67	  const [showBorders, setShowBorders] = useState(false);
+68	  const [showLabels, setShowLabels] = useState(true);
+69	  const [reversed, setReversed] = useState(false);
+70	  const [swatchCount, setSwatchCount] = useState<number>(8);
+71	  const [layout, setLayout] = useState<Layout>("row");
+72	
+73	  const { displayEntries, cols } = useMemo(() => {
+74	    const sampled = sampleEntries(entries, swatchCount);
+75	
+76	    // Default order for all layouts is dark→light (reverse the light→dark entries)
+77	    const ordered = reversed ? sampled : sampled.slice().reverse();
+78	
+79	    if (layout === "row") {
+80	      return { displayEntries: ordered, cols: ordered.length };
+81	    }
+82	
+83	    if (layout === "column") {
+84	      return { displayEntries: ordered, cols: 1 };
+85	    }
+86	
+87	    const cols = bestCols(ordered.length);
+88	
+89	    if (layout === "vertical") {
+90	      return { displayEntries: ordered, cols };
+91	    }
+92	    // horizontal: lightness flows left→right via column-major reorder
+93	    return { displayEntries: toColumnMajor(ordered, cols), cols };
+94	  }, [entries, swatchCount, layout, reversed]);
+95	
+96	  return (
+97	    <section aria-labelledby="palette-heading" className="flex flex-col">
+98	      <h2 id="palette-heading" className="sr-only">Color palette</h2>
+99	      <div role="group" aria-label="Palette display options" className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+100	        <InlineSelect
+101	          label="swatches"
+102	          value={String(swatchCount)}
+103	          onChange={(v) => setSwatchCount(Number(v))}
+104	          options={[
+105	            ...STEP_OPTIONS.map((n) => ({ value: String(n), label: String(n) })),
+106	            { value: String(entries.length), label: `all (${entries.length})` },
+107	          ]}
+108	        />
+109	        <InlineSelect label="layout" value={layout} onChange={setLayout} options={LAYOUT_OPTIONS} />
+110	        <InlineSelect label="copy" value={copyFormat} onChange={setCopyFormat} options={COPY_FORMAT_OPTIONS} />
+111	        <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} variant="pill" />
+112	        <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} variant="pill" />
+113	        <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} variant="pill" />
+114	      </div>
+115	      <div
+116	        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-xl overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+117	        style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+118	      >
+119	        {displayEntries.map((entry) => (
+120	          <ColorSwatch
+121	            key={entry.label}
+122	            entry={entry}
+123	            copyFormat={copyFormat}
+124	            isCopied={copiedLabel === entry.label}
+125	            onCopy={copy}
+126	            showLabels={showLabels}
+127	            tall={layout === "row"}
+128	          />
+129	        ))}
+130	      </div>
+131	    </section>
+132	  );
+133	}
+134
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:23Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/palette/CopyFeedback.tsx`
+
+```text
+1	import { AnimatePresence, motion } from "framer-motion";
+2	import { Check } from "@phosphor-icons/react";
+3	
+4	interface CopyFeedbackProps {
+5	  visible: boolean;
+6	}
+7	
+8	export function CopyFeedback({ visible }: CopyFeedbackProps) {
+9	  return (
+10	    <AnimatePresence>
+11	      {visible && (
+12	        <motion.div
+13	          initial={{ opacity: 0, scale: 0.85 }}
+14	          animate={{ opacity: 1, scale: 1 }}
+15	          exit={{ opacity: 0, scale: 0.85 }}
+16	          transition={{ duration: 0.15 }}
+17	          className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-sm pointer-events-none"
+18	        >
+19	          <Check size={20} weight="bold" className="text-white" />
+20	        </motion.div>
+21	      )}
+22	    </AnimatePresence>
+23	  );
+24	}
+25
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:24Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/curves/ChartTabs.tsx`
+
+```text
+1	import { useMemo, useState } from "react";
+2	import * as Tabs from "@radix-ui/react-tabs";
+3	import chroma from "chroma-js";
+4	import { Triangle } from "@phosphor-icons/react";
+5	import { SaturationCurve } from "./SaturationCurve";
+6	import { EffectiveSaturation } from "./EffectiveSaturation";
+7	import { ToggleSwitch } from "../controls/ToggleSwitch";
+8	import { usePaletteStore } from "../../store/paletteStore";
+9	import type { ColorEntry } from "../../types/palette";
+10	
+11	interface ChartTabsProps {
+12	  entries: ColorEntry[];
+13	}
+14	
+15	export function ChartTabs({ entries }: ChartTabsProps) {
+16	  const [showDots, setShowDots] = useState(true);
+17	  const [showCompare, setShowCompare] = useState(false);
+18	  const hue = usePaletteStore((s) => s.hue);
+19	  const saturation = usePaletteStore((s) => s.saturation);
+20	
+21	  const { unadjustedColors, adjustedColors } = useMemo(() => ({
+22	    unadjustedColors: entries.map((e) =>
+23	      chroma.hsl(hue, saturation, e.lightness / 100).hex(),
+24	    ),
+25	    adjustedColors: entries.map((e) => e.hex),
+26	  }), [entries, hue, saturation]);
+27	
+28	  return (
+29	    <div className="mx-4 md:mx-0 rounded-xs border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+30	      <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
+31	        <h2 className="text-sm font-semibold text-center w-full uppercase text-text-tertiary tracking-wider">
+32	          Saturation Curve
+33	        </h2>
+34	      </div>
+35	      <Tabs.Root defaultValue="adjustment">
+36	        <Tabs.List className="flex border-y border-border-default">
+37	          <Tabs.Trigger
+38	            value="adjustment"
+39	            className="flex-1 px-4 py-2 md:px-2 md:py-2 lg:px-4 lg:py-2 text-xs font-medium uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary border-r border-border-default"
+40	          >
+41	            Adjustment
+42	          </Tabs.Trigger>
+43	          <Tabs.Trigger
+44	            value="computed"
+45	            className="flex-1 px-4 py-2 text-xs font-medium uppercase tracking-wider md:tracking-normal lg:tracking-wider text-text-subtle cursor-pointer transition-colors data-[state=active]:text-text-primary"
+46	          >
+47	            Computed
+48	          </Tabs.Trigger>
+49	        </Tabs.List>
+50	        <Tabs.Content value="adjustment" forceMount className="data-[state=inactive]:hidden">
+51	          <h3 className="sr-only">Adjustment <span>multiplier</span></h3>
+52	          <SaturationCurve entries={entries} showDots={showDots} />
+53	        </Tabs.Content>
+54	        <Tabs.Content value="computed" forceMount className="data-[state=inactive]:hidden">
+55	          <h3 className="sr-only">Computed <span>values</span></h3>
+56	          <EffectiveSaturation entries={entries} showDots={showDots} />
+57	        </Tabs.Content>
+58	      </Tabs.Root>
+59	      <div className="px-4 py-2 flex items-center justify-between md:hidden lg:flex">
+60	        <button
+61	          type="button"
+62	          onClick={() => setShowCompare(!showCompare)}
+63	          className="text-sm text-text-subtle font-semibold cursor-pointer select-none hover:text-text-muted transition-colors md:hidden lg:inline-flex lg:items-center lg:gap-1"
+64	        >
+65	          <Triangle size={7} weight="fill" className={`transition-transform ${showCompare ? "rotate-180" : "rotate-90"}`} /> Compare
+66	        </button>
+67	        <ToggleSwitch label="steps" checked={showDots} onChange={setShowDots} />
+68	      </div>
+69	      {showCompare && (
+70	        <div className="px-4 pb-3 space-y-2 md:hidden lg:block">
+71	          <div>
+72	            <span className="text-xs text-text-faint block mb-1">Unadjusted</span>
+73	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+74	              {unadjustedColors.map((c, i) => (
+75	                <div key={i} style={{ backgroundColor: c }} />
+76	              ))}
+77	            </div>
+78	          </div>
+79	          <div>
+80	            <span className="text-xs text-text-faint block mb-1">Adjusted</span>
+81	            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+82	              {adjustedColors.map((c, i) => (
+83	                <div key={i} style={{ backgroundColor: c }} />
+84	              ))}
+85	            </div>
+86	          </div>
+87	        </div>
+88	      )}
+89	    </div>
+90	  );
+91	}
+92
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:24Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/controls/TargetSwatch.tsx`
+
+```text
+1	import { useCallback, useEffect, useRef } from "react";
+2	import * as Popover from "@radix-ui/react-popover";
+3	import { usePaletteStore } from "../../store/paletteStore";
+4	
+5	const PICKER_SIZE = 200;
+6	
+7	export function TargetSwatch() {
+8	  const hue = usePaletteStore((s) => s.hue);
+9	  const saturation = usePaletteStore((s) => s.saturation);
+10	  const setHue = usePaletteStore((s) => s.setHue);
+11	  const setSaturation = usePaletteStore((s) => s.setSaturation);
+12	  const canvasRef = useRef<HTMLCanvasElement>(null);
+13	  const draggingRef = useRef(false);
+14	
+15	  const color = `hsl(${hue}, ${saturation * 100}%, 50%)`;
+16	
+17	  const drawPicker = useCallback(
+18	    (canvas: HTMLCanvasElement) => {
+19	      const ctx = canvas.getContext("2d");
+20	      if (!ctx) return;
+21	      const w = PICKER_SIZE;
+22	      const h = PICKER_SIZE;
+23	
+24	      // Draw hue (x) vs saturation (y) at L=50%
+25	      const imageData = ctx.createImageData(w, h);
+26	      for (let y = 0; y < h; y++) {
+27	        for (let x = 0; x < w; x++) {
+28	          const h360 = (x / (w - 1)) * 360;
+29	          const s = 1 - y / (h - 1);
+30	          // HSL to RGB conversion
+31	          const c = (1 - Math.abs(2 * 0.5 - 1)) * s;
+32	          const hp = h360 / 60;
+33	          const x2 = c * (1 - Math.abs((hp % 2) - 1));
+34	          let r1 = 0,
+35	            g1 = 0,
+36	            b1 = 0;
+37	          if (hp < 1) {
+38	            r1 = c;
+39	            g1 = x2;
+40	          } else if (hp < 2) {
+41	            r1 = x2;
+42	            g1 = c;
+43	          } else if (hp < 3) {
+44	            g1 = c;
+45	            b1 = x2;
+46	          } else if (hp < 4) {
+47	            g1 = x2;
+48	            b1 = c;
+49	          } else if (hp < 5) {
+50	            r1 = x2;
+51	            b1 = c;
+52	          } else {
+53	            r1 = c;
+54	            b1 = x2;
+55	          }
+56	          const m = 0.5 - c / 2;
+57	          const i = (y * w + x) * 4;
+58	          imageData.data[i] = Math.round((r1 + m) * 255);
+59	          imageData.data[i + 1] = Math.round((g1 + m) * 255);
+60	          imageData.data[i + 2] = Math.round((b1 + m) * 255);
+61	          imageData.data[i + 3] = 255;
+62	        }
+63	      }
+64	      ctx.putImageData(imageData, 0, 0);
+65	
+66	      // Draw crosshair at current hue/sat position
+67	      const cx = (hue / 360) * (w - 1);
+68	      const cy = (1 - saturation) * (h - 1);
+69	      ctx.strokeStyle = "white";
+70	      ctx.lineWidth = 1.5;
+71	      ctx.beginPath();
+72	      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+73	      ctx.stroke();
+74	      ctx.strokeStyle = "rgba(0,0,0,0.4)";
+75	      ctx.lineWidth = 1;
+76	      ctx.beginPath();
+77	      ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+78	      ctx.stroke();
+79	    },
+80	    [hue, saturation],
+81	  );
+82	
+83	  const handleCanvasRef = useCallback(
+84	    (canvas: HTMLCanvasElement | null) => {
+85	      canvasRef.current = canvas;
+86	      if (canvas) drawPicker(canvas);
+87	    },
+88	    [drawPicker],
+89	  );
+90	
+91	  const pickFromCoords = useCallback(
+92	    (clientX: number, clientY: number) => {
+93	      const canvas = canvasRef.current;
+94	      if (!canvas) return;
+95	      const rect = canvas.getBoundingClientRect();
+96	      if (
+97	        clientX < rect.left ||
+98	        clientX > rect.right ||
+99	        clientY < rect.top ||
+100	        clientY > rect.bottom
+101	      ) return;
+102	      const x = (clientX - rect.left) / rect.width;
+103	      const y = (clientY - rect.top) / rect.height;
+104	      setHue(Math.round(x * 360));
+105	      setSaturation(parseFloat((1 - y).toFixed(2)));
+106	    },
+107	    [setHue, setSaturation],
+108	  );
+109	
+110	  const handleMouseDown = useCallback(
+111	    (e: React.MouseEvent<HTMLCanvasElement>) => {
+112	      e.preventDefault();
+113	      draggingRef.current = true;
+114	      pickFromCoords(e.clientX, e.clientY);
+115	    },
+116	    [pickFromCoords],
+117	  );
+118	
+119	  useEffect(() => {
+120	    const handleMouseMove = (e: MouseEvent) => {
+121	      if (draggingRef.current) pickFromCoords(e.clientX, e.clientY);
+122	    };
+123	    const handleMouseUp = () => {
+124	      draggingRef.current = false;
+125	    };
+126	    document.addEventListener("mousemove", handleMouseMove);
+127	    document.addEventListener("mouseup", handleMouseUp);
+128	    return () => {
+129	      document.removeEventListener("mousemove", handleMouseMove);
+130	      document.removeEventListener("mouseup", handleMouseUp);
+131	    };
+132	  }, [pickFromCoords]);
+133	
+134	  return (
+135	    <Popover.Root>
+136	      <Popover.Trigger asChild>
+137	        <button
+138	          type="button"
+139	          className="w-7 h-7 rounded-full shrink-0 self-end mb-[2px] border-2 border-surface-base cursor-pointer transition-transform hover:scale-110 shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
+140	          style={{ backgroundColor: color }}
+141	          aria-label={`Target color: hue ${hue}°, saturation ${Math.round(saturation * 100)}%`}
+142	        />
+143	      </Popover.Trigger>
+144	      <Popover.Portal>
+145	        <Popover.Content
+146	          sideOffset={8}
+147	          className="rounded-lg bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
+148	        >
+149	          <canvas
+150	            ref={handleCanvasRef}
+151	            width={PICKER_SIZE}
+152	            height={PICKER_SIZE}
+153	            className="rounded cursor-crosshair block"
+154	            style={{ width: PICKER_SIZE, height: PICKER_SIZE }}
+155	            onMouseDown={handleMouseDown}
+156	          />
+157	          <div className="flex justify-between mt-2 text-sm text-text-subtle">
+158	            <span>Hue {hue}°</span>
+159	            <span>Sat {Math.round(saturation * 100)}%</span>
+160	          </div>
+161	          <Popover.Arrow className="fill-surface-overlay" />
+162	        </Popover.Content>
+163	      </Popover.Portal>
+164	    </Popover.Root>
+165	  );
+166	}
+167
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:30Z)**_
+
+Now I need to read the About component too — it has the most rounded corners.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:31Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src/components/About.tsx` pattern `rounded-`
+
+```text
+86:      <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+460:    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+578:            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+590:          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+621:        className="h-6 rounded-sm cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+642:          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
+667:          className="flex items-center gap-1 rounded-lg px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+721:                                    className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+756:                          className="w-56 p-3 rounded-lg bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:38Z)**_
+
+Now let me apply all changes. Here's the mapping:
+
+- `rounded-2xl` → `rounded-sm` (dialog)
+- `rounded-xl` → `rounded-sm` (palette containers, about info bar)
+- `rounded-lg` → `rounded-xs` (buttons, code blocks, tab containers, popovers, nav links, comparison grids)
+- `rounded-md` → `rounded-xs` (smaller buttons, tab items)
+- `rounded-sm` — already small, leave as-is
+- `rounded-xs` — already minimal, leave as-is
+- `rounded-full` — keep (functional circles)
+- `rounded` (bare, on canvas) — leave as-is
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:40Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportDialog.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:43Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportDialog.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:44Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportPreview.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:46Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportPreview.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:48Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportPreview.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:49Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/FormatSelector.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:51Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/FormatSelector.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:52Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteStrip.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:54Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:56Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/TargetSwatch.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:52:59Z)**_
+
+Now the About component — need to read and edit the specific lines.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:00Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+83	      {label && (
+84	        <span className="text-[9px] uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
+85	      )}
+86	      <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+87	        {colors.map((c) => (
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:01Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+457	
+458	function Formula() {
+459	  return (
+460	    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+461	      <div>
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:01Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+664	      <Dialog.Trigger asChild>
+665	        <button
+666	          type="button"
+667	          className="flex items-center gap-1 rounded-lg px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+668	          aria-label="About this tool"
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:02Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./app/src/components/About.tsx`
+
+```text
+753	                          side="right"
+754	                          sideOffset={12}
+755	                          align="center"
+756	                          className="w-56 p-3 rounded-lg bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+757	                        >
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:06Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:07Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:09Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:10Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated successfully.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:17Z)**_
+
+Now let me verify no `rounded-lg`, `rounded-xl`, `rounded-2xl`, or `rounded-md` remain (except functional `rounded-full`).
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:19Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `rounded-(lg|xl|2xl|md)`
+
+```text
+No matches found
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:22Z)**_
+
+All large radii eliminated. Let me build and lint.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:32Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Build and lint
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -10 && npm run lint 2>&1 | tail -5`
+
+```text
+computing gzip size...
+dist/index.html                   2.47 kB │ gzip:   0.82 kB
+dist/assets/index-DbglosED.css   30.86 kB │ gzip:   6.33 kB
+dist/assets/index-B9M5oO7U.js   535.47 kB │ gzip: 173.72 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.33s
+
+> app@0.0.0 lint
+> eslint .
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:53:42Z)**_
+
+Build and lint clean. Here's what changed:
+
+**Reduced to `rounded-sm`** (containers/surfaces):
+- Export dialog overlay (`rounded-2xl` → `rounded-sm`)
+- Palette strip (`rounded-xl` → `rounded-sm`)
+- Palette grid (`rounded-xl` → `rounded-sm`)
+- About formula bar (`rounded-xl` → `rounded-sm`)
+
+**Reduced to `rounded-xs`** (buttons/controls/popovers):
+- Export trigger button (`rounded-lg` → `rounded-xs`)
+- Export preview code block (`rounded-lg` → `rounded-xs`)
+- Download/Copy buttons (`rounded-md` → `rounded-xs`)
+- Format selector tabs and container (`rounded-md`/`rounded-lg` → `rounded-xs`)
+- TargetSwatch popover (`rounded-lg` → `rounded-xs`)
+- About nav link (`rounded-lg` → `rounded-xs`)
+- About comparison grid (`rounded-lg` → `rounded-xs`)
+- About swatch popover (`rounded-lg` → `rounded-xs`)
+
+**Left alone:**
+- `rounded-full` on toggle switches, sliders, swatch circle (functional)
+- `rounded-sm` / `rounded-xs` that were already small (ChartTabs, CopyFeedback, About swatches/scrubber)
+- `rounded` (bare) on TargetSwatch canvas
+
+Take a look and let me know what you think. Want me to commit?
+
+---
+
+_**User (2026-04-01 23:54:53Z)**_
+
+should we just go with zero rounding? whats trendy right now? rounded corners were pretty trendy for a bit and I feel like now the "high end" look is sharp corners and zero rounding.
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:05Z)**_
+
+
+
+Yeah, I agree — the sharp/brutalist look is definitely the current high-end wave. Zero rounding fits the "clinical instrument" aesthetic perfectly too. The only things I'd keep rounded are the slider thumbs/tracks and toggle switches since those are functionally circular UI primitives.
+
+Let me sweep everything to `rounded-none`.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:05Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `rounded-(?!full|none)`
+
+```text
+No matches found
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:13Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `rounded-`
+
+```text
+app/src/components/palette/PaletteGrid.tsx:116:        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-sm overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+app/src/components/palette/PaletteStrip.tsx:12:    <div aria-hidden="true" className="h-14 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
+app/src/components/About.tsx:86:      <div className="grid rounded-xs overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+app/src/components/About.tsx:460:    <div className="rounded-sm border border-border-default bg-surface-raised px-4 py-2.5 text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+app/src/components/About.tsx:578:            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+app/src/components/About.tsx:590:          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+app/src/components/About.tsx:621:        className="h-6 rounded-sm cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+app/src/components/About.tsx:642:          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
+app/src/components/About.tsx:667:          className="flex items-center gap-1 rounded-xs px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+app/src/components/About.tsx:721:                                    className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+app/src/components/About.tsx:756:                          className="w-56 p-3 rounded-xs bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+app/src/components/controls/ToggleSwitch.tsx:24:        className="relative w-7 h-4 rounded-full transition-colors min-w-[28px]"
+app/src/components/controls/ToggleSwitch.tsx:32:          className={`absolute top-0.5 left-0.5 w-3 h-3 rounded-full transition-transform ${checked ? "translate-x-3 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)]" : "translate-x-0 bg-text-secondary"}`}
+app/src/components/export/FormatSelector.tsx:30:  "flex-1 px-3 py-1.5 text-base font-medium rounded-xs text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
+app/src/components/export/FormatSelector.tsx:48:          className="flex gap-1 p-1 rounded-xs bg-surface-overlay"
+app/src/components/export/FormatSelector.tsx:70:          className="flex gap-1 p-1 rounded-xs bg-surface-overlay"
+app/src/components/export/ExportPreview.tsx:13:      <pre className="p-4 rounded-xs bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base leading-relaxed text-text-primary">
+app/src/components/export/ExportPreview.tsx:21:          className="px-3 py-1 text-sm font-medium rounded-xs bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+app/src/components/export/ExportPreview.tsx:29:          className="px-3 py-1 text-sm font-medium rounded-xs bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+app/src/components/controls/LightnessRange.tsx:76:          className="relative grow rounded-full h-[6px] overflow-hidden"
+app/src/components/controls/LightnessRange.tsx:81:          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+app/src/components/controls/LightnessRange.tsx:84:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+app/src/components/controls/LightnessRange.tsx:88:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+app/src/components/curves/ChartTabs.tsx:29:    <div className="mx-4 md:mx-0 rounded-xs border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
+app/src/components/curves/ChartTabs.tsx:73:            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+app/src/components/curves/ChartTabs.tsx:81:            <div className="h-6 rounded-sm overflow-hidden grid grid-flow-col auto-cols-fr">
+app/src/components/controls/TargetSwatch.tsx:139:          className="w-7 h-7 rounded-full shrink-0 self-end mb-[2px] border-2 border-surface-base cursor-pointer transition-transform hover:scale-110 shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
+app/src/components/controls/TargetSwatch.tsx:147:          className="rounded-xs bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
+app/src/components/export/ExportDialog.tsx:26:          className="px-4 py-1.5 text-sm font-medium rounded-xs bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
+app/src/components/export/ExportDialog.tsx:50:                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-sm bg-surface-overlay border border-border-elevated shadow-2xl"
+app/src/components/palette/CopyFeedback.tsx:17:          className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-sm pointer-events-none"
+app/src/components/controls/SliderBase.tsx:46:          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+app/src/components/controls/SliderBase.tsx:49:          <Slider.Range className={`absolute h-full rounded-full ${trackStyle ? "" : "bg-surface-active-hover"}`} />
+app/src/components/controls/SliderBase.tsx:52:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+app/src/components/controls/SaturationSlider.tsx:41:          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+app/src/components/controls/SaturationSlider.tsx:43:          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+app/src/components/controls/SaturationSlider.tsx:46:          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:34Z)**_
+
+All the `rounded-full` are on sliders/toggles/swatch circle — those stay. Let me zero out everything else.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:36Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:37Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteStrip.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:37Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/CopyFeedback.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:38Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportDialog.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:39Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportDialog.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:43Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/ExportPreview.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:43Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/export/FormatSelector.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:43Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:44Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/curves/ChartTabs.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:55:44Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/controls/TargetSwatch.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:56:07Z)**_
+
+Now the About component.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:56:08Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:56:09Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/About.tsx has been updated. All occurrences were successfully replaced.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:56:46Z)**_
+
+Let me verify — only `rounded-full` and `rounded-none` should remain.
+
+_**Agent (claude-opus-4-6 2026-04-01 23:56:47Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./app/src` pattern `rounded-(?!full|none)`
+
+```text
+No matches found
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:56:57Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Build and lint
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -5 && npm run lint 2>&1 | tail -5`
+
+```text
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.13s
+
+> app@0.0.0 lint
+> eslint .
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 23:57:49Z)**_
+
+Clean. Every non-functional border radius is now zero. Only `rounded-full` remains on slider thumbs/tracks, toggle switches, and the target swatch circle. Take a look and let me know how it feels.
+
+---
+
+_**User (2026-04-02 01:43:49Z)**_
+
+I cant scroll up far enough: what are your thoughts on whats "in trend" right now?
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-02 01:44:00Z)**_
+
+The current high-end design trend is leaning hard into sharp, zero-radius corners — especially in tools, creative software, and developer-facing products. Think Linear, Vercel's latest iterations, Figma's UI chrome, Arc browser. The aesthetic is precision and confidence: if the tool is serious, the surfaces are flat and clean.
+
+The rounded-everything era (2020-2024) was driven by iOS/Material Design influence bleeding into web — friendly, approachable, consumer-grade. Now the pendulum is swinging back toward brutalist/industrial influences, especially for pro tools. Sharp corners signal "this is an instrument, not an app."
+
+For Chroma Curve specifically, zero rounding reinforces every design principle in CLAUDE.md — "instrument, not toy," "clinical," "precise." The generated color swatches become these clean, hard-edged blocks that feel like Pantone chips or paint samples. It's a better fit than soft corners ever were.
+
+---
+
+_**User (2026-04-02 01:50:07Z)**_
+
+ok cool so I should pretty much be killing all rounded corners in all my projects. here in chroma curve its not xs/sm rounded, it's zero. does this extend even into slider thumbs? should we make those not circles? is the trend going so far its into *literally* no curves on elements?
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-02 01:50:15Z)**_
+
+
+
+Good question. No — the trend stops at functional UI primitives. Slider thumbs, toggle switches, radio buttons — those stay circular. A square slider thumb would feel broken, not sharp. Users have deep muscle memory that "round = draggable handle" and "round = toggle state." Breaking that convention creates friction for zero design payoff.
+
+The zero-radius trend applies to surfaces, containers, buttons, cards, dialogs, popovers — anything that's a *panel* or *action*. Not interactive affordances that rely on shape to communicate behavior.
+
+So what we have now is correct: `rounded-full` on thumbs/tracks/toggles/swatch circle, `rounded-none` on everything else. Want me to commit?
+
+---
+
+_**User (2026-04-02 02:05:12Z)**_
+
+<command-message>commit-commands:commit</command-message>
+<command-name>/commit-commands:commit</command-name>
+
+_**User (2026-04-02 02:05:12Z)**_
+
+## Context
+
+- Current git status: On branch feat/font-replacement
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
+	modified:   app/src/components/About.tsx
+	modified:   app/src/components/controls/TargetSwatch.tsx
+	modified:   app/src/components/curves/ChartTabs.tsx
+	modified:   app/src/components/export/ExportDialog.tsx
+	modified:   app/src/components/export/ExportPreview.tsx
+	modified:   app/src/components/export/FormatSelector.tsx
+	modified:   app/src/components/palette/CopyFeedback.tsx
+	modified:   app/src/components/palette/PaletteGrid.tsx
+	modified:   app/src/components/palette/PaletteStrip.tsx
+
+no changes added to commit (use "git add" and/or "git commit -a")
+- Current git diff (staged and unstaged changes): <persisted-output>
+Output too large (86.5KB). Full output saved to: /Users/grant/.claude/projects/-Users-grant-code-chroma-curve/c83e1551-dfbb-469e-8329-9b58231fb13f/tool-results/bvgu9uzz1.txt
+
+Preview (first 2KB):
+diff --git a/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md b/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
+index f6fdac6..7fc015b 100644
+--- a/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
++++ b/.specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md
+@@ -2977,7 +2977,7 @@ fatal: pathspec 'board/tasks/TASK-0043_fix-dynamic-favicon-chrome-safari.md' did
+ ```
+ </details></tool-use>
+ 
+-_**Agent (claude-opus-4-6 2026-04-01 23:47:35Z)**_
++_**Agent (claude-opus-4-6 2026-04-01 23:47:36Z)**_
+ 
+ <tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+ <summary>Tool use: **Bash**</summary>
+@@ -2989,4 +2989,1643 @@ chore(board): archive TASK-0043 favicon fix
+ EOF
+ )"
+ ```
++
++```text
++[feat/font-replacement bc8ceaa] chore(board): archive TASK-0043 favicon fix
++ 2 files changed, 663 insertions(+)
++ rename board/{tasks => archive}/TASK-0043_fix-dynamic-favicon-chrome-safari.md (100%)
++```
++</details></tool-use>
++
++---
++
++_**User (2026-04-01 23:48:43Z)**_
++
++extract TASKs from NOTE-0017, include all details needed
++
++---
++
++_**Agent (claude-opus-4-6 2026-04-01 23:48:47Z)**_
++
++<tool-use data-tool-type="read" data-tool-name="Read"><details>
++<summary>Tool use: **Read**</summary>
++ `./board/planning/NOTE-0017_reduce-rounded-corners.md`
++
++```text
++1	---
++2	type: note
++3	status: inbox
++4	created: 2026-03-30
++5	---
++6	
++7	# Reduce or remove rounded corners
++8	
++9	The current border-radius values feel too soft for the instrument aesthetic. Audit all rounded corners and reduce or eliminate them for a sharper, more clinical look.
++10
++```
++</details></tool-use>
++
++_**Agent (claude-opus-4-6 2026-04-01 23:48:52Z)**_
++
++Let me see what rounded corners exist in the codebase to inform a well-scoped task.
++
++_**Agent (claude-opus-4-6 2026-04-01 23:48:53Z)**_
++
++<tool-use data-tool-type="search" data-tool-name="Grep"><details>
++<summary>Tool use: **Grep**</summary>
+...
+</persisted-output>
+- Current branch: feat/font-replacement
+- Recent commits: 781b533 chore(board): add TASK-0044 reduce rounded corners, archive NOTE-0017
+bc8ceaa chore(board): archive TASK-0043 favicon fix
+dcd7e6e fix(favicon): dynamic favicon in Chrome via canvas-rendered PNG data URIs
+f10aeb3 chore(board): add TASK-0043 favicon fix, archive NOTE-0025
+fbd62ec chore(specstory): update session history
+0cae415 chore(board): archive font tasks, add NOTE-0025 favicon compat
+6f66cc9 fix(a11y): add heading hierarchy, landmarks, and semantic structure
+127e635 fix(a11y): add aria-label to InlineSelect triggers
+40ba102 style(fonts): swap body font to Space Grotesk, refine label styles
+3fea835 style(fonts): tweak label weights, center saturation curve heading
+
+## Your task
+
+Based on the above changes, create a single git commit.
+
+You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-02 02:05:19Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Stage and commit rounded corner removal
+
+```bash
+git add app/src/components/About.tsx app/src/components/controls/TargetSwatch.tsx app/src/components/curves/ChartTabs.tsx app/src/components/export/ExportDialog.tsx app/src/components/export/ExportPreview.tsx app/src/components/export/FormatSelector.tsx app/src/components/palette/CopyFeedback.tsx app/src/components/palette/PaletteGrid.tsx app/src/components/palette/PaletteStrip.tsx .specstory/history/2026-04-01_23-31-34Z-command-name-clear-command.md && git commit -m "$(cat <<'EOF'
+style: remove all border-radius except functional circular elements
 EOF
 )"
 ```

@@ -83,7 +83,7 @@ function Strip({ colors, label, mark }: StripProps) {
       {label && (
         <span className="text-[9px] uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
       )}
-      <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+      <div className="grid rounded-none overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c) => (
           <div key={c} className="h-12" style={{ backgroundColor: c }} />
         ))}
@@ -457,7 +457,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
 
 function Formula() {
   return (
-    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+    <div className="rounded-none border border-border-default bg-surface-raised px-4 py-2.5 text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
       <div>
         <span className="text-text-tertiary">S</span>(L) = 1 + ((L - 50)
         <sup>2</sup> / <span className="text-text-tertiary">p</span> - 50
@@ -575,7 +575,7 @@ function HuePicker({
             key={p.hue}
             onClick={() => onChange(p.hue)}
             title={`${p.label} (${p.hue}°)`}
-            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+            className="h-5 flex-1 rounded-none transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
             style={{
               backgroundColor: `hsl(${p.hue} 100% 50%)`,
               boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(0 0% 80%)" : "none",
@@ -587,7 +587,7 @@ function HuePicker({
         <button
           onClick={onReset}
           title={`Reset to ${DEFAULT_HUE}°`}
-          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+          className="h-5 w-5 flex-none grid place-items-center rounded-none transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(0_0%_60%)]">
@@ -618,7 +618,7 @@ function HuePicker({
         aria-valuemax={360}
         aria-valuenow={hue}
         aria-label="Reference hue angle"
-        className="h-6 rounded-sm cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+        className="h-6 rounded-none cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
         style={{
           background: "linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))",
         }}
@@ -639,7 +639,7 @@ function HuePicker({
         }}
       >
         <div
-          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
+          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-none pointer-events-none"
           style={{
             left: `${(hue / 360) * 100}%`,
             backgroundColor: `hsl(${hue} 100% 50%)`,
@@ -664,7 +664,7 @@ export function AboutButton() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="flex items-center gap-1 rounded-lg px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+          className="flex items-center gap-1 rounded-none px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
           aria-label="About this tool"
         >
           <Info size={14} />
@@ -718,7 +718,7 @@ export function AboutButton() {
                                 <Popover.Trigger asChild>
                                   <button
                                     aria-label="Change reference hue"
-                                    className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+                                    className="h-full w-full rounded-none cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
                                     style={{ backgroundColor: `hsl(${hue} 100% 50%)` }}
                                   />
                                 </Popover.Trigger>
@@ -753,7 +753,7 @@ export function AboutButton() {
                           side="right"
                           sideOffset={12}
                           align="center"
-                          className="w-56 p-3 rounded-lg bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+                          className="w-56 p-3 rounded-none bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
                         >
                           <HuePicker
                             hue={hue}
