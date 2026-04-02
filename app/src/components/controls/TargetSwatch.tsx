@@ -150,7 +150,7 @@ export function TargetSwatch() {
             ref={handleCanvasRef}
             width={PICKER_SIZE}
             height={PICKER_SIZE}
-            className="rounded cursor-crosshair block"
+            className="cursor-crosshair block"
             style={{ width: PICKER_SIZE, height: PICKER_SIZE }}
             onMouseDown={handleMouseDown}
           />

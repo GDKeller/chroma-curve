@@ -210,7 +210,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
-        <div className="rounded overflow-hidden border border-border-default">
+        <div className="overflow-hidden border border-border-default">
           <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto block">
             {cells.map((c, i) => (
               <rect key={i} x={c.x} y={c.y} width={cellSize + 0.5} height={cellSize + 0.5} fill={c.color} />
@@ -360,7 +360,7 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
     <VisualPanel label="S(L)">
       <svg
         viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
-        className="w-full h-auto block rounded border border-border-default bg-surface-raised"
+        className="w-full h-auto block border border-border-default bg-surface-raised"
       >
         {SAT_GRID_LINES.map((s) => (
           <line
@@ -427,7 +427,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
     <VisualPanel label="Saturation">
       <svg
         viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
-        className="w-full h-auto block rounded border border-border-default overflow-hidden"
+        className="w-full h-auto block border border-border-default overflow-hidden"
       >
         {pickerCells.map((c, i) => (
           <rect
