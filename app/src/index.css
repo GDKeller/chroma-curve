@@ -16,9 +16,9 @@
   --color-text-primary: hsl(0 0% 91%);
   --color-text-secondary: hsl(0 0% 72%);
   --color-text-tertiary: hsl(0 0% 60%);
-  --color-text-muted: hsl(0 0% 50%);
-  --color-text-subtle: hsl(0 0% 44%);
-  --color-text-faint: hsl(0 0% 32%);
+  --color-text-muted: hsl(0 0% 56%);
+  --color-text-subtle: hsl(0 0% 52%);
+  --color-text-faint: hsl(0 0% 50%);
 
   /* Surfaces */
   --color-surface-base: hsl(0 0% 6%);

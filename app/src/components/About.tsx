@@ -665,7 +665,7 @@ export function AboutButton() {
         <button
           type="button"
           className="flex items-center gap-1 rounded-none px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
-          aria-label="About this tool"
+          aria-label="What is this?"
         >
           <Info size={14} />
           <span className="text-[11px] inline">What is this?</span>
