@@ -23,7 +23,7 @@ export function ExportDialog() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="px-4 py-1.5 text-sm font-medium rounded-lg bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
+          className="px-4 py-1.5 text-sm font-medium rounded-none bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
         >
           <Export size={16} />
           Export
@@ -47,7 +47,7 @@ export function ExportDialog() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-2xl bg-surface-overlay border border-border-elevated shadow-2xl"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-none bg-surface-overlay border border-border-elevated shadow-2xl"
               >
                 <Dialog.Title className="text-lg font-semibold text-text-primary mb-4">
                   Export Palette

@@ -10,9 +10,9 @@ const DEFAULT_HUE = 220;
 const REF_SMOD = 40;
 const STRIP_STEPS = 9;
 
-// Saturation tuned for the midrange — extremes lose chroma
+// Saturation tuned for the midrange - extremes lose chroma
 const SAT_FOR_MID = 0.20;
-// Saturation tuned for the extremes — midtones are over-saturated
+// Saturation tuned for the extremes - midtones are over-saturated
 const SAT_FOR_EXTREMES = 0.40;
 // Curve-modulated: base sat that produces balanced results
 const SAT_CURVED = 0.35;
@@ -81,9 +81,9 @@ function Strip({ colors, label, mark }: StripProps) {
   return (
     <div>
       {label && (
-        <span className="text-[9px] font-mono uppercase tracking-wider text-[hsl(0_0%_60%)] mb-1 block">{label}</span>
+        <span className="text-3xs uppercase tracking-wider text-text-tertiary mb-1 block">{label}</span>
       )}
-      <div className="grid rounded-lg overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
+      <div className="grid rounded-none overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c) => (
           <div key={c} className="h-12" style={{ backgroundColor: c }} />
         ))}
@@ -97,7 +97,7 @@ function Strip({ colors, label, mark }: StripProps) {
             return (
               <div key={`mark-${i}`} className="text-center leading-1.5">
                 {text && (
-                  <span className={`text-[8px] font-mono ${m === "ok" ? "text-[hsl(0_0%_65%)]" : "text-[hsl(0_0%_40%)]"}`}>
+                  <span className={`text-4xs ${m === "ok" ? "text-text-secondary" : "text-text-faint"}`}>
                     {text}
                   </span>
                 )}
@@ -114,7 +114,7 @@ function LightnessHeader() {
   return (
     <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="text-center text-[9px] font-mono text-[hsl(0_0%_60%)]">
+        <div key={l} className="text-center text-3xs text-text-tertiary">
           {l}
         </div>
       ))}
@@ -123,7 +123,7 @@ function LightnessHeader() {
 }
 
 // ---------------------------------------------------------------------------
-// Color picker plane — saturation (x) vs lightness (y) with parabolic curve
+// Color picker plane - saturation (x) vs lightness (y) with parabolic curve
 // ---------------------------------------------------------------------------
 
 function ColorPickerPlane({ hue }: { hue: number }) {
@@ -206,11 +206,11 @@ function ColorPickerPlane({ hue }: { hue: number }) {
 
   return (
     <div className="flex gap-1.5">
-      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+      <span className="text-2xs text-text-tertiary self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
-        <div className="rounded overflow-hidden border border-border-default">
+        <div className="overflow-hidden border border-border-default">
           <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto block">
             {cells.map((c, i) => (
               <rect key={i} x={c.x} y={c.y} width={cellSize + 0.5} height={cellSize + 0.5} fill={c.color} />
@@ -282,7 +282,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
             })}
           </svg>
         </div>
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] text-center">
+        <span className="text-2xs text-text-tertiary text-center">
           Saturation
         </span>
       </div>
@@ -298,7 +298,7 @@ function VisualPanel({ children, label }: { children: React.ReactNode; label: st
   return (
     <div className="flex gap-1.5">
       <span
-        className="text-[10px] font-mono text-[hsl(0_0%_60%)] self-center shrink-0"
+        className="text-2xs text-text-tertiary self-center shrink-0"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
       >
         {label}
@@ -360,7 +360,7 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
     <VisualPanel label="S(L)">
       <svg
         viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
-        className="w-full h-auto block rounded border border-border-default bg-surface-raised"
+        className="w-full h-auto block border border-border-default bg-surface-raised"
       >
         {SAT_GRID_LINES.map((s) => (
           <line
@@ -405,15 +405,15 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
           x={curveToX(50)}
           y={curveToY(curveData[25].sat) + 12}
           textAnchor="middle"
-          className="text-[8px] fill-[hsl(0_0%_50%)] font-mono"
+          className="text-4xs fill-text-faint"
         >
           min
         </text>
       </svg>
       <div className="flex justify-between mt-1">
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">0</span>
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">L</span>
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">100</span>
+        <span className="text-2xs text-text-tertiary">0</span>
+        <span className="text-2xs text-text-tertiary">L</span>
+        <span className="text-2xs text-text-tertiary">100</span>
       </div>
     </VisualPanel>
   );
@@ -427,7 +427,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
     <VisualPanel label="Saturation">
       <svg
         viewBox={`0 0 ${CURVE_SIZE} ${CURVE_SIZE}`}
-        className="w-full h-auto block rounded border border-border-default overflow-hidden"
+        className="w-full h-auto block border border-border-default overflow-hidden"
       >
         {pickerCells.map((c, i) => (
           <rect
@@ -449,7 +449,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
         />
       </svg>
       <div className="mt-1 text-center">
-        <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Lightness</span>
+        <span className="text-2xs text-text-tertiary">Lightness</span>
       </div>
     </VisualPanel>
   );
@@ -457,13 +457,13 @@ function RotatedPicker({ pickerCells, curvePath }: {
 
 function Formula() {
   return (
-    <div className="rounded-xl border border-border-default bg-surface-raised px-4 py-2.5 font-mono text-[11px] text-text-muted flex items-center justify-between gap-4 flex-wrap">
+    <div className="rounded-none border border-border-default bg-surface-raised px-4 py-2.5 text-xs text-text-muted flex items-center justify-between gap-4 flex-wrap">
       <div>
         <span className="text-text-tertiary">S</span>(L) = 1 + ((L - 50)
         <sup>2</sup> / <span className="text-text-tertiary">p</span> - 50
         <sup>2</sup> / <span className="text-text-tertiary">p</span>) / 100
       </div>
-      <div className="text-[10px] text-text-faint">
+      <div className="text-2xs text-text-faint">
         L = lightness &middot;{" "}
         <span className="text-text-subtle">p</span> = adjustment
       </div>
@@ -472,7 +472,7 @@ function Formula() {
 }
 
 // ---------------------------------------------------------------------------
-// Solution section — single CSS grid so all 3 visuals share one column width
+// Solution section - single CSS grid so all 3 visuals share one column width
 // ---------------------------------------------------------------------------
 
 function SolutionSection({ hue }: { hue: number }) {
@@ -483,20 +483,20 @@ function SolutionSection({ hue }: { hue: number }) {
       <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
         {/* Row 1: explanation text | animated picker */}
         <div>
-          <p className="text-[13px] font-semibold text-text-secondary mb-3">The solution</p>
-          <p className="text-[13px] leading-relaxed text-text-muted mb-3">
+          <p className="text-base font-semibold text-text-secondary mb-3">The solution</p>
+          <p className="text-base leading-relaxed text-text-muted mb-3">
             In a color picker, the boundary between neutral and
             chromatic is not a straight line. It follows a curve:
             colours at the extremes of lightness need more
             saturation to register as tinted, while midtones
             need less.
-            <sup className="text-[9px] text-text-faint ml-0.5">1</sup>
+            <sup className="text-3xs text-text-faint ml-0.5">1</sup>
           </p>
-          <p className="text-[13px] leading-relaxed text-text-muted">
+          <p className="text-base leading-relaxed text-text-muted">
             This boundary is approximately parabolic. It can be
             expressed as a formula that takes a lightness value
             and returns a saturation multiplier.
-            <sup className="text-[9px] text-text-faint ml-0.5">2</sup>
+            <sup className="text-3xs text-text-faint ml-0.5">2</sup>
           </p>
         </div>
         <ColorPickerPlane hue={hue} />
@@ -511,7 +511,7 @@ function SolutionSection({ hue }: { hue: number }) {
         <RotatedPicker pickerCells={pickerCells} curvePath={curvePath} />
 
         {/* Caption spanning both columns */}
-        <p className="sm:col-span-2 text-[11px] text-text-faint text-center">
+        <p className="sm:col-span-2 text-xs text-text-faint text-center">
           The formula&rsquo;s curve (left) traces the perceptual boundary visible in the color field (right).
         </p>
       </div>
@@ -520,7 +520,7 @@ function SolutionSection({ hue }: { hue: number }) {
 }
 
 // ---------------------------------------------------------------------------
-// Hue picker — horizontal gradient bar for selecting hue angle
+// Hue picker - horizontal gradient bar for selecting hue angle
 // ---------------------------------------------------------------------------
 
 const HUE_PRESETS: { label: string; hue: number }[] = [
@@ -575,7 +575,7 @@ function HuePicker({
             key={p.hue}
             onClick={() => onChange(p.hue)}
             title={`${p.label} (${p.hue}°)`}
-            className="h-5 flex-1 rounded-sm transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+            className="h-5 flex-1 rounded-none transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
             style={{
               backgroundColor: `hsl(${p.hue} 100% 50%)`,
               boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(0 0% 80%)" : "none",
@@ -587,10 +587,10 @@ function HuePicker({
         <button
           onClick={onReset}
           title={`Reset to ${DEFAULT_HUE}°`}
-          className="h-5 w-5 flex-none grid place-items-center rounded-sm transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+          className="h-5 w-5 flex-none grid place-items-center rounded-none transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[hsl(0_0%_60%)]">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-text-tertiary">
             <path
               d="M2 2v3h3M10 10V7H7"
               stroke="currentColor"
@@ -618,7 +618,7 @@ function HuePicker({
         aria-valuemax={360}
         aria-valuenow={hue}
         aria-label="Reference hue angle"
-        className="h-6 rounded-sm cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+        className="h-6 rounded-none cursor-crosshair relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
         style={{
           background: "linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))",
         }}
@@ -639,7 +639,7 @@ function HuePicker({
         }}
       >
         <div
-          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-sm pointer-events-none"
+          className="absolute top-0 h-full w-1 -translate-x-1/2 border border-white rounded-none pointer-events-none"
           style={{
             left: `${(hue / 360) * 100}%`,
             backgroundColor: `hsl(${hue} 100% 50%)`,
@@ -664,11 +664,11 @@ export function AboutButton() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="flex items-center gap-1 rounded-lg px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+          className="flex items-center gap-1 rounded-none px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
           aria-label="About this tool"
         >
           <Info size={14} />
-          <span className="text-[11px] inline">What is this?</span>
+          <span className="text-xs inline">About this tool</span>
         </button>
       </Dialog.Trigger>
       <AnimatePresence>
@@ -689,25 +689,25 @@ export function AboutButton() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-4 sm:p-6 rounded-2xl bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100vw-1rem)] lg:max-w-6xl p-4 sm:p-6 bg-surface-base border border-border-elevated shadow-2xl max-h-[90vh] overflow-y-auto"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.4fr] gap-x-6 gap-y-6 sm:gap-y-8">
-                  {/* Title + intro — span both columns */}
-                  <div className="sm:col-span-2">
-                    <Dialog.Title className="text-lg font-semibold text-text-primary mb-2">
+                  {/* Title + intro - span both columns */}
+                  <div className="sm:col-span-2 mb-12">
+                    <Dialog.Title className="text-4xl font-display font-semibold text-text-primary mb-8">
                       How it works
                     </Dialog.Title>
                     <Dialog.Description className="sr-only">
                       Explanation of the parabolic saturation curve used to generate perceptually balanced monochromatic palettes
                     </Dialog.Description>
-                    <p className="text-[13px] leading-relaxed text-text-muted">
+                    <p className="text-base leading-relaxed text-text-secondary max-w-md">
                       Monochromatic palettes need saturation that varies with
-                      lightness. A fixed saturation value produces even chroma in
-                      the midrange but loses it at the extremes — or vice versa.
+                      lightness. <br/>A fixed saturation value produces even chroma in
+                      the midrange but loses it at the extremes, or vice versa.
                     </p>
                   </div>
 
-                  {/* Hue indicator — swatch aligned with L=50, labels flanking it */}
+                  {/* Hue indicator - swatch aligned with L=50, labels flanking it */}
                   <div className="sm:col-start-2">
                     <Popover.Root>
                       <div className="relative">
@@ -718,7 +718,7 @@ export function AboutButton() {
                                 <Popover.Trigger asChild>
                                   <button
                                     aria-label="Change reference hue"
-                                    className="h-full w-full rounded-sm cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+                                    className="h-full w-full rounded-none cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
                                     style={{ backgroundColor: `hsl(${hue} 100% 50%)` }}
                                   />
                                 </Popover.Trigger>
@@ -728,23 +728,23 @@ export function AboutButton() {
                         </div>
                         {/* Helper text, right-aligned to swatch left edge */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight text-right"
+                          className="absolute top-1/2 -translate-y-1/2 text-2xs text-text-tertiary whitespace-nowrap leading-tight text-right"
                           style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
                         >
                           Reference hue for<br />examples below
                         </div>
                         {/* Values stacked vertically, left-aligned to swatch right edge */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-[hsl(0_0%_50%)] whitespace-nowrap leading-tight"
+                          className="absolute top-1/2 -translate-y-1/2 text-2xs text-text-secondary whitespace-nowrap leading-tight"
                           style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
                         >
                           <div className="grid grid-cols-[auto_1fr] gap-x-1">
-                            <span className="text-[13px]">H:</span>
-                            <span className="text-[13px]">{hue}°</span>
-                            <span className="text-[hsl(0_0%_35%)]">S:</span>
-                            <span className="text-[hsl(0_0%_35%)]">100%</span>
-                            <span className="text-[hsl(0_0%_35%)]">L:</span>
-                            <span className="text-[hsl(0_0%_35%)]">50%</span>
+                            <span className="text-base">H:</span>
+                            <span className="text-base">{hue}°</span>
+                            <span className="text-text-faint">S:</span>
+                            <span className="text-text-faint">100%</span>
+                            <span className="text-text-faint">L:</span>
+                            <span className="text-text-faint">50%</span>
                           </div>
                         </div>
                       </div>
@@ -753,7 +753,7 @@ export function AboutButton() {
                           side="right"
                           sideOffset={12}
                           align="center"
-                          className="w-56 p-3 rounded-lg bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+                          className="w-56 p-3 rounded-none bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
                         >
                           <HuePicker
                             hue={hue}
@@ -761,25 +761,25 @@ export function AboutButton() {
                             onReset={() => setHue(DEFAULT_HUE)}
                             isDefault={hue === DEFAULT_HUE}
                           />
-                          <Popover.Arrow className="fill-[hsl(0_0%_10%)]" />
+                          <Popover.Arrow className="fill-surface-overlay" />
                         </Popover.Content>
                       </Popover.Portal>
                     </Popover.Root>
                   </div>
 
-                  {/* Lightness header — right column only */}
+                  {/* Lightness header - right column only */}
                   <div className="sm:col-start-2">
-                    <span className="text-[10px] font-mono text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
+                    <span className="text-2xs text-text-tertiary mb-1 block">Lightness</span>
                     <LightnessHeader />
                   </div>
 
                   {/* 0% sat */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-text-secondary">Achromatic Baseline</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: 0%</span>
+                      <p className="text-base font-semibold text-text-secondary">Achromatic Baseline</p>
+                      <span className="text-2xs text-text-tertiary">Saturation: 0%</span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-text-muted">
+                    <p className="text-base leading-relaxed text-text-muted">
                       Unsaturated grayscale. Functional, but lacks character or brand identity.
                     </p>
                   </div>
@@ -788,10 +788,10 @@ export function AboutButton() {
                   {/* 20% sat */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-text-secondary">Fixed low saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+                      <p className="text-base font-semibold text-text-secondary">Fixed low saturation</p>
+                      <span className="text-2xs text-text-tertiary">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-text-muted">
+                    <p className="text-base leading-relaxed text-text-muted">
                       Desired neutral midtones, but dark and light ends become effectively desaturated.
                     </p>
                   </div>
@@ -800,17 +800,17 @@ export function AboutButton() {
                   {/* 40% sat */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-text-secondary">Fixed high saturation</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                      <p className="text-base font-semibold text-text-secondary">Fixed high saturation</p>
+                      <span className="text-2xs text-text-tertiary">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-text-muted">
+                    <p className="text-base leading-relaxed text-text-muted">
                       Raising it to recover the extremes pushes the midrange
                       to be oversaturated.
                     </p>
                   </div>
                   <Strip colors={strips.forExtremes} mark={markForExtremes} />
 
-                  {/* The solution — spans both columns, uses its own 1fr 1fr subgrid */}
+                  {/* The solution - spans both columns, uses its own 1fr 1fr subgrid */}
                   <div className="sm:col-span-2">
                     <SolutionSection hue={hue} />
                   </div>
@@ -818,8 +818,8 @@ export function AboutButton() {
                   {/* Boundary strip */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-text-secondary">Perceptual boundary</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
+                      <p className="text-base font-semibold text-text-secondary">Perceptual boundary</p>
+                      <span className="text-2xs text-text-tertiary">
                         {"Saturation: "}
                         {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                         {"/"}
@@ -828,7 +828,7 @@ export function AboutButton() {
                         {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
                       </span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-text-muted">
+                    <p className="text-base leading-relaxed text-text-muted">
                       Sampling saturation along the curve produces even
                       perceived chroma, but is too saturated for neutrals.
                     </p>
@@ -838,8 +838,8 @@ export function AboutButton() {
                   {/* Final result strip */}
                   <div>
                     <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-[13px] font-semibold text-text-secondary">Adjusted curve</p>
-                      <span className="text-[10px] font-mono text-[hsl(0_0%_60%)]">
+                      <p className="text-base font-semibold text-text-secondary">Adjusted curve</p>
+                      <span className="text-2xs text-text-tertiary">
                         {"Saturation: "}
                         {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                         {"/"}
@@ -848,7 +848,7 @@ export function AboutButton() {
                         {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
                       </span>
                     </div>
-                    <p className="text-[13px] leading-relaxed text-text-muted">
+                    <p className="text-base leading-relaxed text-text-muted">
                       Reducing the base saturation scales the whole curve
                       down. The formula preserves the ratio between
                       midtones and extremes at any base value.
@@ -857,9 +857,9 @@ export function AboutButton() {
                   <Strip colors={strips.curved} mark={markCurved} />
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-border-default text-[11px] text-text-faint grid gap-1.5">
+                <div className="mt-8 pt-4 border-t border-border-default text-xs text-text-faint grid gap-1.5">
                   <p>
-                    <sup className="text-[9px] text-text-faint mr-1">1</sup>
+                    <sup className="text-3xs text-text-faint mr-1">1</sup>
                     Concept from{" "}
                     <a
                       href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
@@ -872,7 +872,7 @@ export function AboutButton() {
                     {" "}by Pablo Figueiredo.
                   </p>
                   <p>
-                    <sup className="text-[9px] text-text-faint mr-1">2</sup>
+                    <sup className="text-3xs text-text-faint mr-1">2</sup>
                     Formula adapted from{" "}
                     <a
                       href="https://www.desmos.com/calculator/02ufrfsuzy"

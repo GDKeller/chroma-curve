@@ -1,8 +1,10 @@
 import chroma from "chroma-js";
 
+const WCAG_AA_CONTRAST = 4.5;
+
 export function getContrastColor(bgColor: string): string {
   const whiteContrast = chroma.contrast("white", bgColor);
-  return whiteContrast < 2.9 ? "#1d1d1d" : "#ffffff";
+  return whiteContrast < WCAG_AA_CONTRAST ? "#1d1d1d" : "#ffffff";
 }
 
 export function toOklchString(hex: string): string {

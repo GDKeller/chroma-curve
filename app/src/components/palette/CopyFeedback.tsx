@@ -14,7 +14,7 @@ export function CopyFeedback({ visible }: CopyFeedbackProps) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.85 }}
           transition={{ duration: 0.15 }}
-          className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-sm pointer-events-none"
+          className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-none pointer-events-none"
         >
           <Check size={20} weight="bold" className="text-white" />
         </motion.div>

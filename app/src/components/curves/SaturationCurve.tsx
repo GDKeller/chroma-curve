@@ -93,7 +93,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-[13px] fill-text-faint font-mono"
+              className="text-base fill-text-faint"
             >
               {g.label}
             </text>
@@ -115,7 +115,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-[13px] fill-text-faint font-mono"
+              className="text-base fill-text-faint"
             >
               {l}
             </text>
@@ -127,7 +127,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
           x={PAD.left + PLOT_W / 2}
           y={H - 4}
           textAnchor="middle"
-          className="text-[10px] fill-text-faint font-sans"
+          className="text-2xs fill-text-faint font-sans"
         >
           Lightness
         </text>
@@ -135,7 +135,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
           x={12}
           y={PAD.top + PLOT_H / 2}
           textAnchor="middle"
-          className="text-[10px] fill-text-faint font-sans"
+          className="text-2xs fill-text-faint font-sans"
           transform={`rotate(-90, 12, ${PAD.top + PLOT_H / 2})`}
         >
           Multiplier

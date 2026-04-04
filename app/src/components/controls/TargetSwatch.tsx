@@ -144,17 +144,17 @@ export function TargetSwatch() {
       <Popover.Portal>
         <Popover.Content
           sideOffset={8}
-          className="rounded-lg bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
+          className="rounded-none bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
         >
           <canvas
             ref={handleCanvasRef}
             width={PICKER_SIZE}
             height={PICKER_SIZE}
-            className="rounded cursor-crosshair block"
+            className="cursor-crosshair block"
             style={{ width: PICKER_SIZE, height: PICKER_SIZE }}
             onMouseDown={handleMouseDown}
           />
-          <div className="flex justify-between mt-2 text-sm font-mono text-text-subtle">
+          <div className="flex justify-between mt-2 text-sm text-text-subtle">
             <span>Hue {hue}°</span>
             <span>Sat {Math.round(saturation * 100)}%</span>
           </div>

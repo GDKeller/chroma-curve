@@ -6448,4 +6448,827 @@ chore(board): mark TASK-0042 done, archive TASK-0041 and NOTE-0019
 EOF
 )"
 ```
+
+```text
+[feat/swatch-all-formats 3bc0473] chore(board): mark TASK-0042 done, archive TASK-0041 and NOTE-0019
+ 7 files changed, 14693 insertions(+), 1 deletion(-)
+ create mode 100644 .specstory/history/2026-04-01_00-50-16Z-command-message-board-add.md
+ create mode 100644 .specstory/history/2026-04-01_01-06-21Z-command-name-clear-command.md
+ create mode 100644 .specstory/history/2026-04-01_05-09-33Z-open-a-pr-into.md
+ create mode 100644 .specstory/history/2026-04-01_09-49-51Z-command-name-clear-command.md
+ rename board/{planning => archive}/NOTE-0019_smaller-swatch-counts.md (100%)
+ rename board/{tasks => archive}/TASK-0041_show-all-color-formats-on-swatches.md (100%)
+```
 </details></tool-use>
+
+---
+
+_**User (2026-04-01 12:01:56Z)**_
+
+isnt TASK-0042 done now?
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:02:04Z)**_
+
+
+
+It is — I already marked it `done` in the file and it was included in that commit. The archive script only moved TASK-0041 and NOTE-0019. Want me to archive TASK-0042 as well?
+
+---
+
+_**User (2026-04-01 12:02:09Z)**_
+
+yes
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:02:42Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Archive TASK-0042
+
+`bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board ./board/tasks/TASK-0042_add-smaller-swatch-counts.md`
+
+```text
+Archived:
+  TASK-0042_add-smaller-swatch-counts.md
+
+Total: 1 archived, 0 skipped
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:02:46Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit TASK-0042 archive
+
+```bash
+git add board/ && git commit -m "$(cat <<'EOF'
+chore(board): archive TASK-0042
+EOF
+)"
+```
+
+```text
+[feat/swatch-all-formats 96ea5d5] chore(board): archive TASK-0042
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename board/{tasks => archive}/TASK-0042_add-smaller-swatch-counts.md (100%)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:02:49Z)**_
+
+Done.
+
+---
+
+_**User (2026-04-01 12:03:16Z)**_
+
+does it default to 3 swatches now?
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:03:21Z)**_
+
+
+
+Yes — `STEP_OPTIONS[0]` is `3` now since we prepended the small counts. The initial state is:
+
+```ts
+const [swatchCount, setSwatchCount] = useState<number>(STEP_OPTIONS[0]);
+```
+
+Want me to change the default back to 8?
+
+---
+
+_**User (2026-04-01 12:03:46Z)**_
+
+hm yea
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:03:52Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Edit"><details>
+<summary>Tool use: **Edit**</summary>
+
+```text
+The file /Users/grant/code/chroma-curve/app/src/components/palette/PaletteGrid.tsx has been updated successfully.
+```
+</details></tool-use>
+
+---
+
+_**User (2026-04-01 12:05:28Z)**_
+
+there might already be a board item for this, so check and if not lets make a NOTE: make the graph steps either only show the steps that are swatches, or to visually highlight the steps that are swatches (so if swatches count is 5, it only shows 5 steps on the graph)
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:05:36Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Grep"><details>
+<summary>Tool use: **Grep**</summary>
+ path `./board` pattern `graph.*step|step.*swatch|chart.*step|step.*chart|dots.*swatch`
+
+```text
+board/planning/EPIC-0011_sidebar-layout.md:13:- **Sidebar panel** — chart tabs (adjustment/computed), compare strips, and steps toggle move into a left-side panel
+board/planning/NOTE-0004_delta-e94-perceptual-scoring.md:42:- Could generate a mini chart: ΔE per step, flat line = good
+board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md:76:- **"Computed Saturation" chart stays.** Same concept — shows the final computed values per step.
+board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md:299:  steps: number,      // Number of swatches
+board/planning/NOTE-0011_impeccable-critique-review.md:32:- **Fix**: Let swatch grid grow taller in row mode, stack charts below the grid, or add content to left column (palette strip could move here, or palette metadata like "8 steps, hue 220, HSL").
+board/planning/NOTE-0010_ui-design-polish-backlog.md:14:The thin gradient bar (`PaletteStrip`) below the controls floats with no label or explanation. It shows the full generated palette at all lightness steps but a new user wouldn't know that. Options: add a subtle label like "FULL PALETTE" in the same uppercase style as chart headers, or integrate it more tightly with the grid (e.g. as a preview row above the grid toolbar).
+board/archive/TASK-0042_add-smaller-swatch-counts.md:11:Add 3, 4, and 5 to the `STEP_OPTIONS` array in `PaletteGrid.tsx` so users can generate quick, minimal palettes without the 8+ swatch minimum.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:05:40Z)**_
+
+No existing board item for this. Let me create a NOTE.
+
+_**Agent (claude-opus-4-6 2026-04-01 12:06:29Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Find latest NOTE ID
+
+`ls /Users/grant/code/chroma-curve/board/planning/NOTE-*.md | sort -t- -k2 -n | tail -1`
+
+```text
+/Users/grant/code/chroma-curve/board/planning/NOTE-0023_helper-tooltips.md
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:06:40Z)**_
+
+<tool-use data-tool-type="write" data-tool-name="Write"><details>
+<summary>Tool use: **Write**</summary>
+
+```md
+---
+type: note
+status: inbox
+created: 2026-04-01
+---
+
+# Sync chart step dots with swatch count
+
+When the swatch count is reduced (e.g. 5), the curve charts still show dots for every lightness step. The chart steps should either only show dots at the lightness values that correspond to the displayed swatches, or visually distinguish swatch-aligned dots from the rest (e.g. larger/brighter dots for swatch steps, dimmed or hidden for others).
+
+```
+
+```text
+File created successfully at: /Users/grant/code/chroma-curve/board/planning/NOTE-0024_chart-steps-match-swatches.md
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:06:43Z)**_
+
+Created **NOTE-0024**. Want me to commit this along with the default swatch count fix?
+
+---
+
+_**User (2026-04-01 12:07:16Z)**_
+
+yes
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:07:20Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Commit default fix and new note
+
+```bash
+git add app/src/components/palette/PaletteGrid.tsx board/planning/NOTE-0024_chart-steps-match-swatches.md && git commit -m "$(cat <<'EOF'
+fix(palette): default swatch count back to 8, add NOTE-0024
+EOF
+)"
+```
+
+```text
+[feat/swatch-all-formats e948b3c] fix(palette): default swatch count back to 8, add NOTE-0024
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+ create mode 100644 board/planning/NOTE-0024_chart-steps-match-swatches.md
+```
+</details></tool-use>
+
+---
+
+_**User (2026-04-01 12:09:37Z)**_
+
+open a pr
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:09:41Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+All commits on this branch
+
+`git log --oneline main..HEAD`
+
+```text
+e948b3c fix(palette): default swatch count back to 8, add NOTE-0024
+96ea5d5 chore(board): archive TASK-0042
+3bc0473 chore(board): mark TASK-0042 done, archive TASK-0041 and NOTE-0019
+869592a refactor(controls): migrate toggle thumb transform to Tailwind classes
+b07c86c fix(controls): add pill variant to ToggleSwitch, fix chart steps layout
+98b0756 style(controls): add hover/active/open states for selects and toggles
+98457b7 fix(controls): prevent text selection on toggle switch labels
+ab0c79a refactor(controls): replace native selects with Radix Select, unify toolbar styling
+feb4c9d fix(palette): prevent bestCols from collapsing prime counts to single column
+431614f feat(palette): add 3, 4, 5 swatch count options (TASK-0042)
+949ea92 feat(palette): show hex, HSL, and OKLCH values on swatches with format selector
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:09:42Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Diff stat against main
+
+`git diff main...HEAD --stat`
+
+```text
+ ...26-04-01_00-50-16Z-command-message-board-add.md |  709 +++
+ ...6-04-01_01-06-21Z-command-name-clear-command.md | 5205 ++++++++++++++++
+ .../history/2026-04-01_05-09-33Z-open-a-pr-into.md | 2327 +++++++
+ ...6-04-01_09-49-51Z-command-name-clear-command.md | 6451 ++++++++++++++++++++
+ app/package-lock.json                              |   67 +
+ app/package.json                                   |    1 +
+ app/src/components/controls/InlineSelect.tsx       |   48 +
+ app/src/components/controls/ToggleSwitch.tsx       |   13 +-
+ app/src/components/curves/ChartTabs.tsx            |    2 +-
+ app/src/components/palette/ColorSwatch.tsx         |   31 +-
+ app/src/components/palette/PaletteGrid.tsx         |   84 +-
+ app/src/lib/colors.ts                              |    8 +
+ app/src/lib/palette.ts                             |    2 +-
+ app/src/store/paletteStore.ts                      |    6 +-
+ app/src/types/palette.ts                           |    2 +
+ .../NOTE-0019_smaller-swatch-counts.md             |    2 +-
+ ...TASK-0041_show-all-color-formats-on-swatches.md |   30 +
+ .../archive/TASK-0042_add-smaller-swatch-counts.md |   17 +
+ .../NOTE-0024_chart-steps-match-swatches.md        |    9 +
+ 19 files changed, 14950 insertions(+), 64 deletions(-)
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:10:46Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Push branch to remote
+
+`git push -u origin feat/swatch-all-formats`
+
+```text
+remote: 
+remote: Create a pull request for 'feat/swatch-all-formats' on GitHub by visiting:        
+remote:      https://github.com/GDKeller/chroma-curve/pull/new/feat/swatch-all-formats        
+remote: 
+To https://github.com/GDKeller/chroma-curve.git
+ * [new branch]      feat/swatch-all-formats -> feat/swatch-all-formats
+branch 'feat/swatch-all-formats' set up to track 'origin/feat/swatch-all-formats'.
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:11:36Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Create pull request
+
+```bash
+gh pr create --title "feat(palette): show all color formats on swatches, Radix Select controls" --body "$(cat <<'EOF'
+## Summary
+
+- Display hex, HSL, and OKLCH values on every swatch (TASK-0041)
+- Add copy format selector (hex/hsl/oklch) persisted in Zustand store
+- Replace native `<select>` elements with Radix Select for full-area click targets
+- Add 3, 4, 5 swatch count options (TASK-0042), default remains 8
+- Unify toolbar styling: individual pill containers with borders, hover/active/open states
+- Fix `bestCols` collapsing prime counts to single column
+- Fix chart steps layout regression from ToggleSwitch styling changes
+- Remove `deg` unit from HSL string output
+
+## Test plan
+
+- [ ] Verify all three color formats display on each swatch when labels are enabled
+- [ ] Click swatches and confirm copied value matches the selected copy format
+- [ ] Test all select dropdowns open on click anywhere in the trigger area
+- [ ] Verify dropdown width stays stable across different selections
+- [ ] Check toggle hover/active states and checked styling
+- [ ] Confirm chart "steps" toggle still renders inline with "Compare"
+- [ ] Test swatch counts 3, 4, 5 in all layout modes
+EOF
+)"
+```
+
+```text
+Warning: 1 uncommitted change
+https://github.com/GDKeller/chroma-curve/pull/3
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:11:39Z)**_
+
+PR created: https://github.com/GDKeller/chroma-curve/pull/3
+
+---
+
+_**User (2026-04-01 12:12:16Z)**_
+
+<command-message>board:update</command-message>
+<command-name>/board:update</command-name>
+
+_**User (2026-04-01 12:12:16Z)**_
+
+Base directory for this skill: /Users/grant/Documents/Projects/BoardPM/plugin/skills/update
+
+# Board Update
+
+Analyze the codebase and git history to automatically reconcile the project board with reality. The system spec is bundled with the plugin at `/Users/grant/Documents/Projects/BoardPM/plugin/spec/board-system-spec.md`.
+
+## Board Data
+
+Pre-loaded active board data:
+
+filepath	type	status	priority	blocked_by	parent	title
+./board/tasks/TASK-0020_add-oklch-conversion-functions.md	task	backlog	1	-	EPIC-0006	TASK-0020: Add OKLCH conversion functions
+./board/tasks/TASK-0021_add-memoized-gamut-boundary-lookup.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0021: Add memoized gamut boundary lookup
+./board/tasks/TASK-0022_add-hue-dependent-chroma-correction.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0022: Add hue-dependent chroma correction
+./board/tasks/TASK-0023_extend-colorentry-with-oklch.md	task	backlog	1	-	EPIC-0006	TASK-0023: Extend ColorEntry type with OKLCH fields
+./board/tasks/TASK-0024_refactor-generateneutrals-to-oklch.md	task	backlog	1	TASK-0020,TASK-0021,TASK-0022,TASK-0023	EPIC-0006	TASK-0024: Refactor generateNeutrals to OKLCH internals
+./board/tasks/TASK-0025_implement-hue-aware-chroma-mapping.md	task	backlog	1	TASK-0021	EPIC-0006	TASK-0025: Implement hue-aware saturation-to-chroma mapping
+./board/tasks/TASK-0026_tune-default-smod-for-oklch.md	task	backlog	2	TASK-0024	EPIC-0006	TASK-0026: Tune default sMod for OKLCH
+./board/tasks/TASK-0027_migrate-saturationcurve-to-chromacorrection.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0027: Migrate SaturationCurve to chromaCorrection
+./board/tasks/TASK-0028_migrate-effectivesaturation-wire-hue.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0028: Migrate EffectiveSaturation and wire hue
+./board/tasks/TASK-0029_update-colorswatch-oklch-output.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0029: Update ColorSwatch for OKLCH output
+./board/tasks/TASK-0030_update-export-native-oklch.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0030: Update export to use native OKLCH values
+./board/tasks/TASK-0031_rewrite-about-dialog-for-oklch.md	task	backlog	3	TASK-0024	EPIC-0008	TASK-0031: Rewrite About dialog educational content for OKLCH
+./board/tasks/TASK-0033_add-typekit-and-configure-font-families.md	task	backlog	2	-	NOTE-0016	TASK-0033: Add Typekit stylesheet and configure font families
+./board/tasks/TASK-0034_apply-unbounded-to-title-and-labels.md	task	backlog	2	TASK-0033	NOTE-0016	TASK-0034: Apply Unbounded to title and labels
+./board/tasks/TASK-0035_apply-recursive-to-body-text.md	task	backlog	2	TASK-0033	NOTE-0016	TASK-0035: Apply Recursive Sans Linear Static to body text
+./board/planning/EPIC-0006_migrate-palette-hsl-to-oklch.md	epic	planning	-	-	-	EPIC-0006: Migrate palette generation from HSL to OKLCH
+./board/planning/EPIC-0007_update-charts-display-for-oklch.md	epic	planning	-	-	-	EPIC-0007: Update charts and display for OKLCH
+./board/planning/EPIC-0008_rewrite-about-dialog-for-oklch.md	epic	planning	-	-	-	EPIC-0008: Rewrite About dialog for OKLCH
+./board/planning/EPIC-0009_migrate-chromajs-to-culori.md	epic	planning	-	-	-	EPIC-0009: Migrate from chroma.js to culori
+./board/planning/EPIC-0010_interactive-curve-editing.md	epic	planning	-	-	-	EPIC-0010: Interactive curve editing
+./board/planning/EPIC-0011_sidebar-layout.md	epic	planning	-	-	-	EPIC-0011: Collapsible sidebar layout for curve charts
+./board/planning/EPIC-0012_ux-discoverability.md	epic	planning	-	-	-	EPIC-0012: UX discoverability improvements
+./board/planning/NOTE-0002_in-context-contrast-checker.md	note	inbox	-	-	-	In-context contrast checker for palette swatches
+./board/planning/NOTE-0003_colorguesser-competitive-reference.md	note	inbox	-	-	-	ColorGuesser as competitive reference
+./board/planning/NOTE-0004_delta-e94-perceptual-scoring.md	note	inbox	-	-	-	ΔE scoring to back perception claims
+./board/planning/NOTE-0005_adjustable-curve-vertex.md	note	inbox	-	-	-	Adjustable curve vertex (center point)
+./board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md	note	inbox	-	-	-	Chroma Curve — Migration Guide: HSL → OKLCH
+./board/planning/NOTE-0007_named-swatches.md	note	inbox	-	-	-	Named swatches
+./board/planning/NOTE-0008_design-agent-api-and-mcp-integration.md	note	inbox	-	-	-	Design Agent API & MCP Integration
+./board/planning/NOTE-0010_ui-design-polish-backlog.md	note	inbox	-	-	-	UI Design Polish Backlog
+./board/planning/NOTE-0011_impeccable-critique-review.md	note	inbox	-	-	-	Impeccable /critique Review
+./board/planning/NOTE-0012_ux-and-interaction-ideas.md	note	inbox	-	-	-	UX & Interaction Ideas
+./board/planning/NOTE-0013_target-color-input.md	note	inbox	-	-	-	Target color input
+./board/planning/NOTE-0014_mobile-controls-bottom.md	note	inbox	-	-	-	Mobile controls at bottom of screen
+./board/planning/NOTE-0015_explicit-control-values.md	note	inbox	-	-	-	Explicit control value input and stepping
+./board/planning/NOTE-0016_find-new-fonts.md	note	inbox	-	-	-	Find new fonts
+./board/planning/NOTE-0017_reduce-rounded-corners.md	note	inbox	-	-	-	Reduce or remove rounded corners
+./board/planning/NOTE-0018_improve-swatch-copy-feedback.md	note	inbox	-	-	-	Improve swatch copy feedback
+./board/planning/NOTE-0020_clarify-grid-layout-naming.md	note	inbox	-	-	-	Clarify grid layout option naming
+./board/planning/NOTE-0021_custom-swatch-intervals.md	note	inbox	-	-	-	Custom swatch intervals and movable curve points
+./board/planning/NOTE-0022_random-button.md	note	inbox	-	-	-	Random button
+./board/planning/NOTE-0023_helper-tooltips.md	note	inbox	-	-	-	Helper tooltips on hover
+./board/planning/NOTE-0024_chart-steps-match-swatches.md	note	inbox	-	-	-	Sync chart step dots with swatch count
+./board/reference/REFE-0001_parabolic-saturation-curve-for-neutral-palettes.md	reference		-	-	-	Parabolic Saturation Curve for Monochromatic Palettes
+./board/reference/REFE-0002_color-name-api.md	reference		-	-	-	Color Name API
+
+Archive counts:
+
+filepath	type	status	priority	blocked_by	parent	title
+./board/tasks/TASK-0020_add-oklch-conversion-functions.md	task	backlog	1	-	EPIC-0006	TASK-0020: Add OKLCH conversion functions
+./board/tasks/TASK-0021_add-memoized-gamut-boundary-lookup.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0021: Add memoized gamut boundary lookup
+./board/tasks/TASK-0022_add-hue-dependent-chroma-correction.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0022: Add hue-dependent chroma correction
+./board/tasks/TASK-0023_extend-colorentry-with-oklch.md	task	backlog	1	-	EPIC-0006	TASK-0023: Extend ColorEntry type with OKLCH fields
+./board/tasks/TASK-0024_refactor-generateneutrals-to-oklch.md	task	backlog	1	TASK-0020,TASK-0021,TASK-0022,TASK-0023	EPIC-0006	TASK-0024: Refactor generateNeutrals to OKLCH internals
+./board/tasks/TASK-0025_implement-hue-aware-chroma-mapping.md	task	backlog	1	TASK-0021	EPIC-0006	TASK-0025: Implement hue-aware saturation-to-chroma mapping
+./board/tasks/TASK-0026_tune-default-smod-for-oklch.md	task	backlog	2	TASK-0024	EPIC-0006	TASK-0026: Tune default sMod for OKLCH
+./board/tasks/TASK-0027_migrate-saturationcurve-to-chromacorrection.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0027: Migrate SaturationCurve to chromaCorrection
+./board/tasks/TASK-0028_migrate-effectivesaturation-wire-hue.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0028: Migrate EffectiveSaturation and wire hue
+./board/tasks/TASK-0029_update-colorswatch-oklch-output.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0029: Update ColorSwatch for OKLCH output
+./board/tasks/TASK-0030_update-export-native-oklch.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0030: Update export to use native OKLCH values
+./board/tasks/TASK-0031_rewrite-about-dialog-for-oklch.md	task	backlog	3	TASK-0024	EPIC-0008	TASK-0031: Rewrite About dialog educational content for OKLCH
+./board/tasks/TASK-0033_add-typekit-and-configure-font-families.md	task	backlog	2	-	NOTE-0016	TASK-0033: Add Typekit stylesheet and configure font families
+./board/tasks/TASK-0034_apply-unbounded-to-title-and-labels.md	task	backlog	2	TASK-0033	NOTE-0016	TASK-0034: Apply Unbounded to title and labels
+./board/tasks/TASK-0035_apply-recursive-to-body-text.md	task	backlog	2	TASK-0033	NOTE-0016	TASK-0035: Apply Recursive Sans Linear Static to body text
+./board/planning/EPIC-0006_migrate-palette-hsl-to-oklch.md	epic	planning	-	-	-	EPIC-0006: Migrate palette generation from HSL to OKLCH
+./board/planning/EPIC-0007_update-charts-display-for-oklch.md	epic	planning	-	-	-	EPIC-0007: Update charts and display for OKLCH
+./board/planning/EPIC-0008_rewrite-about-dialog-for-oklch.md	epic	planning	-	-	-	EPIC-0008: Rewrite About dialog for OKLCH
+./board/planning/EPIC-0009_migrate-chromajs-to-culori.md	epic	planning	-	-	-	EPIC-0009: Migrate from chroma.js to culori
+./board/planning/EPIC-0010_interactive-curve-editing.md	epic	planning	-	-	-	EPIC-0010: Interactive curve editing
+./board/planning/EPIC-0011_sidebar-layout.md	epic	planning	-	-	-	EPIC-0011: Collapsible sidebar layout for curve charts
+./board/planning/EPIC-0012_ux-discoverability.md	epic	planning	-	-	-	EPIC-0012: UX discoverability improvements
+./board/planning/NOTE-0002_in-context-contrast-checker.md	note	inbox	-	-	-	In-context contrast checker for palette swatches
+./board/planning/NOTE-0003_colorguesser-competitive-reference.md	note	inbox	-	-	-	ColorGuesser as competitive reference
+./board/planning/NOTE-0004_delta-e94-perceptual-scoring.md	note	inbox	-	-	-	ΔE scoring to back perception claims
+./board/planning/NOTE-0005_adjustable-curve-vertex.md	note	inbox	-	-	-	Adjustable curve vertex (center point)
+./board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md	note	inbox	-	-	-	Chroma Curve — Migration Guide: HSL → OKLCH
+./board/planning/NOTE-0007_named-swatches.md	note	inbox	-	-	-	Named swatches
+./board/planning/NOTE-0008_design-agent-api-and-mcp-integration.md	note	inbox	-	-	-	Design Agent API & MCP Integration
+./board/planning/NOTE-0010_ui-design-polish-backlog.md	note	inbox	-	-	-	UI Design Polish Backlog
+./board/planning/NOTE-0011_impeccable-critique-review.md	note	inbox	-	-	-	Impeccable /critique Review
+./board/planning/NOTE-0012_ux-and-interaction-ideas.md	note	inbox	-	-	-	UX & Interaction Ideas
+./board/planning/NOTE-0013_target-color-input.md	note	inbox	-	-	-	Target color input
+./board/planning/NOTE-0014_mobile-controls-bottom.md	note	inbox	-	-	-	Mobile controls at bottom of screen
+./board/planning/NOTE-0015_explicit-control-values.md	note	inbox	-	-	-	Explicit control value input and stepping
+./board/planning/NOTE-0016_find-new-fonts.md	note	inbox	-	-	-	Find new fonts
+./board/planning/NOTE-0017_reduce-rounded-corners.md	note	inbox	-	-	-	Reduce or remove rounded corners
+./board/planning/NOTE-0018_improve-swatch-copy-feedback.md	note	inbox	-	-	-	Improve swatch copy feedback
+./board/planning/NOTE-0020_clarify-grid-layout-naming.md	note	inbox	-	-	-	Clarify grid layout option naming
+./board/planning/NOTE-0021_custom-swatch-intervals.md	note	inbox	-	-	-	Custom swatch intervals and movable curve points
+./board/planning/NOTE-0022_random-button.md	note	inbox	-	-	-	Random button
+./board/planning/NOTE-0023_helper-tooltips.md	note	inbox	-	-	-	Helper tooltips on hover
+./board/planning/NOTE-0024_chart-steps-match-swatches.md	note	inbox	-	-	-	Sync chart step dots with swatch count
+./board/reference/REFE-0001_parabolic-saturation-curve-for-neutral-palettes.md	reference		-	-	-	Parabolic Saturation Curve for Monochromatic Palettes
+./board/reference/REFE-0002_color-name-api.md	reference		-	-	-	Color Name API
+
+# Archive counts (type	count)
+TASK	27
+NOTE	3
+RESO	3
+
+## Steps
+
+### 1. Review Board State
+
+Parse the pre-loaded board data above. Identify:
+- All items with `status: backlog` or `status: current` (candidates for completion)
+- Epics and their child tasks (via `parent` field)
+- Blocked items and their blockers
+- Items with terminal status (`done`, `processed`) that should be archived
+
+### 2. Gather Codebase Context
+
+- Run `git log --oneline` for recent commits (last 30) to understand what work has been done
+- Only Read full file bodies for tasks whose status is `backlog` or `current` AND whose title suggests overlap with recent commits
+- Use the context budget escalation (Glob → Grep → Read with limit → Full read) for any additional lookups
+
+### 3. Detect Completed Work
+
+For each task with `status: backlog` or `status: current`, check if the work described has already been done:
+
+- Look at recent commits for evidence the work was completed
+- Check the codebase for the feature/fix the task describes
+- If the work is done, flag it for status update to `done`
+
+### 4. Detect New Work Needed
+
+Scan for things that should become tasks but aren't tracked yet:
+
+- Check recent commits for TODOs or FIXMEs introduced in code
+- Look at open epics — are there obvious next steps not yet captured as tasks?
+- Check if any `blocked_by` dependencies have been resolved (unblocking tasks)
+
+### 5. Update Epic Progress
+
+For each active epic:
+
+- Check if all child tasks are `done` — if so, flag the epic as `done`
+- Check if any child tasks are `current` — if so, the epic should be `current`
+- Update the task list in the epic body if tasks have been added/removed
+
+### 6. Check for Stale Items
+
+- Tasks marked `current` but with no related commits in the last 30 days
+- Epics in `planning` with no child tasks
+- Resources stuck in `inbox` or `processing`
+
+### 7. Present Changes
+
+Present ALL proposed changes as a single summary before making any edits:
+
+```
+## Board Update Proposal
+
+### Status Changes
+- TASK-0003: backlog -> done (cache-decoded-image: implemented in commit a1b2c3d)
+- EPIC-0001: planning -> current (has active child tasks)
+
+### New Tasks Suggested
+- "Fix FIXME in preprocessing.rs line 42" (found in recent commit)
+
+### Ready to Archive
+- TASK-0003: done
+- NOTE-0002: processed
+
+### Stale Items
+- TASK-0007: marked current but no activity in 45 days
+
+### Unblocked
+- TASK-0005: blocker TASK-0003 is now done
+```
+
+**Avoid redundant invocations** — if this skill was already invoked earlier in the session and the board has not been modified since, reuse the previous board data instead of invoking again.
+
+Ask the user to approve, reject, or cherry-pick which changes to apply. Then execute only the approved changes:
+
+- **Status updates**: Use `/board:board-edit` to update status fields
+- **New tasks**: Invoke `/board:board-add` for each approved new task
+- **Archiving**: Run `bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board <file1> <file2> ...` directly for approved items
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:12:22Z)**_
+
+
+
+Board is already up to date — all work from this session has been reconciled:
+
+- TASK-0041 and TASK-0042 are done and archived
+- NOTE-0019 is processed and archived
+- NOTE-0024 was just created
+- No backlog tasks overlap with recent commits
+- No blockers have been resolved
+- No stale items (nothing is marked `current`)
+- All epics remain in `planning` with child tasks still in `backlog`
+
+No changes needed.
+
+---
+
+_**User (2026-04-01 12:12:25Z)**_
+
+<command-message>board:archive</command-message>
+<command-name>/board:archive</command-name>
+
+_**User (2026-04-01 12:12:25Z)**_
+
+Base directory for this skill: /Users/grant/Documents/Projects/BoardPM/plugin/skills/archive
+
+# Board Archive
+
+Move completed items from active directories to `board/archive/`. The system spec is bundled with the plugin at `/Users/grant/Documents/Projects/BoardPM/plugin/spec/board-system-spec.md`.
+
+## Board Data
+
+Pre-loaded board data:
+
+filepath	type	status	priority	blocked_by	parent	title
+./board/tasks/TASK-0020_add-oklch-conversion-functions.md	task	backlog	1	-	EPIC-0006	TASK-0020: Add OKLCH conversion functions
+./board/tasks/TASK-0021_add-memoized-gamut-boundary-lookup.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0021: Add memoized gamut boundary lookup
+./board/tasks/TASK-0022_add-hue-dependent-chroma-correction.md	task	backlog	1	TASK-0020	EPIC-0006	TASK-0022: Add hue-dependent chroma correction
+./board/tasks/TASK-0023_extend-colorentry-with-oklch.md	task	backlog	1	-	EPIC-0006	TASK-0023: Extend ColorEntry type with OKLCH fields
+./board/tasks/TASK-0024_refactor-generateneutrals-to-oklch.md	task	backlog	1	TASK-0020,TASK-0021,TASK-0022,TASK-0023	EPIC-0006	TASK-0024: Refactor generateNeutrals to OKLCH internals
+./board/tasks/TASK-0025_implement-hue-aware-chroma-mapping.md	task	backlog	1	TASK-0021	EPIC-0006	TASK-0025: Implement hue-aware saturation-to-chroma mapping
+./board/tasks/TASK-0026_tune-default-smod-for-oklch.md	task	backlog	2	TASK-0024	EPIC-0006	TASK-0026: Tune default sMod for OKLCH
+./board/tasks/TASK-0027_migrate-saturationcurve-to-chromacorrection.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0027: Migrate SaturationCurve to chromaCorrection
+./board/tasks/TASK-0028_migrate-effectivesaturation-wire-hue.md	task	backlog	1	TASK-0022	EPIC-0007	TASK-0028: Migrate EffectiveSaturation and wire hue
+./board/tasks/TASK-0029_update-colorswatch-oklch-output.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0029: Update ColorSwatch for OKLCH output
+./board/tasks/TASK-0030_update-export-native-oklch.md	task	backlog	2	TASK-0023	EPIC-0007	TASK-0030: Update export to use native OKLCH values
+./board/tasks/TASK-0031_rewrite-about-dialog-for-oklch.md	task	backlog	3	TASK-0024	EPIC-0008	TASK-0031: Rewrite About dialog educational content for OKLCH
+./board/tasks/TASK-0033_add-typekit-and-configure-font-families.md	task	backlog	2	-	NOTE-0016	TASK-0033: Add Typekit stylesheet and configure font families
+./board/tasks/TASK-0034_apply-unbounded-to-title-and-labels.md	task	backlog	2	TASK-0033	NOTE-0016	TASK-0034: Apply Unbounded to title and labels
+./board/tasks/TASK-0035_apply-recursive-to-body-text.md	task	backlog	2	TASK-0033	NOTE-0016	TASK-0035: Apply Recursive Sans Linear Static to body text
+./board/planning/EPIC-0006_migrate-palette-hsl-to-oklch.md	epic	planning	-	-	-	EPIC-0006: Migrate palette generation from HSL to OKLCH
+./board/planning/EPIC-0007_update-charts-display-for-oklch.md	epic	planning	-	-	-	EPIC-0007: Update charts and display for OKLCH
+./board/planning/EPIC-0008_rewrite-about-dialog-for-oklch.md	epic	planning	-	-	-	EPIC-0008: Rewrite About dialog for OKLCH
+./board/planning/EPIC-0009_migrate-chromajs-to-culori.md	epic	planning	-	-	-	EPIC-0009: Migrate from chroma.js to culori
+./board/planning/EPIC-0010_interactive-curve-editing.md	epic	planning	-	-	-	EPIC-0010: Interactive curve editing
+./board/planning/EPIC-0011_sidebar-layout.md	epic	planning	-	-	-	EPIC-0011: Collapsible sidebar layout for curve charts
+./board/planning/EPIC-0012_ux-discoverability.md	epic	planning	-	-	-	EPIC-0012: UX discoverability improvements
+./board/planning/NOTE-0002_in-context-contrast-checker.md	note	inbox	-	-	-	In-context contrast checker for palette swatches
+./board/planning/NOTE-0003_colorguesser-competitive-reference.md	note	inbox	-	-	-	ColorGuesser as competitive reference
+./board/planning/NOTE-0004_delta-e94-perceptual-scoring.md	note	inbox	-	-	-	ΔE scoring to back perception claims
+./board/planning/NOTE-0005_adjustable-curve-vertex.md	note	inbox	-	-	-	Adjustable curve vertex (center point)
+./board/planning/NOTE-0006_hsl-to-oklch-migration-guide.md	note	inbox	-	-	-	Chroma Curve — Migration Guide: HSL → OKLCH
+./board/planning/NOTE-0007_named-swatches.md	note	inbox	-	-	-	Named swatches
+./board/planning/NOTE-0008_design-agent-api-and-mcp-integration.md	note	inbox	-	-	-	Design Agent API & MCP Integration
+./board/planning/NOTE-0010_ui-design-polish-backlog.md	note	inbox	-	-	-	UI Design Polish Backlog
+./board/planning/NOTE-0011_impeccable-critique-review.md	note	inbox	-	-	-	Impeccable /critique Review
+./board/planning/NOTE-0012_ux-and-interaction-ideas.md	note	inbox	-	-	-	UX & Interaction Ideas
+./board/planning/NOTE-0013_target-color-input.md	note	inbox	-	-	-	Target color input
+./board/planning/NOTE-0014_mobile-controls-bottom.md	note	inbox	-	-	-	Mobile controls at bottom of screen
+./board/planning/NOTE-0015_explicit-control-values.md	note	inbox	-	-	-	Explicit control value input and stepping
+./board/planning/NOTE-0016_find-new-fonts.md	note	inbox	-	-	-	Find new fonts
+./board/planning/NOTE-0017_reduce-rounded-corners.md	note	inbox	-	-	-	Reduce or remove rounded corners
+./board/planning/NOTE-0018_improve-swatch-copy-feedback.md	note	inbox	-	-	-	Improve swatch copy feedback
+./board/planning/NOTE-0020_clarify-grid-layout-naming.md	note	inbox	-	-	-	Clarify grid layout option naming
+./board/planning/NOTE-0021_custom-swatch-intervals.md	note	inbox	-	-	-	Custom swatch intervals and movable curve points
+./board/planning/NOTE-0022_random-button.md	note	inbox	-	-	-	Random button
+./board/planning/NOTE-0023_helper-tooltips.md	note	inbox	-	-	-	Helper tooltips on hover
+./board/planning/NOTE-0024_chart-steps-match-swatches.md	note	inbox	-	-	-	Sync chart step dots with swatch count
+./board/reference/REFE-0001_parabolic-saturation-curve-for-neutral-palettes.md	reference		-	-	-	Parabolic Saturation Curve for Monochromatic Palettes
+./board/reference/REFE-0002_color-name-api.md	reference		-	-	-	Color Name API
+
+## Steps
+
+1. Filter the board data above for items with terminal status (excluding archived items and ADRs):
+   - Tasks with `status: done`
+   - Epics with `status: done`
+   - Notes with `status: processed`
+   - Resources with `status: processed`
+2. List all items found and ask the user to confirm which to archive
+3. Move confirmed files using the archive script:
+
+```bash
+bash /Users/grant/Documents/Projects/BoardPM/plugin/scripts/archive-batch.sh ./board <file1> <file2> ...
+```
+
+This handles `git mv` (or plain `mv` outside git repos), skips ADRs automatically, and reports results.
+4. Show a summary of what was moved
+
+## Notes
+
+- **Avoid redundant invocations** — if this skill was already invoked earlier in the session and the board has not been modified since, reuse the previous board data instead of invoking again
+- Files keep their original filename and ID after archiving
+- Archived items remain searchable via grep and git log
+- Links from other docs (e.g., `blocked_by`, `parent`) still work since the ID is stable
+- ADRs are NOT archived — they stay in `board/planning/` regardless of status since they are immutable historical records that should remain easily discoverable
+
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:12:29Z)**_
+
+
+
+Nothing to archive — no items have terminal status (`done`, `processed`) in the active board. Everything was already archived earlier this session.
+
+---
+
+_**User (2026-04-01 12:14:13Z)**_
+
+switch to main, pull and deploy
+
+---
+
+_**Agent (claude-opus-4-6 2026-04-01 12:14:33Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Switch to main and pull
+
+`git checkout main && git pull`
+
+```text
+Exit code 1
+error: Your local changes to the following files would be overwritten by checkout:
+	.specstory/history/2026-04-01_09-49-51Z-command-name-clear-command.md
+Please commit your changes or stash them before you switch branches.
+Aborting
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:14:36Z)**_
+
+There's an uncommitted specstory file on this branch. Let me stash it first.
+
+_**Agent (claude-opus-4-6 2026-04-01 12:14:50Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Stash, switch to main, pull
+
+`git stash && git checkout main && git pull`
+
+```text
+Saved working directory and index state WIP on feat/swatch-all-formats: e948b3c fix(palette): default swatch count back to 8, add NOTE-0024
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+From https://github.com/GDKeller/chroma-curve
+   2db2980..dc3b6f8  main       -> origin/main
+Updating 2db2980..dc3b6f8
+Fast-forward
+ ...26-04-01_00-50-16Z-command-message-board-add.md |  709 +++
+ ...6-04-01_01-06-21Z-command-name-clear-command.md | 5205 ++++++++++++++++
+ .../history/2026-04-01_05-09-33Z-open-a-pr-into.md | 2327 +++++++
+ ...6-04-01_09-49-51Z-command-name-clear-command.md | 6451 ++++++++++++++++++++
+ app/package-lock.json                              |   67 +
+ app/package.json                                   |    1 +
+ app/src/components/controls/InlineSelect.tsx       |   48 +
+ app/src/components/controls/ToggleSwitch.tsx       |   13 +-
+ app/src/components/curves/ChartTabs.tsx            |    2 +-
+ app/src/components/palette/ColorSwatch.tsx         |   31 +-
+ app/src/components/palette/PaletteGrid.tsx         |   84 +-
+ app/src/lib/colors.ts                              |    8 +
+ app/src/lib/palette.ts                             |    2 +-
+ app/src/store/paletteStore.ts                      |    6 +-
+ app/src/types/palette.ts                           |    2 +
+ .../NOTE-0019_smaller-swatch-counts.md             |    2 +-
+ ...TASK-0041_show-all-color-formats-on-swatches.md |   30 +
+ .../archive/TASK-0042_add-smaller-swatch-counts.md |   17 +
+ .../NOTE-0024_chart-steps-match-swatches.md        |    9 +
+ 19 files changed, 14950 insertions(+), 64 deletions(-)
+ create mode 100644 .specstory/history/2026-04-01_00-50-16Z-command-message-board-add.md
+ create mode 100644 .specstory/history/2026-04-01_01-06-21Z-command-name-clear-command.md
+ create mode 100644 .specstory/history/2026-04-01_05-09-33Z-open-a-pr-into.md
+ create mode 100644 .specstory/history/2026-04-01_09-49-51Z-command-name-clear-command.md
+ create mode 100644 app/src/components/controls/InlineSelect.tsx
+ rename board/{planning => archive}/NOTE-0019_smaller-swatch-counts.md (91%)
+ create mode 100644 board/archive/TASK-0041_show-all-color-formats-on-swatches.md
+ create mode 100644 board/archive/TASK-0042_add-smaller-swatch-counts.md
+ create mode 100644 board/planning/NOTE-0024_chart-steps-match-swatches.md
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:14:54Z)**_
+
+Looks like the PR was already merged. Now let me check how deployment works for this project.
+
+_**Agent (claude-opus-4-6 2026-04-01 12:14:55Z)**_
+
+<tool-use data-tool-type="search" data-tool-name="Glob"><details>
+<summary>Tool use: **Glob**</summary>
+ pattern `wrangler.{toml,json,jsonc}`
+
+```text
+node_modules/wrangler/templates/remoteBindings/wrangler.jsonc
+wrangler.jsonc
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:15:04Z)**_
+
+<tool-use data-tool-type="read" data-tool-name="Read"><details>
+<summary>Tool use: **Read**</summary>
+ `./wrangler.jsonc`
+
+```text
+1	{
+2	  "$schema": "node_modules/wrangler/config-schema.json",
+3	  "name": "chroma-curve",
+4	  "pages_build_output_dir": "app/dist",
+5	  "compatibility_date": "2026-03-29"
+6	}
+7
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:15:16Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Build for production
+
+`cd /Users/grant/code/chroma-curve/app && npm run build 2>&1 | tail -3`
+
+```text
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.99s
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:15:35Z)**_
+
+<tool-use data-tool-type="shell" data-tool-name="Bash"><details>
+<summary>Tool use: **Bash**</summary>
+Deploy to Cloudflare Pages
+
+`npx wrangler pages deploy 2>&1`
+
+```text
+ ⛅️ wrangler 4.78.0 (update available 4.79.0)
+─────────────────────────────────────────────
+▲ [WARNING] **Warning: Your working directory is a git repo and has uncommitted changes
+
+  To silence this warning, pass in --commit-dirty=true
+
+
+Uploading... (22/25)
+Uploading... (23/25)
+Uploading... (24/25)
+Uploading... (25/25)
+✨ Success! Uploaded 3 files (22 already uploaded) (2.05 sec)
+
+✨ Uploading _headers
+🌎 Deploying...
+✨ Deployment complete! Take a peek over at https://b84e4fee.chroma-curve.pages.dev
+```
+</details></tool-use>
+
+_**Agent (claude-opus-4-6 2026-04-01 12:15:39Z)**_
+
+Deployed. Live at https://b84e4fee.chroma-curve.pages.dev
+
+---
+
+_**User (2026-04-01 14:22:06Z)**_
+
+<command-name>/exit</command-name>
+            <command-message>exit</command-message>
+            <command-args></command-args>
+
+_**User (2026-04-01 14:22:06Z)**_
+
+<local-command-stdout>Bye!</local-command-stdout>
+
+_**User (2026-04-01 14:22:06Z)**_
+
+<local-command-caveat>Caveat: The messages below were generated by the user while running local commands. DO NOT respond to these messages or otherwise consider them in your response unless the user explicitly asks you to.</local-command-caveat>
