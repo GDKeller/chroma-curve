@@ -84,7 +84,7 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-[13px] fill-text-faint"
+              className="text-base fill-text-faint"
             >
               {g.label}
             </text>
@@ -106,7 +106,7 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-[13px] fill-text-faint"
+              className="text-base fill-text-faint"
             >
               {l}
             </text>
@@ -118,7 +118,7 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
           x={PAD.left + PLOT_W / 2}
           y={H - 4}
           textAnchor="middle"
-          className="text-[10px] fill-text-faint font-sans"
+          className="text-2xs fill-text-faint font-sans"
         >
           Lightness
         </text>
@@ -126,7 +126,7 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
           x={12}
           y={PAD.top + PLOT_H / 2}
           textAnchor="middle"
-          className="text-[10px] fill-text-faint font-sans"
+          className="text-2xs fill-text-faint font-sans"
           transform={`rotate(-90, 12, ${PAD.top + PLOT_H / 2})`}
         >
           Saturation
