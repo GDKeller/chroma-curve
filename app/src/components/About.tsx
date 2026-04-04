@@ -10,9 +10,9 @@ const DEFAULT_HUE = 220;
 const REF_SMOD = 40;
 const STRIP_STEPS = 9;
 
-// Saturation tuned for the midrange — extremes lose chroma
+// Saturation tuned for the midrange - extremes lose chroma
 const SAT_FOR_MID = 0.20;
-// Saturation tuned for the extremes — midtones are over-saturated
+// Saturation tuned for the extremes - midtones are over-saturated
 const SAT_FOR_EXTREMES = 0.40;
 // Curve-modulated: base sat that produces balanced results
 const SAT_CURVED = 0.35;
@@ -123,7 +123,7 @@ function LightnessHeader() {
 }
 
 // ---------------------------------------------------------------------------
-// Color picker plane — saturation (x) vs lightness (y) with parabolic curve
+// Color picker plane - saturation (x) vs lightness (y) with parabolic curve
 // ---------------------------------------------------------------------------
 
 function ColorPickerPlane({ hue }: { hue: number }) {
@@ -472,7 +472,7 @@ function Formula() {
 }
 
 // ---------------------------------------------------------------------------
-// Solution section — single CSS grid so all 3 visuals share one column width
+// Solution section - single CSS grid so all 3 visuals share one column width
 // ---------------------------------------------------------------------------
 
 function SolutionSection({ hue }: { hue: number }) {
@@ -520,7 +520,7 @@ function SolutionSection({ hue }: { hue: number }) {
 }
 
 // ---------------------------------------------------------------------------
-// Hue picker — horizontal gradient bar for selecting hue angle
+// Hue picker - horizontal gradient bar for selecting hue angle
 // ---------------------------------------------------------------------------
 
 const HUE_PRESETS: { label: string; hue: number }[] = [
@@ -692,7 +692,7 @@ export function AboutButton() {
                 className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl p-4 sm:p-6 bg-surface-base border border-border-elevated shadow-2xl max-h-[85vh] overflow-y-auto"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.4fr] gap-x-6 gap-y-6 sm:gap-y-8">
-                  {/* Title + intro — span both columns */}
+                  {/* Title + intro - span both columns */}
                   <div className="sm:col-span-2 mb-12">
                     <Dialog.Title className="text-4xl font-semibold text-text-primary mb-8">
                       How it works
@@ -703,11 +703,11 @@ export function AboutButton() {
                     <p className="text-[13px] leading-relaxed text-text-muted max-w-md">
                       Monochromatic palettes need saturation that varies with
                       lightness. <br/>A fixed saturation value produces even chroma in
-                      the midrange but loses it at the extremes — or vice versa.
+                      the midrange but loses it at the extremes, or vice versa.
                     </p>
                   </div>
 
-                  {/* Hue indicator — swatch aligned with L=50, labels flanking it */}
+                  {/* Hue indicator - swatch aligned with L=50, labels flanking it */}
                   <div className="sm:col-start-2">
                     <Popover.Root>
                       <div className="relative">
@@ -767,7 +767,7 @@ export function AboutButton() {
                     </Popover.Root>
                   </div>
 
-                  {/* Lightness header — right column only */}
+                  {/* Lightness header - right column only */}
                   <div className="sm:col-start-2">
                     <span className="text-[10px] text-[hsl(0_0%_60%)] mb-1 block">Lightness</span>
                     <LightnessHeader />
@@ -810,7 +810,7 @@ export function AboutButton() {
                   </div>
                   <Strip colors={strips.forExtremes} mark={markForExtremes} />
 
-                  {/* The solution — spans both columns, uses its own 1fr 1fr subgrid */}
+                  {/* The solution - spans both columns, uses its own 1fr 1fr subgrid */}
                   <div className="sm:col-span-2">
                     <SolutionSection hue={hue} />
                   </div>
