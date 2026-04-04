@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "space-grotesk-variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "acumin-pro", ui-sans-serif, system-ui, sans-serif;
   --font-display: "unbounded", ui-sans-serif, system-ui, sans-serif;
 
   /* Type scale — tighter for instrument UI */
