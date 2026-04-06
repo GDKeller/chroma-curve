@@ -18,12 +18,12 @@
   --text-4xl: 1.875rem;    /* 30px */
 
   /* Text */
-  --color-text-primary: hsl(0 0% 91%);
-  --color-text-secondary: hsl(0 0% 72%);
-  --color-text-tertiary: hsl(0 0% 60%);
-  --color-text-muted: hsl(0 0% 56%);
-  --color-text-subtle: hsl(0 0% 52%);
-  --color-text-faint: hsl(0 0% 50%);
+  --color-text-primary: hsl(0 0% 98%);
+  --color-text-secondary: hsl(0 0% 88%);
+  --color-text-tertiary: hsl(0 0% 80%);
+  --color-text-muted: hsl(0 0% 76%);
+  --color-text-subtle: hsl(0 0% 70%);
+  --color-text-faint: hsl(0 0% 60%);
 
   /* Surfaces */
   --color-surface-base: hsl(0 0% 6%);

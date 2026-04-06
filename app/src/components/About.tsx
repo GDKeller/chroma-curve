@@ -81,7 +81,7 @@ function Strip({ colors, label, mark }: StripProps) {
   return (
     <div>
       {label && (
-        <span className="text-3xs uppercase tracking-wider text-text-tertiary mb-1 block">{label}</span>
+        <span className="text-2xs uppercase tracking-wider text-text-tertiary mb-1 block">{label}</span>
       )}
       <div className="grid rounded-none overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c) => (
@@ -97,7 +97,7 @@ function Strip({ colors, label, mark }: StripProps) {
             return (
               <div key={`mark-${i}`} className="text-center leading-1.5">
                 {text && (
-                  <span className={`text-4xs ${m === "ok" ? "text-text-secondary" : "text-text-faint"}`}>
+                  <span className={`text-2xs tracking-wider uppercase ${m === "ok" ? "text-text-secondary" : "text-text-faint"}`}>
                     {text}
                   </span>
                 )}
@@ -114,7 +114,7 @@ function LightnessHeader() {
   return (
     <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="text-center text-3xs text-text-tertiary">
+        <div key={l} className="text-center text-xs tracking-wide text-text-tertiary">
           {l}
         </div>
       ))}
@@ -206,7 +206,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
 
   return (
     <div className="flex gap-1.5">
-      <span className="text-2xs text-text-tertiary self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+      <span className="text-sm tracking-wide text-text-tertiary self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
@@ -223,8 +223,8 @@ function ColorPickerPlane({ hue }: { hue: number }) {
                   width={size}
                   initial={{ y: 0, height: 0 }}
                   animate={{
-                    y:      [0, 0, 0,    0,    size],
-                    height: [0, 0, size,  size, 0],
+                    y: [0, 0, 0, 0, size],
+                    height: [0, 0, size, size, 0],
                   }}
                   transition={{
                     duration: cycle,
@@ -282,7 +282,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
             })}
           </svg>
         </div>
-        <span className="text-2xs text-text-tertiary text-center">
+        <span className="text-sm tracking-wide text-text-tertiary text-center">
           Saturation
         </span>
       </div>
@@ -298,7 +298,7 @@ function VisualPanel({ children, label }: { children: React.ReactNode; label: st
   return (
     <div className="flex gap-1.5">
       <span
-        className="text-2xs text-text-tertiary self-center shrink-0"
+        className="text-sm tracking-wide text-text-tertiary self-center shrink-0"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
       >
         {label}
@@ -405,15 +405,15 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
           x={curveToX(50)}
           y={curveToY(curveData[25].sat) + 12}
           textAnchor="middle"
-          className="text-4xs fill-text-faint"
+          className="text-2xs fill-text-faint"
         >
           min
         </text>
       </svg>
-      <div className="flex justify-between mt-1">
-        <span className="text-2xs text-text-tertiary">0</span>
-        <span className="text-2xs text-text-tertiary">L</span>
-        <span className="text-2xs text-text-tertiary">100</span>
+      <div className="flex justify-between mt-1 text-sm text-text-tertiary tracking-wide">
+        <span>0</span>
+        <span>L</span>
+        <span>100</span>
       </div>
     </VisualPanel>
   );
@@ -449,7 +449,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
         />
       </svg>
       <div className="mt-1 text-center">
-        <span className="text-2xs text-text-tertiary">Lightness</span>
+        <span className="text-sm tracking-wide text-text-tertiary">Lightness</span>
       </div>
     </VisualPanel>
   );
@@ -457,13 +457,13 @@ function RotatedPicker({ pickerCells, curvePath }: {
 
 function Formula() {
   return (
-    <div className="rounded-none border border-border-default bg-surface-raised px-4 py-2.5 text-xs text-text-muted flex items-center justify-between gap-4 flex-wrap">
+    <div className="rounded-none border border-border-default bg-surface-raised px-4 py-2.5 text-text-muted flex items-center justify-between gap-4 flex-wrap">
       <div>
-        <span className="text-text-tertiary">S</span>(L) = 1 + ((L - 50)
+        <span className="text-text-secondary">S</span>(L) = 1 + ((L - 50)
         <sup>2</sup> / <span className="text-text-tertiary">p</span> - 50
         <sup>2</sup> / <span className="text-text-tertiary">p</span>) / 100
       </div>
-      <div className="text-2xs text-text-faint">
+      <div className="text-sm text-text-faint">
         L = lightness &middot;{" "}
         <span className="text-text-subtle">p</span> = adjustment
       </div>
@@ -479,24 +479,24 @@ function SolutionSection({ hue }: { hue: number }) {
   const { curveData, curvePath, fillPath, pickerCells } = useCurvePickerData(hue);
 
   return (
-    <div className="mt-2 pt-8 border-t border-border-default">
+    <div className="mt-2 pt-24 mb-32 border-t border-border-default">
       <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
         {/* Row 1: explanation text | animated picker */}
         <div>
-          <p className="text-base font-semibold text-text-secondary mb-3">The solution</p>
-          <p className="text-base leading-relaxed text-text-muted mb-3">
+          <p className="text-2xl font-semibold text-text-secondary mb-3">The solution</p>
+          <p className="leading-relaxed text-text-muted mb-3">
             In a color picker, the boundary between neutral and
             chromatic is not a straight line. It follows a curve:
             colours at the extremes of lightness need more
             saturation to register as tinted, while midtones
             need less.
-            <sup className="text-3xs text-text-faint ml-0.5">1</sup>
+            <sup className="text-2xs text-text-faint ml-0.5">1</sup>
           </p>
-          <p className="text-base leading-relaxed text-text-muted">
+          <p className="leading-relaxed text-text-muted">
             This boundary is approximately parabolic. It can be
             expressed as a formula that takes a lightness value
             and returns a saturation multiplier.
-            <sup className="text-3xs text-text-faint ml-0.5">2</sup>
+            <sup className="text-2xs text-text-faint ml-0.5">2</sup>
           </p>
         </div>
         <ColorPickerPlane hue={hue} />
@@ -511,7 +511,7 @@ function SolutionSection({ hue }: { hue: number }) {
         <RotatedPicker pickerCells={pickerCells} curvePath={curvePath} />
 
         {/* Caption spanning both columns */}
-        <p className="sm:col-span-2 text-xs text-text-faint text-center">
+        <p className="sm:col-span-2 text-base italic text-text-faint text-center">
           The formula&rsquo;s curve (left) traces the perceptual boundary visible in the color field (right).
         </p>
       </div>
@@ -668,7 +668,7 @@ export function AboutButton() {
           aria-label="About this tool"
         >
           <Info size={14} />
-          <span className="text-xs inline">About this tool</span>
+          <span className="text-sm inline">About this tool</span>
         </button>
       </Dialog.Trigger>
       <AnimatePresence>
@@ -689,62 +689,64 @@ export function AboutButton() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100vw-1rem)] lg:max-w-6xl p-4 sm:p-6 bg-surface-base border border-border-elevated shadow-2xl max-h-[90vh] overflow-y-auto"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100vw-1rem)] text-lg lg:max-w-6xl p-4 sm:px-6 sm:py-12 bg-surface-base border border-border-elevated shadow-2xl max-h-[90vh] overflow-y-auto"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.4fr] gap-x-6 gap-y-6 sm:gap-y-8">
                   {/* Title + intro - span both columns */}
-                  <div className="sm:col-span-2 mb-12">
-                    <Dialog.Title className="text-4xl font-display font-semibold text-text-primary mb-8">
-                      How it works
+                  <div className="sm:col-span-2 mb-16">
+                    <Dialog.Title className="text-3xl font-display font-semibold text-text-primary mb-8">
+                      What is Chroma Curve for?
                     </Dialog.Title>
                     <Dialog.Description className="sr-only">
                       Explanation of the parabolic saturation curve used to generate perceptually balanced monochromatic palettes
                     </Dialog.Description>
-                    <p className="text-base leading-relaxed text-text-secondary max-w-md">
+                    <p className="leading-relaxed text-text-secondary">
                       Monochromatic palettes need saturation that varies with
-                      lightness. <br/>A fixed saturation value produces even chroma in
+                      lightness. <br />A fixed saturation value produces even chroma in
                       the midrange but loses it at the extremes, or vice versa.
                     </p>
                   </div>
 
-                  {/* Hue indicator - swatch aligned with L=50, labels flanking it */}
+                  {/* Hue indicator */}
                   <div className="sm:col-start-2">
                     <Popover.Root>
                       <div className="relative">
-                        <div className="grid" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
-                          {Array.from({ length: STRIP_STEPS }, (_, i) => (
-                            <div key={i} className="h-12">
-                              {i === 4 && (
-                                <Popover.Trigger asChild>
-                                  <button
-                                    aria-label="Change reference hue"
-                                    className="h-full w-full rounded-none cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
-                                    style={{ backgroundColor: `hsl(${hue} 100% 50%)` }}
-                                  />
-                                </Popover.Trigger>
-                              )}
-                            </div>
-                          ))}
+                        <div className="grid h-16" style={{ gridTemplateColumns: `repeat(${STRIP_STEPS}, 1fr)` }}>
+                          <Popover.Trigger asChild>
+                            <button
+                              aria-label="Change reference hue"
+                              className="h-full w-full rounded-none cursor-pointer hover:ring-1 hover:ring-white/20 transition-shadow"
+                              style={{ gridColumn: 5, backgroundColor: `hsl(${hue} 100% 50%)` }}
+                            />
+                          </Popover.Trigger>
                         </div>
-                        {/* Helper text, right-aligned to swatch left edge */}
+                        {/* Helper text */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-2xs text-text-tertiary whitespace-nowrap leading-tight text-right"
+                          className="absolute top-1/2 -translate-y-1/2 text-sm text-text-tertiary whitespace-nowrap leading-tight text-right"
                           style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
                         >
                           Reference hue for<br />examples below
                         </div>
-                        {/* Values stacked vertically, left-aligned to swatch right edge */}
+                        {/* Values stacked vertically */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-2xs text-text-secondary whitespace-nowrap leading-tight"
+                          className="absolute top-1/2 -translate-y-1/2 text-sm text-text-secondary whitespace-nowrap leading-tight"
                           style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
                         >
-                          <div className="grid grid-cols-[auto_1fr] gap-x-1">
-                            <span className="text-base">H:</span>
-                            <span className="text-base">{hue}°</span>
-                            <span className="text-text-faint">S:</span>
-                            <span className="text-text-faint">100%</span>
-                            <span className="text-text-faint">L:</span>
-                            <span className="text-text-faint">50%</span>
+                          <div className="flex flex-col gap-1">
+                            <div className="flex gap-1">
+                              <span>H:</span>
+                              <span>{hue}°</span>
+                            </div>
+                            <div className="text-text-faint flex flex-col">
+                              <div className="flex gap-1">
+                                <span>S:</span>
+                                <span>100%</span>
+                              </div>
+                              <div className="flex gap-1">
+                                <span>L:</span>
+                                <span>50%</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -767,134 +769,138 @@ export function AboutButton() {
                     </Popover.Root>
                   </div>
 
-                  {/* Lightness header - right column only */}
-                  <div className="sm:col-start-2">
-                    <span className="text-2xs text-text-tertiary mb-1 block">Lightness</span>
-                    <LightnessHeader />
-                  </div>
+              {/* Lightness header - right column only */}
+              <div className="sm:col-start-2">
+                <span className="text-xs tracking-wide text-text-tertiary mb-1 block">Lightness</span>
+                <LightnessHeader />
+              </div>
 
-                  {/* 0% sat */}
-                  <div>
-                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-base font-semibold text-text-secondary">Achromatic Baseline</p>
-                      <span className="text-2xs text-text-tertiary">Saturation: 0%</span>
-                    </div>
-                    <p className="text-base leading-relaxed text-text-muted">
-                      Unsaturated grayscale. Functional, but lacks character or brand identity.
-                    </p>
-                  </div>
-                  <Strip colors={strips.zero} />
-
-                  {/* 20% sat */}
-                  <div>
-                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-base font-semibold text-text-secondary">Fixed low saturation</p>
-                      <span className="text-2xs text-text-tertiary">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
-                    </div>
-                    <p className="text-base leading-relaxed text-text-muted">
-                      Desired neutral midtones, but dark and light ends become effectively desaturated.
-                    </p>
-                  </div>
-                  <Strip colors={strips.forMid} mark={markForMid} />
-
-                  {/* 40% sat */}
-                  <div>
-                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-base font-semibold text-text-secondary">Fixed high saturation</p>
-                      <span className="text-2xs text-text-tertiary">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
-                    </div>
-                    <p className="text-base leading-relaxed text-text-muted">
-                      Raising it to recover the extremes pushes the midrange
-                      to be oversaturated.
-                    </p>
-                  </div>
-                  <Strip colors={strips.forExtremes} mark={markForExtremes} />
-
-                  {/* The solution - spans both columns, uses its own 1fr 1fr subgrid */}
-                  <div className="sm:col-span-2">
-                    <SolutionSection hue={hue} />
-                  </div>
-
-                  {/* Boundary strip */}
-                  <div>
-                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-base font-semibold text-text-secondary">Perceptual boundary</p>
-                      <span className="text-2xs text-text-tertiary">
-                        {"Saturation: "}
-                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
-                        {"/"}
-                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
-                        {"/"}
-                        {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
-                      </span>
-                    </div>
-                    <p className="text-base leading-relaxed text-text-muted">
-                      Sampling saturation along the curve produces even
-                      perceived chroma, but is too saturated for neutrals.
-                    </p>
-                  </div>
-                  <Strip colors={strips.boundary} mark={markCurved} />
-
-                  {/* Final result strip */}
-                  <div>
-                    <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
-                      <p className="text-base font-semibold text-text-secondary">Adjusted curve</p>
-                      <span className="text-2xs text-text-tertiary">
-                        {"Saturation: "}
-                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
-                        {"/"}
-                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
-                        {"/"}
-                        {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
-                      </span>
-                    </div>
-                    <p className="text-base leading-relaxed text-text-muted">
-                      Reducing the base saturation scales the whole curve
-                      down. The formula preserves the ratio between
-                      midtones and extremes at any base value.
-                    </p>
-                  </div>
-                  <Strip colors={strips.curved} mark={markCurved} />
+              {/* 0% sat */}
+              <div>
+                <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                  <p className="text-xl font-semibold text-text-secondary">Achromatic Baseline</p>
+                  <span className="text-xs tracking-wide text-text-tertiary">Saturation: 0%</span>
                 </div>
+                <p className="leading-relaxed text-text-muted">
+                  Unsaturated grayscale. Functional, but lacks character or brand identity.
+                </p>
+              </div>
+              <Strip colors={strips.zero} />
 
-                <div className="mt-8 pt-4 border-t border-border-default text-xs text-text-faint grid gap-1.5">
-                  <p>
-                    <sup className="text-3xs text-text-faint mr-1">1</sup>
-                    Concept from{" "}
-                    <a
-                      href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
-                    >
-                      The secret to creating neutral color palettes
-                    </a>
-                    {" "}by Pablo Figueiredo.
-                  </p>
-                  <p>
-                    <sup className="text-3xs text-text-faint mr-1">2</sup>
-                    Formula adapted from{" "}
-                    <a
-                      href="https://www.desmos.com/calculator/02ufrfsuzy"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
-                    >
-                      Desmos visualization
-                    </a>
-                    {" "}by Grant Kiely.
-                  </p>
+              {/* 20% sat */}
+              <div>
+                <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                  <p className="text-xl font-semibold text-text-secondary">Fixed low saturation</p>
+                  <span className="text-xs tracking-wide text-text-tertiary">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                 </div>
+                <p className="leading-relaxed text-text-muted">
+                  Desired neutral midtones, but dark and light ends become effectively desaturated.
+                </p>
+              </div>
+              <Strip colors={strips.forMid} mark={markForMid} />
 
-                <Dialog.Close asChild>
-                  <button
-                    type="button"
-                    className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
-                    aria-label="Close"
-                  >
-                    <X size={16} />
-                  </button>
-                </Dialog.Close>
+              {/* 40% sat */}
+              <div className="mb-12">
+                <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                  <p className="text-xl font-semibold text-text-secondary">Fixed high saturation</p>
+                  <span className="text-xs tracking-wide text-text-tertiary">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                </div>
+                <p className="leading-relaxed text-text-muted">
+                  Raising it to recover the extremes pushes the midrange
+                  to be oversaturated.
+                </p>
+              </div>
+              <Strip colors={strips.forExtremes} mark={markForExtremes} />
+
+              {/* The solution - spans both columns, uses its own 1fr 1fr subgrid */}
+              <div className="sm:col-span-2">
+                <SolutionSection hue={hue} />
+              </div>
+
+              {/* Boundary strip */}
+              <div>
+                <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                  <p className="font-semibold text-text-secondary">Perceptual boundary</p>
+                  <span className="text-2xs text-text-tertiary">
+                    {"Saturation: "}
+                    {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
+                    {"/"}
+                    {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
+                    {"/"}
+                    {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
+                  </span>
+                </div>
+                <p className="leading-relaxed text-text-muted">
+                  Sampling saturation along the curve produces even
+                  perceived chroma, but is too saturated for neutrals.
+                </p>
+              </div>
+              <Strip colors={strips.boundary} mark={markCurved} />
+
+              {/* Final result strip */}
+              <div>
+                <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
+                  <p className="font-semibold text-text-secondary">Adjusted curve</p>
+                  <span className="text-2xs text-text-tertiary">
+                    {"Saturation: "}
+                    {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
+                    {"/"}
+                    {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[4], REF_SMOD, "endpoint") * 100)}
+                    {"/"}
+                    {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[8], REF_SMOD, "endpoint") * 100)}%
+                  </span>
+                </div>
+                <p className="leading-relaxed text-text-muted">
+                  Reducing the base saturation scales the whole curve
+                  down. The formula preserves the ratio between
+                  midtones and extremes at any base value.
+                </p>
+              </div>
+              <Strip colors={strips.curved} mark={markCurved} />
+            </div>
+
+            <div className="mt-8 mb-16 py-4 border-t border-b border-border-default text-xs tracking-wide text-text-faint flex flex-wrap gap-x-8 gap-y-2">
+              <p>
+                <sup className="text-2xs text-text-faint mr-1">1</sup>
+                Concept from{" "}
+                <a
+                  href="https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
+                >
+                  The secret to creating neutral color palettes
+                </a>
+                {" "}by Pablo Figueiredo.
+              </p>
+              <p>
+                <sup className="text-2xs text-text-faint mr-1">2</sup>
+                Formula adapted from{" "}
+                <a
+                  href="https://www.desmos.com/calculator/02ufrfsuzy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors"
+                >
+                  Desmos visualization
+                </a>
+                {" "}by Grant Kiely.
+              </p>
+            </div>
+
+            <div className="text-text-secondary text-base text-center mb-4">
+              <p>Chroma Curve is a tool by <a href="https://grantkeller.dev" target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors">Grant Keller</a> from <a href="https://davantsystems.com" target="_blank" rel="noopener noreferrer" className="text-text-muted hover:text-text-secondary underline underline-offset-2 transition-colors">Davant Systems</a></p>
+            </div>
+
+            <Dialog.Close asChild>
+              <button
+                type="button"
+                className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <X size={16} />
+              </button>
+            </Dialog.Close>
               </motion.div>
             </Dialog.Content>
           </Dialog.Portal>
