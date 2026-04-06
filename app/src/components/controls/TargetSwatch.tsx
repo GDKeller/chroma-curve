@@ -1,8 +1,76 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import chroma from "chroma-js";
 import * as Popover from "@radix-ui/react-popover";
 import { usePaletteStore } from "../../store/paletteStore";
+import { parseTargetColor, formatTargetColor } from "../../lib/colors";
+import type { ColorFormat } from "../../lib/colors";
 
 const PICKER_SIZE = 200;
+
+function ColorInput({ currentHex, sourceInput, sourceFormat, hue, saturation, onApply }: {
+  currentHex: string;
+  sourceInput: string | null;
+  sourceFormat: ColorFormat | null;
+  hue: number;
+  saturation: number;
+  onApply: (hue: number, saturation: number, input: string, format: ColorFormat) => void;
+}) {
+  const [value, setValue] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  const targetFormatted = sourceFormat
+    ? formatTargetColor(hue, saturation, sourceFormat)
+    : currentHex;
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const result = parseTargetColor(value);
+      if (result) {
+        onApply(result.hue, result.saturation, value.trim(), result.format);
+        setValue("");
+        setIsInvalid(false);
+      } else {
+        setIsInvalid(true);
+      }
+    } else if (e.key === "Escape") {
+      setValue("");
+      setIsInvalid(false);
+      (e.target as HTMLInputElement).blur();
+    }
+  };
+
+  return (
+    <div className="mt-2">
+      <div className="mb-1.5 space-y-0.5">
+        {sourceInput ? (
+          <>
+            <div className="flex items-center justify-between">
+              <span className="text-3xs text-text-faint uppercase tracking-wider">Input</span>
+              <span className="text-xs font-mono text-text-subtle">{sourceInput}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-3xs text-text-faint uppercase tracking-wider">H+S at L50</span>
+              <span className="text-xs font-mono text-text-secondary">{targetFormatted}</span>
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-between">
+            <span className="text-3xs text-text-faint uppercase tracking-wider">Target</span>
+            <span className="text-xs font-mono text-text-secondary">{currentHex}</span>
+          </div>
+        )}
+      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => { setValue(e.target.value); setIsInvalid(false); }}
+        onKeyDown={handleKeyDown}
+        placeholder="#hex, rgb(), hsl(), oklch()"
+        className={`w-full bg-surface-base border px-2 py-1.5 text-xs font-mono text-text-primary placeholder:text-text-faint outline-none transition-colors ${isInvalid ? "border-red-500" : "border-border-default focus:border-text-subtle"}`}
+      />
+    </div>
+  );
+}
 
 export function TargetSwatch() {
   const hue = usePaletteStore((s) => s.hue);
@@ -11,8 +79,19 @@ export function TargetSwatch() {
   const setSaturation = usePaletteStore((s) => s.setSaturation);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const draggingRef = useRef(false);
+  const [sourceInput, setSourceInput] = useState<string | null>(null);
+  const [sourceFormat, setSourceFormat] = useState<ColorFormat | null>(null);
+  const [sourceHue, setSourceHue] = useState<number | null>(null);
+  const [sourceSat, setSourceSat] = useState<number | null>(null);
+
+  // Clear source when hue/sat diverge from what the input set
+  const effectiveSourceInput = (
+    sourceInput && sourceHue === hue && sourceSat === saturation
+  ) ? sourceInput : null;
+  const effectiveSourceFormat = effectiveSourceInput ? sourceFormat : null;
 
   const color = `hsl(${hue}, ${saturation * 100}%, 50%)`;
+  const currentHex = useMemo(() => chroma.hsl(hue, saturation, 0.5).hex(), [hue, saturation]);
 
   const drawPicker = useCallback(
     (canvas: HTMLCanvasElement) => {
@@ -103,6 +182,8 @@ export function TargetSwatch() {
       const y = (clientY - rect.top) / rect.height;
       setHue(Math.round(x * 360));
       setSaturation(parseFloat((1 - y).toFixed(2)));
+      setSourceInput(null);
+      setSourceFormat(null);
     },
     [setHue, setSaturation],
   );
@@ -136,10 +217,15 @@ export function TargetSwatch() {
       <Popover.Trigger asChild>
         <button
           type="button"
-          className="w-7 h-7 rounded-full shrink-0 self-end mb-[2px] border-2 border-surface-base cursor-pointer transition-transform hover:scale-110 shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
-          style={{ backgroundColor: color }}
-          aria-label={`Target color: hue ${hue}°, saturation ${Math.round(saturation * 100)}%`}
-        />
+          className="flex flex-col items-center gap-1 shrink-0 self-end cursor-pointer group"
+          aria-label={`Target color: ${currentHex}`}
+        >
+          <div
+            className="w-7 h-7 rounded-full border-2 border-surface-base transition-transform group-hover:scale-110 shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
+            style={{ backgroundColor: color }}
+          />
+          <span className="text-3xs font-mono text-text-faint group-hover:text-text-subtle transition-colors">{currentHex}</span>
+        </button>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
@@ -158,6 +244,14 @@ export function TargetSwatch() {
             <span>Hue {hue}°</span>
             <span>Sat {Math.round(saturation * 100)}%</span>
           </div>
+          <ColorInput
+            currentHex={currentHex}
+            sourceInput={effectiveSourceInput}
+            sourceFormat={effectiveSourceFormat}
+            hue={hue}
+            saturation={saturation}
+            onApply={(h, s, input, format) => { setHue(h); setSaturation(s); setSourceInput(input); setSourceFormat(format); setSourceHue(h); setSourceSat(s); }}
+          />
           <Popover.Arrow className="fill-surface-overlay" />
         </Popover.Content>
       </Popover.Portal>
