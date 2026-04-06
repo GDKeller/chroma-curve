@@ -70,7 +70,7 @@ export function ExportDialog() {
                 <Dialog.Close asChild>
                   <button
                     type="button"
-                    className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
+                    className="absolute top-4 right-4 text-text-faint hover:text-text-secondary transition-colors cursor-pointer"
                     aria-label="Close"
                   >
                     <X size={16} />

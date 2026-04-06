@@ -43,7 +43,7 @@ Custom scale defined in `app/src/index.css` via `@theme`. Use tokens, not hardco
 ### Color Tokens
 All colors use semantic tokens - never hardcode HSL values in components.
 
-- **Text**: `text-primary` (91%) / `text-secondary` (72%) / `text-tertiary` (60%) / `text-muted` (56%) / `text-subtle` (52%) / `text-faint` (50%)
+- **Text**: `text-primary` (98%) / `text-secondary` (85%) / `text-muted` (72%) / `text-faint` (50%)
 - **Surfaces**: `surface-base` (6%) / `surface-raised` (8%) / `surface-overlay` (10%) / `surface-hover` (12%) / `surface-active` (15%)
 - **Borders**: `border-default` (12%) / `border-elevated` (15%)
 - **Strokes (SVG)**: `stroke-grid` / `stroke-axis` / `stroke-secondary` / `stroke-primary`
@@ -66,7 +66,7 @@ Confidence & control ("I trust the output"), quiet satisfaction ("every detail i
 ### Aesthetic Direction
 - **Theme**: Dark-only. Near-black background. The generated colors are the only chromatic elements.
 - **Typography**: Acumin Pro (body) + Unbounded (display) + Recursive Sans Linear Static (mono). Loaded via Adobe Fonts/Typekit (project `nbx6xju`). Tight tracking, small type sizes - information-dense without feeling cluttered.
-- **Color values**: Use design tokens (`text-text-tertiary`, `fill-text-faint`, etc.) instead of hardcoded HSL or opacity tricks. Never use `white/60` or `rgba(255,255,255,0.6)` for text - opacity on text blends unpredictably with backgrounds.
+- **Color values**: Use design tokens (`text-text-muted`, `fill-text-faint`, etc.) instead of hardcoded HSL or opacity tricks. Never use `white/60` or `rgba(255,255,255,0.6)` for text - opacity on text blends unpredictably with backgrounds.
 - **Surfaces**: Subtle borders and fills. Backdrop blur on sticky elements. Depth through value contrast, not layered opacity.
 - **Motion**: Purposeful and restrained. Framer Motion for meaningful transitions (dialogs, layout shifts). CSS for micro-interactions. `prefers-reduced-motion` respected globally.
 - **Icons**: Phosphor Icons, used sparingly alongside text labels for clarity.

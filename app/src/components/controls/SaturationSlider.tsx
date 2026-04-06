@@ -11,7 +11,7 @@ export function SaturationSlider() {
   return (
     <div className="flex flex-col gap-1.5 flex-1 w-full sm:w-auto sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm font-semibold text-text-tertiary uppercase tracking-wider shrink-0">
+        <span className="text-sm font-semibold text-text-muted uppercase tracking-wider shrink-0">
           Saturation
         </span>
         <div className="flex items-center gap-2 min-w-0">

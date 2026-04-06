@@ -9,13 +9,13 @@ export function Header() {
         <h1 className="text-base sm:text-xl lg:text-2xl font-display font-bold sm:mr-4 text-text-primary tracking-normal">
           Chroma Curve
         </h1>
-        <p className="text-2xs md:text-xs lg:text-xs text-text-subtle hidden sm:block max-w-32 md:max-w-44 leading-tight">
+        <p className="text-2xs md:text-xs lg:text-xs text-text-faint hidden sm:block max-w-32 md:max-w-44 leading-tight">
           Parabolic saturation correction for monochromatic color palettes
         </p>
         <AboutButton />
       </div>
       <div className="flex items-center gap-3">
-        <span className="text-sm text-text-subtle flex items-center gap-1 hidden md:flex">
+        <span className="text-sm text-text-faint flex items-center gap-1 hidden md:flex">
           <Copy size={12} />
           Click swatch to copy
         </span>

@@ -81,7 +81,7 @@ function Strip({ colors, label, mark }: StripProps) {
   return (
     <div>
       {label && (
-        <span className="text-2xs uppercase tracking-wider text-text-tertiary mb-1 block">{label}</span>
+        <span className="text-2xs uppercase tracking-wider text-text-muted mb-1 block">{label}</span>
       )}
       <div className="grid rounded-none overflow-hidden" style={{ gridTemplateColumns: `repeat(${colors.length}, 1fr)` }}>
         {colors.map((c) => (
@@ -114,7 +114,7 @@ function LightnessHeader() {
   return (
     <div className="grid" style={{ gridTemplateColumns: `repeat(${LIGHTNESS_LABELS.length}, 1fr)` }}>
       {LIGHTNESS_LABELS.map((l) => (
-        <div key={l} className="text-center text-xs tracking-wide text-text-tertiary">
+        <div key={l} className="text-center text-xs tracking-wide text-text-muted">
           {l}
         </div>
       ))}
@@ -206,7 +206,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
 
   return (
     <div className="flex gap-1.5">
-      <span className="text-sm tracking-wide text-text-tertiary self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+      <span className="text-sm tracking-wide text-text-faint self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
       <div className="flex flex-col gap-1.5 w-full min-w-0">
@@ -282,7 +282,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
             })}
           </svg>
         </div>
-        <span className="text-sm tracking-wide text-text-tertiary text-center">
+        <span className="text-sm tracking-wide text-text-faint text-center">
           Saturation
         </span>
       </div>
@@ -298,7 +298,7 @@ function VisualPanel({ children, label }: { children: React.ReactNode; label: st
   return (
     <div className="flex gap-1.5">
       <span
-        className="text-sm tracking-wide text-text-tertiary self-center shrink-0"
+        className="text-sm tracking-wide text-text-muted self-center shrink-0"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
       >
         {label}
@@ -410,7 +410,7 @@ function CurveGraph({ curvePath, fillPath, curveData }: {
           min
         </text>
       </svg>
-      <div className="flex justify-between mt-1 text-sm text-text-tertiary tracking-wide">
+      <div className="flex justify-between mt-1 text-sm text-text-muted tracking-wide">
         <span>0</span>
         <span>L</span>
         <span>100</span>
@@ -449,7 +449,7 @@ function RotatedPicker({ pickerCells, curvePath }: {
         />
       </svg>
       <div className="mt-1 text-center">
-        <span className="text-sm tracking-wide text-text-tertiary">Lightness</span>
+        <span className="text-sm tracking-wide text-text-muted">Lightness</span>
       </div>
     </VisualPanel>
   );
@@ -460,12 +460,12 @@ function Formula() {
     <div className="rounded-none border border-border-default bg-surface-raised px-4 py-2.5 text-text-muted flex items-center justify-between gap-4 flex-wrap">
       <div>
         <span className="text-text-secondary">S</span>(L) = 1 + ((L - 50)
-        <sup>2</sup> / <span className="text-text-tertiary">p</span> - 50
-        <sup>2</sup> / <span className="text-text-tertiary">p</span>) / 100
+        <sup>2</sup> / <span className="text-text-muted">p</span> - 50
+        <sup>2</sup> / <span className="text-text-muted">p</span>) / 100
       </div>
       <div className="text-sm text-text-faint">
         L = lightness &middot;{" "}
-        <span className="text-text-subtle">p</span> = adjustment
+        <span className="text-text-faint">p</span> = adjustment
       </div>
     </div>
   );
@@ -590,7 +590,7 @@ function HuePicker({
           className="h-5 w-5 flex-none grid place-items-center rounded-none transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-text-tertiary">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-text-muted">
             <path
               d="M2 2v3h3M10 10V7H7"
               stroke="currentColor"
@@ -664,7 +664,7 @@ export function AboutButton() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="flex items-center gap-1 rounded-none px-2 py-1 text-text-subtle hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
+          className="flex items-center gap-1 rounded-none px-2 py-1 text-text-faint hover:text-text-secondary hover:bg-surface-hover transition-colors cursor-pointer"
           aria-label="About this tool"
         >
           <Info size={14} />
@@ -722,7 +722,7 @@ export function AboutButton() {
                         </div>
                         {/* Helper text */}
                         <div
-                          className="absolute top-1/2 -translate-y-1/2 text-sm text-text-tertiary whitespace-nowrap leading-tight text-right"
+                          className="absolute top-1/2 -translate-y-1/2 text-sm text-text-muted whitespace-nowrap leading-tight text-right"
                           style={{ right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)` }}
                         >
                           Reference hue for<br />examples below
@@ -771,7 +771,7 @@ export function AboutButton() {
 
               {/* Lightness header - right column only */}
               <div className="sm:col-start-2">
-                <span className="text-xs tracking-wide text-text-tertiary mb-1 block">Lightness</span>
+                <span className="text-xs tracking-wide text-text-muted mb-1 block">Lightness</span>
                 <LightnessHeader />
               </div>
 
@@ -779,7 +779,7 @@ export function AboutButton() {
               <div>
                 <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                   <p className="text-xl font-semibold text-text-secondary">Achromatic Baseline</p>
-                  <span className="text-xs tracking-wide text-text-tertiary">Saturation: 0%</span>
+                  <span className="text-xs tracking-wide text-text-muted">Saturation: 0%</span>
                 </div>
                 <p className="leading-relaxed text-text-muted">
                   Unsaturated grayscale. Functional, but lacks character or brand identity.
@@ -791,7 +791,7 @@ export function AboutButton() {
               <div>
                 <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                   <p className="text-xl font-semibold text-text-secondary">Fixed low saturation</p>
-                  <span className="text-xs tracking-wide text-text-tertiary">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
+                  <span className="text-xs tracking-wide text-text-muted">Saturation: {Math.round(SAT_FOR_MID * 100)}%</span>
                 </div>
                 <p className="leading-relaxed text-text-muted">
                   Desired neutral midtones, but dark and light ends become effectively desaturated.
@@ -803,7 +803,7 @@ export function AboutButton() {
               <div className="mb-12">
                 <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                   <p className="text-xl font-semibold text-text-secondary">Fixed high saturation</p>
-                  <span className="text-xs tracking-wide text-text-tertiary">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
+                  <span className="text-xs tracking-wide text-text-muted">Saturation: {Math.round(SAT_FOR_EXTREMES * 100)}%</span>
                 </div>
                 <p className="leading-relaxed text-text-muted">
                   Raising it to recover the extremes pushes the midrange
@@ -821,7 +821,7 @@ export function AboutButton() {
               <div>
                 <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                   <p className="font-semibold text-text-secondary">Perceptual boundary</p>
-                  <span className="text-2xs text-text-tertiary">
+                  <span className="text-2xs text-text-muted">
                     {"Saturation: "}
                     {Math.round(BOUNDARY_SCALE * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                     {"/"}
@@ -841,7 +841,7 @@ export function AboutButton() {
               <div>
                 <div className="grid grid-cols-[1fr_auto] items-baseline gap-2 mb-1">
                   <p className="font-semibold text-text-secondary">Adjusted curve</p>
-                  <span className="text-2xs text-text-tertiary">
+                  <span className="text-2xs text-text-muted">
                     {"Saturation: "}
                     {Math.round(SAT_CURVED * getSaturation(LIGHTNESS_LABELS[0], REF_SMOD, "endpoint") * 100)}
                     {"/"}
@@ -895,7 +895,7 @@ export function AboutButton() {
             <Dialog.Close asChild>
               <button
                 type="button"
-                className="absolute top-4 right-4 text-text-subtle hover:text-text-secondary transition-colors cursor-pointer"
+                className="absolute top-4 right-4 text-text-faint hover:text-text-secondary transition-colors cursor-pointer"
                 aria-label="Close"
               >
                 <X size={16} />

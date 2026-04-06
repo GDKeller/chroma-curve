@@ -46,7 +46,7 @@ function ColorInput({ currentHex, sourceInput, sourceFormat, hue, saturation, on
           <>
             <div className="flex items-center justify-between">
               <span className="text-3xs text-text-faint uppercase tracking-wider">Input</span>
-              <span className="text-xs font-mono text-text-subtle">{sourceInput}</span>
+              <span className="text-xs font-mono text-text-faint">{sourceInput}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-3xs text-text-faint uppercase tracking-wider">H+S at L50</span>
@@ -66,7 +66,7 @@ function ColorInput({ currentHex, sourceInput, sourceFormat, hue, saturation, on
         onChange={(e) => { setValue(e.target.value); setIsInvalid(false); }}
         onKeyDown={handleKeyDown}
         placeholder="#hex, rgb(), hsl(), oklch()"
-        className={`w-full bg-surface-base border px-2 py-1.5 text-xs font-mono text-text-primary placeholder:text-text-faint outline-none transition-colors ${isInvalid ? "border-red-500" : "border-border-default focus:border-text-subtle"}`}
+        className={`w-full bg-surface-base border px-2 py-1.5 text-xs font-mono text-text-primary placeholder:text-text-faint outline-none transition-colors ${isInvalid ? "border-red-500" : "border-border-default focus:border-text-faint"}`}
       />
     </div>
   );
@@ -224,7 +224,7 @@ export function TargetSwatch() {
             className="w-7 h-7 rounded-full border-2 border-surface-base transition-transform group-hover:scale-110 shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
             style={{ backgroundColor: color }}
           />
-          <span className="text-3xs font-mono text-text-faint group-hover:text-text-subtle transition-colors">{currentHex}</span>
+          <span className="text-3xs font-mono text-text-faint group-hover:text-text-faint transition-colors">{currentHex}</span>
         </button>
       </Popover.Trigger>
       <Popover.Portal>
@@ -240,7 +240,7 @@ export function TargetSwatch() {
             style={{ width: PICKER_SIZE, height: PICKER_SIZE }}
             onMouseDown={handleMouseDown}
           />
-          <div className="flex justify-between mt-2 text-sm text-text-subtle">
+          <div className="flex justify-between mt-2 text-sm text-text-faint">
             <span>Hue {hue}°</span>
             <span>Sat {Math.round(saturation * 100)}%</span>
           </div>

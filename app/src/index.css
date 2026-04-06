@@ -19,14 +19,12 @@
 
   /* Text */
   --color-text-primary: hsl(0 0% 98%);
-  --color-text-secondary: hsl(0 0% 88%);
-  --color-text-tertiary: hsl(0 0% 80%);
-  --color-text-muted: hsl(0 0% 76%);
-  --color-text-subtle: hsl(0 0% 70%);
-  --color-text-faint: hsl(0 0% 60%);
+  --color-text-secondary: hsl(0 0% 85%);
+  --color-text-muted: hsl(0 0% 72%);
+  --color-text-faint: hsl(0 0% 48%);
 
   /* Surfaces */
-  --color-surface-base: hsl(0 0% 6%);
+  --color-surface-base: hsl(0 0% 4%);
   --color-surface-raised: hsl(0 0% 8%);
   --color-surface-overlay: hsl(0 0% 10%);
   --color-surface-hover: hsl(0 0% 12%);
