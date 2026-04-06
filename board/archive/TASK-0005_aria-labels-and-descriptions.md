@@ -3,7 +3,7 @@ type: task
 created: 2026-03-16
 status: done
 epic: EPIC-0001
-priority: medium
+priority: 2
 refs: [UX-10, UX-12, UX-13, UX-15, UX-16]
 ---
 

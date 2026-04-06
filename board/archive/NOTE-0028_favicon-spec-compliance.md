@@ -1,10 +1,10 @@
 ---
 type: note
-status: active
+status: processed
 created: 2026-03-31
 ---
 
-# NOTE-0024: Favicon & Web Icon Spec Compliance
+# NOTE-0028: Favicon & Web Icon Spec Compliance
 
 Comprehensive reference for all favicon/icon assets needed for modern best practices. Research conducted 2026-03-31.
 

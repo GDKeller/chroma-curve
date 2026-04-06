@@ -3,7 +3,7 @@ type: task
 created: 2026-03-16
 status: done
 epic: EPIC-0004
-priority: medium
+priority: 2
 refs: [CQ-4]
 ---
 
