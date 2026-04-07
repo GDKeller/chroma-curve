@@ -29,7 +29,7 @@ export function ColorSwatch({ entry, copyFormat, isCopied, onCopy, showLabels = 
   return (
     <button
       type="button"
-      className={`relative flex flex-col justify-start gap-0.5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-base group px-2 py-1.5 ${tall ? "min-h-[240px]" : "min-h-[120px]"}`}
+      className={`relative flex flex-col justify-start gap-1 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-base group px-2 py-1.5 ${tall ? "min-h-[240px]" : "min-h-[120px]"}`}
       style={{ backgroundColor: entry.hex, color: textColor }}
       onClick={() => onCopy(getCopyValue(entry, copyFormat), entry.label)}
       title={`${entry.label} - click to copy ${copyFormat.toUpperCase()}`}

@@ -41,22 +41,22 @@ export function LightnessRange() {
   }
 
   return (
-    <div className="flex flex-col gap-1.5 flex-1 min-w-[140px] sm:min-w-[200px]">
+    <div className="flex flex-col gap-1 flex-1 min-w-[140px] sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm font-semibold text-text-muted uppercase tracking-wider">
+        <span className="text-sm h-6 flex items-center font-semibold text-text-muted uppercase tracking-wider">
           Range
         </span>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setLocked(!locked)}
-            className={`flex items-center text-sm cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
+            className={`flex items-center text-sm h-6 px-1 cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
             title={locked ? "Unlock range" : "Lock range span"}
           >
             {locked ? <Lock size={14} weight="fill" /> : <LockOpen size={14} />}
-            <span className="ml-0.5">{locked ? "locked" : "lock"}</span>
+            <span className="ml-1 leading-none">{locked ? "locked" : "lock"}</span>
           </button>
-          <span className="text-base text-text-primary tabular-nums inline-flex">
+          <span className="text-base items-center text-text-primary tabular-nums inline-flex">
             <span className="w-[2ch] text-right">{lMin}</span>
             <span>–</span>
             <span className="w-[3ch]">{lMax}</span>

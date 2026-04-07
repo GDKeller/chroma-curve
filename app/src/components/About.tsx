@@ -95,7 +95,7 @@ function Strip({ colors, label, mark }: StripProps) {
             const text =
               m === "ok" ? "ok" : m === "high" ? "hi" : m === "low" ? "lo" : null;
             return (
-              <div key={`mark-${i}`} className="text-center leading-1.5">
+              <div key={`mark-${i}`} className="text-center leading-2">
                 {text && (
                   <span className={`text-2xs tracking-wider uppercase ${m === "ok" ? "text-text-secondary" : "text-text-faint"}`}>
                     {text}
@@ -205,11 +205,11 @@ function ColorPickerPlane({ hue }: { hue: number }) {
   }, [boundaryScale, cellSize]);
 
   return (
-    <div className="flex gap-1.5">
+    <div className="flex gap-2">
       <span className="text-sm tracking-wide text-text-faint self-center" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
         Lightness
       </span>
-      <div className="flex flex-col gap-1.5 w-full min-w-0">
+      <div className="flex flex-col gap-2 w-full min-w-0">
         <div className="overflow-hidden border border-border-default">
           <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto block">
             {cells.map((c, i) => (
@@ -296,7 +296,7 @@ function ColorPickerPlane({ hue }: { hue: number }) {
 
 function VisualPanel({ children, label }: { children: React.ReactNode; label: string }) {
   return (
-    <div className="flex gap-1.5">
+    <div className="flex gap-2">
       <span
         className="text-sm tracking-wide text-text-muted self-center shrink-0"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
@@ -457,13 +457,13 @@ function RotatedPicker({ pickerCells, curvePath }: {
 
 function Formula() {
   return (
-    <div className="rounded-none border border-border-default bg-surface-raised px-4 py-2.5 text-text-muted flex items-center justify-between gap-4 flex-wrap">
+    <div className="border border-border-default bg-surface-raised px-4 py-4 text-text-muted flex flex-col gap-4 flex-wrap text-lg font-mono">
       <div>
         <span className="text-text-secondary">S</span>(L) = 1 + ((L - 50)
         <sup>2</sup> / <span className="text-text-muted">p</span> - 50
         <sup>2</sup> / <span className="text-text-muted">p</span>) / 100
       </div>
-      <div className="text-sm text-text-faint">
+      <div className="text-xs text-text-faint">
         L = lightness &middot;{" "}
         <span className="text-text-faint">p</span> = adjustment
       </div>
@@ -483,20 +483,20 @@ function SolutionSection({ hue }: { hue: number }) {
       <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-x-6 gap-y-4">
         {/* Row 1: explanation text | animated picker */}
         <div>
-          <p className="text-2xl font-semibold text-text-secondary mb-3">The solution</p>
-          <p className="leading-relaxed text-text-muted mb-3">
+          <p className="text-2xl font-semibold text-text-secondary mb-4">The solution</p>
+          <p className="leading-relaxed text-text-muted mb-4">
             In a color picker, the boundary between neutral and
             chromatic is not a straight line. It follows a curve:
             colours at the extremes of lightness need more
             saturation to register as tinted, while midtones
             need less.
-            <sup className="text-2xs text-text-faint ml-0.5">1</sup>
+            <sup className="text-2xs text-text-faint ml-1">1</sup>
           </p>
           <p className="leading-relaxed text-text-muted">
             This boundary is approximately parabolic. It can be
             expressed as a formula that takes a lightness value
             and returns a saturation multiplier.
-            <sup className="text-2xs text-text-faint ml-0.5">2</sup>
+            <sup className="text-2xs text-text-faint ml-1">2</sup>
           </p>
         </div>
         <ColorPickerPlane hue={hue} />
@@ -569,16 +569,16 @@ function HuePicker({
   return (
     <div className="space-y-2">
       {/* Presets + reset */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1">
         {HUE_PRESETS.map((p) => (
           <button
             key={p.hue}
             onClick={() => onChange(p.hue)}
             title={`${p.label} (${p.hue}°)`}
-            className="h-5 flex-1 rounded-none transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+            className="h-8 flex-1 rounded-none transition-shadow focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
             style={{
               backgroundColor: `hsl(${p.hue} 100% 50%)`,
-              boxShadow: hue === p.hue ? "0 0 0 1.5px hsl(0 0% 80%)" : "none",
+              boxShadow: hue === p.hue ? "0 0 0 0.125rem hsl(0 0% 100%)" : "none",
             }}
           />
         ))}
@@ -587,10 +587,10 @@ function HuePicker({
         <button
           onClick={onReset}
           title={`Reset to ${DEFAULT_HUE}°`}
-          className="h-5 w-5 flex-none grid place-items-center rounded-none transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
+          className="h-5 w-5 flex-none grid place-items-center transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-overlay"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-text-muted">
+          <svg width="16" height="16" viewBox="0 0 12 12" fill="none" className="text-text-muted">
             <path
               d="M2 2v3h3M10 10V7H7"
               stroke="currentColor"
@@ -732,17 +732,17 @@ export function AboutButton() {
                           className="absolute top-1/2 -translate-y-1/2 text-sm text-text-secondary whitespace-nowrap leading-tight"
                           style={{ left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)` }}
                         >
-                          <div className="flex flex-col gap-1">
-                            <div className="flex gap-1">
+                          <div className="flex p- flex-col gap-1">
+                            <div className="flex gap-2">
                               <span>H:</span>
                               <span>{hue}°</span>
                             </div>
                             <div className="text-text-faint flex flex-col">
-                              <div className="flex gap-1">
+                              <div className="flex gap-2">
                                 <span>S:</span>
                                 <span>100%</span>
                               </div>
-                              <div className="flex gap-1">
+                              <div className="flex gap-2">
                                 <span>L:</span>
                                 <span>50%</span>
                               </div>
@@ -752,10 +752,10 @@ export function AboutButton() {
                       </div>
                       <Popover.Portal>
                         <Popover.Content
-                          side="right"
-                          sideOffset={12}
+                          side="top"
+                          sideOffset={4}
                           align="center"
-                          className="w-56 p-3 rounded-none bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
+                          className="w-80 p-2 bg-surface-overlay border border-border-elevated shadow-xl z-[60]"
                         >
                           <HuePicker
                             hue={hue}

@@ -9,20 +9,20 @@ export function SaturationSlider() {
   const setSatMode = usePaletteStore((s) => s.setSatMode);
 
   return (
-    <div className="flex flex-col gap-1.5 flex-1 w-full sm:w-auto sm:min-w-[200px]">
+    <div className="flex flex-col gap-1 flex-1 w-full sm:w-auto sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm font-semibold text-text-muted uppercase tracking-wider shrink-0">
+        <span className="text-sm flex items-center h-6 font-semibold text-text-muted uppercase tracking-wider shrink-0">
           Saturation
         </span>
         <div className="flex items-center gap-2 min-w-0">
           <button
             type="button"
             onClick={() => setSatMode(satMode === "endpoint" ? "target" : "endpoint")}
-            className={`flex items-center text-sm cursor-pointer transition-colors shrink-0 ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
+            className={`flex items-center text-sm h-6 px-1 cursor-pointer transition-colors shrink-0 ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
             title={satMode === "endpoint" ? "Slider controls endpoint saturation" : "Slider controls target (L50) saturation"}
           >
             {satMode === "target" ? <Crosshair size={14} weight="fill" /> : <ArrowsOutLineHorizontal size={14} />}
-            <span className="ml-0.5">{satMode}</span>
+            <span className="ml-1">{satMode}</span>
           </button>
           <span className="text-base text-text-primary tabular-nums">
             {Math.round(saturation * 100)}%

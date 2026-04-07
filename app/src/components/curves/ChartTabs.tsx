@@ -27,7 +27,7 @@ export function ChartTabs({ entries }: ChartTabsProps) {
 
   return (
     <div className="mx-4 md:mx-0 rounded-none border border-border-default bg-surface-raised overflow-hidden lg:mr-4">
-      <div className="px-4 py-2.5 flex items-center justify-between md:hidden lg:flex">
+      <div className="px-4 py-2 flex items-center justify-between md:hidden lg:flex">
         <h2 className="text-sm font-semibold text-center w-full uppercase text-text-muted tracking-wider">
           Saturation Curve
         </h2>
