@@ -6,7 +6,7 @@ created: 2026-04-06
 
 # Server-side rendering for crawlers and LLMs
 
-All page content is currently rendered client-side, so crawlers and LLMs see an empty shell. We need SSR/SSG for the home page (the only page that exists).
+All page content is currently rendered client-side, so crawlers and LLMs see an empty shell. We need SSG for the home page (the only page that exists).
 
 ## Recommended approach
 
@@ -19,14 +19,29 @@ All page content is currently rendered client-side, so crawlers and LLMs see an 
 - Vite config is minimal: `@vitejs/plugin-react` + `@tailwindcss/vite`
 - Framer Motion `MotionConfig` wraps the app at the root level
 
-## Migration considerations
+## Library details (v0.9.0)
 
-- `vite-react-ssg` replaces `createRoot` with its own entry point; the main change is in `main.tsx`
-- Single-route app so routing setup is trivial (one route: `/`)
-- `usePalette` reads from Zustand store and computes colors — palette generation is deterministic from defaults, so SSG can capture the initial render
-- `useDynamicFavicon` manipulates `<link>` tags in the DOM — needs to be guarded or deferred to client-only execution
-- Framer Motion works with SSR but animations will hydrate on the client
-- Charts (canvas-based via `ChartTabs`) may need lazy/client-only rendering if they depend on `window` or `document`
+- **Not a Vite plugin** — it's a CLI wrapper (`vite-react-ssg build`) + entry point library
+- **Single-page mode**: import from `vite-react-ssg/single-page` — does NOT require react-router-dom
+- **React 19**: supported since v0.8.5, hydration fix in v0.8.7
+- **Vite 7**: supported since v0.8.8
+- **Hydration**: uses `hydrateRoot` internally, fully automatic
+
+## Migration summary
+
+1. Install: `npm i -D vite-react-ssg`
+2. Update build script: `vite build` → `vite-react-ssg build`
+3. Replace `createRoot` in `main.tsx` with `ViteReactSSG()` from `vite-react-ssg/single-page`
+4. No Vite plugin changes, no router needed, no browser-only guards needed
+
+## Browser-only code audit (all safe)
+
+- `useDynamicFavicon` — all APIs inside `useEffect`
+- `useCopyToClipboard` — inside async callback
+- `export.ts` — inside user-triggered function
+- `TargetSwatch.tsx` — inside ref callback + `useEffect`
+- Radix portals render client-only (expected, dialog content isn't crawler-relevant)
+- Zustand store is pure with static defaults — deterministic SSG output
 
 ## What crawlers will see
 
