@@ -6,6 +6,18 @@ created: 2026-04-06
 
 # Server-side rendering for crawlers and LLMs
 
+## Decision (2026-04-09): Superseded by Astro migration
+
+After this note was written, the scope expanded: we also want marketing pages (`/about`, `/how-it-works`, `/examples`), not just a single pre-rendered route. `vite-react-ssg` is a pre-rendering wrapper, not a content platform — it would force us to build marketing pages as React components with no content-collections story.
+
+**Chosen path:** Migrate to Astro with the palette tool as a `client:load` React island at `/` and marketing routes as native Astro pages. Preserves the crawler-visibility goal below while providing a content platform for marketing work. The tool stays at `/` (tool-first, not marketing-first at root) so the clinical-instrument UX is preserved.
+
+See EPIC-0013 for the migration plan. The research below is retained as historical context.
+
+---
+
+## Original research
+
 All page content is currently rendered client-side, so crawlers and LLMs see an empty shell. We need SSG for the home page (the only page that exists).
 
 ## Recommended approach

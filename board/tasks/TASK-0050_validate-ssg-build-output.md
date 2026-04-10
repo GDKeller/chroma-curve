@@ -3,34 +3,31 @@ type: task
 status: backlog
 priority: 2
 created: 2026-04-06
+updated: 2026-04-09
 parent: EPIC-0013
-blocked_by: TASK-0048,TASK-0049
+blocked_by: TASK-0065,TASK-0049
 ---
 
-# TASK-0050: Validate build output contains pre-rendered HTML
+# TASK-0050: Validate Astro build output and browser smoke test
 
-Run the production build and verify the SSG output is correct and hydration works in the browser.
+Run the production Astro build and verify the output is correct: meta tags intact, pre-rendered HTML contains real palette markup, hydration works in the browser, and every route produces a valid page.
 
-## Validation checklist
+## Build output checks (`dist/`)
 
-### Build output (`app/dist/index.html`)
+- [ ] `dist/index.html` contains SSR'd palette markup (palette strip, palette grid, swatch values, header, control labels) — not an empty container
+- [ ] The `sr-only` h1 and description paragraph are present in `dist/index.html`
+- [ ] `<head>` meta tags survived: title, description, OG/Twitter cards, favicons, Typekit `<link>`
+- [ ] Tailwind stylesheet is present with utility classes populated
+- [ ] Island hydration script tag is present and points to the correct bundle
+- [ ] Each marketing page (`dist/about/index.html`, `dist/how-it-works/index.html`, `dist/examples/index.html`) contains its own content
 
-- [ ] `<div id="root">` contains rendered markup (palette grid, header, control labels, swatch values) — not an empty div
-- [ ] `<head>` meta tags survived (title, OG tags, Twitter card, favicons, Typekit link)
-- [ ] Tailwind CSS stylesheet `<link>` is present and populated with utility classes
-- [ ] Script tag references the hydration bundle
+## Browser smoke test
 
-### Browser smoke test
-
-- [ ] Run `npx vite preview` in `app/` and load in browser
-- [ ] Page renders correctly with full palette
-- [ ] No React hydration mismatch warnings in console
-- [ ] No `window is not defined` or `document is not defined` errors in console
-- [ ] Interactive controls work after hydration (hue slider, saturation, export)
-- [ ] Framer Motion animations fire on client (dialog open/close, AnimatePresence)
+- [ ] `npm run preview` (`astro preview`) and load `/` in the browser
+- [ ] Full palette renders with no layout shift during hydration
+- [ ] No hydration mismatch warnings in the console
+- [ ] No `window is not defined` or `document is not defined` errors during build or runtime
+- [ ] All interactive controls work: hue slider, saturation, lightness range, export dialog, about dialog
+- [ ] Framer Motion animations fire on the client (dialog open/close, AnimatePresence transitions)
 - [ ] Dynamic favicon updates after hydration
-
-### Deployment
-
-- [ ] Cloudflare Pages deployment works unchanged (`pages_build_output_dir: "app/dist"`)
-- [ ] Run `wrangler pages dev app/dist` for local deployment smoke test
+- [ ] Marketing pages navigate cleanly from the header nav, and back-navigation to `/` rehydrates correctly

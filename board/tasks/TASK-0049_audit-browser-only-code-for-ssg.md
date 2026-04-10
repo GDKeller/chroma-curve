@@ -1,37 +1,37 @@
 ---
 type: task
 status: backlog
-priority: 1
+priority: 2
 created: 2026-04-06
+updated: 2026-04-09
 parent: EPIC-0013
-blocked_by: TASK-0047
+blocked_by: TASK-0065
 ---
 
-# TASK-0049: Verify browser-only code is SSG-safe
+# TASK-0049: Audit React island hydration for browser-only code
 
-Confirm that all browser API usage (`document`, `navigator`, `window`, `Image`, `canvas`, `URL.createObjectURL`) is inside `useEffect` or event handlers and will not execute during the Node-based SSG build. **No guards are expected to be needed** — this is a verification pass, not a code change task.
+Under Astro with `client:load`, the React island is SSR'd in Node at build time and hydrated in the browser. Any browser API touched during the initial render (not inside `useEffect` or an event handler) will crash the build or cause a hydration mismatch.
 
 ## Files to verify
 
-| File | APIs used | Status |
+| File | APIs used | Expected status |
 |---|---|---|
-| `useDynamicFavicon.ts` | `new Image()`, `URL.createObjectURL`, `canvas`, `document.createElement`, `document.head.appendChild` | All inside `useEffect` — **safe** |
-| `useCopyToClipboard.ts` | `navigator.clipboard` | Inside async callback — **safe** |
-| `export.ts` | `document.createElement("a")`, `URL.createObjectURL` | Inside `downloadPalette()`, user-triggered only — **safe** |
-| `TargetSwatch.tsx` | `canvas.getContext`, `document.addEventListener` | Inside ref callback + `useEffect` — **safe** |
+| `useDynamicFavicon.ts` | `new Image()`, `URL.createObjectURL`, `canvas`, `document.createElement`, `document.head.appendChild` | All inside `useEffect` — safe |
+| `useCopyToClipboard.ts` | `navigator.clipboard` | Inside async callback — safe |
+| `export.ts` | `document.createElement("a")`, `URL.createObjectURL` | Inside user-triggered function — safe |
+| `TargetSwatch.tsx` (and any split files from EPIC-0014) | `canvas.getContext`, `document.addEventListener` | Inside ref callback + `useEffect` — safe |
 
-## Additional checks
+## Additional concerns
 
-- **Framer Motion**: `MotionConfig reducedMotion="user"` reads `window.matchMedia` on the client. Framer Motion v12 has SSR support, but watch for `window is not defined` warnings during `vite-react-ssg build`. If warnings appear, the `<ClientOnly>` component from `vite-react-ssg` can wrap the `MotionConfig`.
-- **Radix UI portals**: `Dialog.Portal` and `Popover.Portal` render into `document.body` client-side only — they will be absent from pre-rendered HTML. This is expected and acceptable (dialog/popover content is not crawler-relevant).
-- **Zustand store**: Pure in-memory store with static defaults, no `localStorage` or `window` access. SSG renders the deterministic default palette.
+- **Framer Motion**: `MotionConfig reducedMotion="user"` reads `window.matchMedia`. Covered separately by TASK-0066.
+- **Radix portals**: `Dialog.Portal` and `Popover.Portal` render into `document.body`. Covered separately by TASK-0067.
+- **Zustand store**: pure in-memory store with static defaults — deterministic SSR output.
+- **Hydration mismatches**: run `astro build && astro preview` and watch the browser console for "Hydration failed" or "Text content does not match" warnings.
 
-## If guards are needed
+## Escape hatches (if needed)
 
-The library provides `<ClientOnly>` for wrapping components that must not render during SSG:
-```tsx
-import { ClientOnly } from "vite-react-ssg";
-<ClientOnly>{() => <BrowserOnlyComponent />}</ClientOnly>
-```
+- Fall back to `client:only="react"` for the palette generator island *(last resort — loses crawler visibility of the default palette)*.
+- Split specific subtrees into their own islands with different hydration strategies.
+- Add conditional rendering guards behind a hydration-ready flag.
 
-As a fallback, `ssgOptions.mock: true` in `vite.config.ts` mocks browser globals during SSG (avoid unless necessary).
+The expectation is that none of these are needed — the existing code is already SSG-safe. This task is a verification pass, not a code-change task.

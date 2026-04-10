@@ -1,6 +1,6 @@
 ---
 type: task
-status: done
+status: in_progress
 priority: 2
 created: 2026-04-04
 ---
