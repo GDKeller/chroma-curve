@@ -1,13 +1,25 @@
 {
+  "private": true,
   "scripts": {
-    "deploy": "cd app && npm run build && cd .. && wrangler pages deploy",
-    "preview": "cd app && npm run build && cd .. && wrangler pages dev",
-    "knip": "knip"
+    "build": "npm run --prefix app build",
+    "check": "npm run --prefix app check",
+    "deploy": "npm run --prefix app build && wrangler pages deploy",
+    "dev": "./scripts/dev.sh",
+    "dev:app": "npm run --prefix app dev",
+    "format": "npm run --prefix app format",
+    "format:fix": "npm run --prefix app format:fix",
+    "knip": "npm run --prefix app knip",
+    "knip:fix": "npm run --prefix app knip:fix",
+    "lint": "npm run --prefix app lint",
+    "lint:fix": "npm run --prefix app lint:fix",
+    "log": "./scripts/log.sh watch",
+    "log:tail": "./scripts/log.sh tail",
+    "preview": "npm run --prefix app preview",
+    "status": "./scripts/status.sh",
+    "stop": "./scripts/stop.sh",
+    "typecheck": "npm run --prefix app typecheck"
   },
   "devDependencies": {
-    "@types/node": "^25.5.2",
-    "knip": "^6.3.0",
-    "typescript": "^6.0.2",
     "wrangler": "^4.78.0"
   }
 }
