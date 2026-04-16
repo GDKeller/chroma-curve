@@ -7,7 +7,7 @@ import { ChartTabs } from "./components/curves/ChartTabs";
 import { usePalette } from "./hooks/usePalette";
 import { useDynamicFavicon } from "./hooks/useDynamicFavicon";
 
-export default function App() {
+export function App() {
   const entries = usePalette();
   useDynamicFavicon();
 

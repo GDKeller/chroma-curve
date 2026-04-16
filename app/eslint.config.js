@@ -62,10 +62,11 @@ export default defineConfig([
       "import/no-cycle": ["error", { maxDepth: 3 }],
       "import/max-dependencies": ["warn", { max: 20 }],
       "react/function-component-definition": [
-        "warn", {
+        "warn",
+        {
           namedComponents: "function-declaration",
           unnamedComponents: "arrow-function",
-        }
+        },
       ],
       "import/no-default-export": "error",
       // "react/no-multi-comp": ["error", { ignoreStateless: false }],
