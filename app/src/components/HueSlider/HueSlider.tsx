@@ -1,5 +1,5 @@
 import { usePaletteStore } from "../../store/paletteStore";
-import { SliderBase } from "./SliderBase";
+import { SliderBase } from "../SliderBase";
 
 const hueTrackStyle: React.CSSProperties = {
   background:

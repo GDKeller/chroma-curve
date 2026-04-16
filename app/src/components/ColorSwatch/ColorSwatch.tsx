@@ -1,5 +1,5 @@
 import { getContrastColor, toOklchString } from "../../lib/colors";
-import { CopyFeedback } from "./CopyFeedback";
+import { CopyFeedback } from "../CopyFeedback";
 import type { ColorEntry, CopyFormat } from "../../types/palette";
 
 interface ColorSwatchProps {

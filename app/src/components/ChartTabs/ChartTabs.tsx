@@ -2,9 +2,9 @@ import { useMemo, useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import chroma from "chroma-js";
 import { Triangle } from "@phosphor-icons/react";
-import { SaturationCurve } from "./SaturationCurve";
-import { EffectiveSaturation } from "./EffectiveSaturation";
-import { ToggleSwitch } from "../controls/ToggleSwitch";
+import { SaturationCurve } from "../SaturationCurve";
+import { EffectiveSaturation } from "../EffectiveSaturation";
+import { ToggleSwitch } from "../ToggleSwitch";
 import { usePaletteStore } from "../../store/paletteStore";
 import type { ColorEntry } from "../../types/palette";
 

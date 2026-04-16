@@ -1,6 +1,6 @@
 import { Copy } from "@phosphor-icons/react";
-import { ExportDialog } from "./export/ExportDialog";
-import { AboutButton } from "./About";
+import { ExportDialog } from "../ExportDialog";
+import { AboutButton } from "../AboutButton";
 
 export function Header() {
   return (

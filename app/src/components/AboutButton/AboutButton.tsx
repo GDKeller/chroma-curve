@@ -4,7 +4,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { AnimatePresence, motion } from "framer-motion";
 import chroma from "chroma-js";
 import { Info, X } from "@phosphor-icons/react";
-import { getSaturation } from "../lib/palette";
+import { getSaturation } from "../../lib/palette";
 
 const DEFAULT_HUE = 220;
 const REF_SMOD = 40;

@@ -1,5 +1,5 @@
 import { usePaletteStore } from "../../store/paletteStore";
-import { SliderBase } from "./SliderBase";
+import { SliderBase } from "../SliderBase";
 
 // Display: 0% = no curve (sMod=0), -1% to -100% = increasing curve strength.
 // Slider is linear in this percentage; we convert to/from sMod internally.

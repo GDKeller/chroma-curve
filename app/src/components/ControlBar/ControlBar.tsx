@@ -1,10 +1,10 @@
-import { HueSlider } from "./HueSlider";
-import { TargetSwatch } from "./TargetSwatch";
-import { TargetFormats } from "./TargetFormats";
-import { SaturationSlider } from "./SaturationSlider";
-import { AdjustmentSlider } from "./AdjustmentSlider";
-import { LightnessRange } from "./LightnessRange";
-import { ChartTabs } from "../curves/ChartTabs";
+import { HueSlider } from "../HueSlider";
+import { TargetSwatch } from "../TargetSwatch";
+import { TargetFormats } from "../TargetFormats";
+import { SaturationSlider } from "../SaturationSlider";
+import { AdjustmentSlider } from "../AdjustmentSlider";
+import { LightnessRange } from "../LightnessRange";
+import { ChartTabs } from "../ChartTabs";
 import { usePalette } from "../../hooks/usePalette";
 
 export function ControlBar() {

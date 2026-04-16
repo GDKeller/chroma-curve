@@ -1,9 +1,9 @@
 import { AppShell } from "./components/AppShell";
 import { Header } from "./components/Header";
-import { ControlBar } from "./components/controls/ControlBar";
-import { PaletteStrip } from "./components/palette/PaletteStrip";
-import { PaletteGrid } from "./components/palette/PaletteGrid";
-import { ChartTabs } from "./components/curves/ChartTabs";
+import { ControlBar } from "./components/ControlBar";
+import { PaletteStrip } from "./components/PaletteStrip";
+import { PaletteGrid } from "./components/PaletteGrid";
+import { ChartTabs } from "./components/ChartTabs";
 import { usePalette } from "./hooks/usePalette";
 import { useDynamicFavicon } from "./hooks/useDynamicFavicon";
 

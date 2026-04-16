@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { ColorSwatch } from "./ColorSwatch";
-import { InlineSelect } from "../controls/InlineSelect";
-import { ToggleSwitch } from "../controls/ToggleSwitch";
+import { ColorSwatch } from "../ColorSwatch";
+import { InlineSelect } from "../InlineSelect";
+import { ToggleSwitch } from "../ToggleSwitch";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import { usePaletteStore } from "../../store/paletteStore";
 import type { ColorEntry, CopyFormat } from "../../types/palette";
