@@ -81,3 +81,22 @@ export function toOklchString(hex: string): string {
   const hR = Math.round(h || 0);
   return `oklch(${lR} ${cR} ${hR})`;
 }
+
+export interface AllFormats {
+  hex: string;
+  rgb: string;
+  hsl: string;
+  oklch: string;
+}
+
+/**
+ * Return all four string representations of a color at hue/sat/L=50.
+ */
+export function formatAllFormats(hue: number, saturation: number): AllFormats {
+  return {
+    hex: formatTargetColor(hue, saturation, "hex"),
+    rgb: formatTargetColor(hue, saturation, "rgb"),
+    hsl: formatTargetColor(hue, saturation, "hsl"),
+    oklch: formatTargetColor(hue, saturation, "oklch"),
+  };
+}

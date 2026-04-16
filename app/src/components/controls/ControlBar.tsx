@@ -1,5 +1,6 @@
 import { HueSlider } from "./HueSlider";
 import { TargetSwatch } from "./TargetSwatch";
+import { TargetFormats } from "./TargetFormats";
 import { SaturationSlider } from "./SaturationSlider";
 import { AdjustmentSlider } from "./AdjustmentSlider";
 import { LightnessRange } from "./LightnessRange";
@@ -28,6 +29,7 @@ export function ControlBar() {
           <AdjustmentSlider />
           <LightnessRange />
         </div>
+        <TargetFormats />
         <div className="hidden md:block lg:hidden">
           <ChartTabs entries={entries} />
         </div>

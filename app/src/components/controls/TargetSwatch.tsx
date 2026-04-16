@@ -1,16 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import chroma from "chroma-js";
 import * as Popover from "@radix-ui/react-popover";
+import { X } from "@phosphor-icons/react";
 import { usePaletteStore } from "../../store/paletteStore";
 import { parseTargetColor, formatTargetColor } from "../../lib/colors";
 import type { ColorFormat } from "../../lib/colors";
 
 const PICKER_SIZE = 200;
 
-function ColorInput({ currentHex, sourceInput, sourceFormat, hue, saturation, onApply }: {
+function ColorInput({
+  currentHex,
+  targetInput,
+  targetFormat,
+  hue,
+  saturation,
+  onApply,
+}: {
   currentHex: string;
-  sourceInput: string | null;
-  sourceFormat: ColorFormat | null;
+  targetInput: string | null;
+  targetFormat: ColorFormat | null;
   hue: number;
   saturation: number;
   onApply: (hue: number, saturation: number, input: string, format: ColorFormat) => void;
@@ -18,8 +26,8 @@ function ColorInput({ currentHex, sourceInput, sourceFormat, hue, saturation, on
   const [value, setValue] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
 
-  const targetFormatted = sourceFormat
-    ? formatTargetColor(hue, saturation, sourceFormat)
+  const targetFormatted = targetFormat
+    ? formatTargetColor(hue, saturation, targetFormat)
     : currentHex;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -41,18 +49,18 @@ function ColorInput({ currentHex, sourceInput, sourceFormat, hue, saturation, on
 
   return (
     <div className="mt-2">
-      <div className="mb-1.5 space-y-0.5">
-        {sourceInput ? (
-          <>
-            <div className="flex items-center justify-between">
-              <span className="text-3xs text-text-faint uppercase tracking-wider">Input</span>
-              <span className="text-xs font-mono text-text-faint">{sourceInput}</span>
+      <div className="mb-1.5">
+        {targetInput ? (
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-baseline gap-1.5 text-xs font-mono">
+              <span className="text-text-secondary">{targetInput}</span>
+              <span className="text-text-faint">→</span>
+              <span className="text-text-primary">{targetFormatted}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-3xs text-text-faint uppercase tracking-wider">H+S at L50</span>
-              <span className="text-xs font-mono text-text-secondary">{targetFormatted}</span>
-            </div>
-          </>
+            <span className="text-4xs text-text-faint uppercase tracking-wider">
+              hue + saturation at L50
+            </span>
+          </div>
         ) : (
           <div className="flex items-center justify-between">
             <span className="text-3xs text-text-faint uppercase tracking-wider">Target</span>
@@ -63,7 +71,10 @@ function ColorInput({ currentHex, sourceInput, sourceFormat, hue, saturation, on
       <input
         type="text"
         value={value}
-        onChange={(e) => { setValue(e.target.value); setIsInvalid(false); }}
+        onChange={(e) => {
+          setValue(e.target.value);
+          setIsInvalid(false);
+        }}
         onKeyDown={handleKeyDown}
         placeholder="#hex, rgb(), hsl(), oklch()"
         className={`w-full bg-surface-base border px-2 py-1.5 text-xs font-mono text-text-primary placeholder:text-text-faint outline-none transition-colors ${isInvalid ? "border-red-500" : "border-border-default focus:border-text-faint"}`}
@@ -77,21 +88,25 @@ export function TargetSwatch() {
   const saturation = usePaletteStore((s) => s.saturation);
   const setHue = usePaletteStore((s) => s.setHue);
   const setSaturation = usePaletteStore((s) => s.setSaturation);
+  const targetInput = usePaletteStore((s) => s.targetInput);
+  const targetFormat = usePaletteStore((s) => s.targetFormat);
+  const targetHue = usePaletteStore((s) => s.targetHue);
+  const targetSat = usePaletteStore((s) => s.targetSat);
+  const setTarget = usePaletteStore((s) => s.setTarget);
+  const clearTarget = usePaletteStore((s) => s.clearTarget);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const draggingRef = useRef(false);
-  const [sourceInput, setSourceInput] = useState<string | null>(null);
-  const [sourceFormat, setSourceFormat] = useState<ColorFormat | null>(null);
-  const [sourceHue, setSourceHue] = useState<number | null>(null);
-  const [sourceSat, setSourceSat] = useState<number | null>(null);
 
-  // Clear source when hue/sat diverge from what the input set
-  const effectiveSourceInput = (
-    sourceInput && sourceHue === hue && sourceSat === saturation
-  ) ? sourceInput : null;
-  const effectiveSourceFormat = effectiveSourceInput ? sourceFormat : null;
+  const targetActive = targetInput !== null;
+  const targetDrifted = targetActive && (hue !== targetHue || saturation !== targetSat);
 
   const color = `hsl(${hue}, ${saturation * 100}%, 50%)`;
   const currentHex = useMemo(() => chroma.hsl(hue, saturation, 0.5).hex(), [hue, saturation]);
+  const ringColor = useMemo(
+    () => (targetActive && !targetDrifted && targetHue !== null ? `hsl(${targetHue}, 80%, 55%)` : null),
+    [targetActive, targetDrifted, targetHue],
+  );
 
   const drawPicker = useCallback(
     (canvas: HTMLCanvasElement) => {
@@ -180,12 +195,11 @@ export function TargetSwatch() {
       ) return;
       const x = (clientX - rect.left) / rect.width;
       const y = (clientY - rect.top) / rect.height;
+      clearTarget();
       setHue(Math.round(x * 360));
       setSaturation(parseFloat((1 - y).toFixed(2)));
-      setSourceInput(null);
-      setSourceFormat(null);
     },
-    [setHue, setSaturation],
+    [setHue, setSaturation, clearTarget],
   );
 
   const handleMouseDown = useCallback(
@@ -214,19 +228,50 @@ export function TargetSwatch() {
 
   return (
     <Popover.Root>
-      <Popover.Trigger asChild>
-        <button
-          type="button"
-          className="flex flex-col items-center gap-1 shrink-0 self-end cursor-pointer group"
-          aria-label={`Target color: ${currentHex}`}
-        >
-          <div
-            className="w-7 h-7 rounded-full border-2 border-surface-base transition-transform group-hover:scale-110 shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
-            style={{ backgroundColor: color }}
-          />
-          <span className="text-3xs font-mono text-text-faint group-hover:text-text-faint transition-colors">{currentHex}</span>
-        </button>
-      </Popover.Trigger>
+      <div className="relative shrink-0 self-end group">
+        <Popover.Trigger asChild>
+          <button
+            type="button"
+            className="flex flex-col items-center gap-1 cursor-pointer"
+            aria-label={
+              targetActive
+                ? `Target color: ${targetInput}${targetDrifted ? " (drifted)" : ""}`
+                : `Current color: ${currentHex}`
+            }
+          >
+            <div
+              className="w-7 h-7 rounded-full transition-transform group-hover:scale-110"
+              style={{
+                backgroundColor: color,
+                border: ringColor ? `2px solid ${ringColor}` : "2px solid var(--color-surface-base)",
+                boxShadow: ringColor
+                  ? `0 0 0 1px ${ringColor}`
+                  : targetDrifted
+                    ? "0 0 0 1px rgba(255,255,255,0.1), inset 0 0 0 1px rgba(0,0,0,0.3)"
+                    : "0 0 0 1px rgba(255,255,255,0.15)",
+                opacity: targetDrifted ? 0.6 : 1,
+              }}
+            />
+            <span
+              className={`text-3xs font-mono transition-colors ${
+                targetActive && !targetDrifted ? "text-text-secondary" : "text-text-faint"
+              }`}
+            >
+              {currentHex}
+            </span>
+          </button>
+        </Popover.Trigger>
+        {targetActive && (
+          <button
+            type="button"
+            onClick={clearTarget}
+            aria-label="Clear target color"
+            className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center rounded-full bg-surface-overlay border border-border-elevated text-text-secondary opacity-0 group-hover:opacity-100 hover:text-text-primary hover:bg-surface-hover transition-opacity z-10"
+          >
+            <X size={10} weight="bold" />
+          </button>
+        )}
+      </div>
       <Popover.Portal>
         <Popover.Content
           sideOffset={8}
@@ -246,11 +291,11 @@ export function TargetSwatch() {
           </div>
           <ColorInput
             currentHex={currentHex}
-            sourceInput={effectiveSourceInput}
-            sourceFormat={effectiveSourceFormat}
+            targetInput={targetInput}
+            targetFormat={targetFormat}
             hue={hue}
             saturation={saturation}
-            onApply={(h, s, input, format) => { setHue(h); setSaturation(s); setSourceInput(input); setSourceFormat(format); setSourceHue(h); setSourceSat(s); }}
+            onApply={setTarget}
           />
           <Popover.Arrow className="fill-surface-overlay" />
         </Popover.Content>
