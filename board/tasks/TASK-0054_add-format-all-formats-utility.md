@@ -1,9 +1,10 @@
 ---
 type: task
-status: backlog
+status: done
 priority: 2
 epic: EPIC-0014
 created: 2026-04-06
+completed: 2026-04-10
 ---
 
 # TASK-0054: Add formatAllFormats() utility to colors.ts

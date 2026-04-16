@@ -1,9 +1,10 @@
 ---
 type: task
-status: backlog
+status: done
 priority: 1
 epic: EPIC-0014
 created: 2026-04-06
+completed: 2026-04-10
 ---
 
 # TASK-0053: Move target color state from local TargetSwatch state to Zustand store
