@@ -1,19 +1,19 @@
 import type { Key } from "react";
 import { W, H, PAD, PLOT_W, PLOT_H, toSvgX, toSvgY } from "./chartConstants";
 
-export interface LightnessChartGridLine {
+interface GridLine {
   value: number;
   label: string;
 }
 
-export interface LightnessChartDot {
+interface Dot {
   key: Key;
   lightness: number;
   value: number;
   fill: string;
 }
 
-export interface LightnessChartPoint {
+interface Point {
   lightness: number;
   value: number;
 }
@@ -23,10 +23,10 @@ interface LightnessChartProps {
   title: string;
   yAxisLabel: string;
   yDomain: [yMin: number, yMax: number];
-  gridLines: LightnessChartGridLine[];
+  gridLines: GridLine[];
   baseline: { value: number };
-  curvePoints: LightnessChartPoint[];
-  dots: LightnessChartDot[];
+  curvePoints: Point[];
+  dots: Dot[];
   showDots: boolean;
 }
 

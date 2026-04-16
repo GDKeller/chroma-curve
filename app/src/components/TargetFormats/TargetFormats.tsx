@@ -1,11 +1,8 @@
 import { usePaletteStore } from "../../store/paletteStore";
-import { formatAllFormats } from "../../lib/colors";
+import { formatAllFormats, type AllFormats } from "../../lib/colors";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
-const LABELS: Array<{
-  key: keyof ReturnType<typeof formatAllFormats>;
-  label: string;
-}> = [
+const LABELS: Array<{ key: keyof AllFormats; label: string }> = [
   { key: "hex", label: "HEX" },
   { key: "rgb", label: "RGB" },
   { key: "hsl", label: "HSL" },
