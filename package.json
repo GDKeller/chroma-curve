@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "npm run --prefix app build",
-    "check": "npm run --prefix app check",
+    "verify": "npm run --prefix app verify",
     "deploy": "npm run --prefix app build && wrangler pages deploy",
     "dev": "./scripts/dev.sh",
     "dev:app": "npm run --prefix app dev",
