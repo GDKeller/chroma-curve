@@ -29,7 +29,7 @@ export default defineConfig([
           max: 300,
           skipBlankLines: true,
           skipComments: true,
-        }
+        },
       ],
       "max-lines-per-function": [
         "error",
@@ -37,16 +37,11 @@ export default defineConfig([
           max: 50,
           skipBlankLines: true,
           skipComments: true,
-          IIFEs: true
-        }
+          IIFEs: true,
+        },
       ],
-      "max-statements": [
-        "error", 20
-      ],
-      complexity: [
-        "error",
-        12
-      ],
-    }
+      "max-statements": ["error", 20],
+      complexity: ["error", 12],
+    },
   },
 ]);

@@ -25,17 +25,17 @@ export function SliderBase({
   const displayValue = formatValue ? formatValue(value) : String(value);
 
   return (
-    <div className="flex flex-col gap-1 flex-1 min-w-[140px] sm:min-w-[200px]">
+    <div className="flex min-w-[140px] flex-1 flex-col gap-1 sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm h-6 flex items-center font-semibold text-text-muted uppercase tracking-wider">
+        <span className="text-text-muted flex h-6 items-center text-sm font-semibold tracking-wider uppercase">
           {label}
         </span>
-        <span className="text-base flex items-center text-text-primary tabular-nums">
+        <span className="text-text-primary flex items-center text-base tabular-nums">
           {displayValue}
         </span>
       </div>
       <Slider.Root
-        className="relative flex items-center select-none touch-none h-5 cursor-pointer"
+        className="relative flex h-5 cursor-pointer touch-none items-center select-none"
         value={[value]}
         min={min}
         max={max}
@@ -43,13 +43,15 @@ export function SliderBase({
         onValueChange={([v]) => onValueChange(v)}
       >
         <Slider.Track
-          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
+          className="bg-border-elevated relative h-[6px] grow overflow-hidden rounded-full"
           style={trackStyle}
         >
-          <Slider.Range className={`absolute h-full rounded-full ${trackStyle ? "" : "bg-surface-active-hover"}`} />
+          <Slider.Range
+            className={`absolute h-full rounded-full ${trackStyle ? "" : "bg-surface-active-hover"}`}
+          />
         </Slider.Track>
         <Slider.Thumb
-          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+          className="block h-4 w-4 rounded-full border-2 border-white bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
           aria-label={label}
         />
       </Slider.Root>

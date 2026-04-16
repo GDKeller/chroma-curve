@@ -41,22 +41,24 @@ export function LightnessRange() {
   }
 
   return (
-    <div className="flex flex-col gap-1 flex-1 min-w-[140px] sm:min-w-[200px]">
+    <div className="flex min-w-[140px] flex-1 flex-col gap-1 sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm h-6 flex items-center font-semibold text-text-muted uppercase tracking-wider">
+        <span className="text-text-muted flex h-6 items-center text-sm font-semibold tracking-wider uppercase">
           Range
         </span>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setLocked(!locked)}
-            className={`flex items-center text-sm h-6 px-1 cursor-pointer transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
+            className={`flex h-6 cursor-pointer items-center px-1 text-sm transition-colors ${locked ? "text-text-primary" : "text-text-faint"}`}
             title={locked ? "Unlock range" : "Lock range span"}
           >
             {locked ? <Lock size={14} weight="fill" /> : <LockOpen size={14} />}
-            <span className="ml-1 leading-none">{locked ? "locked" : "lock"}</span>
+            <span className="ml-1 leading-none">
+              {locked ? "locked" : "lock"}
+            </span>
           </button>
-          <span className="text-base items-center text-text-primary tabular-nums inline-flex">
+          <span className="text-text-primary inline-flex items-center text-base tabular-nums">
             <span className="w-[2ch] text-right">{lMin}</span>
             <span>–</span>
             <span className="w-[3ch]">{lMax}</span>
@@ -64,7 +66,7 @@ export function LightnessRange() {
         </div>
       </div>
       <Slider.Root
-        className="relative flex items-center select-none touch-none h-5 cursor-pointer"
+        className="relative flex h-5 cursor-pointer touch-none items-center select-none"
         value={[lMin, lMax]}
         min={0}
         max={100}
@@ -73,19 +75,20 @@ export function LightnessRange() {
         onValueChange={handleChange}
       >
         <Slider.Track
-          className="relative grow rounded-full h-[6px] overflow-hidden"
+          className="relative h-[6px] grow overflow-hidden rounded-full"
           style={{
-            background: "linear-gradient(to right, hsl(0 0% 0%), hsl(0 0% 100%))",
+            background:
+              "linear-gradient(to right, hsl(0 0% 0%), hsl(0 0% 100%))",
           }}
         >
-          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+          <Slider.Range className="bg-surface-active-hover absolute h-full rounded-full" />
         </Slider.Track>
         <Slider.Thumb
-          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+          className="block h-4 w-4 rounded-full border-2 border-white bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
           aria-label="Minimum lightness"
         />
         <Slider.Thumb
-          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+          className="block h-4 w-4 rounded-full border-2 border-white bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
           aria-label="Maximum lightness"
         />
       </Slider.Root>

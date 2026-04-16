@@ -23,7 +23,7 @@ export function ExportDialog() {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="px-4 py-1.5 text-sm font-medium rounded-none bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer flex items-center gap-1.5"
+          className="bg-surface-active text-text-primary hover:bg-surface-active-hover flex cursor-pointer items-center gap-1.5 rounded-none px-4 py-1.5 text-sm font-medium transition-colors"
         >
           <Export size={16} />
           Export
@@ -38,7 +38,7 @@ export function ExportDialog() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+                className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
               />
             </Dialog.Overlay>
             <Dialog.Content asChild>
@@ -47,9 +47,9 @@ export function ExportDialog() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-xl p-6 rounded-none bg-surface-overlay border border-border-elevated shadow-2xl"
+                className="bg-surface-overlay border-border-elevated fixed top-1/2 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-none border p-6 shadow-2xl"
               >
-                <Dialog.Title className="text-lg font-semibold text-text-primary mb-4">
+                <Dialog.Title className="text-text-primary mb-4 text-lg font-semibold">
                   Export Palette
                 </Dialog.Title>
                 <Dialog.Description className="sr-only">
@@ -70,7 +70,7 @@ export function ExportDialog() {
                 <Dialog.Close asChild>
                   <button
                     type="button"
-                    className="absolute top-4 right-4 text-text-faint hover:text-text-secondary transition-colors cursor-pointer"
+                    className="text-text-faint hover:text-text-secondary absolute top-4 right-4 cursor-pointer transition-colors"
                     aria-label="Close"
                   >
                     <X size={16} />

@@ -13,10 +13,12 @@ export function ControlBar() {
   return (
     <section
       aria-labelledby="controls-heading"
-      className="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 md:px-4 lg:px-6 border-b border-border-default bg-surface-raised/85 backdrop-blur-xl"
+      className="border-border-default bg-surface-raised/85 sticky top-0 z-50 border-b px-4 py-3 backdrop-blur-xl sm:px-6 sm:py-4 md:px-4 lg:px-6"
     >
-      <h2 id="controls-heading" className="sr-only">Palette controls</h2>
-      <div className="max-w-5xl mx-auto md:grid md:grid-cols-[1fr_10rem] md:gap-x-4 md:items-start lg:block">
+      <h2 id="controls-heading" className="sr-only">
+        Palette controls
+      </h2>
+      <div className="mx-auto max-w-5xl md:grid md:grid-cols-[1fr_10rem] md:items-start md:gap-x-4 lg:block">
         <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-4 lg:flex lg:flex-row lg:flex-wrap lg:gap-6">
           <h3 className="sr-only">Target color</h3>
           <div className="flex gap-4 sm:gap-6">
@@ -24,7 +26,7 @@ export function ControlBar() {
             <TargetSwatch />
           </div>
           <SaturationSlider />
-          <div className="hidden lg:block w-px self-stretch bg-border-default mx-2" />
+          <div className="bg-border-default mx-2 hidden w-px self-stretch lg:block" />
           <h3 className="sr-only">Curve adjustment</h3>
           <AdjustmentSlider />
           <LightnessRange />

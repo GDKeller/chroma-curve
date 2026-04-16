@@ -58,7 +58,11 @@ export function parseTargetColor(
 /**
  * Format a color at hue/sat/L=50 in the given format.
  */
-export function formatTargetColor(hue: number, saturation: number, format: ColorFormat): string {
+export function formatTargetColor(
+  hue: number,
+  saturation: number,
+  format: ColorFormat,
+): string {
   const color = chroma.hsl(hue, saturation, 0.5);
   switch (format) {
     case "hsl":

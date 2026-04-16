@@ -14,57 +14,66 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
   const saturation = usePaletteStore((s) => s.saturation);
   const satMode = usePaletteStore((s) => s.satMode);
 
-  const { curvePath, yMin, yMax, effectiveDots, gridLines, gridTop } = useMemo(() => {
-    // Sample the curve at every integer lightness
-    const points: { x: number; y: number }[] = [];
-    for (let l = 0; l <= 100; l++) {
-      points.push({ x: l, y: getSaturation(l, sMod, satMode) });
-    }
+  const { curvePath, yMin, yMax, effectiveDots, gridLines, gridTop } =
+    useMemo(() => {
+      // Sample the curve at every integer lightness
+      const points: { x: number; y: number }[] = [];
+      for (let l = 0; l <= 100; l++) {
+        points.push({ x: l, y: getSaturation(l, sMod, satMode) });
+      }
 
-    const allY = points.map((p) => p.y);
-    const yMin = Math.min(...allY, 0);
-    const rawMax = Math.max(...allY);
-    // Snap to next 0.25 step so the chart fills the plot area cleanly
-    const yMax = Math.ceil(rawMax / 0.25) * 0.25;
+      const allY = points.map((p) => p.y);
+      const yMin = Math.min(...allY, 0);
+      const rawMax = Math.max(...allY);
+      // Snap to next 0.25 step so the chart fills the plot area cleanly
+      const yMax = Math.ceil(rawMax / 0.25) * 0.25;
 
-    // Build SVG path for the multiplier curve
-    const pathParts = points.map((p, i) => {
-      const cmd = i === 0 ? "M" : "L";
-      return `${cmd}${toSvgX(p.x).toFixed(2)},${toSvgY(p.y, yMin, yMax).toFixed(2)}`;
-    });
+      // Build SVG path for the multiplier curve
+      const pathParts = points.map((p, i) => {
+        const cmd = i === 0 ? "M" : "L";
+        return `${cmd}${toSvgX(p.x).toFixed(2)},${toSvgY(p.y, yMin, yMax).toFixed(2)}`;
+      });
 
-    // Dots for each palette entry showing effective saturation
-    const effectiveDots = entries.map((e) => {
-      const sK = getSaturation(e.lightness, sMod, satMode);
-      const effective = saturation * sK;
+      // Dots for each palette entry showing effective saturation
+      const effectiveDots = entries.map((e) => {
+        const sK = getSaturation(e.lightness, sMod, satMode);
+        const effective = saturation * sK;
+        return {
+          cx: toSvgX(e.lightness),
+          cy: toSvgY(sK, yMin, yMax),
+          effective: Math.round(effective * 100),
+          lightness: e.lightness,
+          hex: e.hex,
+        };
+      });
+
+      // Horizontal grid lines at round values, always including 1.0
+      const step = yMax - yMin > 1.5 ? 0.5 : 0.25;
+      const gridVals: number[] = [];
+      const lo = Math.ceil(yMin / step) * step;
+      for (let v = lo; v <= yMax; v += step) {
+        gridVals.push(parseFloat(v.toFixed(2)));
+      }
+      if (!gridVals.includes(1)) gridVals.push(1);
+      const gridLines = gridVals
+        .sort((a, b) => a - b)
+        .map((v) => ({
+          y: toSvgY(v, yMin, yMax),
+          label: v.toFixed(2),
+        }));
+
+      const gridTop =
+        gridLines.length > 0 ? Math.min(...gridLines.map((g) => g.y)) : PAD.top;
+
       return {
-        cx: toSvgX(e.lightness),
-        cy: toSvgY(sK, yMin, yMax),
-        effective: Math.round(effective * 100),
-        lightness: e.lightness,
-        hex: e.hex,
+        curvePath: pathParts.join(""),
+        yMin,
+        yMax,
+        effectiveDots,
+        gridLines,
+        gridTop,
       };
-    });
-
-    // Horizontal grid lines at round values, always including 1.0
-    const step = yMax - yMin > 1.5 ? 0.5 : 0.25;
-    const gridVals: number[] = [];
-    const lo = Math.ceil(yMin / step) * step;
-    for (let v = lo; v <= yMax; v += step) {
-      gridVals.push(parseFloat(v.toFixed(2)));
-    }
-    if (!gridVals.includes(1)) gridVals.push(1);
-    const gridLines = gridVals
-      .sort((a, b) => a - b)
-      .map((v) => ({
-        y: toSvgY(v, yMin, yMax),
-        label: v.toFixed(2),
-      }));
-
-    const gridTop = gridLines.length > 0 ? Math.min(...gridLines.map((g) => g.y)) : PAD.top;
-
-    return { curvePath: pathParts.join(""), yMin, yMax, effectiveDots, gridLines, gridTop };
-  }, [sMod, saturation, satMode, entries]);
+    }, [sMod, saturation, satMode, entries]);
 
   // Vertical grid lines at lightness landmarks
   const xGridValues = [0, 25, 50, 75, 100];
@@ -73,7 +82,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
     <div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full h-auto"
+        className="h-auto w-full"
         role="img"
         aria-labelledby="sat-curve-title"
       >
@@ -93,7 +102,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-base fill-text-faint"
+              className="fill-text-faint text-base"
             >
               {g.label}
             </text>
@@ -115,7 +124,7 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-base fill-text-faint"
+              className="fill-text-faint text-base"
             >
               {l}
             </text>
@@ -163,19 +172,19 @@ export function SaturationCurve({ entries, showDots }: SaturationCurveProps) {
         />
 
         {/* Palette entry dots */}
-        {showDots && effectiveDots.map((d) => (
-          <circle
-            key={d.lightness}
-            cx={d.cx}
-            cy={d.cy}
-            r={3}
-            fill={d.hex}
-            stroke="var(--color-stroke-secondary)"
-            strokeWidth={1}
-          />
-        ))}
+        {showDots &&
+          effectiveDots.map((d) => (
+            <circle
+              key={d.lightness}
+              cx={d.cx}
+              cy={d.cy}
+              r={3}
+              fill={d.hex}
+              stroke="var(--color-stroke-secondary)"
+              strokeWidth={1}
+            />
+          ))}
       </svg>
-
     </div>
   );
 }

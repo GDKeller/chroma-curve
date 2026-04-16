@@ -9,7 +9,10 @@ export function PaletteStrip({ entries }: PaletteStripProps) {
   const reversed = useMemo(() => [...entries].reverse(), [entries]);
 
   return (
-    <div aria-hidden="true" className="h-14 rounded-none overflow-hidden grid grid-flow-col auto-cols-fr mx-4">
+    <div
+      aria-hidden="true"
+      className="mx-4 grid h-14 auto-cols-fr grid-flow-col overflow-hidden rounded-none"
+    >
       {reversed.map((entry) => (
         <div
           key={entry.label}

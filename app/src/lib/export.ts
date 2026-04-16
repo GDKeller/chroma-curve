@@ -79,7 +79,7 @@ function formatTailwindV3(entries: ColorEntry[], space: ColorSpace): string {
     "  theme: {",
     "    extend: {",
     "      colors: {",
-    '        grey: {',
+    "        grey: {",
     ...lines,
     "        },",
     "      },",
@@ -90,9 +90,7 @@ function formatTailwindV3(entries: ColorEntry[], space: ColorSpace): string {
 }
 
 function formatSCSS(entries: ColorEntry[], space: ColorSpace): string {
-  return entries
-    .map((e) => `$${e.label}: ${colorValue(e, space)};`)
-    .join("\n");
+  return entries.map((e) => `$${e.label}: ${colorValue(e, space)};`).join("\n");
 }
 
 function formatJS(entries: ColorEntry[], space: ColorSpace): string {
@@ -115,11 +113,18 @@ function formatJSON(entries: ColorEntry[], space: ColorSpace): string {
 }
 
 function formatGPL(entries: ColorEntry[]): string {
-  const lines = ["GIMP Palette", "Name: Grey Neutrals", `Columns: ${entries.length}`, "#"];
+  const lines = [
+    "GIMP Palette",
+    "Name: Grey Neutrals",
+    `Columns: ${entries.length}`,
+    "#",
+  ];
   for (const e of entries) {
     const c = chroma(e.hex);
     const [r, g, b] = c.rgb();
-    lines.push(`${String(Math.round(r)).padStart(3)} ${String(Math.round(g)).padStart(3)} ${String(Math.round(b)).padStart(3)}\t${e.label}`);
+    lines.push(
+      `${String(Math.round(r)).padStart(3)} ${String(Math.round(g)).padStart(3)} ${String(Math.round(b)).padStart(3)}\t${e.label}`,
+    );
   }
   return lines.join("\n");
 }

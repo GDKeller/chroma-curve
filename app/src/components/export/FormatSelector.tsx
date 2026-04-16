@@ -39,13 +39,13 @@ export function FormatSelector({
   return (
     <div className="flex flex-col gap-3">
       <div>
-        <span className="text-sm text-text-faint uppercase tracking-wider mb-1 block">
+        <span className="text-text-faint mb-1 block text-sm tracking-wider uppercase">
           Format
         </span>
         <div
           role="radiogroup"
           aria-label="Export format"
-          className="flex gap-1 p-1 rounded-none bg-surface-overlay"
+          className="bg-surface-overlay flex gap-1 rounded-none p-1"
         >
           {formats.map((f) => (
             <button
@@ -61,13 +61,13 @@ export function FormatSelector({
         </div>
       </div>
       <div>
-        <span className="text-sm text-text-faint uppercase tracking-wider mb-1 block">
+        <span className="text-text-faint mb-1 block text-sm tracking-wider uppercase">
           Color Space
         </span>
         <div
           role="radiogroup"
           aria-label="Color space"
-          className="flex gap-1 p-1 rounded-none bg-surface-overlay"
+          className="bg-surface-overlay flex gap-1 rounded-none p-1"
         >
           {spaces.map((s) => (
             <button

@@ -10,7 +10,7 @@ export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
 
   return (
     <div className="relative">
-      <pre className="p-4 rounded-none bg-black/60 border border-border-default overflow-auto max-h-[400px] text-base leading-relaxed text-text-primary">
+      <pre className="border-border-default text-text-primary max-h-[400px] overflow-auto rounded-none border bg-black/60 p-4 text-base leading-relaxed">
         {code}
       </pre>
       <div className="absolute top-3 right-3 flex gap-2">
@@ -18,7 +18,7 @@ export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
           type="button"
           onClick={onDownload}
           aria-label="Download palette file"
-          className="px-3 py-1 text-sm font-medium rounded-none bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+          className="bg-surface-active text-text-primary hover:bg-surface-active-hover cursor-pointer rounded-none px-3 py-1 text-sm font-medium transition-colors"
         >
           Download
         </button>
@@ -26,7 +26,7 @@ export function ExportPreview({ code, onDownload }: ExportPreviewProps) {
           type="button"
           onClick={() => copy(code, "export")}
           aria-label="Copy palette code"
-          className="px-3 py-1 text-sm font-medium rounded-none bg-surface-active text-text-primary hover:bg-surface-active-hover transition-colors cursor-pointer"
+          className="bg-surface-active text-text-primary hover:bg-surface-active-hover cursor-pointer rounded-none px-3 py-1 text-sm font-medium transition-colors"
         >
           {copiedLabel === "export" ? "Copied!" : "Copy"}
         </button>

@@ -4,7 +4,7 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <main className="min-h-screen bg-surface-base text-white font-sans">
+    <main className="bg-surface-base min-h-screen font-sans text-white">
       {children}
     </main>
   );

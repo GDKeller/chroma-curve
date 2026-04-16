@@ -9,41 +9,49 @@ export function SaturationSlider() {
   const setSatMode = usePaletteStore((s) => s.setSatMode);
 
   return (
-    <div className="flex flex-col gap-1 flex-1 w-full sm:w-auto sm:min-w-[200px]">
+    <div className="flex w-full flex-1 flex-col gap-1 sm:w-auto sm:min-w-[200px]">
       <div className="flex items-center justify-between px-1">
-        <span className="text-sm flex items-center h-6 font-semibold text-text-muted uppercase tracking-wider shrink-0">
+        <span className="text-text-muted flex h-6 shrink-0 items-center text-sm font-semibold tracking-wider uppercase">
           Saturation
         </span>
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex min-w-0 items-center gap-2">
           <button
             type="button"
-            onClick={() => setSatMode(satMode === "endpoint" ? "target" : "endpoint")}
-            className={`flex items-center text-sm h-6 px-1 cursor-pointer transition-colors shrink-0 ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
-            title={satMode === "endpoint" ? "Slider controls endpoint saturation" : "Slider controls target (L50) saturation"}
+            onClick={() =>
+              setSatMode(satMode === "endpoint" ? "target" : "endpoint")
+            }
+            className={`flex h-6 shrink-0 cursor-pointer items-center px-1 text-sm transition-colors ${satMode === "target" ? "text-text-primary" : "text-text-faint"}`}
+            title={
+              satMode === "endpoint"
+                ? "Slider controls endpoint saturation"
+                : "Slider controls target (L50) saturation"
+            }
           >
-            {satMode === "target" ? <Crosshair size={14} weight="fill" /> : <ArrowsOutLineHorizontal size={14} />}
+            {satMode === "target" ? (
+              <Crosshair size={14} weight="fill" />
+            ) : (
+              <ArrowsOutLineHorizontal size={14} />
+            )}
             <span className="ml-1">{satMode}</span>
           </button>
-          <span className="text-base text-text-primary tabular-nums">
+          <span className="text-text-primary text-base tabular-nums">
             {Math.round(saturation * 100)}%
           </span>
         </div>
       </div>
       <Slider.Root
-        className="relative flex items-center select-none touch-none h-5 cursor-pointer"
+        className="relative flex h-5 cursor-pointer touch-none items-center select-none"
         value={[saturation]}
         min={0}
         max={1}
         step={0.01}
         onValueChange={([v]) => setSaturation(v)}
       >
-        <Slider.Track
-          className="relative grow rounded-full h-[6px] overflow-hidden bg-border-elevated"
-        >
-          <Slider.Range className="absolute h-full rounded-full bg-surface-active-hover" />
+        <Slider.Track className="bg-border-elevated relative h-[6px] grow overflow-hidden rounded-full">
+          <Slider.Range className="bg-surface-active-hover absolute h-full rounded-full" />
         </Slider.Track>
         <Slider.Thumb
-          className="block w-4 h-4 rounded-full bg-white border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 transition-transform hover:scale-110"
+          className="block h-4 w-4 rounded-full border-2 border-white bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.3),0_2px_4px_rgba(0,0,0,0.4)] transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:outline-none"
           aria-label="Saturation"
         />
       </Slider.Root>

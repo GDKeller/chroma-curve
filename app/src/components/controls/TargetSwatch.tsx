@@ -21,7 +21,12 @@ function ColorInput({
   targetFormat: ColorFormat | null;
   hue: number;
   saturation: number;
-  onApply: (hue: number, saturation: number, input: string, format: ColorFormat) => void;
+  onApply: (
+    hue: number,
+    saturation: number,
+    input: string,
+    format: ColorFormat,
+  ) => void;
 }) {
   const [value, setValue] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
@@ -52,19 +57,23 @@ function ColorInput({
       <div className="mb-1.5">
         {targetInput ? (
           <div className="flex flex-col gap-0.5">
-            <div className="flex items-baseline gap-1.5 text-xs font-mono">
+            <div className="flex items-baseline gap-1.5 font-mono text-xs">
               <span className="text-text-secondary">{targetInput}</span>
               <span className="text-text-faint">→</span>
               <span className="text-text-primary">{targetFormatted}</span>
             </div>
-            <span className="text-4xs text-text-faint uppercase tracking-wider">
+            <span className="text-4xs text-text-faint tracking-wider uppercase">
               hue + saturation at L50
             </span>
           </div>
         ) : (
           <div className="flex items-center justify-between">
-            <span className="text-3xs text-text-faint uppercase tracking-wider">Target</span>
-            <span className="text-xs font-mono text-text-secondary">{currentHex}</span>
+            <span className="text-3xs text-text-faint tracking-wider uppercase">
+              Target
+            </span>
+            <span className="text-text-secondary font-mono text-xs">
+              {currentHex}
+            </span>
           </div>
         )}
       </div>
@@ -77,7 +86,7 @@ function ColorInput({
         }}
         onKeyDown={handleKeyDown}
         placeholder="#hex, rgb(), hsl(), oklch()"
-        className={`w-full bg-surface-base border px-2 py-1.5 text-xs font-mono text-text-primary placeholder:text-text-faint outline-none transition-colors ${isInvalid ? "border-red-500" : "border-border-default focus:border-text-faint"}`}
+        className={`bg-surface-base text-text-primary placeholder:text-text-faint w-full border px-2 py-1.5 font-mono text-xs transition-colors outline-none ${isInvalid ? "border-red-500" : "border-border-default focus:border-text-faint"}`}
       />
     </div>
   );
@@ -99,12 +108,19 @@ export function TargetSwatch() {
   const draggingRef = useRef(false);
 
   const targetActive = targetInput !== null;
-  const targetDrifted = targetActive && (hue !== targetHue || saturation !== targetSat);
+  const targetDrifted =
+    targetActive && (hue !== targetHue || saturation !== targetSat);
 
   const color = `hsl(${hue}, ${saturation * 100}%, 50%)`;
-  const currentHex = useMemo(() => chroma.hsl(hue, saturation, 0.5).hex(), [hue, saturation]);
+  const currentHex = useMemo(
+    () => chroma.hsl(hue, saturation, 0.5).hex(),
+    [hue, saturation],
+  );
   const ringColor = useMemo(
-    () => (targetActive && !targetDrifted && targetHue !== null ? `hsl(${targetHue}, 80%, 55%)` : null),
+    () =>
+      targetActive && !targetDrifted && targetHue !== null
+        ? `hsl(${targetHue}, 80%, 55%)`
+        : null,
     [targetActive, targetDrifted, targetHue],
   );
 
@@ -192,7 +208,8 @@ export function TargetSwatch() {
         clientX > rect.right ||
         clientY < rect.top ||
         clientY > rect.bottom
-      ) return;
+      )
+        return;
       const x = (clientX - rect.left) / rect.width;
       const y = (clientY - rect.top) / rect.height;
       clearTarget();
@@ -228,11 +245,11 @@ export function TargetSwatch() {
 
   return (
     <Popover.Root>
-      <div className="relative shrink-0 self-end group">
+      <div className="group relative shrink-0 self-end">
         <Popover.Trigger asChild>
           <button
             type="button"
-            className="flex flex-col items-center gap-1 cursor-pointer"
+            className="flex cursor-pointer flex-col items-center gap-1"
             aria-label={
               targetActive
                 ? `Target color: ${targetInput}${targetDrifted ? " (drifted)" : ""}`
@@ -240,10 +257,12 @@ export function TargetSwatch() {
             }
           >
             <div
-              className="w-7 h-7 rounded-full transition-transform group-hover:scale-110"
+              className="h-7 w-7 rounded-full transition-transform group-hover:scale-110"
               style={{
                 backgroundColor: color,
-                border: ringColor ? `2px solid ${ringColor}` : "2px solid var(--color-surface-base)",
+                border: ringColor
+                  ? `2px solid ${ringColor}`
+                  : "2px solid var(--color-surface-base)",
                 boxShadow: ringColor
                   ? `0 0 0 1px ${ringColor}`
                   : targetDrifted
@@ -254,7 +273,9 @@ export function TargetSwatch() {
             />
             <span
               className={`text-3xs font-mono transition-colors ${
-                targetActive && !targetDrifted ? "text-text-secondary" : "text-text-faint"
+                targetActive && !targetDrifted
+                  ? "text-text-secondary"
+                  : "text-text-faint"
               }`}
             >
               {currentHex}
@@ -266,7 +287,7 @@ export function TargetSwatch() {
             type="button"
             onClick={clearTarget}
             aria-label="Clear target color"
-            className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center rounded-full bg-surface-overlay border border-border-elevated text-text-secondary opacity-0 group-hover:opacity-100 hover:text-text-primary hover:bg-surface-hover transition-opacity z-10"
+            className="bg-surface-overlay border-border-elevated text-text-secondary hover:text-text-primary hover:bg-surface-hover absolute -top-1 -right-1 z-10 flex h-4 w-4 items-center justify-center rounded-full border opacity-0 transition-opacity group-hover:opacity-100"
           >
             <X size={10} weight="bold" />
           </button>
@@ -275,17 +296,17 @@ export function TargetSwatch() {
       <Popover.Portal>
         <Popover.Content
           sideOffset={8}
-          className="rounded-none bg-surface-overlay border border-border-elevated shadow-xl p-3 z-[60]"
+          className="bg-surface-overlay border-border-elevated z-[60] rounded-none border p-3 shadow-xl"
         >
           <canvas
             ref={handleCanvasRef}
             width={PICKER_SIZE}
             height={PICKER_SIZE}
-            className="cursor-crosshair block"
+            className="block cursor-crosshair"
             style={{ width: PICKER_SIZE, height: PICKER_SIZE }}
             onMouseDown={handleMouseDown}
           />
-          <div className="flex justify-between mt-2 text-sm text-text-faint">
+          <div className="text-text-faint mt-2 flex justify-between text-sm">
             <span>Hue {hue}°</span>
             <span>Sat {Math.round(saturation * 100)}%</span>
           </div>

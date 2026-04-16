@@ -9,7 +9,10 @@ interface EffectiveSaturationProps {
   showDots: boolean;
 }
 
-export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationProps) {
+export function EffectiveSaturation({
+  entries,
+  showDots,
+}: EffectiveSaturationProps) {
   const sMod = usePaletteStore((s) => s.sMod);
   const saturation = usePaletteStore((s) => s.saturation);
   const satMode = usePaletteStore((s) => s.satMode);
@@ -64,7 +67,7 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
     <div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full h-auto"
+        className="h-auto w-full"
         role="img"
         aria-labelledby="eff-sat-title"
       >
@@ -84,7 +87,7 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
               x={PAD.left - 8}
               y={g.y + 3}
               textAnchor="end"
-              className="text-base fill-text-faint"
+              className="fill-text-faint text-base"
             >
               {g.label}
             </text>
@@ -106,7 +109,7 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
               x={toSvgX(l)}
               y={H - PAD.bottom + 16}
               textAnchor="middle"
-              className="text-base fill-text-faint"
+              className="fill-text-faint text-base"
             >
               {l}
             </text>
@@ -154,17 +157,18 @@ export function EffectiveSaturation({ entries, showDots }: EffectiveSaturationPr
         />
 
         {/* Palette entry dots */}
-        {showDots && dots.map((d) => (
-          <circle
-            key={d.lightness}
-            cx={d.cx}
-            cy={d.cy}
-            r={3}
-            fill={d.hex}
-            stroke="var(--color-stroke-secondary)"
-            strokeWidth={1}
-          />
-        ))}
+        {showDots &&
+          dots.map((d) => (
+            <circle
+              key={d.lightness}
+              cx={d.cx}
+              cy={d.cy}
+              r={3}
+              fill={d.hex}
+              stroke="var(--color-stroke-secondary)"
+              strokeWidth={1}
+            />
+          ))}
       </svg>
     </div>
   );

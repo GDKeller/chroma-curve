@@ -7,18 +7,33 @@ interface InlineSelectProps<T extends string> {
   options: { value: T; label: string }[];
 }
 
-export function InlineSelect<T extends string>({ label, value, onChange, options }: InlineSelectProps<T>) {
+export function InlineSelect<T extends string>({
+  label,
+  value,
+  onChange,
+  options,
+}: InlineSelectProps<T>) {
   const selectedLabel = options.find((o) => o.value === value)?.label ?? value;
-  const longestLabel = options.reduce((a, b) => (a.label.length > b.label.length ? a : b)).label;
+  const longestLabel = options.reduce((a, b) =>
+    a.label.length > b.label.length ? a : b,
+  ).label;
 
   return (
     <Select.Root value={value} onValueChange={onChange}>
       <Select.Trigger asChild>
-        <button type="button" aria-label={label} className="group inline-flex items-baseline gap-1 min-h-6 cursor-pointer text-sm whitespace-nowrap outline-none bg-surface-raised border border-border-default px-3 py-1.5 transition-colors">
-          <span className="text-text-muted group-hover:text-white group-active:text-white group-data-[state=open]:text-white transition-colors">{label}</span>
-          <span className="relative text-text-faint text-right group-hover:text-white group-active:text-white group-data-[state=open]:text-white transition-colors">
+        <button
+          type="button"
+          aria-label={label}
+          className="group bg-surface-raised border-border-default inline-flex min-h-6 cursor-pointer items-baseline gap-1 border px-3 py-1.5 text-sm whitespace-nowrap transition-colors outline-none"
+        >
+          <span className="text-text-muted transition-colors group-hover:text-white group-active:text-white group-data-[state=open]:text-white">
+            {label}
+          </span>
+          <span className="text-text-faint relative text-right transition-colors group-hover:text-white group-active:text-white group-data-[state=open]:text-white">
             {/* Invisible sizer for stable width */}
-            <span className="invisible" aria-hidden="true">{longestLabel}</span>
+            <span className="invisible" aria-hidden="true">
+              {longestLabel}
+            </span>
             <span className="absolute inset-0 text-right">{selectedLabel}</span>
           </span>
         </button>
@@ -28,14 +43,14 @@ export function InlineSelect<T extends string>({ label, value, onChange, options
           position="popper"
           sideOffset={-1}
           align="end"
-          className="bg-surface-raised border border-t-0 border-border-default shadow-lg"
+          className="bg-surface-raised border-border-default border border-t-0 shadow-lg"
         >
           <Select.Viewport>
             {options.map((opt) => (
               <Select.Item
                 key={opt.value}
                 value={opt.value}
-                className="flex items-center justify-end px-3 min-h-6 text-sm text-text-faint cursor-pointer outline-none data-[highlighted]:bg-surface-hover data-[highlighted]:text-white"
+                className="text-text-faint data-[highlighted]:bg-surface-hover flex min-h-6 cursor-pointer items-center justify-end px-3 text-sm outline-none data-[highlighted]:text-white"
               >
                 <Select.ItemText>{opt.label}</Select.ItemText>
               </Select.Item>

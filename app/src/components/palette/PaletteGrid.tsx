@@ -30,9 +30,7 @@ const COPY_FORMAT_OPTIONS: { value: CopyFormat; label: string }[] = [
 function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
   if (count >= entries.length) return entries;
   const step = (entries.length - 1) / (count - 1);
-  return Array.from({ length: count }, (_, i) =>
-    entries[Math.round(i * step)],
-  );
+  return Array.from({ length: count }, (_, i) => entries[Math.round(i * step)]);
 }
 
 // Find the column count that produces no orphans and the most square-ish grid
@@ -41,8 +39,8 @@ function bestCols(total: number): number {
   const target = Math.round(Math.sqrt(total));
   // Search outward from the square root for a clean divisor (min 2 cols)
   for (let d = 0; d <= target; d++) {
-    if ((target + d) >= 2 && total % (target + d) === 0) return target + d;
-    if ((target - d) >= 2 && total % (target - d) === 0) return target - d;
+    if (target + d >= 2 && total % (target + d) === 0) return target + d;
+    if (target - d >= 2 && total % (target - d) === 0) return target - d;
   }
   return total;
 }
@@ -95,25 +93,59 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
 
   return (
     <section aria-labelledby="palette-heading" className="flex flex-col">
-      <h2 id="palette-heading" className="sr-only">Color palette</h2>
-      <div role="group" aria-label="Palette display options" className="flex flex-wrap justify-end items-center gap-1 px-4 lg:pr-0 mb-3">
+      <h2 id="palette-heading" className="sr-only">
+        Color palette
+      </h2>
+      <div
+        role="group"
+        aria-label="Palette display options"
+        className="mb-3 flex flex-wrap items-center justify-end gap-1 px-4 lg:pr-0"
+      >
         <InlineSelect
           label="swatches"
           value={String(swatchCount)}
           onChange={(v) => setSwatchCount(Number(v))}
           options={[
-            ...STEP_OPTIONS.map((n) => ({ value: String(n), label: String(n) })),
+            ...STEP_OPTIONS.map((n) => ({
+              value: String(n),
+              label: String(n),
+            })),
             { value: String(entries.length), label: `all (${entries.length})` },
           ]}
         />
-        <InlineSelect label="layout" value={layout} onChange={setLayout} options={LAYOUT_OPTIONS} />
-        <InlineSelect label="copy" value={copyFormat} onChange={setCopyFormat} options={COPY_FORMAT_OPTIONS} />
-        <ToggleSwitch label="reverse" checked={reversed} onChange={setReversed} variant="pill" />
-        <ToggleSwitch label="labels" checked={showLabels} onChange={setShowLabels} variant="pill" />
-        <ToggleSwitch label="borders" checked={showBorders} onChange={setShowBorders} variant="pill" />
+        <InlineSelect
+          label="layout"
+          value={layout}
+          onChange={setLayout}
+          options={LAYOUT_OPTIONS}
+        />
+        <InlineSelect
+          label="copy"
+          value={copyFormat}
+          onChange={setCopyFormat}
+          options={COPY_FORMAT_OPTIONS}
+        />
+        <ToggleSwitch
+          label="reverse"
+          checked={reversed}
+          onChange={setReversed}
+          variant="pill"
+        />
+        <ToggleSwitch
+          label="labels"
+          checked={showLabels}
+          onChange={setShowLabels}
+          variant="pill"
+        />
+        <ToggleSwitch
+          label="borders"
+          checked={showBorders}
+          onChange={setShowBorders}
+          variant="pill"
+        />
       </div>
       <div
-        className={`grid flex-1 ml-4 mr-4 lg:mr-0 rounded-none overflow-hidden auto-rows-fr ${showBorders ? "gap-px bg-surface-overlay" : "gap-0"}`}
+        className={`mr-4 ml-4 grid flex-1 auto-rows-fr overflow-hidden rounded-none lg:mr-0 ${showBorders ? "bg-surface-overlay gap-px" : "gap-0"}`}
         style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
       >
         {displayEntries.map((entry) => (

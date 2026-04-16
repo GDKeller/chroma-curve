@@ -20,7 +20,12 @@ interface PaletteState {
   setSatMode: (mode: SatMode) => void;
   setLRange: (min: number, max: number) => void;
   setCopyFormat: (format: CopyFormat) => void;
-  setTarget: (hue: number, saturation: number, input: string, format: ColorFormat) => void;
+  setTarget: (
+    hue: number,
+    saturation: number,
+    input: string,
+    format: ColorFormat,
+  ) => void;
   clearTarget: () => void;
 }
 
