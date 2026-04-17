@@ -190,13 +190,9 @@ export function TargetSwatch() {
     [hue, saturation],
   );
 
-  const handleCanvasRef = useCallback(
-    (canvas: HTMLCanvasElement | null) => {
-      canvasRef.current = canvas;
-      if (canvas) drawPicker(canvas);
-    },
-    [drawPicker],
-  );
+  useEffect(() => {
+    if (canvasRef.current) drawPicker(canvasRef.current);
+  }, [drawPicker]);
 
   const pickFromCoords = useCallback(
     (clientX: number, clientY: number) => {
@@ -226,6 +222,35 @@ export function TargetSwatch() {
       pickFromCoords(e.clientX, e.clientY);
     },
     [pickFromCoords],
+  );
+
+  const handleCanvasKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLCanvasElement>) => {
+      const hueStep = e.shiftKey ? 10 : 1;
+      const satStep = e.shiftKey ? 0.1 : 0.01;
+      let handled = true;
+      if (e.key === "ArrowLeft") {
+        clearTarget();
+        setHue((hue - hueStep + 360) % 360);
+      } else if (e.key === "ArrowRight") {
+        clearTarget();
+        setHue((hue + hueStep) % 360);
+      } else if (e.key === "ArrowUp") {
+        clearTarget();
+        setSaturation(
+          Math.min(1, parseFloat((saturation + satStep).toFixed(2))),
+        );
+      } else if (e.key === "ArrowDown") {
+        clearTarget();
+        setSaturation(
+          Math.max(0, parseFloat((saturation - satStep).toFixed(2))),
+        );
+      } else {
+        handled = false;
+      }
+      if (handled) e.preventDefault();
+    },
+    [hue, saturation, setHue, setSaturation, clearTarget],
   );
 
   useEffect(() => {
@@ -299,14 +324,22 @@ export function TargetSwatch() {
           className="bg-surface-overlay border-border-elevated z-[60] rounded-none border p-3 shadow-xl"
         >
           <canvas
-            ref={handleCanvasRef}
+            ref={canvasRef}
             width={PICKER_SIZE}
             height={PICKER_SIZE}
-            className="block cursor-crosshair"
+            className="focus-visible:outline-text-primary block cursor-crosshair focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{ width: PICKER_SIZE, height: PICKER_SIZE }}
+            tabIndex={0}
+            role="application"
+            aria-label="Hue and saturation picker. Arrow keys adjust; hold shift for larger steps."
             onMouseDown={handleMouseDown}
+            onKeyDown={handleCanvasKeyDown}
           />
-          <div className="text-text-faint mt-2 flex justify-between text-sm">
+          <div
+            role="status"
+            aria-live="polite"
+            className="text-text-faint mt-2 flex justify-between text-sm"
+          >
             <span>Hue {hue}°</span>
             <span>Sat {Math.round(saturation * 100)}%</span>
           </div>

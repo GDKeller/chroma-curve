@@ -69,7 +69,7 @@ export function formatTargetColor(
       return `hsl(${hue},${Math.round(saturation * 100)}%,50%)`;
     case "rgb": {
       const [r, g, b] = color.rgb();
-      return `rgb(${r},${g},${b})`;
+      return `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
     }
     case "oklch":
       return toOklchString(color.hex());
