@@ -8,15 +8,20 @@ import type { ColorEntry, PaletteParams, SatMode } from "../types/palette";
  * In "endpoint" mode the multiplier is 1.0 at L0/L100 (slider = endpoint saturation).
  * In "target" mode the multiplier is 1.0 at L50 (slider = vertex/target saturation).
  */
-export function getSaturation(lightness: number, sMod: number, satMode: SatMode): number {
+export function getSaturation(
+  lightness: number,
+  sMod: number,
+  satMode: SatMode,
+): number {
   if (sMod === 0) return 1;
   const o = 50;
-  const raw = 1 + (Math.pow(lightness - o, 2) / sMod - Math.pow(o, 2) / sMod) / 100;
+  const raw =
+    1 + (Math.pow(lightness - o, 2) / sMod - Math.pow(o, 2) / sMod) / 100;
 
   if (satMode === "endpoint") return raw;
 
   // Normalize so vertex (L50) = 1.0, endpoints > 1.0
-  const vertex = 1 - (Math.pow(o, 2) / sMod) / 100;
+  const vertex = 1 - Math.pow(o, 2) / sMod / 100;
   if (vertex <= 0) return raw;
   return raw / vertex;
 }

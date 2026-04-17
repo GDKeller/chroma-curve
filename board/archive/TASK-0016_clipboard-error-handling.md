@@ -3,7 +3,7 @@ type: task
 created: 2026-03-16
 status: done
 epic: EPIC-0005
-priority: high
+priority: 1
 refs: [CQ-3, EX-6]
 ---
 
