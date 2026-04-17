@@ -5,6 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import reactPlugin from "eslint-plugin-react";
 import importPlugin from "eslint-plugin-import";
+import betterTailwindcss from "eslint-plugin-better-tailwindcss";
 import { defineConfig, globalIgnores } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 
@@ -20,6 +21,7 @@ export default defineConfig([
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
       eslintConfigPrettier,
+      betterTailwindcss.configs.recommended,
     ],
     languageOptions: {
       ecmaVersion: "latest",
@@ -37,12 +39,16 @@ export default defineConfig([
         },
         node: true,
       },
+      "better-tailwindcss": {
+        entryPoint: "src/index.css",
+      },
     },
     rules: {
+      /* Built-in */
       "max-lines": [
         "error",
         {
-          max: 1100, // goal: 300
+          max: 1100 /* goal: 300 */,
           skipBlankLines: true,
           skipComments: true,
         },
@@ -50,7 +56,7 @@ export default defineConfig([
       "max-lines-per-function": [
         "error",
         {
-          max: 400, // goal: 50
+          max: 400 /* goal: 50 */,
           skipBlankLines: true,
           skipComments: true,
           IIFEs: true,
@@ -58,9 +64,14 @@ export default defineConfig([
       ],
       "max-statements": ["error", 50], // goal: 20
       complexity: ["error", 12],
+
+      /* Import Plugin */
       "import/no-duplicates": "error",
       "import/no-cycle": ["error", { maxDepth: 3 }],
       "import/max-dependencies": ["warn", { max: 20 }],
+      "import/no-default-export": "error",
+
+      /* React Plugin */
       "react/function-component-definition": [
         "warn",
         {
@@ -68,9 +79,12 @@ export default defineConfig([
           unnamedComponents: "arrow-function",
         },
       ],
-      "import/no-default-export": "error",
-      // "react/no-multi-comp": ["error", { ignoreStateless: false }],
-      // "react/jsx-max-depth": ["error", { max: 5 }],
+      // "react/no-multi-comp": ["error", { ignoreStateless: false }], // Will be implemented, throws errors for consolidated commit
+      // "react/jsx-max-depth": ["error", { max: 5 }], // Will be implemented, throws errors for consolidated commit
+
+      /* Better Tailwind — overrides on top of "recommended" */
+      "better-tailwindcss/enforce-consistent-class-order": "off", // Prettier plugin handles class order
+      "better-tailwindcss/enforce-consistent-line-wrapping": "off", // Relying on editor soft-wrapping for now
     },
   },
   {
@@ -79,7 +93,6 @@ export default defineConfig([
       "src/layouts/**/*.{ts,tsx,astro}",
       "**/*.config.{js,ts,mjs}",
       "astro.config.*",
-      "tailwind.config.*",
       "vite.config.*",
       "next.config.*",
     ],

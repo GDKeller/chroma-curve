@@ -515,7 +515,7 @@ function RotatedPicker({
 
 function Formula() {
   return (
-    <div className="border-border-default bg-surface-raised text-text-muted flex flex-col flex-wrap gap-4 border px-4 py-4 font-mono text-lg">
+    <div className="border-border-default bg-surface-raised text-text-muted flex flex-col flex-wrap gap-4 border p-4 font-mono text-lg">
       <div>
         <span className="text-text-secondary">S</span>(L) = 1 + ((L - 50)
         <sup>2</sup> / <span className="text-text-muted">p</span> - 50
@@ -665,7 +665,7 @@ function HuePicker({
         <button
           onClick={onReset}
           title={`Reset to ${DEFAULT_HUE}°`}
-          className="focus-visible:ring-offset-surface-overlay grid h-5 w-5 flex-none place-items-center transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1"
+          className="focus-visible:ring-offset-surface-overlay grid size-5 flex-none place-items-center transition-opacity focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-1"
           style={{ opacity: isDefault ? 0.25 : 0.7 }}
         >
           <svg
@@ -774,9 +774,9 @@ export function AboutButton() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="bg-surface-base border-border-elevated fixed top-1/2 left-1/2 z-50 max-h-[90vh] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto border p-4 text-lg shadow-2xl sm:px-6 sm:py-12 lg:max-w-6xl"
+                className="bg-surface-base border-border-elevated fixed top-1/2 left-1/2 z-50 max-h-[90vh] w-[calc(100vw-1rem)] -translate-1/2 overflow-y-auto border p-4 text-lg shadow-2xl sm:px-6 sm:py-12 lg:max-w-6xl"
               >
-                <div className="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-[1fr_1.4fr] sm:gap-y-8">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_1.4fr] sm:gap-y-8">
                   {/* Title + intro - span both columns */}
                   <div className="mb-16 sm:col-span-2">
                     <Dialog.Title className="font-display text-text-primary mb-8 text-3xl font-semibold">
@@ -807,7 +807,7 @@ export function AboutButton() {
                           <Popover.Trigger asChild>
                             <button
                               aria-label="Change reference hue"
-                              className="h-full w-full cursor-pointer rounded-none transition-shadow hover:ring-1 hover:ring-white/20"
+                              className="size-full cursor-pointer rounded-none transition-shadow hover:ring-1 hover:ring-white/20"
                               style={{
                                 gridColumn: 5,
                                 backgroundColor: `hsl(${hue} 100% 50%)`,
@@ -817,7 +817,7 @@ export function AboutButton() {
                         </div>
                         {/* Helper text */}
                         <div
-                          className="text-text-muted absolute top-1/2 -translate-y-1/2 text-right text-sm leading-tight whitespace-nowrap"
+                          className="text-text-muted absolute top-1/2 -translate-y-1/2 text-right text-sm/tight whitespace-nowrap"
                           style={{
                             right: `calc(${(STRIP_STEPS - 4) * (100 / STRIP_STEPS)}% + 14px)`,
                           }}
@@ -828,12 +828,12 @@ export function AboutButton() {
                         </div>
                         {/* Values stacked vertically */}
                         <div
-                          className="text-text-secondary absolute top-1/2 -translate-y-1/2 text-sm leading-tight whitespace-nowrap"
+                          className="text-text-secondary absolute top-1/2 -translate-y-1/2 text-sm/tight whitespace-nowrap"
                           style={{
                             left: `calc(${5 * (100 / STRIP_STEPS)}% + 8px)`,
                           }}
                         >
-                          <div className="p- flex flex-col gap-1">
+                          <div className="flex flex-col gap-1">
                             <div className="flex gap-2">
                               <span>H:</span>
                               <span>{hue}°</span>
@@ -856,7 +856,7 @@ export function AboutButton() {
                           side="top"
                           sideOffset={4}
                           align="center"
-                          className="bg-surface-overlay border-border-elevated z-[60] w-80 border p-2 shadow-xl"
+                          className="bg-surface-overlay border-border-elevated z-60 w-80 border p-2 shadow-xl"
                         >
                           <HuePicker
                             hue={hue}
@@ -1030,7 +1030,7 @@ export function AboutButton() {
                   <Strip colors={strips.curved} mark={markCurved} />
                 </div>
 
-                <div className="border-border-default text-text-faint mt-8 mb-16 flex flex-wrap gap-x-8 gap-y-2 border-t border-b py-4 text-xs tracking-wide">
+                <div className="border-border-default text-text-faint mt-8 mb-16 flex flex-wrap gap-x-8 gap-y-2 border-y py-4 text-xs tracking-wide">
                   <p>
                     <sup className="text-2xs text-text-faint mr-1">1</sup>
                     Concept from{" "}
