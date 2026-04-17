@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "verify": "bash ../scripts/run-all.sh knip typecheck lint format",
+    "verify": "bash ../scripts/run-all.sh lint format knip typecheck",
+    "verify:strict": "bash ../scripts/run-sequential.sh typecheck lint knip format",
+    "verify:fix": "bash ../scripts/run-all.sh lint:fix format:fix knip:fix",
     "build": "tsc -b && vite build",
     "dev": "vite",
     "format": "prettier --check .",

@@ -3,6 +3,8 @@
   "scripts": {
     "build": "npm run --prefix app build",
     "verify": "npm run --prefix app verify",
+    "verify:fix": "npm run --prefix app verify:fix",
+    "verify:strict": "npm run --prefix app verify:strict",
     "deploy": "npm run --prefix app build && wrangler pages deploy",
     "dev": "./scripts/dev.sh",
     "dev:app": "npm run --prefix app dev",
