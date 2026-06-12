@@ -14,7 +14,11 @@ Make the saturation curve directly manipulable through visual interaction, repla
 - **Edge parameter** — new control (or extension of the Range slider) to move the curve's edge points inward, narrowing the lightness range where saturation correction is applied. Currently the curve always spans 0-100% lightness.
 - **Visual feedback** — show parameter values updating in real-time as handles are dragged, with the palette grid responding live.
 
+## Tasks
+
+- TASK-0116 — Evaluate manual vertex-position slider override (planning, gates further vertex work)
+
 ## Related
 
-- NOTE-0005: Adjustable curve vertex (center point) — related but focused on the vertex; this EPIC covers edge handles and the broader interaction model
+- NOTE-0005: Adjustable curve vertex (center point) — related but focused on the vertex; tracked as TASK-0116
 - NOTE-0012: UX & Interaction Ideas — source brainstorm

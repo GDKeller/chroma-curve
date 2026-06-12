@@ -7,6 +7,7 @@ tasks:
   - TASK-0028
   - TASK-0029
   - TASK-0030
+  - TASK-0117
 tags:
   - oklch-migration
 ---
@@ -21,7 +22,12 @@ Migrate downstream UI that consumes palette data or independently calls `getSatu
 - EffectiveSaturation: wire `hue` from store, replace `getSaturation()` sampling
 - ColorSwatch: update copy-on-click and tooltip for OKLCH/hex output
 - Export: use `entry.oklch` directly instead of hex→OKLCH roundtrip
+- TASK-0117 — Add chart density toggle (swatch-only vs all-steps); sequence after the OKLCH chart-rendering migration
 
 ## Blocked by
 
 EPIC-0006 (core generation must be migrated first)
+
+## Source NOTEs
+
+- NOTE-0024 — Sync chart step dots with swatch count (extracted as TASK-0117)
