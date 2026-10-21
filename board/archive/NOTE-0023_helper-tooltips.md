@@ -1,7 +1,9 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-03-30
+spawned:
+  - TASK-0119
 ---
 
 # Helper tooltips on hover

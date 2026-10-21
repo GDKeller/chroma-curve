@@ -10,8 +10,8 @@ Improve the learnability of controls and reduce confusion for new users through 
 
 ## Scope
 
-- **Add tooltips to controls** — hue, saturation, adjustment, range sliders and their mode toggles (endpoint/target, lock) all need hover tooltips explaining what they do.
-- **Rename saturation mode labels** — "endpoint" and "target" are unclear. Evaluate alternatives: edges/center, ends/vertex, range/peak.
+- **Add tooltips to controls** — covered by TASK-0119; hue, saturation, adjustment, range sliders and their mode toggles (endpoint/target, lock) all need hover tooltips explaining what they do.
+- **Rename saturation mode labels** — covered by TASK-0120; "endpoint" and "target" are unclear (and "target" now collides with the target color input). Evaluate alternatives: edges/center, ends/vertex, range/peak.
 - **Relocate copy-format selector and hint** — covered by TASK-0081; the "click swatch to copy" affordance moves down to live alongside the swatches it acts on.
 - **Highlight the active copy format** — covered by TASK-0082; once the selector is co-located, swatches must make it visually obvious which value will be copied.
 - **Unadjusted reference strip** — covered by TASK-0083; show the curve's effect by rendering the unadjusted palette next to the adjusted one.
@@ -22,12 +22,14 @@ Improve the learnability of controls and reduce confusion for new users through 
 - TASK-0082 — Highlight active copy format on swatches
 - TASK-0083 — Add unadjusted reference color strip
 - TASK-0118 — Rename layout options to clarify grid behavior
+- TASK-0119 — Add hover tooltips to control labels
+- TASK-0120 — Rename saturation mode labels
 
 ## Source NOTEs
 
-- NOTE-0012 — UX & Interaction Ideas (source brainstorm; font/radius items live in EPIC-0020).
-- NOTE-0020 — Clarify grid layout option naming (extracted as TASK-0118).
-- NOTE-0023 — Helper tooltips on hover (covered by the tooltips scope item).
+- NOTE-0012 — UX & Interaction Ideas (source brainstorm; font/radius items live in EPIC-0020). *(processed, archived)*
+- NOTE-0020 — Clarify grid layout option naming (extracted as TASK-0118). *(processed, archived)*
+- NOTE-0023 — Helper tooltips on hover (extracted as TASK-0119). *(processed, archived)*
 
 ## Related
 

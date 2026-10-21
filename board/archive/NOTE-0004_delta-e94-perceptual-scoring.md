@@ -1,7 +1,11 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-03-20
+spawned:
+  - EPIC-0019
+  - TASK-0091
+  - TASK-0092
 ---
 
 # ΔE scoring to back perception claims

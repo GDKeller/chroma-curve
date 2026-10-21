@@ -1,6 +1,13 @@
 ---
 type: note
+status: processed
 created: 2026-03-16
+spawned:
+  - EPIC-0001
+  - EPIC-0002
+  - EPIC-0003
+  - EPIC-0004
+  - EPIC-0005
 ---
 
 # Comprehensive Project Review

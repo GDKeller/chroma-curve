@@ -1,8 +1,9 @@
 ---
 type: task
-status: in_progress
+status: done
 priority: 2
 created: 2026-04-04
+completed: 2026-04-17
 ---
 
 # TASK-0046: Add target color input to derive hue and saturation from user-provided color

@@ -1,7 +1,9 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-03-20
+spawned:
+  - TASK-0116
 ---
 
 # Adjustable curve vertex (center point)

@@ -1,7 +1,15 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-04-17
+spawned:
+  - EPIC-0015
+  - TASK-0072
+  - TASK-0073
+  - TASK-0074
+  - TASK-0075
+  - TASK-0076
+  - TASK-0077
 ---
 
 # Migrate to pnpm + workspaces

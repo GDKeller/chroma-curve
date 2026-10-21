@@ -1,7 +1,8 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-03-20
+spawned: []
 ---
 
 # ColorGuesser as competitive reference

@@ -1,7 +1,17 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-03-26
+spawned:
+  - EPIC-0010
+  - EPIC-0011
+  - EPIC-0012
+  - EPIC-0020
+  - TASK-0081
+  - TASK-0083
+  - TASK-0103
+  - TASK-0119
+  - TASK-0120
 ---
 
 # UX & Interaction Ideas

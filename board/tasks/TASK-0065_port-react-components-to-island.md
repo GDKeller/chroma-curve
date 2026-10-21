@@ -37,7 +37,7 @@ This replaces `app/src/main.tsx` — the `createRoot` call is gone; Astro handle
 
 From `app/src/` to `app-astro/src/`:
 
-- `components/` (all React components including the `about/` feature directory from TASK-0059)
+- `components/` (all React components, including the split `AboutButton/` modules from TASK-0059)
 - `hooks/`
 - `lib/`
 - `store/`

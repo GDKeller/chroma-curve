@@ -17,7 +17,7 @@ Several proposals all assume that swatches gain identity beyond a numeric index 
 ## Tasks
 
 - TASK-0087 — Decide label and count semantics for named scales (planning)
-- TASK-0088 — Add `label` field to ColorEntry and propagate through pipeline
+- TASK-0088 — Rework ColorEntry label generation per decided semantics (field already exists as `grey-${i}`)
 - TASK-0089 — Add Tailwind 11-shade preset
 - TASK-0090 — Reintroduce B/W bookend swatch toggle
 

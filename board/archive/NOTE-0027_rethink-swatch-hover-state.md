@@ -1,7 +1,9 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-04-03
+spawned:
+  - TASK-0101
 ---
 
 # Rethink swatch hover state

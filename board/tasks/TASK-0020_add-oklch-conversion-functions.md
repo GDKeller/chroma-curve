@@ -10,7 +10,7 @@ tags:
 
 # TASK-0020: Add OKLCH conversion functions
 
-Create `app/src/lib/oklch.ts` with the zero-dependency conversion pipeline from NOTE-0006:
+Create `app/src/lib/oklch.ts` with the zero-dependency conversion pipeline from REFE-0003 (extracted from the archived NOTE-0006 migration guide):
 
 - `srgbToLinear` / `linearToSrgb`
 - `linearSrgbToOklab` / `oklabToLinearSrgb`

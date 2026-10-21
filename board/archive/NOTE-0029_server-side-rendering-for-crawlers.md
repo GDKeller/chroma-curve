@@ -1,7 +1,9 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-04-06
+spawned:
+  - EPIC-0013
 ---
 
 # Server-side rendering for crawlers and LLMs

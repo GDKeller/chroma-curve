@@ -30,12 +30,12 @@ Two drivers converged on this plan:
 
 ## Dependencies
 
-- **TASK-0059** (About.tsx refactor into feature directory) is a prerequisite for porting components. Priority bumped from P3 to P1 so it lands before the Astro migration starts. The 912-line monolith is significantly harder to move than 12 modular files.
+- **TASK-0059** (split `AboutButton.tsx` into colocated modules) is a prerequisite for porting components. Priority bumped from P3 to P1 so it lands before the Astro migration starts. The 1100-line monolith is significantly harder to move than 12 modular files.
 
 ## Tasks
 
 ### Prerequisite
-- TASK-0059: Refactor About.tsx into `about/` feature directory *(belongs to EPIC-0004 but blocks TASK-0065)*
+- TASK-0059: Split AboutButton.tsx into colocated component modules *(re-parented from EPIC-0004 on 2026-10-20; blocks TASK-0065)*
 
 ### Scaffolding and configuration
 - TASK-0060: Scaffold Astro project alongside `app/`
@@ -56,7 +56,7 @@ Two drivers converged on this plan:
 
 ### Crawler signals and validation
 - TASK-0051: Add robots.txt and sitemap.xml (with all Astro routes)
-- TASK-0052: Verify og-image.png exists in public/
+- TASK-0052: Verify og-image.png exists in public/ *(done 2026-10-20 — already shipped; archived)*
 - TASK-0050: Validate Astro build output and browser smoke test
 - TASK-0070: Update Cloudflare Pages config for Astro `dist/` output
 - TASK-0071: Lighthouse and view-source crawler verification

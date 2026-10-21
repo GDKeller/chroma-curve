@@ -1,29 +1,19 @@
 ---
-type: note
-status: inbox
-created: 2026-03-20
+type: reference
+created: 2026-10-20
+topic: color-science
+tags:
+  - oklch-migration
 ---
 
-# Chroma Curve — Migration Guide: HSL → OKLCH
+# OKLCH Color Math for Chroma Curve
 
-## What This Document Is
+Objective reference for the color math behind the HSL → OKLCH migration: why OKLCH is a better working space than HSL, zero-dependency sRGB ↔ OKLab ↔ OKLCH conversion, sRGB gamut boundary search, the hue-dependent peak-lightness table, and the chroma-correction formula.
 
-This is a **pivot guide**, not a from-scratch spec. The tool already exists and works. It generates monochromatic palettes for web/software and graphic designers using a parabolic saturation correction curve in HSL. This document describes how to migrate the internals to OKLCH while preserving the existing UX and controls.
+> **Provenance.** Extracted 2026-10-20 from NOTE-0006 (*Chroma Curve — Migration Guide: HSL → OKLCH*, archived). Project-specific decisions from that guide — what changes, what stays the same in the UI, and the migration checklist — are tracked as work in EPIC-0006, EPIC-0007, and EPIC-0008. The full original guide remains in `board/archive/` as NOTE-0006.
 
-## Current State
+## Background: the HSL curve
 
-### Origin
-The tool is based on Pablo Figueiredo's article "The secret to creating neutral color palettes" (https://medium.com/design-bootcamp/the-secret-to-creating-neutral-color-palettes-5e5a650b1718). A commenter created a Desmos visualization of the formula (https://www.desmos.com/calculator/02ufrfsuzy) and a CodePen implementation (https://codepen.io/oxn-krtv/pen/ExOwLBz), which became the basis for this tool.
-
-### How it works today
-- All color math happens in **HSL**
-- User controls: **Hue** (0–360°), **Saturation** (0–100%), **Adjustment** (the `sMod/p` parameter controlling curve intensity), **Range** (lightness endpoints)
-- A parabolic correction curve reduces saturation in the midtones to compensate for HSL's perceptual non-uniformity — without it, midtones appear oversaturated relative to dark/light ends
-- The tool displays: a continuous gradient, discrete swatches with HSL labels, a "Saturation Adjustment" chart showing the correction curve, and a "Computed Saturation" chart showing the final saturation values
-- Swatch labels show HSL values (e.g., `hsl(220deg 41.4% 14%)`)
-- Export functionality exists
-
-### Current formula
 ```
 S(L) = 1 + ((L - 50)² / p - 50² / p) / 100
 ```
@@ -33,7 +23,7 @@ S(L) = 1 + L(L - 100) / (100p)
 ```
 Where L is HSL lightness (0–100), p is the adjustment parameter, and S(L) is a multiplier applied to the base HSL saturation. The curve is symmetric around L=50, dips lowest at the midpoint, and returns 1 at both extremes.
 
-## Why Migrate to OKLCH
+## Why OKLCH instead of HSL
 
 The parabolic curve exists because HSL is perceptually broken. It's a compensation layer for the fact that HSL saturation ≠ perceived chroma. **OKLCH eliminates roughly 80% of the problem the curve was built to solve.**
 
@@ -49,41 +39,9 @@ In OKLCH, constant chroma across lightness steps already looks perceptually even
 1. **HSL lightness is not perceptual.** Yellow and blue at HSL L=50 have wildly different perceived brightness.
 2. **HSL saturation is not perceptual.** HSL S=100 at different lightness levels looks completely different.
 3. **Hue shifts under lightness changes.** Especially blues → purple. OKLCH maintains hue constancy.
-4. **The hue-dependent center shift (new feature, see below) can't work in HSL** — the lookup table is derived from OKLCH gamut data.
+4. **A hue-dependent center shift (below) needs OKLCH** — the peak-lightness table is derived from OKLCH gamut data.
 
-## What Changes
-
-### Internal color space: HSL → OKLCH
-- All palette generation math moves to OKLCH: hue (H, 0–360°), lightness (L, 0–1), chroma (C, 0–~0.4 for sRGB)
-- The correction multiplier applies to **OKLCH chroma (C)** instead of HSL saturation
-- HSL/hex/RGB are computed only at the **output stage** for display, swatch labels, and export
-- Internal palette state should be stored as OKLCH floats — only quantize to 8-bit RGB at the display/export boundary
-
-### Curve becomes opt-in
-- **Default behavior (curve off):** generate palette with flat chroma, clamped to sRGB gamut at each lightness step. This will already look significantly better than uncorrected HSL.
-- **When curve is enabled:** apply the parabolic multiplier to chroma, with automatic hue-dependent center shift (new feature).
-
-### New feature: hue-dependent center shift
-The current curve is symmetric around L=50. In reality, different hues reach peak chroma at different lightness levels (yellow peaks ~L=88, blue ~L=35). When the curve is active, the center point should auto-adjust based on hue. See implementation below.
-
-## What Does NOT Change
-
-**These are critical for continuity — do not over-engineer these during migration:**
-
-- **UI labels stay designer-friendly.** "Saturation" remains "Saturation" — don't rename it to "Chroma" in the UI. Designers think in saturation. The internal representation changes, the label doesn't.
-- **"Adjustment" slider stays.** Same concept, same label. It just operates on OKLCH chroma instead of HSL saturation now.
-- **"Saturation Adjustment" chart stays.** Same visualization of the correction curve. Y axis can remain abstract (multiplier) or be labeled "Saturation" — it doesn't need to say "OKLCH Chroma."
-- **"Computed Saturation" chart stays.** Same concept — shows the final computed values per step.
-- **Swatch layout, gradient preview, export, swatches count, layout options, reverse, labels, borders** — all unchanged.
-- **Hue slider** — same 0–360° wheel. OKLCH hue degrees are close to HSL hue degrees; the conversion handles minor differences internally.
-- **Range slider** — same concept, maps to OKLCH lightness instead of HSL lightness.
-
-### Swatch labels
-Currently show HSL values. Post-migration, consider showing OKLCH as the primary value with hex, or offer a format toggle. But this is a UX decision, not a migration blocker — shipping with HSL labels initially is fine (just convert from internal OKLCH at display time).
-
-## Implementation
-
-### Conversion Functions (TypeScript, zero dependencies)
+## Conversion functions (TypeScript, zero dependencies)
 
 If the codebase uses or can add `culori` (npm), it has first-class OKLCH support and gamut mapping. The functions below are provided in case adding a dependency is undesirable.
 
@@ -220,7 +178,9 @@ function maxChromaInSrgb(L: number, h: number): number {
 }
 ```
 
-### Hue-Dependent Center Shift (new feature)
+## Hue-dependent peak lightness
+
+Different hues reach peak chroma at different lightness levels (yellow peaks near L=88, blue near L=35). Using the hue's peak lightness as the curve center replaces the fixed L=50 symmetry of the HSL formula.
 
 ```typescript
 /**
@@ -266,7 +226,9 @@ function peakLightnessForHue(h: number): number {
 }
 ```
 
-### Correction Formula (same math, different inputs)
+## Chroma correction formula
+
+The same parabola as the HSL formula, applied to OKLCH chroma and centered on the hue's peak lightness.
 
 ```typescript
 /**
@@ -289,7 +251,7 @@ function chromaCorrection(L: number, hue: number, p: number): number {
 }
 ```
 
-### Palette Generation Flow
+## Example palette generation flow
 
 ```typescript
 function generatePalette(
@@ -332,24 +294,8 @@ function generatePalette(
 }
 ```
 
-## Migration Checklist
-
-- [ ] Add OKLCH ↔ sRGB conversion functions (or add `culori` dependency)
-- [ ] Add `maxChromaInSrgb()` gamut boundary function
-- [ ] Refactor palette generation to work in OKLCH internally
-- [ ] Map existing "Saturation" slider (0–100%) to OKLCH chroma range (0–~0.4 for sRGB, scaled proportionally)
-- [ ] Map existing "Range" slider to OKLCH lightness (0–1)
-- [ ] Wire "Adjustment" slider to `chromaCorrection()` operating on OKLCH chroma
-- [ ] Add hue-dependent center shift (auto, no UI change needed — the curve just gets smarter)
-- [ ] Make curve default to off (p=0) — flat chroma + gamut clamping is the new baseline
-- [ ] Keep all existing UI labels ("Saturation", "Adjustment", chart titles) unchanged
-- [ ] Update swatch labels to show hex + OKLCH (or add format toggle) — not a blocker, can ship with HSL labels initially
-- [ ] Update Desmos visualization link / About dialog if they reference HSL internals
-- [ ] Verify palette quality: compare same hue/saturation settings before and after migration to ensure no regressions
-
-## Notes
+## Precision and caveats
 
 - The `PEAK_L_BY_HUE` values are approximate. Ideally they'd be derived by scanning the OKLCH gamut boundary (use `maxChromaInSrgb()` at each L step for each hue). Current values are good enough for a first pass.
 - ΔE2000 could be used as a quality check to verify perceptual evenness of the final palette steps, but it's not part of the generation algorithm.
 - Conversions between color spaces are mathematically lossless at floating point precision. Resolution is only lost at two points: gamut clamping (intentional, unavoidable) and quantization to 8-bit RGB/hex at the output stage (inherent to the format). Store internal palette state as OKLCH floats.
-- The tool was originally designed for neutral palettes but works well for monochromatic palettes generally.

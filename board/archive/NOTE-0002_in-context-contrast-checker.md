@@ -1,7 +1,12 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-03-20
+spawned:
+  - EPIC-0019
+  - TASK-0092
+  - TASK-0093
+  - TASK-0094
 ---
 
 # In-context contrast checker for palette swatches

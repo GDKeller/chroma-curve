@@ -1,7 +1,9 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-04-01
+spawned:
+  - TASK-0117
 ---
 
 # Sync chart step dots with swatch count

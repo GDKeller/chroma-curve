@@ -38,5 +38,6 @@ Migrate all internal color math from HSL to OKLCH. The parabolic correction curv
 
 ## Reference
 
-- NOTE-0006: Full migration guide with conversion functions, formulas, and checklist
+- REFE-0003: OKLCH color math — conversion functions, gamut search, peak-lightness table, correction formula
+- NOTE-0006 *(archived)*: Original migration guide, including the "what changes / what doesn't" decisions and the migration checklist
 - REFE-0001: Parabolic saturation curve background

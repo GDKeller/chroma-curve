@@ -1,7 +1,14 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-03-26
+spawned:
+  - EPIC-0020
+  - TASK-0095
+  - TASK-0096
+  - TASK-0097
+  - TASK-0098
+  - TASK-0099
 ---
 
 # UI Design Polish Backlog

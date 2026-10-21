@@ -3,7 +3,7 @@ type: task
 status: backlog
 priority: 2
 created: 2026-04-06
-updated: 2026-04-09
+updated: 2026-10-20
 parent: EPIC-0013
 blocked_by: TASK-0069
 ---
@@ -11,6 +11,8 @@ blocked_by: TASK-0069
 # TASK-0051: Add robots.txt and sitemap.xml
 
 Add standard crawler signal files to the Astro project's `public/` directory so search engines and LLMs can discover and index the site — including the new marketing routes.
+
+> **Partially pre-existing — noted 2026-10-20.** The current Vite app already ships `app/public/robots.txt` (identical to the version below) and a root-only `app/public/sitemap.xml` listing just `https://chromacurve.style/` (commit ab5303f). Remaining work is carrying both into the Astro project and extending the sitemap with the marketing routes from TASK-0069 — or replacing the static sitemap with `@astrojs/sitemap`.
 
 ## Files to create
 

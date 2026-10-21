@@ -1,7 +1,12 @@
 ---
 type: note
-status: inbox
+status: processed
 created: 2026-04-17
+spawned:
+  - EPIC-0018
+  - TASK-0087
+  - TASK-0088
+  - TASK-0090
 ---
 
 # Bring back "show black and white swatches" option
