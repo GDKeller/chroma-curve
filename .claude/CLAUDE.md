@@ -1,37 +1,60 @@
 # Chroma Curve
 
-Monochromatic palette generator using a parabolic saturation curve for perceptual balance across lightness. Originally a CodePen (oxn-krtv/ExOwLBz).
+Monochromatic palette generator using a parabolic saturation curve for perceptual balance across lightness. Originally a CodePen (oxn-krtv/ExOwLBz). Live at https://chromacurve.style.
 
 ## Commands
 
+Run from the repo root — root scripts proxy into `app/` via `npm run --prefix app`.
+
 ```bash
-cd app
-npm run dev      # Vite dev server
-npm run build    # tsc -b && vite build
-npm run lint     # ESLint
+npm run dev            # start Vite in the background, output → logs/dev.log
+npm run log            # follow the dev log (log:tail = last 20 lines)
+npm run status         # report whether the dev server is running
+npm run stop           # kill the dev server
+npm run dev:app        # run Vite in the foreground instead
+npm run build          # tsc -b && vite build → app/dist
+npm run verify         # lint + format + knip + typecheck (runs all, fails if any fail)
+npm run verify:fix     # lint:fix + format:fix + knip:fix
+npm run verify:strict  # typecheck → lint → knip → format, stops at first failure
+npm run deploy         # build + wrangler pages deploy (Cloudflare Pages)
+node scripts/contrast-audit.mjs  # WCAG contrast matrix for text × surface tokens (manual)
 ```
+
+Individual checks: `lint`, `format`, `knip`, `typecheck` (each with a `:fix` variant except `typecheck`), plus `preview`.
+
+The dev port comes from `PORT` in `app/.env.development.local` (default 5173); both `vite.config.ts` and `scripts/config.sh` read it.
 
 ## Architecture
 
 React 19 + TypeScript app built with Vite. All app code lives in `app/`.
 
-- `app/src/components/` - React components (controls, palette grid, export dialog, about)
-- `app/src/lib/` - core logic: `palette.ts` (saturation curve), `colors.ts`, `export.ts`
-- `app/src/store/paletteStore.ts` - Zustand state (hue, saturation, lightness range, layout)
+- `app/src/components/` - one directory per component: `ComponentName/ComponentName.tsx` + an `index.ts` barrel. Named exports only (no default exports); import through the barrel (`../ColorSwatch`).
+- `app/src/lib/` - core logic: `palette.ts` (`getSaturation()` curve, `generateNeutrals()`), `colors.ts` (target-color parsing/formatting, contrast helper), `export.ts` (CSS / Tailwind v4 / Tailwind v3 / SCSS / JS / JSON / GPL / text export)
+- `app/src/store/paletteStore.ts` - Zustand state: hue, saturation, `sMod` (adjustment), `satMode`, `lMin`/`lMax` (lightness range), `copyFormat`, and target-color fields. Grid view options (layout, swatch count, reverse, labels, borders) are local state in `PaletteGrid`.
+- `app/src/types/palette.ts` - shared types (`ColorEntry`, `SatMode`, `ExportFormat`, `ColorSpace`, `CopyFormat`)
 - `app/src/hooks/` - `usePalette`, `useCopyToClipboard`, `useDynamicFavicon`
+- `scripts/` - dev-server orchestration (`dev`/`log`/`status`/`stop`, shared `config.sh`), `run-all.sh` / `run-sequential.sh` behind the verify scripts, `contrast-audit.mjs`
+- `app/scripts/generate-favicons.sh` - regenerates favicon/PWA icon variants in `app/public/`
+- Deployment: Cloudflare Pages via Wrangler (`wrangler.jsonc`, output `app/dist`); response headers in `app/public/_headers`
+
+## Tooling
+
+- **ESLint** (`app/eslint.config.js`) - typescript-eslint, react, react-hooks, import, and better-tailwindcss plugins. Size and complexity rules (`max-lines`, `max-lines-per-function`, `max-statements`, `complexity`) carry `goal:` comments marking the target limits.
+- **Prettier** (`app/.prettierrc`) with `prettier-plugin-tailwindcss` for class ordering
+- **knip** (`app/knip.json`) - unused files, exports, and dependencies
 
 ## Key Dependencies
 
 - **chroma.js** - color manipulation and conversion
 - **Tailwind CSS 4** - styling (via @tailwindcss/vite)
 - **Zustand** - state management
-- **Radix UI** - dialog, popover, slider, tabs primitives
+- **Radix UI** - dialog, popover, select, slider, tabs primitives
 - **Framer Motion** - animations
 - **Phosphor Icons** - iconography
 
 ## How It Works
 
-The core formula adjusts saturation across lightness values using a parabolic curve (see `getSaturation()`), creating neutrals that feel natural rather than flat. The Desmos visualization: https://www.desmos.com/calculator/02ufrfsuzy
+The core formula adjusts saturation across lightness values using a parabolic curve (see `getSaturation()` in `lib/palette.ts`), creating neutrals that feel natural rather than flat. `generateNeutrals()` applies it at each lightness step. `satMode` decides whether the Saturation slider sets the endpoint saturation (`endpoint`) or the L50 saturation (`target`). The Desmos visualization: https://www.desmos.com/calculator/02ufrfsuzy
 
 ## Design Tokens
 
@@ -43,10 +66,10 @@ Custom scale defined in `app/src/index.css` via `@theme`. Use tokens, not hardco
 ### Color Tokens
 All colors use semantic tokens - never hardcode HSL values in components.
 
-- **Text**: `text-primary` (98%) / `text-secondary` (85%) / `text-muted` (72%) / `text-faint` (50%)
-- **Surfaces**: `surface-base` (6%) / `surface-raised` (8%) / `surface-overlay` (10%) / `surface-hover` (12%) / `surface-active` (15%)
+- **Text**: `text-primary` (98%) / `text-secondary` (85%) / `text-muted` (72%) / `text-faint` (55%)
+- **Surfaces**: `surface-base` (4%) / `surface-raised` (8%) / `surface-overlay` (10%) / `surface-hover` (12%) / `surface-active` (15%) / `surface-active-hover` (20%)
 - **Borders**: `border-default` (12%) / `border-elevated` (15%)
-- **Strokes (SVG)**: `stroke-grid` / `stroke-axis` / `stroke-secondary` / `stroke-primary`
+- **Strokes (SVG)**: `stroke-grid` (12%) / `stroke-axis` (17%) / `stroke-secondary` (44%) / `stroke-primary` (72%)
 
 ## Design Context
 
@@ -65,10 +88,10 @@ Confidence & control ("I trust the output"), quiet satisfaction ("every detail i
 
 ### Aesthetic Direction
 - **Theme**: Dark-only. Near-black background. The generated colors are the only chromatic elements.
-- **Typography**: Acumin Pro (body) + Unbounded (display) + Recursive Sans Linear Static (mono). Loaded via Adobe Fonts/Typekit (project `nbx6xju`). Tight tracking, small type sizes - information-dense without feeling cluttered.
+- **Typography**: Acumin Pro (body, `font-sans`) + Unbounded (display, `font-display`), loaded via Adobe Fonts/Typekit (project `nbx6xju`). No `--font-mono` token is defined, so `font-mono` resolves to Tailwind's default system monospace stack (the kit serves only Acumin Pro and Unbounded; Recursive Sans Linear Static was dropped). Tight tracking, small type sizes - information-dense without feeling cluttered.
 - **Color values**: Use design tokens (`text-text-muted`, `fill-text-faint`, etc.) instead of hardcoded HSL or opacity tricks. Never use `white/60` or `rgba(255,255,255,0.6)` for text - opacity on text blends unpredictably with backgrounds.
 - **Surfaces**: Subtle borders and fills. Backdrop blur on sticky elements. Depth through value contrast, not layered opacity.
-- **Motion**: Purposeful and restrained. Framer Motion for meaningful transitions (dialogs, layout shifts). CSS for micro-interactions. `prefers-reduced-motion` respected globally.
+- **Motion**: Purposeful and restrained. Framer Motion for meaningful transitions (dialogs, layout shifts). CSS for micro-interactions. `prefers-reduced-motion` respected globally via `<MotionConfig reducedMotion="user">` in `main.tsx` plus a CSS override in `index.css`.
 - **Icons**: Phosphor Icons, used sparingly alongside text labels for clarity.
 
 ### Design Principles
