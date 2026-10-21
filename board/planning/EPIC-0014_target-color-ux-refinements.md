@@ -47,6 +47,10 @@ Tasks extracted from NOTE-0030 covering target-color a11y, tokenization, touch s
 - TASK-0114 — Fix HSL/RGB output formatting in lib/colors.ts
 - TASK-0115 — Fix opacity-55 contrast in TargetFormats drifted state
 
+## Bugs
+
+- TASK-0122 — Fix target picker canvas rendering blank when popover opens *(regression from 7dc1bed, a PR #5 review fix)*
+
 ## Related
 
 - TASK-0046 (done) — initial target color input implementation

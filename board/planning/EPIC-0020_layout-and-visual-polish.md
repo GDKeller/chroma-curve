@@ -25,6 +25,7 @@ A backlog of small visual and layout refinements from internal review and extern
 - TASK-0101 — Polish small interaction affordances (hue dot, toggle, swatch hover)
 - TASK-0102 — Redesign swatch copy-feedback overlay
 - TASK-0103 — Evaluate refined typography and tighten border radii
+- TASK-0121 — Adopt a mono typeface for color values and code
 
 ## Source NOTEs
 
