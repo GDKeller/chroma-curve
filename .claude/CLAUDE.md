@@ -68,7 +68,8 @@ All colors use semantic tokens - never hardcode HSL values in components.
 
 - **Text**: `text-primary` (98%) / `text-secondary` (85%) / `text-muted` (72%) / `text-faint` (55%)
 - **Surfaces**: `surface-base` (4%) / `surface-raised` (8%) / `surface-overlay` (10%) / `surface-hover` (12%) / `surface-active` (15%) / `surface-active-hover` (20%)
-- **Borders**: `border-default` (12%) / `border-elevated` (15%)
+- **Borders**: `border-default` (12%) / `border-elevated` (15%) / `border-invalid` (red, input error state)
+- **Scrim**: `scrim` (black at 40% alpha) - edges and crosshairs drawn over arbitrary palette colors
 - **Strokes (SVG)**: `stroke-grid` (12%) / `stroke-axis` (17%) / `stroke-secondary` (44%) / `stroke-primary` (72%)
 
 ## Design Context

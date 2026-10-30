@@ -34,6 +34,10 @@
   /* Borders */
   --color-border-default: hsl(0 0% 12%);
   --color-border-elevated: hsl(0 0% 15%);
+  --color-border-invalid: oklch(63.7% 0.237 25.331);
+
+  /* Scrim - translucent dark edge drawn over arbitrary palette colors */
+  --color-scrim: hsl(0 0% 0% / 0.4);
 
   /* Strokes (SVG) */
   --color-stroke-grid: hsl(0 0% 12%);

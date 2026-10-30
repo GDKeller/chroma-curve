@@ -24,10 +24,14 @@ export function TargetFormats() {
 
   return (
     <div
-      className={`border-border-default mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 ${drifted ? "opacity-55" : ""}`}
+      className="border-border-default mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3"
+      role="group"
       aria-label="Target color formats"
     >
-      <span className="text-3xs text-text-faint tracking-wider uppercase">
+      <span
+        aria-live="polite"
+        className="text-3xs text-text-faint tracking-wider uppercase"
+      >
         Target{drifted ? " (drifted)" : ""}
       </span>
       {LABELS.map(({ key, label }) => {
@@ -44,7 +48,9 @@ export function TargetFormats() {
             <span className="text-3xs text-text-faint tracking-wider uppercase">
               {label}
             </span>
-            <span className="text-text-secondary group-hover/fmt:text-text-primary font-mono text-xs tabular-nums">
+            <span
+              className={`group-hover/fmt:text-text-primary font-mono text-xs tabular-nums ${drifted ? "text-text-faint" : "text-text-secondary"}`}
+            >
               {isCopied ? "Copied" : value}
             </span>
           </button>

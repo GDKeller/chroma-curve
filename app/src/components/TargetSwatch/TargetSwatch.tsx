@@ -86,7 +86,9 @@ function ColorInput({
         }}
         onKeyDown={handleKeyDown}
         placeholder="#hex, rgb(), hsl(), oklch()"
-        className={`bg-surface-base text-text-primary placeholder:text-text-faint w-full border px-2 py-1.5 font-mono text-xs transition-colors outline-none ${isInvalid ? "border-red-500" : "border-border-default focus:border-text-faint"}`}
+        aria-label="Target color"
+        aria-invalid={isInvalid}
+        className={`bg-surface-base text-text-primary placeholder:text-text-faint focus-visible:outline-text-primary w-full border px-2 py-1.5 font-mono text-xs transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${isInvalid ? "border-border-invalid" : "border-border-default"}`}
       />
     </div>
   );
@@ -116,6 +118,7 @@ export function TargetSwatch() {
     () => chroma.hsl(hue, saturation, 0.5).hex(),
     [hue, saturation],
   );
+  // Content, not chrome: the ring is derived from the user's target hue
   const ringColor = useMemo(
     () =>
       targetActive && !targetDrifted && targetHue !== null
@@ -176,12 +179,13 @@ export function TargetSwatch() {
       // Draw crosshair at current hue/sat position
       const cx = (hue / 360) * (w - 1);
       const cy = (1 - saturation) * (h - 1);
-      ctx.strokeStyle = "white";
+      const tokens = getComputedStyle(canvas);
+      ctx.strokeStyle = tokens.getPropertyValue("--color-text-primary");
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx, cy, 5, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.strokeStyle = "rgba(0,0,0,0.4)";
+      ctx.strokeStyle = tokens.getPropertyValue("--color-scrim");
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(cx, cy, 6, 0, Math.PI * 2);
@@ -190,9 +194,16 @@ export function TargetSwatch() {
     [hue, saturation],
   );
 
-  useEffect(() => {
-    if (canvasRef.current) drawPicker(canvasRef.current);
-  }, [drawPicker]);
+  // Callback ref, not an effect: the popover unmounts the canvas on close, so
+  // it must draw on attach. Its identity follows drawPicker, so React re-runs
+  // it on hue/saturation changes and the crosshair stays current.
+  const handleCanvasRef = useCallback(
+    (canvas: HTMLCanvasElement | null) => {
+      canvasRef.current = canvas;
+      if (canvas) drawPicker(canvas);
+    },
+    [drawPicker],
+  );
 
   const pickFromCoords = useCallback(
     (clientX: number, clientY: number) => {
@@ -291,8 +302,8 @@ export function TargetSwatch() {
                 boxShadow: ringColor
                   ? `0 0 0 1px ${ringColor}`
                   : targetDrifted
-                    ? "0 0 0 1px rgba(255,255,255,0.1), inset 0 0 0 1px rgba(0,0,0,0.3)"
-                    : "0 0 0 1px rgba(255,255,255,0.15)",
+                    ? "0 0 0 1px var(--color-border-default), inset 0 0 0 1px var(--color-scrim)"
+                    : "0 0 0 1px var(--color-border-elevated)",
                 opacity: targetDrifted ? 0.6 : 1,
               }}
             />
@@ -312,7 +323,7 @@ export function TargetSwatch() {
             type="button"
             onClick={clearTarget}
             aria-label="Clear target color"
-            className="bg-surface-overlay border-border-elevated text-text-secondary hover:text-text-primary hover:bg-surface-hover absolute -top-1 -right-1 z-10 flex h-4 w-4 items-center justify-center rounded-full border opacity-0 transition-opacity group-hover:opacity-100"
+            className="bg-surface-overlay border-border-elevated text-text-secondary hover:text-text-primary hover:bg-surface-hover focus-visible:outline-text-primary absolute -top-1 -right-1 z-10 flex h-4 w-4 items-center justify-center rounded-full border opacity-0 transition-opacity group-hover:opacity-100 group-has-focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <X size={10} weight="bold" />
           </button>
@@ -324,7 +335,7 @@ export function TargetSwatch() {
           className="bg-surface-overlay border-border-elevated z-[60] rounded-none border p-3 shadow-xl"
         >
           <canvas
-            ref={canvasRef}
+            ref={handleCanvasRef}
             width={PICKER_SIZE}
             height={PICKER_SIZE}
             className="focus-visible:outline-text-primary block cursor-crosshair focus-visible:outline-2 focus-visible:outline-offset-2"

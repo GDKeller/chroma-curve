@@ -22,7 +22,8 @@ export function parseTargetColor(
   try {
     // oklch() - chroma.js can't parse this natively
     const oklchMatch = trimmed.match(
-      /oklch\(\s*([\d.]+%?)\s+([\d.]+)\s+([\d.]+)\s*\)/i,
+      // Optional "/ alpha" is accepted and ignored (targets are opaque)
+      /oklch\(\s*([\d.]+%?)\s+([\d.]+)\s+([\d.]+)\s*(?:\/\s*[\d.]+%?\s*)?\)/i,
     );
     if (oklchMatch) {
       let l = parseFloat(oklchMatch[1]);
@@ -66,10 +67,10 @@ export function formatTargetColor(
   const color = chroma.hsl(hue, saturation, 0.5);
   switch (format) {
     case "hsl":
-      return `hsl(${hue},${Math.round(saturation * 100)}%,50%)`;
+      return `hsl(${hue}, ${Math.round(saturation * 100)}%, 50%)`;
     case "rgb": {
       const [r, g, b] = color.rgb();
-      return `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+      return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
     }
     case "oklch":
       return toOklchString(color.hex());
