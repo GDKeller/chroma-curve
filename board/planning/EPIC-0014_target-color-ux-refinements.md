@@ -51,6 +51,15 @@ Tasks extracted from NOTE-0030 covering target-color a11y, tokenization, touch s
 
 - TASK-0122 — Fix target picker canvas rendering blank when popover opens *(regression from 7dc1bed, a PR #5 review fix)*
 
+## Review follow-ups (3e17daa, 2026-10-30)
+
+These predate that commit. The review of the TASK-0110/0111/0113/0114/0115/0122 work turned them up.
+
+- TASK-0123 — Token focus ring on the target trigger; fix the clear button's hit area and touch visibility
+- TASK-0124 — Derive the active-target ring from the actual target color
+- TASK-0125 — Keep the picker crosshair visible at the canvas edges and on light hues
+- TASK-0126 — Stop layout shift when copying a value in TargetFormats
+
 ## Related
 
 - TASK-0046 (done) — initial target color input implementation

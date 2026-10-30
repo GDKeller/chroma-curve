@@ -18,7 +18,9 @@ Cross-cutting cleanup surfaced during PR #5 review that doesn't belong with any 
 
 - TASK-0104 — Tokenize focus rings and ToggleSwitch knob
 - TASK-0105 — Reconcile port number to a single source of truth
-- TASK-0106 — Tooling hygiene pass (.nvmrc, ESLint globs, contrast-audit wiring, CLAUDE.md docs)
+- TASK-0106 — Tooling hygiene pass (.nvmrc, ESLint globs, contrast-audit wiring, CLAUDE.md docs, Prettier dist ignore)
+- TASK-0127 — Fix faint-text contrast under the translucent ControlBar
+- TASK-0128 — Stop the FormatSelector active button dimming on hover
 
 ## Source NOTEs
 
