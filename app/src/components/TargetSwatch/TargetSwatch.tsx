@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import chroma from "chroma-js";
 import * as Popover from "@radix-ui/react-popover";
 import { X } from "@phosphor-icons/react";
@@ -30,6 +37,7 @@ function ColorInput({
 }) {
   const [value, setValue] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
+  const errorId = useId();
 
   const targetFormatted = targetFormat
     ? formatTargetColor(hue, saturation, targetFormat)
@@ -57,7 +65,7 @@ function ColorInput({
       <div className="mb-1.5">
         {targetInput ? (
           <div className="flex flex-col gap-0.5">
-            <div className="flex items-baseline gap-1.5 font-mono text-xs">
+            <div className="flex flex-wrap items-baseline gap-x-1.5 font-mono text-xs">
               <span className="text-text-secondary">{targetInput}</span>
               <span className="text-text-faint">→</span>
               <span className="text-text-primary">{targetFormatted}</span>
@@ -88,8 +96,17 @@ function ColorInput({
         placeholder="#hex, rgb(), hsl(), oklch()"
         aria-label="Target color"
         aria-invalid={isInvalid}
-        className={`bg-surface-base text-text-primary placeholder:text-text-faint focus-visible:outline-text-primary w-full border px-2 py-1.5 font-mono text-xs transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${isInvalid ? "border-border-invalid" : "border-border-default"}`}
+        aria-describedby={isInvalid ? errorId : undefined}
+        className={`bg-surface-base text-text-primary placeholder:text-text-faint w-full border px-2 py-1.5 font-mono text-xs transition-colors focus-visible:outline-1 focus-visible:outline-offset-0 ${isInvalid ? "border-border-invalid focus-visible:outline-border-invalid" : "border-border-default focus-visible:outline-text-muted"}`}
       />
+      {/* Always mounted so the alert announces when text appears */}
+      <p
+        id={errorId}
+        role="alert"
+        className="text-2xs text-text-secondary not-empty:pt-1"
+      >
+        {isInvalid && "Unrecognized color. Try #hex, rgb(), hsl(), or oklch()."}
+      </p>
     </div>
   );
 }
@@ -107,6 +124,7 @@ export function TargetSwatch() {
   const clearTarget = usePaletteStore((s) => s.clearTarget);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const draggingRef = useRef(false);
 
   const targetActive = targetInput !== null;
@@ -185,7 +203,7 @@ export function TargetSwatch() {
       ctx.beginPath();
       ctx.arc(cx, cy, 5, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.strokeStyle = tokens.getPropertyValue("--color-scrim");
+      ctx.strokeStyle = tokens.getPropertyValue("--color-stroke-halo");
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(cx, cy, 6, 0, Math.PI * 2);
@@ -284,6 +302,7 @@ export function TargetSwatch() {
       <div className="group relative shrink-0 self-end">
         <Popover.Trigger asChild>
           <button
+            ref={triggerRef}
             type="button"
             className="flex cursor-pointer flex-col items-center gap-1"
             aria-label={
@@ -302,8 +321,8 @@ export function TargetSwatch() {
                 boxShadow: ringColor
                   ? `0 0 0 1px ${ringColor}`
                   : targetDrifted
-                    ? "0 0 0 1px var(--color-border-default), inset 0 0 0 1px var(--color-scrim)"
-                    : "0 0 0 1px var(--color-border-elevated)",
+                    ? "0 0 0 1px var(--color-border-elevated), inset 0 0 0 1px var(--color-stroke-halo)"
+                    : "0 0 0 1px var(--color-border-strong)",
                 opacity: targetDrifted ? 0.6 : 1,
               }}
             />
@@ -321,7 +340,11 @@ export function TargetSwatch() {
         {targetActive && (
           <button
             type="button"
-            onClick={clearTarget}
+            onClick={() => {
+              clearTarget();
+              // This button unmounts; keep keyboard focus in place
+              triggerRef.current?.focus();
+            }}
             aria-label="Clear target color"
             className="bg-surface-overlay border-border-elevated text-text-secondary hover:text-text-primary hover:bg-surface-hover focus-visible:outline-text-primary absolute -top-1 -right-1 z-10 flex h-4 w-4 items-center justify-center rounded-full border opacity-0 transition-opacity group-hover:opacity-100 group-has-focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2"
           >
@@ -332,7 +355,9 @@ export function TargetSwatch() {
       <Popover.Portal>
         <Popover.Content
           sideOffset={8}
-          className="bg-surface-overlay border-border-elevated z-[60] rounded-none border p-3 shadow-xl"
+          collisionPadding={8}
+          aria-label="Target color picker"
+          className="bg-surface-overlay border-border-elevated z-[60] w-min rounded-none border p-3 shadow-xl"
         >
           <canvas
             ref={handleCanvasRef}

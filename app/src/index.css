@@ -34,16 +34,16 @@
   /* Borders */
   --color-border-default: hsl(0 0% 12%);
   --color-border-elevated: hsl(0 0% 15%);
+  --color-border-strong: hsl(0 0% 20%);
   --color-border-invalid: oklch(63.7% 0.237 25.331);
-
-  /* Scrim - translucent dark edge drawn over arbitrary palette colors */
-  --color-scrim: hsl(0 0% 0% / 0.4);
 
   /* Strokes (SVG) */
   --color-stroke-grid: hsl(0 0% 12%);
   --color-stroke-axis: hsl(0 0% 17%);
   --color-stroke-secondary: hsl(0 0% 44%);
   --color-stroke-primary: hsl(0 0% 72%);
+  /* Translucent dark edge drawn over arbitrary palette colors */
+  --color-stroke-halo: hsl(0 0% 0% / 0.4);
 }
 
 @layer base {

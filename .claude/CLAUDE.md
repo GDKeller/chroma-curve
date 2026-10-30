@@ -13,7 +13,8 @@ npm run status         # report whether the dev server is running
 npm run stop           # kill the dev server
 npm run dev:app        # run Vite in the foreground instead
 npm run build          # tsc -b && vite build → app/dist
-npm run verify         # lint + format + knip + typecheck (runs all, fails if any fail)
+npm run verify         # lint + format + knip + typecheck + test (runs all, fails if any fail)
+npm run test           # node:test unit tests (app/src/**/*.test.ts)
 npm run verify:fix     # lint:fix + format:fix + knip:fix
 npm run verify:strict  # typecheck → lint → knip → format, stops at first failure
 npm run deploy         # build + wrangler pages deploy (Cloudflare Pages)
@@ -68,9 +69,8 @@ All colors use semantic tokens - never hardcode HSL values in components.
 
 - **Text**: `text-primary` (98%) / `text-secondary` (85%) / `text-muted` (72%) / `text-faint` (55%)
 - **Surfaces**: `surface-base` (4%) / `surface-raised` (8%) / `surface-overlay` (10%) / `surface-hover` (12%) / `surface-active` (15%) / `surface-active-hover` (20%)
-- **Borders**: `border-default` (12%) / `border-elevated` (15%) / `border-invalid` (red, input error state)
-- **Scrim**: `scrim` (black at 40% alpha) - edges and crosshairs drawn over arbitrary palette colors
-- **Strokes (SVG)**: `stroke-grid` (12%) / `stroke-axis` (17%) / `stroke-secondary` (44%) / `stroke-primary` (72%)
+- **Borders**: `border-default` (12%) / `border-elevated` (15%) / `border-strong` (20%) / `border-invalid` (red, input error state)
+- **Strokes (SVG/canvas)**: `stroke-grid` (12%) / `stroke-axis` (17%) / `stroke-secondary` (44%) / `stroke-primary` (72%) / `stroke-halo` (black at 40% alpha, for edges drawn over arbitrary palette colors)
 
 ## Design Context
 
@@ -88,7 +88,7 @@ Broad spectrum: UI/product designers building color systems, design engineers wh
 Confidence & control ("I trust the output"), quiet satisfaction ("every detail is considered"), creative flow ("tweaking until it feels right"), and intellectual curiosity ("I want to understand the curve").
 
 ### Aesthetic Direction
-- **Theme**: Dark-only. Near-black background. The generated colors are the only chromatic elements.
+- **Theme**: Dark-only. Near-black background. The generated colors are the only chromatic elements (sole exception: the `border-invalid` red on input errors).
 - **Typography**: Acumin Pro (body, `font-sans`) + Unbounded (display, `font-display`), loaded via Adobe Fonts/Typekit (project `nbx6xju`). No `--font-mono` token is defined, so `font-mono` resolves to Tailwind's default system monospace stack (the kit serves only Acumin Pro and Unbounded; Recursive Sans Linear Static was dropped). Tight tracking, small type sizes - information-dense without feeling cluttered.
 - **Color values**: Use design tokens (`text-text-muted`, `fill-text-faint`, etc.) instead of hardcoded HSL or opacity tricks. Never use `white/60` or `rgba(255,255,255,0.6)` for text - opacity on text blends unpredictably with backgrounds.
 - **Surfaces**: Subtle borders and fills. Backdrop blur on sticky elements. Depth through value contrast, not layered opacity.

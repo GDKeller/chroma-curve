@@ -19,7 +19,8 @@
     "preview": "npm run --prefix app preview",
     "status": "./scripts/status.sh",
     "stop": "./scripts/stop.sh",
-    "typecheck": "npm run --prefix app typecheck"
+    "typecheck": "npm run --prefix app typecheck",
+    "test": "npm run --prefix app test"
   },
   "devDependencies": {
     "wrangler": "^4.78.0"
