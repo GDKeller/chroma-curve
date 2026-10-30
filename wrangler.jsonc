@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "chroma-curve",
+  "account_id": "2c69d8c9e9f28d3d16d48a2a9d28c26a",
   "pages_build_output_dir": "app/dist",
   "compatibility_date": "2026-03-29"
 }
