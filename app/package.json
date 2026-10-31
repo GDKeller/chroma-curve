@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "verify": "bash ../scripts/run-all.sh lint format knip typecheck",
+    "verify": "bash ../scripts/run-all.sh lint format knip typecheck test",
     "verify:strict": "bash ../scripts/run-sequential.sh typecheck lint knip format",
     "verify:fix": "bash ../scripts/run-all.sh lint:fix format:fix knip:fix",
     "build": "tsc -b && vite build",
@@ -16,7 +16,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "preview": "vite preview",
-    "typecheck": "tsc -b --noEmit"
+    "typecheck": "tsc -b --noEmit",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

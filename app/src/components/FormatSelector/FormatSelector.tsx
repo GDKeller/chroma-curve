@@ -28,7 +28,7 @@ const spaces: { value: ColorSpace; label: string }[] = [
 
 const btnBase =
   "flex-1 px-3 py-1.5 text-base font-medium rounded-none text-text-muted transition-colors hover:text-text-secondary cursor-pointer";
-const btnActive = "bg-surface-active text-white";
+const btnActive = "bg-surface-active text-text-primary";
 
 export function FormatSelector({
   format,

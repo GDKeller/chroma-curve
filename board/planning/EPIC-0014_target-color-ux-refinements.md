@@ -40,16 +40,25 @@ Slider-locking (TASK-0055, TASK-0056) was originally in scope to prevent acciden
 
 Tasks extracted from NOTE-0030 covering target-color a11y, tokenization, touch support, and parser/output correctness. The cross-cutting half of NOTE-0030 (focus rings, ToggleSwitch, port SSOT, tooling) lives in EPIC-0021.
 
-- TASK-0110 — Tokenize hardcoded colors in target-color components
-- TASK-0111 — Fix target-color a11y gaps (focus-visible, aria-label, aria-live)
+- TASK-0110 — Tokenize hardcoded colors in target-color components *(done)*
+- TASK-0111 — Fix target-color a11y gaps (focus-visible, aria-label, aria-live) *(done)*
 - TASK-0112 — Add Pointer Events / touch support to TargetSwatch canvas
-- TASK-0113 — Extend oklch regex to accept slash-alpha syntax
-- TASK-0114 — Fix HSL/RGB output formatting in lib/colors.ts
-- TASK-0115 — Fix opacity-55 contrast in TargetFormats drifted state
+- TASK-0113 — Extend oklch regex to accept slash-alpha syntax *(done)*
+- TASK-0114 — Fix HSL/RGB output formatting in lib/colors.ts *(done)*
+- TASK-0115 — Fix opacity-55 contrast in TargetFormats drifted state *(done)*
 
 ## Bugs
 
-- TASK-0122 — Fix target picker canvas rendering blank when popover opens *(regression from 7dc1bed, a PR #5 review fix)*
+- TASK-0122 — Fix target picker canvas rendering blank when popover opens *(regression from 7dc1bed, a PR #5 review fix)* *(done)*
+
+## Review follow-ups (3e17daa, 2026-10-30)
+
+These predate that commit. The review of the TASK-0110/0111/0113/0114/0115/0122 work turned them up.
+
+- TASK-0123 — Token focus ring on the target trigger; fix the clear button's hit area and touch visibility
+- TASK-0124 — Derive the active-target ring from the actual target color
+- TASK-0125 — Keep the picker crosshair visible at the canvas edges and on light hues
+- TASK-0126 — Stop layout shift when copying a value in TargetFormats
 
 ## Related
 
