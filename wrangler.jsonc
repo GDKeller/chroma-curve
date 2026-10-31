@@ -1,6 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "chroma-curve",
+  // No "account_id" here: Pages config files reject it (checked on Wrangler
+  // 4.78 and 4.156). The account is pinned with CLOUDFLARE_ACCOUNT_ID in the
+  // root package.json "deploy" script.
   "pages_build_output_dir": "app/dist",
   "compatibility_date": "2026-03-29"
 }

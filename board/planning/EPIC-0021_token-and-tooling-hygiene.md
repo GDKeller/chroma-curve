@@ -21,7 +21,7 @@ Cross-cutting cleanup surfaced during PR #5 review that doesn't belong with any 
 - TASK-0106 — Tooling hygiene pass (.nvmrc, ESLint globs, contrast-audit wiring, CLAUDE.md docs, Prettier dist ignore)
 - TASK-0127 — Fix faint-text contrast under the translucent ControlBar
 - TASK-0128 — Stop the FormatSelector active button dimming on hover
-- TASK-0129 — Document why the Cloudflare account ID lives in the deploy script
+- TASK-0129 — Document why the Cloudflare account ID lives in the deploy script *(done)*
 
 ## Source NOTEs
 

@@ -17,7 +17,7 @@ npm run verify         # lint + format + knip + typecheck + test (runs all, fail
 npm run test           # node:test unit tests (app/src/**/*.test.ts)
 npm run verify:fix     # lint:fix + format:fix + knip:fix
 npm run verify:strict  # typecheck → lint → knip → format, stops at first failure
-npm run deploy         # build + wrangler pages deploy (Cloudflare Pages)
+npm run deploy         # build + wrangler pages deploy (Cloudflare Pages, account pinned via CLOUDFLARE_ACCOUNT_ID)
 node scripts/contrast-audit.mjs  # WCAG contrast matrix for text × surface tokens (manual)
 ```
 
@@ -36,7 +36,7 @@ React 19 + TypeScript app built with Vite. All app code lives in `app/`.
 - `app/src/hooks/` - `usePalette`, `useCopyToClipboard`, `useDynamicFavicon`
 - `scripts/` - dev-server orchestration (`dev`/`log`/`status`/`stop`, shared `config.sh`), `run-all.sh` / `run-sequential.sh` behind the verify scripts, `contrast-audit.mjs`
 - `app/scripts/generate-favicons.sh` - regenerates favicon/PWA icon variants in `app/public/`
-- Deployment: Cloudflare Pages via Wrangler (`wrangler.jsonc`, output `app/dist`); response headers in `app/public/_headers`
+- Deployment: Cloudflare Pages via Wrangler (`wrangler.jsonc`, output `app/dist`); response headers in `app/public/_headers`. The Cloudflare account ID is set as `CLOUDFLARE_ACCOUNT_ID` in the root `deploy` script, not in `wrangler.jsonc`. Pages config files reject `account_id`, and the Wrangler login can see two accounts, so a non-interactive deploy with no pinned account fails.
 
 ## Tooling
 
