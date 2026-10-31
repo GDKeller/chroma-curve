@@ -34,15 +34,15 @@
   /* Borders */
   --color-border-default: hsl(0 0% 12%);
   --color-border-elevated: hsl(0 0% 15%);
-  --color-border-strong: hsl(0 0% 20%);
-  --color-border-invalid: oklch(63.7% 0.237 25.331);
+  --color-border-invalid: hsl(357 96% 58%);
 
-  /* Strokes (SVG) */
+  /* Strokes (SVG/canvas) */
   --color-stroke-grid: hsl(0 0% 12%);
   --color-stroke-axis: hsl(0 0% 17%);
   --color-stroke-secondary: hsl(0 0% 44%);
   --color-stroke-primary: hsl(0 0% 72%);
-  /* Translucent dark edge drawn over arbitrary palette colors */
+  /* Translucent dark edge drawn over arbitrary palette colors (picker
+     crosshair, drifted target swatch's inset edge) */
   --color-stroke-halo: hsl(0 0% 0% / 0.4);
 }
 

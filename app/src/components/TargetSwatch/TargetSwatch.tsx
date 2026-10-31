@@ -321,8 +321,8 @@ export function TargetSwatch() {
                 boxShadow: ringColor
                   ? `0 0 0 1px ${ringColor}`
                   : targetDrifted
-                    ? "0 0 0 1px var(--color-border-elevated), inset 0 0 0 1px var(--color-stroke-halo)"
-                    : "0 0 0 1px var(--color-border-strong)",
+                    ? "0 0 0 1px var(--color-border-default), inset 0 0 0 1px var(--color-stroke-halo)"
+                    : "0 0 0 1px var(--color-border-elevated)",
                 opacity: targetDrifted ? 0.6 : 1,
               }}
             />

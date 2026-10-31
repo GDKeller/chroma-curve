@@ -28,6 +28,14 @@ Offenders confirmed in current code (2026-10-20):
 - Grep for `text-white`, `rgba(`, `-red-`, hex literals, and hsl literals across `app/src/components/{TargetSwatch,TargetFormats,FormatSelector}/**` returns no unexplained offenders.
 - Visual parity preserved (or intentional improvement noted).
 
+## Intentional visual changes
+
+Noted 2026-10-30, for commits 3e17daa and 936d97d plus the token follow-up.
+
+- **Swatch trigger outer rings are dimmer.** They used to be translucent white over the bar: `rgba(255,255,255,0.15)`, about 21% L, and `0.1` when drifted, about 13% L after the swatch's 0.6 opacity. They are now opaque `border-elevated` (15%) and `border-default` (12%). The 2px `surface-base` gap still separates the swatch from the bar, so nothing breaks. Getting the old brightness back would need a new border token, and the existing border names (default/elevated) describe elevation, not intensity. So we accepted the dimmer ring instead.
+- **The drifted swatch's inset edge is slightly darker.** It went from `rgba(0,0,0,0.3)` to `--color-stroke-halo` (0.4 alpha), which it shares with the picker crosshair halo.
+- **The active-target ring stays a literal**, with a comment explaining that it is content, not chrome. TASK-0124 covers whether it should match the actual target color.
+
 ## Source
 
 - NOTE-0030
