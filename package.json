@@ -5,7 +5,7 @@
     "verify": "npm run --prefix app verify",
     "verify:fix": "npm run --prefix app verify:fix",
     "verify:strict": "npm run --prefix app verify:strict",
-    "deploy": "npm run --prefix app build && wrangler pages deploy",
+    "deploy": "npm run --prefix app build && CLOUDFLARE_ACCOUNT_ID=2c69d8c9e9f28d3d16d48a2a9d28c26a wrangler pages deploy",
     "dev": "./scripts/dev.sh",
     "dev:app": "npm run --prefix app dev",
     "format": "npm run --prefix app format",
