@@ -26,6 +26,8 @@ A backlog of small visual and layout refinements from internal review and extern
 - TASK-0102 — Redesign swatch copy-feedback overlay
 - TASK-0103 — Evaluate refined typography and tighten border radii
 - TASK-0121 — Adopt a mono typeface for color values and code
+- TASK-0130 — Align Compare strips with the chart's lightness axis
+- TASK-0132 — Add swatch position indicators to PaletteStrip
 
 ## Source NOTEs
 

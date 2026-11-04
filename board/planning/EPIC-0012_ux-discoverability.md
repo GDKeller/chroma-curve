@@ -18,7 +18,7 @@ Improve the learnability of controls and reduce confusion for new users through 
 
 ## Tasks
 
-- TASK-0081 — Move clipboard format selector to swatch viewer
+- TASK-0081 — Move clipboard format selector to swatch viewer *(archived 2026-11-04 as done; selector already lived in the swatch options bar since 6c6ae46)*
 - TASK-0082 — Highlight active copy format on swatches
 - TASK-0083 — Add unadjusted reference color strip
 - TASK-0118 — Rename layout options to clarify grid behavior
