@@ -10,6 +10,13 @@ parent: EPIC-0020
 
 The "Compare" disclosure currently uses `text-text-faint` with no caret or hover state, so it reads as ambient text rather than an interactive affordance. Users miss it entirely.
 
+## Progress (2026-11-04)
+
+Partly done already. The description above predates the current `ChartTabs` Compare button.
+
+- **Done:** caret icon (Phosphor `Triangle`, rotates on open) and a hover state (`hover:text-text-muted`).
+- **Remaining:** base color is still `text-text-faint`; no `focus-visible` style; still defaults to collapsed (`useState(false)`), decision pending.
+
 ## Acceptance
 
 - Compare disclosure uses a stronger text token (`text-text-muted` or `text-text-secondary`).

@@ -10,6 +10,11 @@ parent: EPIC-0012
 
 Add a second color strip above the existing large color strip that shows the **unadjusted** palette — i.e., the palette as it would be without the parabolic saturation curve applied. The adjusted strip stays where it is; the unadjusted strip sits directly above as a comparison reference.
 
+## Progress (2026-11-04)
+
+- **Done:** an Unadjusted strip already shipped, inside the Compare disclosure under the Saturation Curve chart (`ChartTabs`, commit 70a8479). It pairs with an Adjusted strip there.
+- **Remaining (rescoped):** add the reference strip above the main `PaletteStrip` as described below. Reuse the unadjusted color computation from `ChartTabs` rather than duplicating it, and decide whether the Compare copy stays once this ships.
+
 ## Why
 
 The whole point of Chroma Curve is the perceptual improvement from the curve. Right now the user sees only the *result* and has to take it on faith. Showing the unadjusted version inline turns the difference into a visible, side-by-side proof — which:
