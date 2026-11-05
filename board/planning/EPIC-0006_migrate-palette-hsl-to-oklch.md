@@ -2,8 +2,8 @@
 type: epic
 status: planning
 created: 2026-03-20
+updated: 2026-11-04
 tasks:
-  - TASK-0020
   - TASK-0021
   - TASK-0022
   - TASK-0023
@@ -20,7 +20,7 @@ Migrate all internal color math from HSL to OKLCH. The parabolic correction curv
 
 ## Scope
 
-- OKLCH conversion functions (custom, not culori — keep chroma-js for non-generation uses)
+- OKLCH math through culori, which TASK-0020 adds in EPIC-0022
 - Memoized sRGB gamut boundary lookup (per-hue cache, 101 lightness steps)
 - Hue-dependent chroma correction with both endpoint and target satMode
 - Hue-aware saturation→chroma slider mapping (100% = max gamut chroma for current hue)
@@ -31,13 +31,13 @@ Migrate all internal color math from HSL to OKLCH. The parabolic correction curv
 ## Key decisions
 
 - **satMode** carries forward (both endpoint and target)
-- **chroma-js** stays for contrast, export conversion, About — OKLCH math is additive
+- **culori** handles all OKLCH math (decided 2026-11-04, replacing the custom-functions plan; rationale in EPIC-0022). TASK-0020 in EPIC-0022 adds it, and TASK-0021, TASK-0022 and TASK-0024 wait on it. **chroma-js** stays for its remaining uses until EPIC-0009 removes it
 - **sMod/p** parameter mapping unchanged (`pctToSMod` stays as-is)
 - **Curve defaults to on** — hue-dependent center shift is the new default experience
 - **About dialog** is a separate deferred effort (EPIC-0008)
 
 ## Reference
 
-- REFE-0003: OKLCH color math — conversion functions, gamut search, peak-lightness table, correction formula
+- REFE-0003: OKLCH color math — background for the conversions culori now provides, plus gamut search, peak-lightness table, correction formula
 - NOTE-0006 *(archived)*: Original migration guide, including the "what changes / what doesn't" decisions and the migration checklist
 - REFE-0001: Parabolic saturation curve background
