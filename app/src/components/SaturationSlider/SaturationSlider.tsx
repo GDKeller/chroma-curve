@@ -1,6 +1,7 @@
 import * as Slider from "@radix-ui/react-slider";
 import { Crosshair, ArrowsOutLineHorizontal } from "@phosphor-icons/react";
 import { usePaletteStore } from "../../store/paletteStore";
+import { roundPercent } from "../../lib/colors";
 
 export function SaturationSlider() {
   const saturation = usePaletteStore((s) => s.saturation);
@@ -35,7 +36,7 @@ export function SaturationSlider() {
             <span className="ml-1">{satMode}</span>
           </button>
           <span className="text-text-primary text-base tabular-nums">
-            {Math.round(saturation * 100)}%
+            {roundPercent(saturation * 100)}%
           </span>
         </div>
       </div>

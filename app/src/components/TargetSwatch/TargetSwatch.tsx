@@ -10,7 +10,11 @@ import chroma from "chroma-js";
 import * as Popover from "@radix-ui/react-popover";
 import { X } from "@phosphor-icons/react";
 import { usePaletteStore } from "../../store/paletteStore";
-import { parseTargetColor, formatTargetColor } from "../../lib/colors";
+import {
+  parseTargetColor,
+  formatTargetColor,
+  roundPercent,
+} from "../../lib/colors";
 import type { ColorFormat } from "../../lib/colors";
 
 const PICKER_SIZE = 200;
@@ -377,7 +381,7 @@ export function TargetSwatch() {
             className="text-text-faint mt-2 flex justify-between text-sm"
           >
             <span>Hue {hue}°</span>
-            <span>Sat {Math.round(saturation * 100)}%</span>
+            <span>Sat {roundPercent(saturation * 100)}%</span>
           </div>
           <ColorInput
             currentHex={currentHex}

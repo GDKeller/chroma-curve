@@ -3,7 +3,7 @@ import { usePaletteStore } from "../store/paletteStore";
 import { generateNeutrals } from "../lib/palette";
 import type { ColorEntry } from "../types/palette";
 
-export function usePalette(): ColorEntry[] {
+export function usePalette(count?: number): ColorEntry[] {
   const hue = usePaletteStore((s) => s.hue);
   const saturation = usePaletteStore((s) => s.saturation);
   const sMod = usePaletteStore((s) => s.sMod);
@@ -12,7 +12,8 @@ export function usePalette(): ColorEntry[] {
   const lMax = usePaletteStore((s) => s.lMax);
 
   return useMemo(
-    () => generateNeutrals({ hue, saturation, sMod, satMode, lMin, lMax }),
-    [hue, saturation, sMod, satMode, lMin, lMax],
+    () =>
+      generateNeutrals({ hue, saturation, sMod, satMode, lMin, lMax }, count),
+    [hue, saturation, sMod, satMode, lMin, lMax, count],
   );
 }

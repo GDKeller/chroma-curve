@@ -3,6 +3,7 @@ import { ColorSwatch } from "../ColorSwatch";
 import { InlineSelect } from "../InlineSelect";
 import { ToggleSwitch } from "../ToggleSwitch";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+import { usePalette } from "../../hooks/usePalette";
 import { usePaletteStore } from "../../store/paletteStore";
 import type { ColorEntry, CopyFormat } from "../../types/palette";
 
@@ -26,12 +27,6 @@ const COPY_FORMAT_OPTIONS: { value: CopyFormat; label: string }[] = [
   { value: "hsl", label: "hsl" },
   { value: "oklch", label: "oklch" },
 ];
-
-function sampleEntries(entries: ColorEntry[], count: number): ColorEntry[] {
-  if (count >= entries.length) return entries;
-  const step = (entries.length - 1) / (count - 1);
-  return Array.from({ length: count }, (_, i) => entries[Math.round(i * step)]);
-}
 
 // Find the column count that produces no orphans and the most square-ish grid
 function bestCols(total: number): number {
@@ -67,10 +62,9 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
   const [reversed, setReversed] = useState(false);
   const [swatchCount, setSwatchCount] = useState<number>(9);
   const [layout, setLayout] = useState<Layout>("row");
+  const sampled = usePalette(swatchCount);
 
   const { displayEntries, cols } = useMemo(() => {
-    const sampled = sampleEntries(entries, swatchCount);
-
     // Default order for all layouts is dark→light (reverse the light→dark entries)
     const ordered = reversed ? sampled : sampled.slice().reverse();
 
@@ -89,7 +83,7 @@ export function PaletteGrid({ entries }: PaletteGridProps) {
     }
     // horizontal: lightness flows left→right via column-major reorder
     return { displayEntries: toColumnMajor(ordered, cols), cols };
-  }, [entries, swatchCount, layout, reversed]);
+  }, [sampled, layout, reversed]);
 
   return (
     <section aria-labelledby="palette-heading" className="flex flex-col">
