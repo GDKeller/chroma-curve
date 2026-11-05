@@ -22,7 +22,7 @@ The curve-shaping controls (hue, saturation, adjustment, lightness range) ship w
 - TASK-0107 — Add responsive mobile dock for control bar
 - TASK-0108 — Add typed input and stepper buttons for slider values
 - TASK-0109 — Add randomize-parameters button
-- TASK-0131 — Default swatch count to 9
+- TASK-0131 — Default swatch count to 9 *(done)*
 
 ## Source NOTEs
 
